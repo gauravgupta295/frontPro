@@ -1,0 +1,21 @@
+.iconColor{
+    --sds-c-icon-color-foreground-default:white;
+}
+.styleText{
+    padding-left: 10px;
+}
+.sizeCss{
+    padding-bottom:15px;
+}
+.layouts {
+    display: flex;
+    padding: 10px;
+}
+
+.fullwidth {
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+}

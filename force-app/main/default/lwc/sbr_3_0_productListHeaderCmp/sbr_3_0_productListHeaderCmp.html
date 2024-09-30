@@ -1,0 +1,239 @@
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-page-header">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-page-header__name slds-is-relative">
+                        <div class="slds-page-header__name-title">
+                            <h1>
+                                <span>Item Search</span>
+                                <span class="slds-page-header__title slds-truncate" title="All Items">
+                                    {selectedView}
+                                </span>
+                            </h1>
+                        </div>
+                        <div class="slds-page-header__name-switcher">
+                            <div class={listViewContainerClass}>
+                                <lightning-button-icon icon-name="utility:down" variant="bare"
+                                    alternative-text="Switch list View" title="Switch List View"
+                                    onclick={toggleListView}></lightning-button-icon>
+                                <div class="slds-dropdown slds-dropdown_left slds-dropdown_small">
+                                    <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+                                        <li class="slds-dropdown__header slds-truncate" title="List Views"
+                                            role="separator">
+                                            <span>List Views</span>
+                                        </li>
+                                        <li class="slds-p-horizontal_small slds-truncate" title="Search List Views"
+                                            role="separator">
+                                            <lightning-input class="slds-input-has-icon_right" type="search"
+                                                onchange={searchListViews} is-loading={isListViewSearchLoading}
+                                                variant="label-hidden" placeholder="Search Super Categories">
+                                            </lightning-input>
+                                        </li>
+                                        <template for:each={listViewOptions} for:item="option">
+                                            <template if:true={option.isSelected}>
+                                                <li key={option.label} class="slds-dropdown__item slds-is-selected"
+                                                    role="presentation" onclick={changeSelectedView}
+                                                    data-key={option.label}>
+                                                    <a aria-checked="true" href="#" role="menuitemradio" tabindex="0">
+                                                        <span class="slds-truncate" title={option.label}>
+                                                            <lightning-icon icon-name="utility:check"
+                                                                alternative-text="Selected" size="xx-small"
+                                                                class="slds-m-right_x-small slds-icon_selected">
+                                                            </lightning-icon>
+                                                            {option.label}
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                            <template if:false={option.isSelected}>
+                                                <li key={option.label} class="slds-dropdown__item" role="presentation"
+                                                    onclick={changeSelectedView} data-key={option.label}>
+                                                    <a aria-checked="false" href="#" role="menuitemradio" tabindex="0">
+                                                        <span class="slds-truncate" title={option.label}>
+                                                            <lightning-icon icon-name="utility:check"
+                                                                alternative-text="Selected" size="xx-small"
+                                                                class="slds-m-right_x-small slds-icon_selected">
+                                                            </lightning-icon>
+                                                            {option.label}
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <lightning-input class="slds-input-has-icon_right item-search-input" type="search"
+                                data-source="searchItemsInputField" variant="label-hidden"
+                                placeholder={itemSearchPlaceholder} onchange={searchItems}
+                                is-loading={isItemSearchLoading}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-page-header__control">
+                            <template if:false={isFilterActive}>
+                                <lightning-button-icon icon-name="utility:filterList" variant="border-filled"
+                                    onclick={handleViewFilter} alternative-text="Open Filters"
+                                    class="slds-m-left_xx-small" title="Open Filters">
+                                </lightning-button-icon>
+                            </template>
+                            <template if:true={isFilterActive}>
+                                <lightning-button label={filterCount} title="filter" icon-name="utility:filterList"
+                                    onclick={handleViewFilter} class="slds-m-left_x-small"></lightning-button>
+                            </template>
+                        </div>
+                        <template if:true={isNotRecordPage}>
+                        <div class="slds-page-header__control cart-button-container">
+                            <lightning-button-icon icon-name="utility:cart" onclick={handleViewCart}
+                                variant="border-filled" alternative-text="View Cart" class="slds-m-left_xx-small"
+                                title="View Cart">
+                            </lightning-button-icon>
+                            <template if:false={isCartEmpty}>
+                                <span class="cart-count">{cartItemsCount}</span>
+                            </template>
+                        </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-meta">
+                    <p class="slds-page-header__meta-text">{itemCount} Items </p>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template if:true={isMobile}>
+        <div class={itemSearchDisplay}>
+            <div class="slds-page-header__controls header-mob">
+                <div class="slds-p-left_medium slds-p-top_small slds-p-bottom_small lgc-bg">
+                    <lightning-input class="slds-input-has-icon_right" type="search" data-source="searchItemsInputField"
+                        variant="label-hidden" placeholder={itemSearchPlaceholder} onchange={searchItems}
+                        is-loading={isItemSearchLoading}>
+                    </lightning-input>
+                </div>
+                <template if:false={isFilterActive}>
+                    <template if:false={isNotRecordPage}>
+                    <div class="slds-p-left_large"></div>
+                </template>
+                        <div class="slds-grid_align-center slds-p-left_x-small slds-p-top_small slds-size_1-of-8">
+                        <lightning-button-icon icon-name="utility:filterList" size="large" variant="bare"
+                            onclick={handleViewFilter} alternative-text="Open Filters" class="slds-icon on-select"
+                            title="Open Filters">
+                        </lightning-button-icon>
+                    </div>
+                    <template if:true={isNotRecordPage}>
+                        <div class="slds-grid_align-center slds-p-top_small slds-size_1-of-8">
+                            <lightning-button-icon icon-name="utility:adduser" size="large" variant="bare"
+                                onclick={toggleAddCustomerMob} alternative-text="Add Customer" class="slds-icon on-select"
+                                title="Add Customer">
+                            </lightning-button-icon>
+                            <template if:true={isCustomerAdded}>
+                                <span class="cust-added"></span>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+                <template if:true={isFilterActive}>
+                    <div
+                        class="slds-grid_align-center slds-p-left_x-small slds-p-top_small slds-p-bottom_small slds-size_1-of-8">
+                        <lightning-button-icon icon-name="utility:filterList" size="large" variant="bare"
+                            onclick={handleViewFilter} alternative-text="Open Filters" class={filterBtn}
+                            title="Open Filters">
+                        </lightning-button-icon>
+                    </div>
+                    <div class="slds-grid_align-center slds-p-top_small slds-p-bottom_small slds-size_1-of-8">
+                        <lightning-button-icon icon-name="utility:adduser" size="large" variant="bare"
+                            onclick={handleAddCustomer} alternative-text="Add Customer" class="slds-icon"
+                            title="Add Customer">
+                        </lightning-button-icon>
+                    </div>
+                </template>
+            </div>
+            <div class="slds-page-header__name-title all-items" onclick={toggleOnListViewMob} >
+                <span><br></span>
+                <div class="slds-page-header__name-title slds-p-left_medium slds-size_6-of-8">
+                    <h3 class="all-items-txt" title="All Items">
+                        {selectedView}
+                    </h3>
+                </div>
+                <div class="slds-page-header__name-switcher">
+                    <lightning-button-icon icon-name="utility:chevronright" variant="bare"
+                        alternative-text="Switch list View" title="Switch List View" onclick={toggleOnListViewMob}
+                        class="slds-float_right"></lightning-button-icon>
+                </div>
+                <div class="slds-p-left_medium  slds-scrollable_y">
+                    <p class="item-filter-details">{itemCount} Items, sorted by Cat Class,
+                        <template if:true={isCustomerAdded}>
+                            &nbsp;rates for {syncCustomerName},
+                        </template>
+                        &nbsp;filtered by {selectedFilterOptions}
+                    </p>
+                    <span><br></span>
+                    <span><br></span>
+                </div>
+            </div>
+        </div>
+        <div class={listViewDisplay}>
+            <div class="slds-align_absolute-left slds-p-left_medium back-item-ctr">
+                <lightning-button-icon icon-name="utility:back" size="large" variant="bare" alternative-text="Back"
+                    class="back-button-icon" onclick={backToItemSearch} title="Back">
+                </lightning-button-icon>
+                <button class={itemSearchBackBtnClass} value="Back to Item Search" onclick={backToItemSearch}>Back to
+                    Item Search</button>
+                <lightning-button-icon icon-name="utility:adduser" size="large" variant="bare"
+                    alternative-text="Add Customer" class="add-user-icon" title="Add Customer">
+                </lightning-button-icon>
+            </div>
+            <ul class="slds-dropdown__list" role="menu" aria-label="Show More">
+                <div class="list-view-search-header">
+                    <li class="slds-dropdown__header slds-truncate" title="List Views" role="separator">
+                        <span>List Views</span>
+                    </li>
+                    <li class="slds-p-left_small slds-p-right_large slds-truncate" title="Search List Views"
+                        role="separator">
+                        <lightning-input class="slds-input-has-icon_right slds-p-bottom_small" type="search"
+                            onchange={searchListViews} is-loading={isListViewSearchLoading} variant="label-hidden"
+                            placeholder="Search Super Categories">
+                        </lightning-input>
+                    </li>
+                </div>
+                <template for:each={listViewOptions} for:item="option">
+                    <template if:true={option.isSelected}>
+                        <li key={option.label}
+                            class="list-view-options slds-dropdown__item slds-is-selected slds-has-divider_top-space"
+                            role="presentation" onclick={changeSelectedView} data-key={option.label}>
+                            <a aria-checked="true" role="menuitemradio" tabindex="0">
+                                <span class="list-view-span slds-truncate" title={option.label}>
+                                    <lightning-icon icon-name="utility:check" alternative-text="Selected"
+                                        size="xx-small" class="slds-m-right_x-small slds-icon_selected">
+                                    </lightning-icon>
+                                    {option.label}
+                                </span>
+                            </a>
+                        </li>
+                    </template>
+                    <template if:false={option.isSelected}>
+                        <li key={option.label} class="list-view-options slds-dropdown__item slds-has-divider_top-space"
+                            role="presentation" onclick={changeSelectedView} data-key={option.label}>
+                            <a aria-checked="false" role="menuitemradio" tabindex="0">
+                                <span class="list-view-span slds-truncate" title={option.label}>
+                                    <lightning-icon icon-name="utility:check" alternative-text="Selected"
+                                        size="xx-small" class="slds-m-right_x-small slds-icon_selected">
+                                    </lightning-icon>
+                                    {option.label}
+                                </span>
+                            </a>
+                        </li>
+                    </template>
+                </template>
+            </ul>
+        </div>
+    </template>
+</template>

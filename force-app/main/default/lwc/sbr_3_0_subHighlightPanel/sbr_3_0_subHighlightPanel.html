@@ -1,0 +1,21 @@
+<template>
+    <lightning-card>
+        <p class="slds-p-horizontal_small">
+            <template if:true={showSpinner}>
+                <lightning-spinner alternative-text="Loading"></lightning-spinner>
+            </template>
+            <template if:false={showSpinner}>
+                <lightning-button-stateful
+                    label-when-off="Start Tracking"
+                    label-when-on="Stop Tracking"
+                    label-when-hover="Stop Tracking"
+                    icon-name-when-off="utility:add"
+                    icon-name-when-on="utility:check"
+                    icon-name-when-hover="utility:close"
+                    selected={isTracked}
+                    onclick={handleTrack}>
+                </lightning-button-stateful>
+            </template>
+        </p>
+    </lightning-card>
+</template>

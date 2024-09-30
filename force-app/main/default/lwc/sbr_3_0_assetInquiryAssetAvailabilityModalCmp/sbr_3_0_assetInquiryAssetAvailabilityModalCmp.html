@@ -1,0 +1,262 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-29-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <section role="dialog" 
+             tabindex="-1" 
+             aria-modal="true" 
+             aria-labelledby="sbr_3_0_asset_availability-modal-heading"
+             aria-hidden={modalAriaHidden} 
+             class={modalClass} 
+             onkeydown={handleKeyPress}>
+        <div class="slds-modal__container outerModalContent wide-modal">
+            <div class="slds-modal__header">
+                <h1 id="sbr_3_0_asset_availability-modal-heading" 
+                    class="slds-modal__title slds-hyphenate">
+                Availability
+                </h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium" 
+                    id="sbr_3_0_asset_availability-modal-content">
+                <lightning-tabset active-tab-value={activetabContent}>
+                   <lightning-tab 
+                        label="District"
+                        value="District" 
+                        title="District" 
+                        onactive={handleTabChange}>
+
+                        <div class="slds-section 
+                                    slds-is-open 
+                                    slds-m-bottom_none">
+                            <div class="slds-grid 
+                                        slds-wrap slds-form_horizontal">
+                                <div class="title 
+                                            slds-col 
+                                            slds-size_1-of-2 
+                                            slds-var-m-top_small 
+                                            slds-var-m-bottom_small 
+                                            slds-var-p-right_medium" 
+                                        data-id="title">
+                                    {districtTabTitle}
+                                </div>
+                                <lightning-input placeholder="Search Branches" 
+                                                class="slds-col 
+                                                        slds-size_1-of-2" 
+                                                onchange={handleChange}>
+                                </lightning-input>
+                            </div>
+                            <div>
+                                <div class="header-row">
+                                    <template for:each={columns} 
+                                                for:item="cols">
+                                        <div key={cols.label} 
+                                                class="columns 
+                                                    slds-text-color_weak">
+                                            {cols.label}
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="row-container">
+                                    <template for:each={districtRows} for:item="row">
+                                        <div key={row.label} class="row" onclick={handleBranchSelection} data-id={row.label}>
+                                            <template for:each={columns} for:item="cols">
+                                                <div key={cols.fieldName} class="columns">
+                                                    <c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp 
+                                                        row-data={row} 
+                                                        row-key={cols.fieldName}
+                                                        location={locationInfo}>
+                                                    </c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div> 
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab 
+                    label="Region"
+                    value="Region" 
+                    title="Region" 
+                    onactive={handleTabChange}>
+                        <div class="slds-section 
+                                    slds-is-open 
+                                    slds-m-bottom_none">
+                            <div class="slds-grid 
+                                        slds-wrap slds-form_horizontal">
+                                <div class="title 
+                                            slds-col 
+                                            slds-size_1-of-2 
+                                            slds-var-m-top_small 
+                                            slds-var-m-bottom_small 
+                                            slds-var-p-right_medium" 
+                                        data-id="title">
+                                    {regionTabTitle}
+                                </div>
+                                <lightning-input placeholder="Search Branches" 
+                                                class="slds-col 
+                                                        slds-size_1-of-2" 
+                                                onchange={handleChange}>
+                                </lightning-input>
+                            </div>
+                            <div>
+                                <div class="header-row">
+                                    <template for:each={columns} 
+                                                for:item="cols">
+                                        <div key={cols.label} 
+                                                class="columns 
+                                                    slds-text-color_weak">
+                                            {cols.label}
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="row-container">
+                                    <template for:each={regionRows} for:item="row">
+                                        <div key={row.label} class="row" onclick={handleBranchSelection} data-id={row.label}>
+                                            <template for:each={columns} for:item="cols">
+                                                <div key={cols.fieldName} class="columns">
+                                                    <c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp 
+                                                        row-data={row} 
+                                                        row-key={cols.fieldName} 
+                                                        location={locationInfo}>
+                                                    </c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div> 
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab 
+                    label="Territory"
+                    value="Territory" 
+                    title="Territory" 
+                    onactive={handleTabChange}>
+                        <div class="slds-section 
+                                    slds-is-open 
+                                    slds-m-bottom_none">
+                            <div class="slds-grid 
+                                        slds-wrap slds-form_horizontal">
+                                <div class="title 
+                                            slds-col 
+                                            slds-size_1-of-2 
+                                            slds-var-m-top_small 
+                                            slds-var-m-bottom_small 
+                                            slds-var-p-right_medium" 
+                                        data-id="title">
+                                    {territoryTabTitle}
+                                </div>
+                                <lightning-input placeholder="Search Branches" 
+                                                class="slds-col 
+                                                        slds-size_1-of-2" 
+                                                onchange={handleChange}>
+                                </lightning-input>
+                            </div>
+                            <div>
+                                <div class="header-row">
+                                    <template for:each={columns} 
+                                                for:item="cols">
+                                        <div key={cols.label} 
+                                                class="columns 
+                                                    slds-text-color_weak">
+                                            {cols.label}
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="row-container">
+                                    <template for:each={territoryRows} for:item="row">
+                                        <div key={row.label} class="row" onclick={handleBranchSelection} data-id={row.label}>
+                                            <template for:each={columns} for:item="cols">
+                                                <div key={cols.fieldName} class="columns">
+                                                    <c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp 
+                                                        row-data={row} 
+                                                        row-key={cols.fieldName} 
+                                                        location={locationInfo}>
+                                                    </c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div> 
+                        </div>
+                    </lightning-tab>
+
+                    <lightning-tab 
+                    label="Company"
+                    value="Company" 
+                    title="Company" 
+                    onactive={handleTabChange}>
+                        <div class="slds-section 
+                                    slds-is-open 
+                                    slds-m-bottom_none">
+                            <div class="slds-grid 
+                                        slds-wrap slds-form_horizontal">
+                                <div class="title 
+                                            slds-col 
+                                            slds-size_1-of-2 
+                                            slds-var-m-top_small 
+                                            slds-var-m-bottom_small 
+                                            slds-var-p-right_medium" 
+                                        data-id="title">
+                                    {companyTabTitle}
+                                </div>
+                                <lightning-input placeholder="Search Branches" 
+                                                class="slds-col 
+                                                        slds-size_1-of-2" 
+                                                onchange={handleChange}>
+                                </lightning-input>
+                            </div>
+                            <div>
+                                <div class="header-row">
+                                    <template for:each={columns} 
+                                                for:item="cols">
+                                        <div key={cols.label} 
+                                                class="columns 
+                                                    slds-text-color_weak">
+                                            {cols.label}
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="row-container">
+                                    <template for:each={companyRows} for:item="row">
+                                        <div key={row.label} class="row" onclick={handleBranchSelection} data-id={row.label}>
+                                            <template for:each={columns} for:item="cols">
+                                                <div key={cols.fieldName} class="columns">
+                                                    <c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp 
+                                                        row-data={row} 
+                                                        row-key={cols.fieldName} 
+                                                        location={locationInfo}>
+                                                    </c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div> 
+                        </div>
+                    </lightning-tab>
+
+                </lightning-tabset> 
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral cancel-btn" 
+                        aria-label="Cancel and close"
+                        onclick={toggleModal} 
+                        value={cancelBtnLabel}>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </section>
+    <template lwc:if={isOpen}>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+</template>

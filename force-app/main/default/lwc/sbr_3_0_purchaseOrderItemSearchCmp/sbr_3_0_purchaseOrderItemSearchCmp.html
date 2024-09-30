@@ -1,0 +1,213 @@
+<template>
+	<lightning-layout>
+		<lightning-layout-item size="8" style="padding-right:10px">
+			<div class="slds-page-header" style="height:100px;padding:20px 20px;background-color:lightgrey">
+				<lightning-layout>
+					<lightning-layout-item size="5">Item Search<b class="slds-page-header__title slds-truncate">All
+                            Items</b></lightning-layout-item><br>
+					<lightning-layout-item style="padding-top:10px" size="2">
+						<lightning-combobox name="progress" variant="label-hidden" value={defaultOption}
+							placeholder="Select Progress" options={options} onchange={handleDropDown}>
+						</lightning-combobox>
+					</lightning-layout-item>
+					<lightning-layout-item size="4" style="padding-right:5px;padding-top:10px">
+						<lightning-input data-name="searchBox" variant="label-hidden" type="search" label="test test"
+							placeholder="Search Item #, Name, Vendor ID" onkeypress={handleSearch}>
+						</lightning-input>
+					</lightning-layout-item>
+					<lightning-layout-item style="padding-top:10px" size="1">
+						<lightning-button icon-name="utility:filterList" onclick={handleFilter}>
+						</lightning-button>
+					</lightning-layout-item>
+				</lightning-layout>
+				<p style="padding-top:10px">{totalNoOfRecords} Items .Sorted by {sortByName} . Filter by All Items</p>
+			</div>
+			<div style="height: 300px;">
+				<lightning-datatable key-field="Id" data={data} columns={columns} sorted-by={sortBy}
+					draft-values={draftValues} sorted-direction={sortDirection} onsort={doSorting}
+					onrowselection={handleRowSelection} onclick={getSelectedRecords} max-row-selection={enabledRowCount}>
+				</lightning-datatable>
+			</div>
+			<div if:true={isLoaded} class="slds-align_absolute-center">
+				<lightning-spinner alternative-text="Loading...">
+				</lightning-spinner>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item size="4">
+			<template if:true={filterVisibility}>
+				<div class="slds-card slds-card_header">
+					<lightning-card title="Product Filter">
+						<lightning-button variant="base" slot="actions" icon-name="utility:close" onclick={handleClose}>
+						</lightning-button>
+						<div style="padding: 10px 10px 10px">
+							<lightning-input data-name="stockVendor" type="search" label="Stock/Vendor"
+								placeholder="Search a Stock/Vendor" value={stockVendorInput}
+								onchange={handleStockVendorInput}></lightning-input>
+							<lightning-input data-name="partItemNo" label="Part/Item #" type="text"
+								value={partItemNoInput} onchange={handlePartItemNoInput}></lightning-input>
+						</div>
+						<p slot="footer">
+							<lightning-layout>
+								<lightning-layout-item size="3">
+									<lightning-button label="Cancel" title="Cancel" onclick={handleCancel}
+										class="slds-m-left_x-small"></lightning-button>
+								</lightning-layout-item>
+								<lightning-layout-item class="slds-text-align_left" size="6"
+									style="padding-top:10px;padding-left:5px">
+									<a onclick={handleReset}>Reset All Filters</a>
+								</lightning-layout-item>
+								<lightning-layout-item size="3">
+									<lightning-button variant="brand" label="Apply" title="Successful action"
+										onclick={handleApply}></lightning-button>
+								</lightning-layout-item>
+							</lightning-layout>
+						</p>
+					</lightning-card>
+				</div>
+			</template>
+			<template if:true={onrowselection}>
+				<template if:true={singleRow}>
+					<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; border-radius: 0.25rem;">
+						<lightning-card>
+							<!-- single item__________________________________________ -->
+							<template if:true={showQtyErrorBox}>
+								<c-sbr_3_0_message-box title="Error" type="error" message={errorMessage}></c-sbr_3_0_message-box>
+							</template>
+							<div class="slds-card slds-card_header" style="padding: 20px; background-color: #f2f2f2;">
+								<span style="font-weight: bold;">{title}</span>
+							</div>
+							<div style="padding: 10px 10px 10px">
+								<lightning-layout-item>
+									<lightning-formatted-text value="Unit Cost" style="padding: 5px;">
+									</lightning-formatted-text>
+									<template if:true={singleUnitCost}>
+										<p class="slds-float_right" style="padding-right: 10px;">
+											<b>${singleUnitCost}</b>
+										</p><br>
+			                                    </template>
+										<template if:false={singleUnitCost}>
+											<p class="slds-float_right" style="padding-right: 10px;"><b>-</b></p><br>
+			                                    </template>
+								</lightning-layout-item>
+							</div>
+							<div style="padding: 10px 10px 10px;background-color:rgba(228, 226, 226, 0.863)">
+								<div slot="footer">
+									<div class="slds-grid">
+										<div>
+											<lightning-button-icon icon-name="utility:dash" variant="border-filled"
+												alternative-text="decreaseQuantity" title="decreaseQuantity"
+												onclick={decreaseQuantity}>
+											</lightning-button-icon>
+										</div>
+										<div>
+											<lightning-input 
+												class="slds-p-left_xx-small" 
+												type="number"
+												onchange={changeQuantity} 
+												name="inputQuantity" 
+												label="Qty" 
+												min="1"
+												variant="label-hidden" 
+												value={quantity} 
+												style="width: 70px"
+												message-when-range-underflow="Enter a valid value"
+												step="0.01"
+												message-when-step-mismatch="Maximum of 2 decimal places allowed" 
+												required>
+											</lightning-input>
+										</div>
+										<div class="slds-col_bump-right slds-p-left_xx-small">
+											<lightning-button-icon icon-name="utility:add" variant="border-filled"
+												alternative-text="increaseQuantity" title="increaseQuantity"
+												onclick={increaseQuantity}>
+											</lightning-button-icon>
+										</div>
+										<div>
+											<lightning-button variant="brand" label="Add to Purchase Order"
+												title="Successful action" onclick={handleAddPurchaseOrder}>
+											</lightning-button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- single item__________________________________________ -->
+						</lightning-card>
+					</div>
+				</template>
+
+				<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; ">
+					<template if:false={singleRow}>
+						<div class="slds-card slds-card_header">
+							<lightning-card>
+								<div>
+									<div class="slds-card slds-card_header"
+										style="padding: 15px; background-color:lightgrey;">
+										<span style="font-weight: bold; font-size: larger;">Multi Add</span>
+										<lightning-button variant="base" label="Remove All" title="Remove All"
+											onclick={removeAll} class="slds-float_right slds-m-left_small"
+											style="font-size: larger;"></lightning-button>
+									</div>
+									<div>
+										<template if:true={showErrorMessage}>
+											<div class="slds-theme_warning slds-p-around_xx-small"
+												style="margin: 10px 10px; font-size: medium; background-color: rgba(255, 165, 0, 0.9);">
+												<lightning-icon icon-name="utility:warning" variant="inverse"
+													size="small"></lightning-icon>
+												<span class="slds-p-left_x-small">Leaving this screen will clear the multi-add</span>
+												&nbsp;&nbsp;
+												<lightning-icon icon-name="utility:close"
+													onclick={handleCloseNotification} variant="inverse" size="small">
+												</lightning-icon>
+											</div>
+										</template>
+									</div>
+									<!-- multiple items__________________________________________ -->
+									<template if:true={showQtyErrorBox}>
+										<c-sbr_3_0_message-box title="Error" type="error" message={errorMessage}></c-sbr_3_0_message-box>
+									</template>
+									<template for:each={componentIds} for:item="componentId" for:index="index">
+										<template for:each={selectedRows} for:item="selectedRow">
+											<c-sbr_3_0_product-unit-cost-comp 
+												key={selectedRow.Id} 
+												record={selectedRow}
+												key2={componentId} 
+												id={componentId} 
+												onvaluechange={valuechange}
+												onclose={handleCloseRow}>
+											</c-sbr_3_0_product-unit-cost-comp>
+										</template>
+									</template>
+									<!-- multiple items__________________________________________ -->
+									<div
+										style="padding: 10px 10px 10px;background-color:lightgrey; border: 1px solid #d8dde6; ">
+										<div slot="footer">
+											<div class="slds-clearfix">
+												<div class="slds-float_right">
+													<template if:true={showAddToPurchaseOrderButton}>
+													<lightning-button variant="brand" label="Add to Purchase Order"
+														title="Successful action" onclick={handleAddPurchaseOrder2}
+														style="padding-left: 230px;">
+													</lightning-button>
+													</template>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</lightning-card>
+						</div>
+					</template>
+				</div>
+			</template>
+
+			<template if:false={onrowselection}>
+				<template if:false={filterVisibility}>
+
+					<div class="slds-col slds-illustration slds-illustration_small">
+						<c-sbr_3_0_illustration-cmp></c-sbr_3_0_illustration-cmp>
+					</div>
+				</template>
+			</template>
+		</lightning-layout-item>
+	</lightning-layout>
+</template>

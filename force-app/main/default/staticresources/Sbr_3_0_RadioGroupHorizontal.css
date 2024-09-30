@@ -1,0 +1,5 @@
+.reasonsRadio .slds-form-element__control .slds-radio{
+    display:inline;
+}.slds-form-element__legend{
+    padding-bottom: 12px;
+}

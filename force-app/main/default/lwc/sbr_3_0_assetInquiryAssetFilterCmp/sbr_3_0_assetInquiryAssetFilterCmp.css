@@ -1,0 +1,26 @@
+.asset-attribute-filter-panel {
+    position: absolute;
+    overflow-x: hidden;
+    z-index: 5;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.asset-attribute-filter-header {
+    background-color: #FFFFFF;
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+}
+
+.asset-attribute-filter-footer {
+    background-color: #F3F3F3;
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}

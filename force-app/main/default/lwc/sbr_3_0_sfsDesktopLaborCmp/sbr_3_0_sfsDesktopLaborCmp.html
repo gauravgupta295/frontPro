@@ -1,0 +1,243 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-07-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+   
+    <lightning-card class="slds-card_boundary" icon-name="standard:lead_list">
+        <h1 slot="title">{title}</h1> 
+        <lightning-button class="header-button" slot="actions" variant="brand" label="Add New Line items" name="labor" onclick={addRow} ></lightning-button>
+        <div class="slds-card__body slds-card__body_inner">
+            <table class="slds-table slds-table_bordered"> 
+                <thead>
+                    <tr >
+                        <template for:each={columnListLabor} for:item="column">
+                            <th key={column.apiName}><div class="slds-truncate">{column.label}</div></th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={laborRows} for:item="row" for:index="index">
+                        <tr class="inputRows" key={row.uuid}>
+                            <td style="width: 282px;">
+                                <c-sbr_3_0_sfs-generic-lookup 
+                                icon-name="standard:service_resource"
+                                s-object-api-name="ServiceResource"
+                                name="laborResource"
+                                label=""
+                                default-record-id={row.SF_PS_Mechanic_Name__c}
+                                onlookupupdate={handleMechanicNameChangeLabor}
+                                placeholder="Search mechanic name"
+                                filter-query=" And ResourceType='T' And IsActive=true And SF_PS_Mechanic_Id__c !=null and SF_PS_Company_Code__c !=null"
+                                data-id={row.uuid}> 
+                                </c-sbr_3_0_sfs-generic-lookup >
+                                <template if:true={row.mehanicError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                                
+                            </td>
+
+                            <td style="vertical-align: center; width:208px">
+                                <templte if:true={row.SF_PS_Mechanic_Id__c}>
+                                    <p><lightning-formatted-text value={row.SF_PS_Mechanic_Id__c}></lightning-formatted-text></p>
+                                </templte>
+                                <templte if:false={row.SF_PS_Mechanic_Id__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>
+                               
+                            </td>
+                            <td style="width:178px">
+                                <lightning-input style="width: 70px;" type="number" placeholder="00.00" value={row.Duration} step="0.01" message-when-bad-input="Numbers are only allowed." variant="label-hidden" name="laborDuration" onchange={handleLaborHoursChange} max-length="5" data-id={row.uuid}> </lightning-input>
+                                <template if:true={row.DurationError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                            </td>
+                            <td>
+                                <!--<templte if:true={row.SF_PS_Hourly_Internal_Rate__c}>
+                                    <p>$<lightning-formatted-number value={row.SF_PS_Hourly_Internal_Rate__c} format-style="decimal" maximum-fraction-digits="2"  minimum-fraction-digits="2"></lightning-formatted-number></p></templte>
+                                <templte if:false={row.SF_PS_Hourly_Internal_Rate__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>-->
+                                <lightning-input style="width: 70px;" type="number" value={row.SF_PS_Hourly_Internal_Rate__c}  data-id={row.uuid} step="0.01" message-when-bad-input="Numbers are only allowed." variant="label-hidden"  onchange={handleHourlyRateChange}  name="laborHourlyRate" max-length="5" placeholder="00.00" > </lightning-input>
+                                <template if:true={row.hourlyError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                           </td>
+                           
+                            <td style="vertical-align: center; width: 402px;">
+                                 <lightning-combobox style="width: 225px;"
+                                name="LaborCodeLabor"
+                                label=" Labor Code"
+                                value={row.SF_PS_Labor_Code__c}
+                                placeholder="-"
+                                options={laborCodeValues}
+                                onchange={handleChangeLaborCode} 
+                                variant="label-hidden" 
+                                data-id={row.uuid}>
+                               </lightning-combobox>  
+                               <template if:true={row.lbrcError}>
+                                <span style="color:red">Complete this field.</span>
+                            </template>
+                            </td>
+                            <td>
+                                <templte if:true={row.extended}>
+                                    <p>$<lightning-formatted-number value={row.extended}></lightning-formatted-number></p>                                </templte>
+                                <templte if:false={row.extended}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>
+                            </td>
+                            <td>
+                                <div style="width:198px">
+    
+                                </div>
+                            </td>
+                           <td>
+                            <lightning-button  class="delete-button" value={index} variant="destructive" label="Delete" name="labor" onclick={removeRow}></lightning-button>
+                            </td> 
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="slds-p-around_large" style="margin-left:auto; width:  300px;">
+                <span><Strong>Total Internal Labor Cost: </Strong></span>
+                <span>${calculateLaborTotal}</span>
+                
+            </div>
+            
+        </div>
+    </lightning-card>
+    <br>
+    <lightning-card class="slds-card_boundary" icon-name="standard:lead_list">
+        <h1 slot="title">{titleTravel}</h1> 
+        <!--<lightning-button class="header-button" slot="actions" variant="brand" label="Add New Line items" name="travel" onclick={addRow}></lightning-button>-->
+        <div class="slds-card__body slds-card__body_inner">
+            <table class="slds-table slds-table_bordered"> 
+                <thead>
+                    <tr >
+                        <template for:each={columnListTravel} for:item="column">
+                            <th key={column.apiName}><div class="slds-truncate">{column.label}</div></th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={travelRows} for:item="row" for:index="index">
+                        <tr class="inputRows" key={row.uuid}>
+                            <td style="width: 282px;">
+                                <c-sbr_3_0_sfs-generic-lookup 
+                                icon-name="standard:service_resource"
+                                name="travelResource"
+                                s-object-api-name="ServiceResource"
+                                label=""
+                                default-record-id={row.SF_PS_Mechanic_Name__c}
+                                onlookupupdate={handleMechanicNameChangeLabor}
+                                placeholder="Search mechanic name"
+                                filter-query=" And ResourceType='T' And IsActive=true And SF_PS_Mechanic_Id__c !=null and SF_PS_Company_Code__c !=null"
+                                data-id={row.uuid} > 
+                                </c-sbr_3_0_sfs-generic-lookup >
+                                <template if:true={row.mehanicError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                                
+                                
+                            </td>
+                            <td style="vertical-align: center; width:208px">
+                                <templte if:true={row.SF_PS_Mechanic_Id__c}>
+                                    <p><lightning-formatted-text value={row.SF_PS_Mechanic_Id__c}></lightning-formatted-text></p>
+                                </templte>
+                                <templte if:false={row.SF_PS_Mechanic_Id__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>
+                              
+                            </td>
+                            <td style="width:178px">
+                                <lightning-input style="width: 70px;" type="number" value={row.Duration}  data-id={row.uuid} step="1" message-when-bad-input="Numbers are only allowed." variant="label-hidden" onchange={handleLaborHoursChange}  name="travelDuration" max-length="5" placeholder="00" > </lightning-input>
+                                <template if:true={row.DurationError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                            </td>
+                            <td >
+                                <!-- <templte if:true={row.SF_PS_Hourly_Internal_Rate__c}>
+                                    <p>$<lightning-formatted-number value={row.SF_PS_Hourly_Internal_Rate__c} format-style="decimal" maximum-fraction-digits="2"  minimum-fraction-digits="2"></lightning-formatted-number></p></templte>
+                                <templte if:false={row.SF_PS_Hourly_Internal_Rate__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>                            -->
+
+                                <lightning-input style="width: 70px;" type="number" value={row.SF_PS_Hourly_Internal_Rate__c}  data-id={row.uuid} step="0.01" message-when-bad-input="Numbers are only allowed." variant="label-hidden" onchange={handleHourlyRateChange}  name="travelHourlyRate" max-length="5" placeholder="00.00" > </lightning-input>
+                                <template if:true={row.hourlyError}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                            </td>
+                           
+                            <td style="vertical-align: center; width:402px">
+                                 <lightning-combobox style="width: 225px;"
+                                name="LaborCodeTravel"
+                                label=" Labor Code"
+                                value={row.SF_PS_Labor_Code__c}
+                                placeholder="-"
+                                options={laborCodeValues}
+                                onchange={handleChangeLaborCode}
+                                variant="label-hidden"
+                                data-id={row.uuid} 
+                                disabled="true">
+                               </lightning-combobox>  
+                               <template if:true={row.lbrcError}>
+                                <span style="color:red">Complete this field.</span>
+                            </template>
+                            </td>
+                            <td>
+                                <templte if:true={row.extended}>
+                                    <p>$<lightning-formatted-number value={row.extended}></lightning-formatted-number></p>                                </templte>
+                                <templte if:false={row.extended}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                </templte>
+                                
+                        </td>
+                        <td>
+                            <div style="width:198px">
+
+                            </div>
+                        </td>
+                           <td>
+                               <lightning-button disabled="true" name="travel" class="delete-button" value={index} variant="destructive" label="Delete" onclick={removeRow} ></lightning-button>
+                            </td> 
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="slds-p-around_large" style="margin-left:auto; width:  300px;">
+                <span><Strong>Total Mileage Cost: </Strong></span>
+                <span>${calculateTravelTotal}</span>
+                
+            </div>
+            
+        </div>
+    </lightning-card>
+    <template if:true={showButtons}>
+        <c-sbr_3_0_sfs-desktop-flow-buttons
+            show-next-button=true
+            show-skip-button="true"
+            lable-next-button="Next"
+            lable-previous-button="back"
+            lable-skip-button="Skip"
+            show-cancel-button=true
+            lable-cancel-button="Cancel"
+            call-from="Lwc"
+            onprevious={handlePrevious}
+            onnext={hanldeNext}
+            oncancel={handleCancel}
+            onsummary={handleSummary}
+            show-summary="true"
+            lable-summary-button="Go to Summary"
+            record-to-be-deleted={recordToBeDeleted}
+            display-next-screen-message=true
+            next-screen-message={nextScreeenMsg}
+        >
+        </c-sbr_3_0_sfs-desktop-flow-buttons>
+
+       
+    </template>
+
+</template>

@@ -1,0 +1,23 @@
+.label-padding {
+    padding-top: 0px;
+}
+.spinner-height {
+  min-height: 30px;
+}
+.spinner-top {
+  margin-top: -15px !important;
+
+}
+.customErrorStyle {
+    color: #ba0517;
+    font-size: 0.75rem;
+    
+    display: block;
+}
+.customErrorPosition{
+    position: absolute; 
+    margin-top: -0.7rem;
+}
+.remove-box-shadow-class {
+  box-shadow: none !important;
+}

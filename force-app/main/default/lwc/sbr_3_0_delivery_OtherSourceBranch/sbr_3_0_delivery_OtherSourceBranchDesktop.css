@@ -1,0 +1,31 @@
+.no-records{
+	border: 1.5px solid #BA0517;
+	border-radius: 5px;
+}
+
+.search-container{
+	box-shadow:none;
+}
+
+.customHeight{
+    height:250px;
+}
+
+.customTable{
+	border:1px solid lightgrey;
+}
+
+.customMessage{
+	border:1px solid lightgrey;
+	height:250px;
+}
+
+.customSearch{
+	padding-left: 10%;
+}
+.successLink{
+	color: #25683e !important;
+}
+.search-border.slds-input{
+    border-color: #C9C9C9 !important;
+}

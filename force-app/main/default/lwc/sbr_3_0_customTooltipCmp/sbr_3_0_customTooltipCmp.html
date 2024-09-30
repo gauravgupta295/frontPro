@@ -1,0 +1,21 @@
+<template>
+  <div>
+    <span class="slds-align_absolute-center">
+    <lightning-icon
+      icon-name={iconName}
+      alternative-text={iconVariant}
+      variant={iconVariant}
+      size={iconSize}
+      onmouseenter={toggleTooltip}
+      onmouseleave={toggleTooltip}
+      aria-describedby="help"
+      aria-disabled="true"
+    ></lightning-icon>
+    </span>
+    <template if:false={hideToooltip}>
+      <div class={tooltipClass} role="tooltip" if:true={showTooltip} id="help">
+        <span class="slds-popover__body" style="padding-left: 0px">{content}</span>
+      </div>
+    </template>
+    </div>
+</template>

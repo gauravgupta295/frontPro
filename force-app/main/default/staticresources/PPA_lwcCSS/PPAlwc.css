@@ -1,0 +1,51 @@
+.hideFirstColTable table th:first-child, .hideFirstColTable table td:first-child{
+    display: none !important;
+}
+
+.ppa-export-Verified {
+    font-weight: bold;
+    color: green;
+}
+
+.ppa-export-Unverified {
+    font-weight: bold;
+    color: red;
+}
+
+.ppa-export-Overridden {
+    font-weight: bold;
+    color: blue;
+}
+lightning-input.changedInput > lightning-primitive-input-simple > div > div > input {
+    background-color: #F9E3B6 !important;
+}
+@media screen and (min-width: 1280px) {
+	.htmltable {
+		zoom: 55% !important;
+	}
+}
+
+@media screen and (min-width: 1400px) {
+	.htmltable {
+		zoom: 65% !important;
+	}
+
+}
+@media screen and (min-width: 1600px) {
+	.htmltable {
+		zoom: 85% !important;
+	}
+
+}
+@media screen and (min-width: 2000px) {
+	.htmltable {
+		zoom: 94% !important;
+	}
+
+}
+@media screen and (min-width: 2560px) {
+	.htmltable {
+		zoom: 115% !important;
+	}
+
+}

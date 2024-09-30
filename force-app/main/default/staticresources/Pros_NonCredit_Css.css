@@ -1,0 +1,188 @@
+@media only screen and (max-width: 1000px) {
+    .slds-modal__content {
+        flex: auto;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .slds-modal__container {
+        margin: unset;
+        padding: unset;
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+
+    .header-title {
+        font-weight: 400;
+    }
+
+    .info-header {
+        background-color: #FFFFFF;
+        display: flex;
+        /*flex-direction: row;*/
+        justify-content: space-evenly;
+        align-items: center;
+        border-width: 1px;
+        border-color: #D9D9D9;
+        border-style: solid;
+        width: 100vw;
+
+    }
+
+    .brand-button {
+        --slds-c-button-brand-color-background: #25683E;
+        --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-color-border: #25683E;
+        --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-text-color-hover: #fff;
+        margin-right: 30px;
+    }
+
+    .neutral-button {
+        --slds-c-button-text-color: #25683E;
+        --slds-c-button-neutral-color-border: #AEAEAE;
+        --slds-c-button-neutral-color-border-hover: #AEAEAE;
+        margin-left: 30px;
+
+
+    }
+
+    /*  FRONT-10483 START*/
+
+    .brandbuttonmobilefilter {
+        --slds-c-button-brand-color-background: #25683E;
+        --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-color-border: #25683E;
+        --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-text-color-hover: #fff;
+    }
+
+    .neutralbuttonmobilefilter {
+        --slds-c-button-text-color: #25683E;
+        --slds-c-button-neutral-color-border: #AEAEAE;
+        --slds-c-button-neutral-color-border-hover: #AEAEAE;
+    }
+
+    /*  FRONT-10483 END*/
+
+    .input-address {
+        width: 100%;
+    }
+
+    .bottomfooter {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        width: 100%;
+        margin: auto;
+        margin-top: 10px;
+
+    }
+
+    .sticky {
+        Position: fixed;
+        top: 0;
+        left: -1px;
+        right: 0px;
+        width: 100%;
+        z-index: 9899999999999;
+    }
+
+    .mobile-container {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 9001;
+    }
+
+    .mobile-container-inner {
+        padding: 0;
+        margin: 0;
+        position: relative;
+        transform: translate(0, 0);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+        border-radius: 0.25rem;
+    }
+
+    .header-section {
+        width: 100%;
+        background-color: #FFFFFF;
+    }
+
+    .header-section header {
+        width: 100%;
+    }
+
+    .content-section {
+        background-color: rgb(255, 255, 255);
+        overflow: hidden;
+        overflow-y: auto;
+    }
+
+    .slds-input[disabled],
+    .slds-input.slds-is-disabled {
+        background-color: white;
+
+    }
+
+
+}
+
+
+div.availability-grid .title {
+    width: 100% !important;
+}
+
+div.availability-grid lightning-input {
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+div.availability-grid div {
+    width: 100% !important;
+    padding-left: 0px !important;
+}
+
+div.availability-grid input {
+    width: 100% !important;
+    position: relative;
+    top: -10px;
+}
+
+/*For FRONT-8722, styling for the availability tabset */
+.edit-tab [class="slds-tabs_default__item slds-is-active"] {
+    background: #25683E !important;
+    color: #FFF;
+    border: 0 !important;
+    border-radius: 5px;
+    --slds-c-tabs-item-color-border-active: 0 !important;
+    --slds-c-tabs-item-line-height: 1.75rem;
+    --slds-c-tabs-item-sizing-height: 2rem;
+    margin-top: 5px;
+}
+
+.edit-tab [class="slds-tabs_default__item slds-has-focus slds-is-active"] {
+    background: #25683E !important;
+    color: #FFF;
+    border: 0 !important;
+    border-radius: 5px;
+    --slds-c-tabs-item-color-border-active: 0 !important;
+    --slds-c-tabs-item-line-height: 1.75rem;
+    --slds-c-tabs-item-sizing-height: 2rem;
+    margin-top: 5px;
+}
+
+.edit-tab .slds-tabs_default__link[tabindex="0"]:focus,
+.slds-tabs--default__link[tabindex="0"]:focus {
+    text-decoration: none;
+}
+
+/* FRONT-30614 */
+.remove-height-class .slds-form-element__control .slds-checkbox .slds-checkbox__label {
+    min-height: unset;
+}

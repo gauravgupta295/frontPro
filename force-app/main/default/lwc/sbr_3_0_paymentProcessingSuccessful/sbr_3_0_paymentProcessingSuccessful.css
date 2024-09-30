@@ -1,0 +1,66 @@
+/* 
+   This CSS defines styles for a custom modal header and content.
+   It utilizes CSS custom properties for background color.
+*/
+
+/* Styles for the custom modal header */
+.custom-modal-header {
+  /* Define a custom property for the modal header background color with a repeating linear gradient */
+  --slds-c-modal-header-color-background: repeating-linear-gradient(40deg,
+      #4e9a67,
+      #4e9a67 5%,
+      #2E844A 5%,
+      #2E844A 10%);
+
+  /* Apply the background color using the custom property */
+  background: var(--slds-c-modal-header-color-background);
+  /* Set the text color to white */
+
+  color: white;
+  /* Set the font size to 18 pixels */
+  font-size: 18px;
+
+  /* Remove default margins */
+  margin: 0;
+
+  /* Set padding to 20 pixels */
+  padding: 20;
+}
+
+
+/* Styles for the custom modal content */
+.custom-modal-content {
+  /* Arrange content in a column layout */
+  display: flex;
+  flex-direction: column;
+
+  /* Center content horizontally */
+  align-items: center;
+
+  /* Center content vertically */
+  justify-content: center;
+
+  /* Center text within the content */
+  text-align: center;
+
+  /* Set font size to 14 pixels */
+  font-size: 14px;
+}
+
+.slds-modal__container{ 
+  max-width: 35rem;
+  min-width: 35rem;
+  
+}
+/*Added by sreekar  for displaying icon in desktop*/
+.slds-modal__close{
+  display: block !important;
+  content-visibility : visible !important;
+}
+.slds-modal__content.slds-p-around--medium{
+  height : 0px !important;
+}
+/*FRONT-15914*/
+.breakline{ 
+  white-space: pre-line;
+}

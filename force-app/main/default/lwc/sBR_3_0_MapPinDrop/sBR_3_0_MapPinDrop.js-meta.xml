@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Map Pin Drop</masterLabel>
+    <description>Component to gather fields to create a location</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="pinDropLat" label="Latitude" type="Integer"/>
+          <property name="pinDropLng" label="Longitude" type="Integer" />
+          <property name="pinDropStreet" label="Street" type="String" />
+          <property name="pinDropCity" label="City" type="String" />
+          <property name="pinDropState" label="State" type="String" />
+          <property name="pinDropFullState" label="Full State" type="String" />
+          <property name="pinDropCounty" label="County" type="String" />
+          <property name="pinDropCountry" label="Country" type="String" />
+          <property name="pinDropZip" label="Zip" type="String" />
+          <property name="pinDropIsUsed" label="Is Pin Drop Used?" type="Boolean"/>
+          <property name="pinCopyAddrFromLocation" label="Copy Address from Location?" type="Boolean"/>
+          <property name="locationStreet" label="Location Street" type="String" />
+          <property name="countQuoteScreenVisit" label="Quote Screen Visit Count" type="Integer" />
+      </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

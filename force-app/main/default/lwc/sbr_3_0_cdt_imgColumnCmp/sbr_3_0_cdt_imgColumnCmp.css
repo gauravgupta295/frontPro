@@ -1,0 +1,5 @@
+.image{
+    max-height: 50px;
+    max-width: 70px;
+    object-fit: contain;
+}

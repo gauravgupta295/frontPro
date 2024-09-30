@@ -1,0 +1,486 @@
+<template>
+  <div if:true={showDetails}>
+   <!-- <lightning-layout class="slds-p-bottom_x-small slds-p-top_x-small">
+      <lightning-layout-item>
+        <b>
+          <p>Cat Class:&nbsp;</p>
+        </b>
+      </lightning-layout-item>
+      <lightning-layout-item>
+        <p>{assetData.prodname}</p>
+      </lightning-layout-item>
+    </lightning-layout>
+    <lightning-layout class="slds-p-bottom_x-small">
+      <lightning-layout-item>
+        <p><b>Status:&nbsp;</b></p>
+      </lightning-layout-item>
+      <lightning-layout-item>
+        <lightning-layout-item>
+          <p>{assetData.Status}</p>
+        </lightning-layout-item>
+      </lightning-layout-item>
+    </lightning-layout>-->
+    <!-- Asset Number Component-->
+    <div class="slds-section slds-is-open slds-m-bottom_none" data-id="AssetNo">
+      <div if:false={isMobile}>
+        <h3 class="slds-section__title slds-theme_shade" data-buttonid="AssetNo">
+          <button type="button" class="slds-button slds-section__title-action" data-buttonid="AssetNo"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small" title="Asset Number"><b>Asset Number:
+                {assetData.assetNumber}</b></span>
+          </button>
+        </h3>
+      </div>
+      <div if:true={isMobile}>
+        <h3 class="slds-section__title" data-buttonid="AssetNo">
+          <button type="button" class="slds-button action-title-mobile" data-buttonid="AssetNo" onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small custom-button" title="Asset Number"><b>Asset Number:
+                {assetData.assetNumber}</b></span>
+          </button>
+        </h3>
+      </div>
+      <div class="slds-p-left_small AssetNumberDetails slds-open">
+        <div if:false={isMobile}>
+          <lightning-layout class="slds-p-top_x-small slds-p-bottom_x-small">
+            <lightning-layout-item><b>
+                <p>Make:&nbsp;</p>
+              </b></lightning-layout-item>
+            <lightning-layout-item>
+              <p>{assetData.make}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item><b>
+                <p>Model:&nbsp;</p>
+              </b></lightning-layout-item>
+            <lightning-layout-item>
+              <p>{assetData.model}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item>
+              <b>
+                <p>Serial #:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item>
+              <p>{assetData.serial}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <div if:false={isMobile}>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Year:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.year}</p>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <b>
+                  <p>&nbsp;&nbsp;Hours:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.hours}</p>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <b>
+                  <p>&nbsp;&nbsp;Qty:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.qty}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item>
+              <b>
+                <p>Original Cost:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item>
+              <p>${assetData.originalCost}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item>
+              <b>
+                <p>Book Value:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item>
+              <p>${assetData.bookValue}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item>
+              <b>
+                <p>Sell Price:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item>
+              <p>${assetData.sellPrice}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+        <div if:true={isMobile}>
+          <lightning-layout class="slds-p-top_x-small slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4"><b>
+                <p>Make:&nbsp;</p>
+              </b></lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>{assetData.make}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4"><b>
+                <p>Model:&nbsp;</p>
+              </b></lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>{assetData.model}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Serial #:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>{assetData.serial}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small ">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Year:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>{assetData.year}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b></p>Hours:&nbsp;</p></b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>{assetData.hours}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Qty:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item>
+              <p>{assetData.qty}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Original Cost:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>${assetData.originalCost}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Book Value:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>${assetData.bookValue}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-p-bottom_x-small">
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <b>
+                <p>Sell Price:&nbsp;</p>
+              </b>
+            </lightning-layout-item>
+            <lightning-layout-item smalldevicesize="12" size="4">
+              <p>${assetData.sellPrice}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+      </div>
+    </div>
+    <div if:true={isMobile}>
+      <div class="slds-border_bottom"></div>
+    </div>
+    <!--Description Component -->
+    <div class="slds-section slds-is-open slds-m-bottom_none" data-id="Description">
+      <div if:false={isMobile}>
+        <h3 class="slds-section__title slds-theme_shade" data-buttonid="Description">
+          <button type="button" class="slds-button slds-section__title-action" data-buttonid="Description"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small" title="Description"><b>Description</b></span>
+          </button>
+        </h3>
+      </div>
+      <div if:true={isMobile}>
+        <h3 class="slds-section__title" data-buttonid="Description">
+          <button type="button" class="slds-button action-title-mobile" data-buttonid="Description"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small custom-button" title="Description">Description</span>
+          </button>
+        </h3>
+      </div>
+      <div class="slds-p-left_small DescriptionDetails slds-open">
+        <lightning-layout class="slds-p-top_x-small slds-p-bottom_x-small">
+          <p>{assetData.description}</p>
+        </lightning-layout>
+      </div>
+    </div>
+    <div if:true={isMobile}>
+      <div class="slds-border_bottom"></div>
+    </div>
+    <!-- Contract Order -->
+    <div class="slds-section slds-is-open slds-m-bottom_none" data-id="ContractOrder">
+      <div if:false={isMobile}>
+        <h3 class="slds-section__title slds-theme_shade" data-buttonid="ContractOrder">
+          <button type="button" class="slds-button slds-section__title-action" data-buttonid="ContractOrder"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small" title="Contract Order"><b>Contract Order</b></span>
+          </button>
+        </h3>
+      </div>
+      <div if:true={isMobile}>
+        <h3 class="slds-section__title" data-buttonid="ContractOrder">
+          <button type="button" class="slds-button action-title-mobile" data-buttonid="ContractOrder"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small custom-button" title="Contract Order">Contract
+              Order</span>
+          </button>
+        </h3>
+      </div>
+      <div class="slds-p-left_small ContractOrderDetails slds-open">
+        <div if:false={showContract}>
+          <!-- <template if:false={isMobile}>
+          <c-sbr_3_0_illustration-cmp variant="noevent"
+            message="There are no contracts associated with this asset currently.">
+          </c-sbr_3_0_illustration-cmp>
+          </template> -->
+          <!-- <template> -->
+            <img class="slds-illustration__svg slds-align_absolute-center" alt="" src={noContentimageUrl} />
+            <div class="slds-text-color_weak">
+           <center><span class="textBold">
+              There are no contracts associated with this asset currently.
+            </span>
+           </center>
+          </div>
+          <!-- </template> -->
+        </div>
+        <div if:true={showContract}>
+          <div if:false={isMobile}>
+            <lightning-layout class="slds-p-top_x-small slds-p-bottom_x-small">
+              <lightning-layout-item><b>
+                  <p>Contract Order Number:&nbsp;</p>
+                </b></lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.contractOrderNumber}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item><b>
+                  <p>Customer Name:&nbsp;</p>
+                </b></lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.customerName}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Job Site Record:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.jobSiteRecord}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Job Site Address:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.jobSiteAddress}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Sales Rep:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.salesRep}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Ordered By:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.orderBy}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+           <!-- <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Branch 604:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{assetData.branch604}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Total Billed:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>$52624.00</p>
+              </lightning-layout-item>
+            </lightning-layout>-->
+          </div>
+          <div if:true={isMobile}>
+            <lightning-layout class="slds-p-top_x-small slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6"><b>
+                  <p>Contract Order Number:&nbsp;</p>
+                </b></lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <div class="greenLink"><p>{assetData.contractOrderNumber}</p></div>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6"><b>
+                  <p>Customer Name:&nbsp;</p>
+                </b></lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>{assetData.customerName}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Job Site Record:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <div class="greenLink"><p>{assetData.jobSiteRecord}</p></div>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Job Site Address:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>{assetData.jobSiteAddress}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Sales Rep:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>{assetData.salesRep}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Ordered By:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>{assetData.orderBy}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+         <!--   <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Branch 604:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>{assetData.branch604}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <b>
+                  <p>Total Billed:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item smalldevicesize="12" size="6">
+                <p>$52624.00</p>
+              </lightning-layout-item>
+            </lightning-layout>-->
+          </div>
+        </div>
+      </div>
+    </div>
+    <div if:true={isMobile}>
+      <div class="slds-border_bottom"></div>
+    </div>
+    <!-- Pickup Ticket -->
+    <div class="slds-section slds-is-open slds-m-bottom_none" data-id="PickupTicket">
+      <div if:false={isMobile}>
+        <h3 class="slds-section__title slds-theme_shade" data-buttonid="PickupTicket">
+          <button type="button" class="slds-button slds-section__title-action" data-buttonid="PickupTicket"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small" title="Pickup Ticket"><b>Pickup Ticket</b></span>
+          </button>
+        </h3>
+      </div>
+      <div if:true={isMobile}>
+        <h3 class="slds-section__title" data-buttonid="PickupTicket">
+          <button type="button" class="slds-button action-title-mobile" data-buttonid="PickupTicket"
+            onclick={toggleSection}>
+            <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>
+            <span class="slds-truncate slds-p-horizontal_small custom-button" title="Pickup Ticket">Pickup Ticket</span>
+          </button>
+        </h3>
+      </div>
+      <div class="slds-p-left_small PickupTicketDetails slds-open"></div>
+    </div>
+    <div if:true={isMobile}>
+      <div class="slds-border_bottom"></div>
+    </div>
+  </div>
+</template>

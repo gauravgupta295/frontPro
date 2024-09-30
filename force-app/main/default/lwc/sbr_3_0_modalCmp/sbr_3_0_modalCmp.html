@@ -1,0 +1,92 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <section
+    role="dialog"
+    tabindex="-1"
+    aria-modal="true"
+    aria-labelledby="sbr_3_0_modal-cmp-heading"
+    aria-hidden={modalAriaHidden}
+    class={modalClass}
+    onkeydown={handleKeyPress}
+  >
+    <!--        <div class="slds-modal__container outerModalContent">-->
+
+    <div class={containerClass}>
+      <div tabindex="0" onfocus={handleModalFocus}></div>
+      <lightning-button-icon
+        class="slds-modal__close"
+        icon-name="utility:close"
+        size="large"
+        variant="bare-inverse"
+        alternative-text="Cancel and close"
+        onclick={closeBtnClickHandler}
+      >
+      </lightning-button-icon>
+      <div class="slds-modal__header">
+        <h1
+          id="sbr_3_0_modal-cmp-heading"
+          class="slds-modal__title slds-hyphenate"
+        >
+          {header}
+        </h1>
+      </div>
+      <div
+        class="slds-modal__content slds-p-around_medium"
+        id="sbr_3_0_modal-cmp-content"
+      >
+        <template lwc:if={isDynamicOpen}>
+          <slot name="modalContent"></slot>
+        </template>
+        <template lwc:else>
+          <slot name="modalContent"></slot>
+        </template>
+      </div>
+      <!--Added as part of FRONT-10855-->
+      <template lwc:if={isDynamicFooter}>
+        <div class="slds-modal__footer" lwc:if={showFooter}>
+          <slot name="footer"></slot>
+        </div>
+      </template>
+      <!-- FRONT-10855 Ends-->
+      <template lwc:else>
+        <div class="slds-modal__footer" lwc:if={showFooter}>
+          <button
+            class="slds-button slds-button_neutral cancel-btn"
+            aria-label="Cancel and close"
+            onclick={cancelClickHandler}
+            value={cancelBtnLabel}
+          >
+            {cancelBtnLabel}
+          </button>
+          <!--Added as part of FRONT-2195-->
+          <template if:true={hasBackButtonHandler}>
+            <button
+              class="slds-button slds-button_neutral back-btn"
+              aria-label="Back"
+              onclick={backBtnHandler}
+              value={backBtnLabel}
+            >
+              {backBtnLabel}
+            </button>
+          </template>
+          <!--FRONT-2195 Ends-->
+          <template if:true={hasSaveHandler}>
+            <!-- Modified as aprt of FRONT-2195 -->
+            <button
+              class={saveButtonClass}
+              value={saveBtnLabel}
+              onclick={saveHandler}
+              disabled={disableSaveButton}
+            >
+              {saveBtnLabel}
+            </button>
+          </template>
+        </div>
+      </template>
+    </div>
+  </section>
+
+  <template if:true={isOpen}>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

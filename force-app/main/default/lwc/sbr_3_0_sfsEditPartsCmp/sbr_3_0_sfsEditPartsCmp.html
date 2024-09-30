@@ -1,0 +1,93 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-08-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-modal-header label={headerText}></lightning-modal-header>
+    <template if:true={isSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+   <template if:false={isSpinner}>
+    <lightning-modal-body>
+        <div>
+            <br/>    
+        Item #:<br/>  
+        <lightning-formatted-text value={record.itemNumber}></lightning-formatted-text>
+        <br/> <br/>
+        STK/C: <br/>  
+        <lightning-formatted-text value={record.stockClass}></lightning-formatted-text>
+        <br/>  <br/>
+        Description: <br/>  
+        <lightning-formatted-text value={record.desc}></lightning-formatted-text>
+       <br/> <br/>
+       <span style="color:red">* </span> Quantity:
+       <lightning-input 
+           type="number" 
+           message-when-bad-input="Numbers are only allowed."  
+           message-when-step-mismatch="Decimals are not allowed." 
+           variant="label-hidden" 
+           data-field="qty"
+           class="qty"
+           min="1"
+           max="999"
+           message-when-range-underflow="Qty must be 3 characters max."
+           message-when-range-overflow="Qty must be 3 characters max."
+           onchange={handleQuantityChange}
+           value={quantityConsumedValue}
+           required> 
+      </lightning-input><br/>  <br/>    
+       BIN Loc: <br/>  
+       <lightning-formatted-text value={binLoc}></lightning-formatted-text>
+       <br/><br/>   
+       Part Name #:<br/>  
+       <lightning-formatted-text value={record.Name}></lightning-formatted-text>
+       <br/> <br/> 
+       Quantity Available:<br/> 
+       {qtyAvailable}
+       <br/><br />
+       <lightning-combobox
+            name="Labor Code"
+            label="Labor Code:"
+            options={pcLaborCodes}
+            value={laborCodeValue}
+            onchange={handleLaborCodeChange}
+            placeholder="Select a Labor Code"
+            required>
+        </lightning-combobox>
+        <br/>
+        Shipped Quantity:<br/>  
+        {shippedQty}
+        <br/> <br/> 
+         Backordered Quantity:<br/> 
+         {backQty}
+         <br/> <br/> 
+         Original Backordered Quantity:<br/> 
+         {originalBackQty}
+         <br/> <br/> 
+         Item Type:<br/> 
+         <lightning-formatted-text value={itemType}></lightning-formatted-text>
+         <br/> <br/> 
+        Avg. Cost:<br/>  
+        <lightning-formatted-text value={averageCostDisplay}></lightning-formatted-text>
+        <br/> <br/>    
+        Sell Price:<br/>  
+        <lightning-formatted-text value={sellPriceDisplay}></lightning-formatted-text>
+        <br/>  <br/>   
+        List Price:<br/>  
+        <lightning-formatted-text  value={listPriceDisplay}></lightning-formatted-text>
+        <br/>  <br/>   
+        UOM:<br/>  
+        <lightning-formatted-text value={record.uom}></lightning-formatted-text>
+        <br/><br/> 
+        </div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+    <div class="slds-grid slds-grid_align-center">
+        <button class="slds-button slds-button_success" title="Yes" onclick={handleSave}>Save</button>&nbsp;&nbsp;
+    </div>
+    </lightning-modal-footer>
+    </template>
+</template>

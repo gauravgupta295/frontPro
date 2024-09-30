@@ -1,0 +1,29 @@
+.asset-info {
+    font-size: 14px;
+    padding-top: 10px;
+    margin-top: 0;
+  }
+  .asset-label {
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 10px;
+  }
+  .custom-label {
+    color: green;
+  }
+
+  .item-class{
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: #C9C9C9;
+    margin-bottom: 10px;
+  }
+  .display-name {
+    font-weight: 700;
+    color: green;
+    font-size: large;
+    margin: top 0%;
+  }
+  .successLink{
+    color: green;
+  }

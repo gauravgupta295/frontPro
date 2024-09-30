@@ -1,0 +1,489 @@
+<template>
+  <!-- Modal/Popup Box LWC starts here -->
+  <template if:false={isFormOpen}>
+    <!--Desktop Modal for Account Record Type Selection-->
+    <!-- <template if:false={isMobile}> -->
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <!-- Modal/Popup Box LWC header here -->
+        <header class="slds-modal__header">
+          <button
+            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse customModalCloseButton"
+            title="Close"
+            onclick={closeModal}
+          >
+            <lightning-icon
+              icon-name="utility:close"
+              alternative-text="close"
+              variant="inverse"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-assistive-text">{label.CLOSE}</span>
+          </button>
+          <h2
+            id="modal-heading-01"
+            class="slds-text-heading_medium slds-hyphenate"
+          >
+            {label.NEW_ACCOUNT}
+          </h2>
+        </header>
+        <!-- Modal/Popup Box LWC body starts here -->
+
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-1"
+        >
+          <fieldset class="slds-form-element option-container">
+            <span class="slds-radio__label">{label.SELECT_RECORD_TYPE}</span>
+            <div class="slds-form-element__control">
+              <template for:each={accountTypeOptions} for:item="option">
+                <span class="slds-radio" key={option.id}>
+                  <input
+                    type="radio"
+                    class="option"
+                    id={option.id}
+                    title={option.label}
+                    value={option.id}
+                    name="option"
+                    onchange={handleRadioChange}
+                  />
+                  <label class="slds-radio__label" for={option.id}>
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">{option.label}</span>
+                  </label>
+                  <div class="slds-form-element__description">
+                    <span>{option.description}</span>
+                  </div>
+                </span>
+              </template>
+            </div>
+          </fieldset>
+        </div>
+        <footer class="slds-modal__footer">
+          <button
+            class="slds-button slds-button_neutral"
+            onclick={closeModal}
+            title="Cancel"
+          >
+            {label.CANCEL}
+          </button>
+          <button
+            class="slds-button slds-button_brand"
+            onclick={submitDetails}
+            title="Next"
+          >
+            {label.NEXT}
+          </button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    <!-- </template> -->
+    <!-- <template if:true={isMobile}> -->
+    <!-- <c-sbr_3_0_modal-cmp header="New Account" cancel-btn-label="Cancel" save-btn-label="Next"
+                                            save-handler={submitDetails}>
+                                                <span slot="modal-content">
+                                                    <lightning-button label='Non-Credit' id='Non-Credit' value='Non-credit' title='Non-credit'></lightning-button>
+                                                    <lightning-button label='Prospect' id='Prospect' value='Prospect' title='Prospect'></lightning-button>
+                                                </span>
+                                            </c-sbr_3_0_modal-cmp> -->
+    <!-- </template> -->
+    <!-- <c-sbr_3_0_record-type-selection-screen-mobile onclosemodal={closeModal}>
+                                        </c-sbr_3_0_record-type-selection-screen-mobile> -->
+  </template>
+  <template if:true={isFormOpen}>
+    <!-- <template if:true={isNonCreditRecordType}> -->
+    <section
+      role="dialog"
+      aria-labelledby="modal-heading-02"
+      aria-modal="true"
+      aria-describedby="modal-content-id-2"
+      class={searchModalComputedClasses}
+    >
+      <div class="slds-modal__container">
+        <!-- Modal/Popup Box LWC header here -->
+        <header class="slds-modal__header">
+          <button
+            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+            title="Close"
+            onclick={closeModal}
+          >
+            <lightning-icon
+              icon-name="utility:close"
+              alternative-text="close"
+              variant="inverse"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-assistive-text">{label.CLOSE}</span>
+          </button>
+          <template if:true={isNonCreditRecordType}>
+            <h2
+              id="modal-heading-02"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              {label.NON_CREDIT_ACC}
+            </h2>
+          </template>
+          <template if:false={isNonCreditRecordType}>
+            <h2
+              id="modal-heading-03"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              {label.PROSPECT_ACC}
+            </h2>
+          </template>
+        </header>
+        <!-- Modal/Popup Box LWC body starts here -->
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-2"
+        >
+          <h3 class="slds-section__title">{label.GENERALINFO}</h3>
+          <template if:true={showLoading}>
+            <lightning-spinner
+              alternative-text="Loading"
+              size="medium"
+              variant="brand"
+              class="spinnerClass"
+            ></lightning-spinner>
+          </template>
+
+          <!--This contains record edit form code-->
+          <lightning-record-edit-form
+            object-api-name="Account"
+            record-type-id={selectedRecordId}
+          >
+            <!-- START::Modified as part of FRONT-3031-->
+            <div if:false={isNonCreditRecordType}>
+              <lightning-layout multiple-rows="">
+                <lightning-layout-item
+                  size="12"
+                  class="slds-var-p-around_x-small"
+                >
+                  <lightning-input
+                    type="text"
+                    label={label.ACCOUNTNAME}
+                    title="Name"
+                    required="required"
+                    onchange={handleFieldChange}
+                  ></lightning-input>
+                  <!-- SF-5395 (modified the existing logic for getting appname)-->
+                  <template if:true={showParentAccountAccField}>
+                    <lightning-record-picker
+                      label="Parent Account"
+                      name="ParentAccount"
+                      title="ParentAccount"
+                      onchange={handleFieldChange}
+                      placeholder="Search Accounts..."
+                      object-api-name="Account"
+                    >
+                    </lightning-record-picker>
+                  </template>
+                  <h4 class="slds-var-p-top_x-small">
+                    <abbr class="slds-required" title="required">*</abbr>
+                    {label.CONTACTINFO}
+                  </h4>
+                  <lightning-layout multiple-rows="">
+                    <lightning-layout-item
+                      size="6"
+                      class="slds-var-p-around_x-small"
+                    >
+                      <lightning-input
+                        label={label.PHONE}
+                        minlength="10"
+                        maxlength="10"
+                        name="Phone"
+                        title="Phone"
+                        type="Tel"
+                        class="prospectPhone"
+                        data-field="Phone"
+                        onblur={checkOnBlur}
+                        onchange={handleFieldChange}
+                      >
+                      </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item
+                      size="6"
+                      class="slds-var-p-around_x-small"
+                    >
+                      <lightning-input
+                        label={label.ACC_EMAIL}
+                        name="email"
+                        class="prospectEmail"
+                        title="email"
+                        onblur={checkOnBlur}
+                        onchange={handleFieldChange}
+                      >
+                      </lightning-input>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                  <lightning-textarea
+                    name="Comments__c"
+                    label={label.COMMENTS}
+                    title="comments"
+                    onchange={handleFieldChange}
+                    onblur={handleFieldBlur}
+                  ></lightning-textarea>
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+            <!-- END::Modified as part of FRONT-3031-->
+            <lightning-layout-item class="slds-p-around_xx-small" size="12">
+              <lightning-layout style={customLayoutStyle}>
+                <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                  <!-- added as a part of FRONT-1270-->
+
+                  <template if:true={isNonCreditRecordType}>
+                    <lightning-input
+                      type="text"
+                      label={label.CONFIRSTNAME}
+                      name="FirstName"
+                      onchange={handleFieldChange}
+                      max-length="255"
+                      required="required"
+                    ></lightning-input>
+
+                    <lightning-input
+                      type="text"
+                      label={label.CONLASTNAME}
+                      name="LastName"
+                      onchange={handleFieldChange}
+                      max-length="255"
+                      required="required"
+                    ></lightning-input>
+
+                    <lightning-input
+                      type="text"
+                      label={label.ACCOUNTNAME}
+                      title="Name"
+                      placeholder="Last Name, First Name"
+                      value={name}
+                      max-length="30"
+                      required="required"
+                      disabled=""
+                    ></lightning-input>
+                  </template>
+
+                  <template if:true={isNonCreditRecordType}>
+                    <lightning-input
+                      type="text"
+                      minlength="10"
+                      maxlength="10"
+                      label={label.PHONE}
+                      name="Phone"
+                      title="Phone"
+                      class="nonCreditPhone"
+                      onchange={handleFieldChange}
+                      onblur={checkOnBlur}
+                      required="required"
+                    ></lightning-input>
+                    <lightning-input
+                      type="email"
+                      label={label.ACC_EMAIL}
+                      title="email"
+                      name="email"
+                      class="nonCreditEmail"
+                      onchange={handleFieldChange}
+                      onblur={checkOnBlur}
+                      required="required"
+                    ></lightning-input>
+                  </template>
+
+                  <!-- Move to 2nd Column -->
+                </lightning-layout-item>
+                <lightning-layout-item class="slds-p-around_xx-small" size="6">
+                  <template if:true={isNonCreditRecordType}>
+                    <lightning-combobox
+                      title="licenseState"
+                      label={label.DLSTATE}
+                      value={value}
+                      onchange={handleFieldChange}
+                      options={drivingStateOptions}
+                      placeholder="--None--"
+                      required="required"
+                    ></lightning-combobox>
+                    <lightning-input
+                      type="text"
+                      label={label.DLNUMBER}
+                      title="License"
+                      onchange={handleFieldChange}
+                      required="required"
+                    ></lightning-input>
+
+                    <lightning-input
+                      type="date"
+                      name="dateofbirth"
+                      label={label.DOB}
+                      required="required"
+                      placeholder="mm/dd/yyyy"
+                      title="DOB"
+                      onchange={handleFieldChange}
+                      onblur={handleFieldBlur}
+                      max={today}
+                      date-style="short"
+                      data-bad-input-message={label.DOBERRMSG}
+                      message-when-range-underflow="Date has to be from 1950s to current year."
+                      message-when-range-overflow={dateOfBirthOverFlowMessage}
+                    ></lightning-input>
+                  </template>
+
+                  <template if:true={isNonCreditRecordType}>
+                    <lightning-textarea
+                      name="Comments__c"
+                      label={label.COMMENTS}
+                      title="comments"
+                      onchange={handleFieldChange}
+                      onblur={handleFieldBlur}
+                    ></lightning-textarea>
+                  </template>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-layout-item>
+            <template if:true={isNonCreditRecordType}>
+              <h3 class="slds-section__title">{label.BILLINGINFO}</h3>
+            </template>
+            <template if:false={isNonCreditRecordType}>
+              <h3 class="slds-section__title">{label.SHIPPINGINFO}</h3>
+            </template>
+            <lightning-layout-item>
+              <lightning-layout
+                size="12"
+                large-device-size="12"
+                medium-device-size="6"
+                small-device-size="12"
+                class="slds-var-p-around_small fullwidth"
+              >
+                <template if:true={isNonCreditRecordType}>
+                  <!-- FRONT-12393 start  -->
+                  <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                    <div class="slds-col billingaddress-header">
+                      <legend
+                        class="slds-form-element__label slds-form-element__legend"
+                      >
+                        {label.BILL_ADDRESS}&nbsp;&nbsp;
+                      </legend>
+                      <lightning-helptext
+                        class="helpText-address"
+                        content={label.SELECT_BILL_ADDRS}
+                      >
+                      </lightning-helptext>
+                    </div>
+                    <div class="slds-col">
+                      <!--remove field level help attribute as it was showing duplicates-->
+                      <lightning-input-address
+                        address-lookup-placeholder={label.SEARCH_ADDRESS}
+                        street-label={label.BILL_STREET}
+                        city-label={label.BILL_CITY}
+                        country-label={label.BILL_COUNTRY}
+                        province-label={label.BILL_STATE}
+                        postal-code-label={label.BILL_POSTALCODE}
+                        street=""
+                        city=""
+                        variant="label-hidden"
+                        country-options={countryOptions}
+                        province-options={statecodeData}
+                        postal-code=""
+                        show-address-lookup="show-address-lookup"
+                        onchange={genericInputChange}
+                        onblur={handleFieldBlur}
+                        data-name="BillingAddress"
+                      ></lightning-input-address>
+                    </div>
+                  </div>
+                </template>
+                <template if:false={isNonCreditRecordType}>
+                  <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                    <div class="slds-col billingaddress-header">
+                      <legend
+                        class="slds-form-element__label slds-form-element__legend"
+                      >
+                        {label.STREET_ADDRESS}&nbsp;&nbsp;
+                      </legend>
+                      <lightning-helptext
+                        class="helpText-address"
+                        content={label.SELECT_STRT_ADDRSS}
+                      >
+                      </lightning-helptext>
+                    </div>
+                    <div class="slds-col">
+                      <!--remove field level help attribute as it was showing duplicates-->
+                      <lightning-input-address
+                        variant="label-hidden"
+                        address-lookup-placeholder={label.SEARCH_ADDRESS}
+                        street-label={label.SHIP_STREET}
+                        city-label={label.SHIP_CITY}
+                        country-label={label.SHIP_COUNTRY}
+                        province-label={label.SHIP_STATE}
+                        postal-code-label={label.SHIP_ZIPCODE}
+                        street=""
+                        city=""
+                        country-options={countryOptions}
+                        country={country}
+                        province={state}
+                        province-options={statecodeData}
+                        postal-code=""
+                        show-address-lookup="show-address-lookup"
+                        onchange={genericInputChange}
+                        onblur={handleFieldBlur}
+                        data-name="BillingAddress"
+                      ></lightning-input-address>
+                    </div>
+                  </div>
+                  <!-- FRONT-12393 end  -->
+                </template>
+              </lightning-layout>
+            </lightning-layout-item>
+          </lightning-record-edit-form>
+        </div>
+        <footer class="slds-modal__footer">
+          <lightning-button
+            label={label.CANCEL}
+            onclick={closeModal}
+            class="neutral-button"
+          ></lightning-button>
+          <lightning-button
+            label={saveOrSelect}
+            onclick={handleSave}
+            variant="brand"
+            disabled={disabled}
+            class="slds-var-p-left_small brand-button"
+            data-id="saveOrSelect"
+          ></lightning-button>
+          <!-- <button class="slds-button slds-button_neutral" onclick={closeModal}
+                                                                                                                        title="Cancel">Cancel</button>
+                                                                                                                    <button class="slds-button slds-button_brand" disabled={disabled} onclick={handleSave}
+                                                                                                                        title="Save">Save</button> -->
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+  <!--START:: Commenting out as a prt of FRONT-2439-->
+  <!--template if:true={displayToast}>
+    <c-sbr_3_0_custom-toast-message
+      errtitle={errorTitle}
+      errmsg={errorMsg}
+      record={isNonCreditRecordType}
+      onclosetoast={closeToast}
+    ></c-sbr_3_0_custom-toast-message>
+  </template-->
+  <!--END:: Commenting out as a prt of FRONT-2439-->
+  <!-- FRONT-2296,3449 Starts Duplicate Record Resolved -->
+  <template lwc:if={duplicateResolverPayload}>
+    <c-sbr_3_0_duplicate-record-resolver
+      props={duplicateResolverPayload}
+      onresolveselection={handleDuplicateResolveClick}
+      onresolvecancel={handleDuplicateCancelClick}
+      onhardstopcancel={handleDuplicateHardStopCancel}
+      screenname={screenName}
+    ></c-sbr_3_0_duplicate-record-resolver>
+  </template>
+  <!-- FRONT-2296 Ends Duplicate Record Resolved -->
+</template>

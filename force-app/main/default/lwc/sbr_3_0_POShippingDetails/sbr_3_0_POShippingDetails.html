@@ -1,0 +1,263 @@
+<template>
+  <lightning-accordion allow-multiple-sections-open
+    active-section-name="ship_detail">
+    <lightning-accordion-section label="Shipping Details" name="ship_detail">
+      <template lwc:if={isReadOnlyMode}>
+        
+        <div if:true={isMobileView} style="background-color: white !important;">
+          <!-- <div if:false={isMobileView} style="background-color: white !important;"> -->
+          <div class="slds-grid">
+            <div class="slds-col slds-form-element_readonly">
+              <p class="slds-text-title slds-m-bottom_x-small">Ship To</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={shipToName}></lightning-formatted-text>
+            </div>
+            <div class="slds-col slds-form-element_readonly right">
+              <template if:true={showEditIcon} >
+                <lightning-button-icon icon-name="utility:edit" variant="bare" alternative-text="Edit" title="Edit"
+                  onclick={handleEditClick}>
+                </lightning-button-icon>
+              </template>
+            </div>
+          </div>
+          <template if:true={isRerent}>
+            <div class="slds-grid">
+              <div class="slds-col slds-form-element_readonly">
+                <p class="slds-text-title slds-m-bottom_x-small">Customer Account # / Contract #</p>
+              </div>
+              <div class="slds-col slds-form-element_readonly">
+                <lightning-formatted-text value={customerNo}></lightning-formatted-text>
+              </div>
+            </div>
+          </template>
+          <template if:false={isRerent}>
+            <div class="slds-grid">
+              <div class="slds-col">
+                <p class="slds-text-title slds-m-bottom_x-small"></p>
+              </div>
+              <div class="slds-col">
+              </div>
+            </div>
+          </template>
+          <div class="slds-grid slds-grid_vertical">
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Shipping
+                Address</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={completeShippingAddress}></lightning-formatted-text>
+            </div>
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Phone
+                Number</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={phoneNumber}></lightning-formatted-text>
+            </div>
+          </div>
+          <div class="slds-grid slds-grid_vertical">
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Ordered
+                From</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={orderedFrom}></lightning-formatted-text>
+            </div>
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Ordered
+                For</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={orderedFor}></lightning-formatted-text>
+            </div>
+          </div>
+          <div class="slds-grid slds-grid_vertical">
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Requested
+                Date</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={requestedDate}></lightning-formatted-text>
+            </div>
+            <div class="slds-col">
+              <p class="slds-text-title slds-m-bottom_x-small">Ship Date</p>
+            </div>
+            <div class="slds-col slds-form-element_readonly">
+              <lightning-formatted-text value={shipDate}></lightning-formatted-text>
+            </div>
+          </div>
+          <template if:true={thirdpartyCarrierflag}>
+          
+            <div class="slds-grid slds-grid_vertical">
+              <div class="slds-col">
+                <p class="slds-text-title slds-m-bottom_x-small">Carrier Name</p>
+              </div>
+              <div class="slds-col slds-form-element_readonly">
+                <lightning-formatted-text value={thirdPartyCarrier}></lightning-formatted-text>
+              </div>
+            </div>
+          </template>
+        </div>
+        <div if:false={isMobileView}>
+          <!-- <div if:true={isMobileView}> -->
+          <!-- First Row -->
+          <div class="slds-form" role="list">
+            <div class="slds-form__row">
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label">Ship To</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      {shipToName}
+                    </div>
+                    <template if:true={showEditIcon} >
+                    <lightning-button-icon
+                        icon-name="utility:edit"
+                        variant="bare" alternative-text="Edit" title="Edit"
+                        onclick={handleEditClick}>
+                      </lightning-button-icon>
+                    </template>
+                  </div>
+                </div>
+              </div>
+              <template if:true={isRerent}>
+                <div class="slds-form__item" role="listitem">
+                  <div
+                    class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                    <span class="slds-form-element__label">Customer Account # / Contract #</span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">
+                        {customerNo}
+                      </div>
+              
+                    </div>
+                  </div>
+                </div>
+              </template>
+              <template if:false={isRerent}>
+                <div class="slds-form__item" role="listitem">
+                  <div
+                    class="slds-form-element slds-form-element_edit slds-form-element_horizontal slds-hint-parent">
+                    <span class="slds-form-element__label"></span>
+                    <div class="slds-form-element__control">
+                      <div class="slds-form-element__static">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </template>
+            </div>
+            <div class="slds-form__row">
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal ">
+                  <span class="slds-form-element__label">Shipping Address</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      {completeShippingAddress}
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                  <span class="slds-form-element__label">Phone Number</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                      {phoneNumber}
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-form__row">
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label">Ordered From</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{orderedFrom}</div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label">Ordered For</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{orderedFor}</div>
+                    
+                  </div>
+                </div>
+    
+              </div>
+            </div>
+            
+            <div class="slds-form__row">
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label">Requested Date</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static slds-text-longform">{requestedDate}                      
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+            
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                  <span class="slds-form-element__label">Ship Date</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">{shipDate}
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <template if:true={thirdpartyCarrierflag}>
+            <div class="slds-form__row">
+              <div class="slds-form__item" role="listitem">
+                <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                  <span class="slds-form-element__label">Carrier Name</span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static slds-text-longform">{thirdPartyCarrier}
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="slds-form__item" role="listitem">
+                <div
+                  class="slds-form-element slds-form-element_edit slds-form-element_horizontal">
+                  <span class="slds-form-element__label"></span>
+                  <div class="slds-form-element__control">
+                    <div class="slds-form-element__static">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </template>
+
+        </div>
+        </div>
+      </template>
+      <template lwc:else>
+        <div if:true={isMobileView} style="background-color: white !important;">
+          <c-sbr_3_0_-p-o-shipping-details-edit record-id={recordId} ship-record={shipEditObj} from-the-flow={fromTheFlow}
+            oncancel={handleCancel} onsave={handleSave}>
+          </c-sbr_3_0_-p-o-shipping-details-edit>
+        </div>
+        <div if:false={isMobileView}>
+          <c-sbr_3_0_-p-o-shipping-details-edit record-id={recordId} ship-record={shipEditObj} from-the-flow={fromTheFlow}
+            oncancel={handleCancel} onsave={handleSave}>
+          </c-sbr_3_0_-p-o-shipping-details-edit>
+        </div>
+      </template>
+    </lightning-accordion-section>
+  </lightning-accordion>
+</template>

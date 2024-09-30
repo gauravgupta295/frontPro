@@ -1,0 +1,256 @@
+<template>
+  <section role="dialog" class="mobile-container">
+    <div class="mobile-container-inner">
+      <div class="slds-grid slds-border_bottom slds-grid_align-spread header-section">
+        <header
+          class="slds-grid slds-var-p-around_small slds-grid_align-spread"
+        >
+          <h2 class="slds-var-p-top_small">
+            <span class="slds-text-heading_small slds-truncate"> {title} </span>
+          </h2>
+          <button
+            class="slds-button slds-button_icon"
+            title="Close"
+            onclick={handleSkipClick}
+          >
+            <lightning-icon
+              icon-name="utility:close"
+              alternative-text="close"
+              size="small"
+            ></lightning-icon>
+            <span class="slds-assistive-text">close</span>
+          </button>
+        </header>
+      </div>
+      <div
+        class="content-section slds-p-around_medium"
+        id="signTC-modal-content"
+      >
+        <div class="slds-var-p-around_small">
+          <lightning-layout class="slds-var-p-vertical_small">
+            <lightning-layout-item size="12">
+              <p>{reviewText}</p>
+            </lightning-layout-item>
+          </lightning-layout>
+          <lightning-layout class="slds-var-p-top_medium">
+            <lightning-layout-item
+              size="12"
+              class="font-weight-700 slds-var-p-top_medium"
+            >
+              <h2>{authorizedContactLabel}</h2>
+            </lightning-layout-item>
+          </lightning-layout>
+
+          <lightning-layout multiple-rows class="slds-var-p-vertical_small">
+            <lightning-layout-item
+              size="12"
+              large-device-size="4"
+              medium-device-size="6"
+              small-device-size="12"
+              class="slds-var-p-top_small"
+            >
+              <div class="slds-form-element">
+                <label
+                  class="slds-form-element__label contact-attribute-label"
+                  for="combobox-id-1"
+                  id="combobox-label-id-33"
+                >
+                  <abbr class="slds-required" title="required">* </abbr
+                  >Authorized Contact</label
+                >
+                <div class="slds-form-element__control">
+                  <div class="slds-combobox_container">
+                    <div
+                      class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+                    >
+                      <!-- Selected Item Start -->
+                      <div
+                        class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+                        role="none"
+                        lwc:if={hasPrimaryContact}
+                      >
+                        <span
+                          class="slds-icon_container slds-icon-standard-contact slds-combobox__input-entity-icon"
+                          title="contact"
+                        >
+                          <lightning-icon
+                            icon-name="standard:contact"
+                            size="small"
+                            alternative-text="contact"
+                          ></lightning-icon>
+                        </span>
+                        <div
+                          role="combobox"
+                          tabindex="0"
+                          class={computedSelectedContactClasses}
+                          aria-labelledby="combobox-label-id-33 combobox-id-5-selected-value"
+                          id="combobox-id-5-selected-value"
+                          aria-controls="listbox-id-5"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                        >
+                          <span class="slds-truncate" id="combobox-value-id-20"
+                            >{contactName}</span
+                          >
+                        </div>
+                        <!-- sldsValidatorIgnoreNextLine -->
+                        <button
+                          class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                          title="Remove selected option"
+                          lwc:if={isNotNonCredit}
+                          onclick={removeContact}
+                        >
+                          <lightning-icon
+                            icon-name="utility:close"
+                            size="x-small"
+                            alternative-text="Remove Contact"
+                            aria-hidden="true"
+                          ></lightning-icon>
+                        </button>
+                      </div>
+                      <!-- Selected Item End-->
+                      <!-- Input Box Start -->
+
+                      <div
+                        class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right"
+                        role="none"
+                        lwc:else
+                      >
+                        <input
+                          type="text"
+                          class="slds-input slds-combobox__input"
+                          id="combobox-id-1"
+                          aria-autocomplete="list"
+                          aria-controls="listbox-id-1"
+                          aria-expanded="false"
+                          aria-haspopup="listbox"
+                          auto-complete="off"
+                          role="combobox"
+                          placeholder="Search Contacts..."
+                          onclick={handleShowContactMobile}
+                        />
+
+                        <span
+                          class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right"
+                        >
+                          <lightning-icon
+                            icon-name="utility:search"
+                            size="x-small"
+                            class="slds-icon-text-default"
+                          ></lightning-icon>
+                        </span>
+                      </div>
+                      <!-- Input Box End-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              large-device-size="3"
+              medium-device-size="6"
+              small-device-size="12"
+              class="slds-var-p-top_small"
+            >
+              <div class="slds-form-element">
+                <span class="slds-form-element__label contact-attribute-label"
+                  >Email</span
+                >
+                <div class="slds-form-element__control contact-attribute">
+                  <div class="slds-form-element__static">{contactEmail}</div>
+                </div>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              large-device-size="4"
+              medium-device-size="6"
+              small-device-size="12"
+              class="slds-var-p-top_small"
+            >
+              <div class="slds-form-element">
+                <span class="slds-form-element__label contact-attribute-label"
+                  >Phone Number</span
+                >
+                <div class="slds-form-element__control contact-attribute">
+                  <div class="slds-form-element__static">{contactPhone}</div>
+                </div>
+              </div>
+            </lightning-layout-item>
+          </lightning-layout>
+
+          <lightning-layout class="slds-var-p-top_small">
+            <lightning-layout-item
+              size="12"
+              class="font-weight-700 slds-var-p-top_small"
+            >
+              <h2>Select Method of Receiving T&C Signature</h2>
+            </lightning-layout-item>
+          </lightning-layout>
+
+          <div class={computedMethodSectionClasses}>
+            <!-- sldsValidatorIgnoreNextLine -->
+            <fieldset class="slds-form-element">
+              <div class="slds-form-element__control">
+                <lightning-layout multiple-rows>
+                  <template for:each={methodOptions} for:item="method">
+                    <lightning-layout-item
+                      size="12"
+                      large-device-size="6"
+                      medium-device-size="6"
+                      small-device-size="12"
+                      key={method.value}
+                      class="slds-var-p-vertical_small"
+                    >
+                      <span class="slds-radio">
+                        <input
+                          name="signmethod"
+                          id={method.value}
+                          type="radio"
+                          value={method.value}
+                          onchange={handleMethodChange}
+                          checked={method.checked}
+                          disabled={hasNoPrimaryContact}
+                        />
+                        <label
+                          class="slds-radio__label tc-method"
+                          for={method.value}
+                        >
+                          <span class="slds-radio_faux"></span>
+                          <span
+                            class="slds-form-element__label slds-text-heading--label"
+                            >{method.label}</span
+                          >
+                        </label>
+                        <p class="slds-var-p-left_x-large">{method.info}</p>
+                      </span>
+                    </lightning-layout-item>
+                  </template>
+                </lightning-layout>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+      </div>
+      <div class="footer-section">
+        <div class="">
+          <lightning-button
+            class="neutral-button"
+            label="Skip For Now"
+            name="skipForNow"
+            onclick={handleSkipClick}
+          ></lightning-button>
+          <lightning-button
+            class="slds-var-p-left_small brand-button"
+            label="Continue"
+            name="continue"
+            variant="brand"
+            onclick={handleContinueClick}
+            disabled={isContinueBtnDisabled}
+          ></lightning-button>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

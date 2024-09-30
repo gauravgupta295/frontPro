@@ -1,0 +1,191 @@
+.slds-icon-standard-lead-list {
+    background-color: var(--lwc-brandPrimary, #3fa665);
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .light-grey {
+    color: #444;
+  }
+  
+  @media (max-width: 480px) {
+    .header-mob {
+      background-color: #fafaf9;
+      border-width: 1px;
+      border-color: #e5e5e5;
+      border-style: solid;
+    }
+  
+    .mobile-search {
+      flex-grow: 1;
+    }
+  
+    .all-items {
+      background: #ffffff;
+      color: #444;
+    }
+  
+    .cat-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      padding: 0px;
+      gap: 10px;
+  
+      width: 16px;
+      height: 16px;
+  
+      background: #ffffff;
+  
+      border-top: 1px solid #e9e9e9;
+      padding: 4px;
+  
+      --slds-c-checkbox-mark-color-foreground: #24693e;
+    }
+  
+    .cat-label {
+      font-weight: 700;
+      font-size: 13px;
+      color: #444444;
+    }
+  
+    .subcat-value-class {
+      width: 306px;
+      height: 16px;
+  
+      font-style: normal;
+      font-weight: 400;
+      font-size: 13px;
+      line-height: 16px;
+      /* identical to box height, or 123% */
+  
+      display: flex;
+      align-items: center;
+      color: #444444;
+    }
+  
+    .reset-cat-txt {
+      font-weight: 400;
+      font-size: 12px;
+      color: #24693e;
+    }
+  
+    .icon-class {
+      --lwc-colorTextIconDefault: #25683e;
+    }
+  
+    .slds-checkbox {
+      border-top: 1px solid #e9e9e9;
+      padding: 4px;
+    }
+  
+    .on-select {
+      --lwc-brandAccessibleActive: #25683e;
+    }
+  
+    .filter-panel {
+      position: sticky;
+      overflow-x: hidden;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      top: 0;
+    }
+  
+    .filter-header {
+      background-color: #ffffff;
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+  
+    /* .filter-footer {
+          background-color: #F3F3F3;
+          position: sticky !important;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          z-index: 50;
+          transform: translate3d(0,0,0);
+      } */
+    .filter-footer {
+      background-color: #f3f3f3;
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+    .slds-section.slds-is-close lightning-radio-group {
+      display: none;
+    }
+    .selected-btn {
+      color: #25683e;
+      font-weight: 400;
+    }
+  
+    .active-state {
+      color: #25683e;
+      background: #edf6ef;
+      font-weight: 400;
+      border: none;
+    }
+  
+    .reset-btn-class {
+      font-weight: 400;
+      color: #25683e;
+    }
+  
+    .reset-txt-class {
+      font-weight: 400;
+      color: #25683e;
+      font-size: 12px;
+      visibility: hidden;
+    }
+  
+    .apply-btn-class {
+      font-weight: 400;
+      color: #ffffff;
+      background-color: #25683e;
+    }
+  
+    .sticky-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2;
+    }
+    .sticky-footer .slds-button {
+      font-size: 12px;
+      line-height: 18px;
+      color: #25683e;
+    }
+    .sticky-footer .slds-button.slds-button_brand {
+      padding: 4px 10px;
+      font-size: 13px;
+      line-height: 20px;
+      background-color: #25683e;
+      font-weight: 400;
+      color: #fff;
+    }
+    .sticky-footer .slds-text-color_weak {
+      font-size: 13px;
+      line-height: 20px;
+    }
+  
+    .hide {
+      display: none;
+    }
+  
+    .show {
+      display: block;
+    }
+  }
+  
+  .menu-item-green {
+    --lwc-colorTextDefault: #25683e;
+  }

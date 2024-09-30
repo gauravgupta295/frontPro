@@ -1,0 +1,23 @@
+.slds-spinner-text {
+    width: 320px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 16px;
+  }
+.slds-spinner--small .slds-spinner-text {
+    transform: translate(-36%, -50%) rotate(-90deg);
+}
+.slds-spinner--medium .slds-spinner-text {
+    transform: translate(-32%, -50%) rotate(-90deg);
+}
+.slds-spinner--large .slds-spinner-text {
+    transform: translate(-26%, -50%) rotate(-90deg);
+}
+.button-color{
+    --sds-c-button-success-color-background: #008545;
+    --sds-c-button-success-text-color: #ffffff;
+}
+.button-color-close{
+    --sds-c-button-color-background:#ffffff; ;
+    --sds-c-button-text-color: #008545;
+}

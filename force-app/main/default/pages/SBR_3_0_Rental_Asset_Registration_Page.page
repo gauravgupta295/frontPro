@@ -1,0 +1,84 @@
+<apex:page standardController="Asset" lightningStylesheets="true">
+    <div style="overflow: scroll;">
+        <apex:pageBlock >
+            
+            <apex:pageBlockSection columns="2" title="Title Information">
+                
+                <apex:repeat value="{!asset}" var="a">
+                    
+                    <apex:outputField value="{!a.SM_PS_Alternate_Equipment_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_Assigned_Employee__c}" />
+                    <apex:outputField value="{!a.SM_PS_Vehicle_ID_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_Title_Location__c}" />
+                    <apex:outputField value="{!a.SM_PS_Title_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_Title_State__c}" />
+                    <apex:outputField value="{!a.SM_PS_Title_Name__c}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:outputField value="{!a.SM_PS_Title_Date__c}" />
+                    
+                    
+                </apex:repeat>
+                
+            </apex:pageBlockSection>
+            
+            <apex:pageBlockSection columns="2" title="Registration Information">
+                
+                <apex:repeat value="{!asset}" var="a">
+                    
+                    <apex:outputField value="{!a.SM_PS_Date_Registration_Received__c}" />
+                    <apex:outputField value="{!a.SM_PS_Date_Paid__c}" />
+                    <apex:outputField value="{!a.SM_PS_Date_Tags_Received__c}" />
+                    <apex:outputField value="{!a.SM_PS_Gross_Vehicle_Weight__c}" />
+                    <apex:outputField value="{!a.SM_PS_Registration_Date__c}" />
+                    <apex:outputField value="{!a.SM_PS_Renewal_Month__c}" />
+                    <apex:outputField value="{!a.SM_PS_Maintenance_Program__c}" />
+                    <apex:outputField value="{!a.SM_PS_Maintenance_Program_Last_Update__c}" />
+                    <apex:outputField value="{!a.SM_PS_License_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_DMV_Registration_State__c}" />
+                    
+                </apex:repeat>
+                
+            </apex:pageBlockSection>
+            
+            
+            
+            <apex:pageBlockSection columns="2" title="Vehicle Details">
+                
+                <apex:repeat value="{!asset}" var="a">
+                    
+                    <apex:outputField value="{!a.SM_PS_Misc_Group1__c}" />
+                    <apex:outputField value="{!a.SM_PS_Misc_Group2__c}" />
+                    <apex:outputField value="{!a.SM_PS_Misc_Group3__c}" />
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem />
+                    <apex:outputField value="{!a.SM_PS_Engine_Serial_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_Number_of_Cylinders__c}" />
+                    <apex:outputField value="{!a.SM_PS_Engine_Family__c}" />
+                    <apex:outputField value="{!a.SM_PS_Horse_Power__c}" />
+                    <apex:outputField value="{!a.SM_PS_Engine_RePowered__c}" />
+                    <apex:outputField value="{!a.SM_PS_Engine_Tier__c}" />
+                    <apex:outputField value="{!a.SM_PS_RePowered_Date__c}" />
+                    <apex:outputField value="{!a.SM_PS_Engine_Year__c}" />
+                    <apex:outputField value="{!a.SM_PS_Transmission_Serial__c}" />
+                    <apex:outputField value="{!a.SM_PS_Number_Axles__c }" />
+                    <apex:outputField value="{!a.SM_PS_Axle_Serial_Number__c}" />
+                    <apex:outputField value="{!a.SM_PS_Special_Equipment_Tag__c}" />
+                    <apex:outputField value="{!a.SM_PS_Date_Emissions_Tested__c}" />
+                    
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem />
+                    <apex:pageBlockSectionItem />
+                    <apex:outputField value="{!a.SM_PS_SMM_Plate__c}" />
+                    <apex:outputField value="{!a.SM_PS_SMM_Registration_Date__c}" />
+                    <apex:outputField value="{!a.SM_PS_SMM_Renewal_Month__c}" />
+                    
+                    
+                </apex:repeat>
+                
+            </apex:pageBlockSection>
+            
+        </apex:pageBlock>
+    </div>
+    
+</apex:page>

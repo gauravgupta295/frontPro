@@ -1,0 +1,72 @@
+.branch-link {
+    color: #25683E;
+    font-weight: 700;
+}
+.header-row, .row{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 2fr 1fr 1fr 1fr 1fr;
+}
+.header-row{
+    background-color: #3fa6651a;
+}
+.header-row2{
+    background-color: #E5E5E5;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 2fr 1fr 1fr 1fr 1fr;
+}
+.columns{
+    padding: 5px;
+    text-align: center;
+}
+.columns:first-child{
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: left;
+    color: #008545;
+}
+.columnsModal:first-child{
+    text-transform: capitalize;
+    font-weight: bold;
+    text-align: left;
+    color: #008545;
+}
+.columnsModal{
+    padding: 5px;
+    text-align: center;
+}
+.row{
+    border-bottom: 1px solid #979797;
+    cursor: pointer;
+}
+.row:first-child .columns{
+    padding-top: 1rem;
+}
+.row:last-child{
+    border-bottom: 1px solid #979797;
+}
+.row:last-child .columns{
+    padding-bottom: 1rem;
+}
+.availability-grid{
+    display: none;
+}
+.availability-grid.show{
+    display: block;
+}
+.illustration-error{
+    display: none;
+}
+.slds-is-open > .illustration-error.show{
+    display: block;
+}
+.title{
+    font-weight: bold;
+    font-size: medium;
+}
+.refresh-button-mobile{
+    --slds-c-button-line-height: 2rem;
+    font-size: 13px;
+    font-weight: 400;
+}

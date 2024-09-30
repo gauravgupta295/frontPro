@@ -1,0 +1,51 @@
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-panel slds-size_full slds-panel_docked slds-panel_docked-right slds-is-open slds-m-bottom_small"
+            aria-hidden="false">
+            <div class="slds-panel__header">
+                <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Customer Information">
+                    Customer Information
+                </h2>
+            </div>
+            <div class="slds-panel__body">
+                <c-s-b-r_3_0_custom-lookup-cmp label="" placeholder="Search and Add Customer"
+                    icon-name="standard:account" selected-record-object={_customerInfo} s-object-api-name="Account"
+                    where-clause={whereClause} fields-to-include={acctFields} onlookupupdate={updateCustomerPricing}>
+                </c-s-b-r_3_0_custom-lookup-cmp>
+            </div>
+        </div>
+        <c-sbr_3_0_modal-cmp header="Remove Customer" cancel-btn-label="Cancel" save-btn-label="Remove"
+            save-handler={clearCustomer}>
+            <span slot="modalContent">
+                Removing the customer will clear all customer information from the Cart, including special rates. The
+                items added to the cart will not be removed. Would you like to proceed?
+            </span>
+        </c-sbr_3_0_modal-cmp>
+    </template>
+    <template if:true={isMobile}>
+        <div class="slds-size_full add-customer-panel" aria-hidden="false">
+            <div class="slds-panel__header add-customer-header">
+                <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Customer Information">
+                    Customer Information</h2>
+                <div class="slds-panel__header-actions">
+                    <lightning-button-icon icon-name="utility:close" onclick={togglePanel} variant="bare" size="large"
+                        alternative-text="Close Filter" title="Close Filter"></lightning-button-icon>
+                </div>
+            </div>
+            <div class="add-customer-body">
+                <p class="slds-p-top_medium slds-p-left_medium search-add-txt">Search and Add Customer to Cart</p>
+                    <c-s-b-r_3_0_custom-lookup-cmp label="" placeholder="Search and Add Customer"
+                        icon-name="standard:account" selected-record-object={_customerInfo} s-object-api-name="Account"
+                        where-clause={whereClause} fields-to-include={acctFields}
+                        onlookupupdate={updateCustomerPricing}></c-s-b-r_3_0_custom-lookup-cmp>
+            </div>
+            <c-sbr_3_0_modal-cmp header="Remove Customer" cancel-btn-label="Cancel" save-btn-label="Remove"
+                save-handler={clearCustomer}>
+                <span slot="modalContent">
+                    Removing the customer will clear all customer information from the Cart, including special rates.
+                    The items added to the cart will not be removed. Would you like to proceed?
+                </span>
+            </c-sbr_3_0_modal-cmp>
+        </div>
+    </template>
+</template>

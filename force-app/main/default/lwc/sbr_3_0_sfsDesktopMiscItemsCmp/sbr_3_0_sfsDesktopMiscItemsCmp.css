@@ -1,0 +1,73 @@
+:host{
+    --sds-c-card-color-background:#F0F0F0;
+}
+
+.header-button{
+    --slds-c-button-brand-text-color:#008545; 
+    --slds-c-button-brand-color-background:white;
+    --slds-c-button-brand-color-background-active:white;
+    --slds-c-button-brand-text-color-active:#008545;
+    --slds-c-button-brand-text-color-hover:#008545;
+    --slds-c-button-brand-color-background-hover:white;
+    --slds-c-button-brand-color-border:#F0F0F0;
+    --slds-c-button-brand-color-border-hover:#F0F0F0;
+    --slds-c-button-brand-text-color-active:#F0F0F0;
+    border: #F0F0F0 2px;
+}
+.tooltip{
+    position: relative;
+    /* height: 60px;
+    width: 250px;
+    background: #f2395a;
+    color: white;
+    text-align: center;
+    line-height: 60px;
+    font-size: 18px; */
+    margin:0 auto;
+    cursor: pointer;
+}
+
+.tooltip::before{
+    position: absolute;
+    z-index: 353452;
+    display: none;
+    width: 200px;
+    padding: 10px;
+    font-size: 0.8em;
+    line-height: 1.4em;
+    border-radius: 5px;
+    background-color: var(--slds-c-tooltip-color-background, var(--sds-c-tooltip-color-background, var(--slds-g-color-brand-base-20, #032d60)));
+    white-space: break-spaces;
+    color: white;
+    content: attr(data-title);
+    bottom: calc(100% + 5px);
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: var(--slds-c-tooltip-font-size, var(--sds-c-tooltip-font-size, .75rem));
+    bottom: calc(100% + 1.5rem);
+}
+
+.tooltip:hover::before,.tooltip:hover::after{
+    display: inline-block;
+}
+
+.tooltip::after{
+    position: absolute;
+    z-index: 1;
+    display: none;
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    content:"";
+    bottom:100%;
+    left:50%;
+    border-top-color:rgba(0,0,0,0.8);
+    border-bottom:0px;
+    width: 1rem;
+    height: 1rem;
+    left: calc(50% - 0.5rem);
+    transform: rotate(45deg);
+    bottom: calc(100% + 1rem);
+    background: var(--slds-c-tooltip-color-background, var(--sds-c-tooltip-color-background, var(--slds-g-color-brand-base-20, #032d60)));
+  
+}

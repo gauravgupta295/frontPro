@@ -1,0 +1,91 @@
+<template>
+    <lightning-record-edit-form object-api-name="Lead" onsubmit={handleSubmit} onsuccess={handleSuccess} onerror={handleError}>
+        <div class="slds-section slds-is-open">
+            <h3 class="slds-section__title slds-theme_shade">
+                <span class="slds-truncate slds-p-horizontal_small" title="Section Title">General</span>
+            </h3>
+            <div aria-hidden="false" class="slds-section__content">
+                <lightning-layout multiple-rows class="slds-p-horizontal_large">
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={accountLookupField} value={account} disabled={isBillingOrOfficeAccount}
+                        onchange={handleAccountChange} >
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <div class="slds-form-element slds-form-element_stacked">
+                            <c-s-b-r_3_0_custom-lookup-cmp record-id={officeAccount} default-record={defaultOfficeAccountId} label="Office Account" 
+                                s-object-api-name="Account" placeholder="Search Accounts..." icon-name="standard:account"
+                                onlookupupdate={handleOfficeAccount} where-clause={officeWhere}></c-s-b-r_3_0_custom-lookup-cmp>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={contactLookupField} onchange={handleContactChange}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={opportunityLookupField} onchange={handleOpportunityChange} value={opportunityId}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={projectLookupField} value={projectId}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={firstNameField} value={fnameValue}>
+                        </lightning-input-field>
+                        <lightning-input-field field-name={middleNameField} value={mnameValue}>
+                        </lightning-input-field>
+                        <lightning-input-field field-name={lastNameField} value={lnameValue}>
+                        </lightning-input-field>
+                        <lightning-input-field field-name={suffixField} value={suffixValue}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={companyField} value={companyNameValue}>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={phoneField}> </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={mobileField}> </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={emailField}> </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={descriptionField} required> </lightning-input-field>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+        <div class="slds-section slds-is-open">
+            <h3 class="slds-section__title slds-theme_shade">
+                <span class="slds-truncate slds-p-horizontal_small" title="Section Title">Address
+                    Information</span>
+            </h3>
+            <div aria-hidden="false" class="slds-section__content">
+                <lightning-layout multiple-rows class="slds-p-horizontal_large">
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={streetField} value={streetValue}> </lightning-input-field>
+                        <lightning-input-field field-name={cityField} value={cityValue}> </lightning-input-field>
+                        <lightning-input-field field-name={stateField} value={stateValue}> </lightning-input-field>
+                        <lightning-input-field field-name={postalcodeField} value={postalcodeValue}> </lightning-input-field>
+                        <lightning-input-field field-name={countryField} value={countryValue}> </lightning-input-field>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        <lightning-input-field field-name={latLongField}> </lightning-input-field>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+        <lightning-messages></lightning-messages>
+        <div class="slds-align_absolute-center">
+            <lightning-button variant="neutral" label="Cancel" class="slds-m-right_xx-small" onclick={close}>
+            </lightning-button>
+            <lightning-button variant="brand" type="submit" label="Save">
+            </lightning-button>
+        </div>
+    </lightning-record-edit-form>
+</template>

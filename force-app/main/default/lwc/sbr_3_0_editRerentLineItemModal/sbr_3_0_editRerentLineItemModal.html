@@ -1,0 +1,371 @@
+<template>
+        <lightning-modal-header label={modalHeader}>
+        </lightning-modal-header>
+        <lightning-modal-body>
+            <div class="slds-p-around_medium slds-m-bottom_medium">
+                <!--General-->
+                <div class="slds-page-header">
+                    <h2>Pricing Info</h2>
+                </div>
+                <div class="slds-grid slds-wrap slds-m-top_small">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                        <!--1st Row-->
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-input label="Order Quantity"
+                                    type="number" step="0.01"
+                                    value={Quantity}
+                                    data-field="orderQuantity"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled ={isbulk}
+                                    required
+                                    message-when-value-missing="This is a required Field.">
+                                </lightning-input>
+                            </div>
+                        <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-combobox label="U/M"
+                                    value={poLineItemRecord.Units__c}
+                                    data-field="unit"
+                                    data-validation="true"
+                                    options={unitTypes} onchange={handleInputChange}
+                                    required
+                                    message-when-value-missing="This is a required Field.">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Rate Info-->
+                <div class="slds-page-header slds-m-top_x-large">
+                    <h2>Rate Info</h2>
+                </div>
+
+            <!---------------------------------------------------Grid Code------------------------------------------------>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_x-large">
+                            <span><p><b>Vendor Rates</b></p></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_x-large">
+                            <span><p><b>Cust/BK Rates</b></p></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_x-large">
+                            <span><p><b>Profit Margin</b></p></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-m-top_x-large">
+                            <span><p><b>Profit Margin %</b></p></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                        <lightning-input label="Min"
+                                    type="currency" step="0.01"
+                                    value={VendorMin}
+                                    data-field="vendorminimum"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    required
+                                    message-when-value-missing="This is a required Field.">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <lightning-input
+                                    type="currency" step="0.01"
+                                    value={Min}
+                                    data-field="Min"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <lightning-input
+                                    type="currency" step="0.01"
+                                    value={Profitmin}
+                                    data-field="Profitmin"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <lightning-input
+                                    type="percent" step="0.01"
+                                    value={ProfitMarginMin}
+                                    data-field="ProfitMarginMin"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                        <lightning-input label="Day"
+                                        type="currency" step="0.01"
+                                        value={VendorDay}
+                                        data-field="vendorday"
+                                        data-validation="true"
+                                        onchange={handleInputChange}
+                                        required
+                                        message-when-value-missing="This is a required Field.">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span> <lightning-input
+                                    type="currency" step="0.01"
+                                    value={Daily}
+                                    data-field="Daily"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span> <lightning-input
+                                    type="currency" step="0.01"
+                                    value={ProfitDay}
+                                    data-field="ProfitDay"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span> <lightning-input
+                                    type="percent" step="0.01"
+                                    value={ProfitMarginDay}
+                                    data-field="ProfitMarginDay"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                        <lightning-input label="Week"
+                                        type="currency" step="0.01"
+                                        value={VendorWeek}
+                                        data-field="vendorweek"
+                                        data-validation="true"
+                                        onchange={handleInputChange}
+                                        required
+                                        message-when-value-missing="This is a required Field.">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span><lightning-input
+                                    type="currency" step="0.01"
+                                    value={Weekly}
+                                    data-field="Weekly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span><lightning-input
+                                    type="currency" step="0.01"
+                                    value={ProfitWeekly}
+                                    data-field="ProfitWeekly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span><lightning-input
+                                    type="percent" step="0.01"
+                                    value={ProfitMarginWeekly}
+                                    data-field="ProfitMarginWeekly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                                </lightning-input></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12">
+                    <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                        <lightning-input label="4 Week"
+                                        type="currency" step="0.01"
+                                        value={VendorMonth}
+                                        data-field="vendormonth"
+                                        data-validation="true"
+                                        onchange={handleInputChange}
+                                        required
+                                        field-level-help="The 4 week rate will become unit cost of this item."
+                                        message-when-value-missing="This is a required Field.">
+                        </lightning-input>
+                    </div>
+                    <div class="slds-grid slds-grid_vertical">
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span> <lightning-input
+                                    type="currency" step="0.01"
+                                    value={Monthly}
+                                    data-field="Monthly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                        </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                            <span> <lightning-input
+                                    type="currency" step="0.01"
+                                    value={ProfitMonthly}
+                                    data-field="ProfitMonthly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                        </lightning-input></span>
+                        </div>
+                        <div class="slds-col slds-size_12-of-12 slds-p-left_small">
+                        <span> <lightning-input
+                                    type="percent" step="0.01"
+                                    value={ProfitMarginMonthly}
+                                    data-field="ProfitMarginMonthly"
+                                    data-validation="true"
+                                    onchange={handleInputChange}
+                                    disabled>
+                        </lightning-input></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!--------------------------------------------------- Grid End----------------------------------------------->
+            <!--Cat Class Info-->
+                <div class="slds-page-header slds-m-top_x-large">
+                    <h2>Cat Class Info</h2>
+                </div>
+                <div class="slds-grid slds-wrap slds-m-top_small">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                        <!--7th Row-->
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-input label="Equipment #"
+                                    value={poLineItemRecord.Equipment_Num__c}
+                                    data-field="equipmentNumber"
+                                    data-validation="true"
+                                    max-length={objectFields.equipmentNumber.length}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-input label="Make"
+                                    value={Make}
+                                    data-field="Make"
+                                    data-validation="true"
+                                    max-length={objectFields.equipmentNumber.length}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <!--8th Row-->
+                        <div class="slds-grid slds-wrap slds-m-top_xxx-small">
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                    <lightning-input label="Model "
+                                    value={Model}
+                                    data-field="Model"
+                                    data-validation="true"
+                                    max-length={objectFields.equipmentNumber.length}
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                                </div>
+                                <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                    <lightning-input label="Serial # "
+                                    value={Snumber}
+                                    data-field="serialnumber"
+                                    data-validation="true"
+                                    onchange={handleInputChange}>
+                                </lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header slds-m-top_x-large">
+                    <h2>Metering</h2>
+                </div>
+                <div class="slds-grid slds-wrap slds-m-top_small">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                        <!--1st Row-->
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-input label="Meter 1"
+                                    type="number" step="1"
+                                    value={Meter1}
+                                    data-field="Meter1"
+                                    onchange={handleInputChange}
+                                    >
+                                </lightning-input>
+                            </div>
+                        <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                            <lightning-input label="Meter 2"
+                                    type="number" step="1"
+                                    value={Meter2}
+                                    data-field="Meter2"
+                                    onchange={handleInputChange}
+                                    >
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Additional Info-->
+                <div class="slds-page-header slds-m-top_x-large">
+                    <h2>Additional Info</h2>
+                </div>
+                <div class="slds-grid slds-wrap slds-m-top_small">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                                <lightning-input label="G/L #"
+                                    value={poLineItemRecord.GL_Account__c}
+                                    data-field="glAccount"
+                                    disabled></lightning-input>
+                            </div>
+                        </div>
+                    
+                </div>
+                <!--Messages-->
+                <div class="slds-page-header slds-m-top_x-large">
+                    <h2>Messages</h2>
+                </div>
+                <div class="slds-grid slds-wrap slds-m-top_small">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                        <!--12th Row-->
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-size_2-of-2 slds-p-horizontal_medium">
+                                <lightning-textarea label="Messages"
+                                    value={poLineItemRecord.Messages__c}
+                                    data-field="messages"
+                                    onchange={handleInputChange}>
+                                </lightning-textarea>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </lightning-modal-body>
+        <lightning-modal-footer>
+            <template if:true={showPctIncrease}>
+                <div style="text-align: center;color: #993300">
+                    <h2>&#9888; {pctIncreaseMsg}</h2>
+                </div>
+            </template>
+            <lightning-button label="Cancel" onclick={handleCancel}
+                class="slds-p-left_small">
+            </lightning-button>
+            <lightning-button label="Save" onclick={handleSave} variant="brand"
+                style="padding-left: 10px">
+            </lightning-button>
+        </lightning-modal-footer>
+</template>

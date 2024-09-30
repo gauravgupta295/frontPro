@@ -1,0 +1,62 @@
+.slds-spinner-text {
+  width: 320px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.slds-spinner--small .slds-spinner-text {
+  transform: translate(-36%, -50%) rotate(-90deg);
+}
+
+.slds-spinner--medium .slds-spinner-text {
+  transform: translate(-32%, -50%) rotate(-90deg);
+}
+
+.slds-spinner--large .slds-spinner-text {
+  transform: translate(-26%, -50%) rotate(-90deg);
+}
+
+.button-color {
+  --sds-c-button-success-color-background: #008545;
+  --sds-c-button-success-text-color: #ffffff;
+}
+
+.button-color-close {
+  --sds-c-button-color-background: #ffffff;
+  --sds-c-button-text-color: #008545;
+}
+
+
+.slds-spinner_brand.slds-spinner:before,
+.slds-spinner_brand.slds-spinner:after,
+.slds-spinner_brand .slds-spinner__dot-a:before,
+.slds-spinner_brand .slds-spinner__dot-b:before,
+.slds-spinner_brand .slds-spinner__dot-a:after,
+.slds-spinner_brand .slds-spinner__dot-b:after,
+.slds-spinner--brand.slds-spinner:before,
+.slds-spinner--brand.slds-spinner:after,
+.slds-spinner--brand .slds-spinner__dot-a:before,
+.slds-spinner--brand .slds-spinner__dot-b:before,
+.slds-spinner--brand .slds-spinner__dot-a:after,
+.slds-spinner--brand .slds-spinner__dot-b:after {
+  background-color: #008545;
+}
+
+/*FRONT-31379*/
+.spinner-block-class {
+  position: relative;
+  /* top: -30%;
+  transform: translateY(50%); */
+  height: 155px;
+}
+
+.spinner-block-class lightning-spinner::before {
+  position: absolute;
+  content: "Please wait while the Totals are being processed.";
+  width: 100%;
+  text-align: center;
+  margin-top: 10px;
+}
+
+/*END FRONT-31379*/

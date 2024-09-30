@@ -1,0 +1,63 @@
+.dummy{
+color : blue;
+}
+hr {
+display: block;
+height: 1px;
+border: 0;
+border-top: 1px solid #ccc;
+margin: 0.2em 0;
+padding: 0;
+}
+
+.brand-button {
+  --slds-c-button-brand-color-background: #25683e;
+  --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-color-border: #25683e;
+  --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-text-color-hover: #fff;
+}
+
+.remove-button {
+  --slds-c-button-outline-brand-color-border: #25683e;
+  --slds-c-button-text-color: #25683e;
+  border-color: #25683e;
+}
+
+.neutral-button {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #AEAEAE; /*18999*/
+  --slds-c-button-neutral-color-border-hover: #25683e;
+}
+
+.sbrGreenColor{
+color:#25683E;
+}
+
+.display-name {
+  font-weight: 700;
+  font-size: large;
+  margin: top 0%;
+}
+
+.serial-font {
+font-size: 16px;
+font-weight: 700;
+}
+
+.fieldLabelFont {
+font-size: 12px;
+font-weight: 700;
+}
+
+.fieldValueFont {
+font-size: 12px;
+font-weight: 400;
+}
+
+.toggle-text {
+  font-weight: 400;
+  color: #25683e;
+  font-size: small;
+  margin: top 0%;
+}

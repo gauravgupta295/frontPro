@@ -1,0 +1,9 @@
+<design:component label="Three Column Homepage">
+<flexipage:template>
+        <flexipage:region name="left_col" defaultWidth="Small" />
+        <flexipage:region name="mid_col" defaultWidth="Small" />
+        <flexipage:region name="right_col" defaultWidth="Small" />
+        <flexipage:region name="footer" defaultWidth="Large" />
+</flexipage:template>
+    
+</design:component>

@@ -1,0 +1,21 @@
+<template>
+  <!--Added onchange as part of FRONT-2197-->
+  <lightning-datatable
+    key-field="Id"
+    data={cmpdata}
+    columns={columns}
+    draft-values={draftValues}
+    hide-checkbox-column
+    suppress-bottom-bar="true"
+    onchange={handleChange}
+    class="editCell"
+  >
+  </lightning-datatable>
+
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+</template>

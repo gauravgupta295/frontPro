@@ -1,0 +1,27 @@
+<template>
+    <div>
+        <ul class="slds-has-dividers_bottom-space">
+            <template iterator:kititem={kitItems}>
+                <li class="slds-item" key={kititem.value.Id}>
+                    <article class="slds-tile slds-tile_board">
+                        <h3 class="itemDetail-title brand-color slds-truncate"
+                            title={kititem.value.SBQQ__ProductName__c}>
+                            {kititem.value.SBQQ__ProductName__c}
+                        </h3>
+                        <div class="slds-tile__detail">
+                            Cat-Class: {kititem.value.SBQQ__OptionalSKU__r.Product_SKU__c}
+                        </div>
+                        <div class="slds-tile__detail">
+                            Qty: {kititem.value.SBQQ__Quantity__c}
+                        </div>
+                    </article>
+                </li>
+            </template>
+        </ul>
+    </div>
+    <template if:true={showNoKitCmpAvailableMsg}>
+        <div>
+            <p>{noKitComponentAvailableMsg}</p>
+        </div>
+    </template>
+</template>

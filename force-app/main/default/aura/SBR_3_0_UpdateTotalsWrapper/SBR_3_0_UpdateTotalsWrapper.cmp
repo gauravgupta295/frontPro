@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName">
+    <div style="height: 100%;" >
+        <c:sbr_3_0_updateTotals recordId="{!v.recordId}" aura:id="sbr_3_0_updateTotals" onvaluechange="{!c.getValueFromLwc}"  onclose="{!c.handleCloseClick}"></c:sbr_3_0_updateTotals>
+    </div>
+</aura:component>

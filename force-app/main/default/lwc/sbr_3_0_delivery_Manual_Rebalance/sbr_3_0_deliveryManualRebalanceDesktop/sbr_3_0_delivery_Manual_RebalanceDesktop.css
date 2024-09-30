@@ -1,0 +1,20 @@
+.dummy{
+	color : black;
+}
+
+.tabList{
+	background-color: white;
+
+}
+
+.slds-modal__container {
+  width: 75% !important;
+  max-width: 75% !important;
+}
+.asset-tabs,.asset-tabs:focus{
+   text-decoration: none;
+}
+
+.bordered{
+  border-bottom: 2px solid #C9C9C9;
+}

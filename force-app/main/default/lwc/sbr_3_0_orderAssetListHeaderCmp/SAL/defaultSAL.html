@@ -1,0 +1,282 @@
+<template>
+  <template if:false={isMobile}>
+    <div class="slds-page-header">
+      <div class="slds-page-header__row">
+        <div class="slds-page-header__col-title">
+          <div class="slds-media media-wrapper">
+            <div class="slds-media__figure">
+              <lightning-icon
+                icon-name="standard:product_item"
+                alternative-text="Assets"
+                size="small"
+                title="assets"
+                class="custom-forecasts"
+              ></lightning-icon>
+            </div>
+            <div class="slds-media__body">
+              <div class="slds-page-header__name">
+                <div class="slds-page-header__name-title">
+                  <h2>
+                    <span
+                      class="slds-page-header__title slds-truncate"
+                      title="Assets"
+                      >Assets</span
+                    >
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="slds-page-header__col-actions slds-float_right">
+          <div class="slds-page-header__controls">
+            <div class="slds-page-header__control slds-m-horizontal_xx-small">
+              <lightning-input
+                class="slds-input-has-icon_right item-search-input"
+                type="search"
+                data-source="searchInputField"
+                variant="label-hidden"
+                placeholder={itemSearchPlaceholder}
+                onchange={searchItems}
+                onkeypress={handleEnterClick}
+                is-loading={isSearchLoading}
+              ></lightning-input>
+            </div>
+            <lightning-button-icon
+              icon-name="utility:refresh"
+              variant="border-filled"
+              class="slds-m-left_xx-small"
+              onclick={refreshDataHandler}
+            ></lightning-button-icon>
+            <template if:true={showAssetStatusFilter}>
+              <div class="slds-page-header__control slds-m-horizontal_xx-small">
+                <lightning-combobox
+                  name="status"
+                  label=""
+                  variant="label-hidden"
+                  value={selectedStatus}
+                  options={allListViewOptions}
+                  onchange={handleStatusChange}
+                ></lightning-combobox>
+              </div>
+            </template>
+            <template if:true={showRequestButton}>
+              <lightning-button-menu
+                label="Select an Action"
+                onselect={handleRequestMenuSelection}
+              >
+                <lightning-menu-item
+                  value="pickup"
+                  label="Schedule Pick Up"
+                ></lightning-menu-item>
+                <!--<lightning-menu-item value="service" label="Schedule Service Call"></lightning-menu-item>-->
+                <lightning-menu-item
+                  value="serviceTkt"
+                  label="Create Service Ticket"
+                ></lightning-menu-item>
+              </lightning-button-menu>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={isMobile}>
+    <div class={headerDisplay}>
+      <div
+        class="slds-page-header__controls header-mob slds-p-horizontal_medium"
+      >
+        <template if:false={showAssetStatusFilter}>
+          <div class="slds-p-top_small slds-p-bottom_small slds-size_7-of-8">
+            <lightning-input
+              class="slds-grid_align-center slds-input-has-icon_right mobile-search"
+              type="search"
+              data-source="searchInputField"
+              variant="label-hidden"
+              placeholder={itemSearchPlaceholder}
+              onkeypress={handleEnterClick}
+              onchange={searchItems}
+              is-loading={isSearchLoading}
+            >
+            </lightning-input>
+          </div>
+          <div
+            class="slds-grid_align-center slds-p-left_x-small slds-p-right_medium slds-p-top_small slds-size_1-of-8"
+          >
+            <lightning-button-icon
+              icon-name="utility:refresh"
+              size="large"
+              variant="border-filled"
+              onclick={refreshDataHandler}
+              alternative-text="Refresh Data"
+              class="slds-m-left_xx-small"
+              title="Refresh Data"
+            >
+            </lightning-button-icon>
+          </div>
+        </template>
+        <template if:true={showAssetStatusFilter}>
+          <div class="slds-p-top_small slds-p-bottom_small lgc-bg">
+            <lightning-input
+              class="slds-input-has-icon_right mobile-search"
+              type="search"
+              data-source="searchInputField"
+              variant="label-hidden"
+              placeholder={itemSearchPlaceholder}
+              onkeypress={handleEnterClick}
+              onchange={searchItems}
+              is-loading={isSearchLoading}
+            >
+            </lightning-input>
+          </div>
+          <div
+            class="slds-grid_align-center slds-m-left_x-small slds-p-top_small slds-size_1-of-8"
+          >
+            <lightning-button-icon
+              icon-name="utility:refresh"
+              size="large"
+              variant="border-filled"
+              onclick={refreshDataHandler}
+              alternative-text="Refresh Data"
+              class="slds-m-left_xx-small"
+              title="Refresh Data"
+            >
+            </lightning-button-icon>
+          </div>
+          <div class="slds-grid_align-center slds-p-top_small slds-size_1-of-8">
+            <lightning-button-icon
+              icon-name="utility:filterList"
+              size="large"
+              variant="border-filled"
+              onclick={openFilterPanel}
+              alternative-text="Open Filters"
+              class="slds-icon on-select"
+              title="Open Filters"
+            >
+            </lightning-button-icon>
+          </div>
+          <div
+            class="slds-grid_align-center slds-p-top_small slds-size_1-of-8 menu-item-green"
+          >
+            <lightning-button-menu
+              alternative-text="Show menu"
+              menu-alignment="right"
+              variant="border-filled"
+              onselect={handleRequestMenuSelection}
+            >
+              <lightning-menu-item
+                value="pickup"
+                label="Schedule Pick Up"
+              ></lightning-menu-item>
+              <!--<lightning-menu-item value="service" label="Schedule Service Call"></lightning-menu-item>-->
+              <lightning-menu-item
+                value="serviceTkt"
+                label="Create Service Ticket"
+              ></lightning-menu-item>
+            </lightning-button-menu>
+          </div>
+        </template>
+      </div>
+
+      <template if:true={showAssetStatusFilter}>
+        <div class="slds-page-header__name-title all-items slds-size_1-of-1">
+          <span><br /></span>
+          <div class="slds-p-left_medium slds-scrollable_y">
+            <p class="item-filter-details">
+              {assetCount} Assets, filtered by All Contracts,
+              &nbsp;{appliedFiltersDisplay}
+            </p>
+          </div>
+        </div>
+      </template>
+    </div>
+
+    <div class={filterDisplay}>
+      <div class="slds-panel__header filter-header">
+        <h2
+          class="slds-panel__header-title slds-text-heading_small slds-truncate"
+          title="Filter"
+        >
+          Filter
+        </h2>
+        <div class="slds-panel__header-actions">
+          <lightning-button-icon
+            icon-name="utility:close"
+            onclick={closeFilterPanel}
+            variant="bare"
+            size="large"
+            alternative-text="Close Filter"
+            title="Close Filter"
+            class="on-select"
+          ></lightning-button-icon>
+        </div>
+      </div>
+      <div class="slds-panel__body filter-panel">
+        <div>
+          <div
+            class="light-grey slds-section slds-is-open slds-m-bottom_none"
+            data-id="Status"
+          >
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="Status"
+              onclick={toggleSection}
+            >
+              <span
+                class="slds-truncate slds-p-horizontal_small full-width"
+                title="Status"
+                >Status</span
+              >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_right"
+              ></lightning-icon>
+            </button>
+            <lightning-radio-group
+              name="radioGroup"
+              label=""
+              options={allListViewOptions}
+              value={selectedStatus}
+              onchange={handleStatusChange}
+              type="radio"
+            ></lightning-radio-group>
+          </div>
+        </div>
+      </div>
+      <div class="filter-footer">
+        <lightning-layout
+          vertical-align="center"
+          horizontal-align="space"
+          pull-to-boundary="small"
+        >
+          <lightning-layout-item padding="around-small">
+            <button
+              class={cancelBtnClass}
+              value="Cancel"
+              onclick={closeFilterPanel}
+            >
+              Cancel
+            </button>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small">
+            <button
+              class={resetBtnClass}
+              value="Reset All Filters"
+              onclick={resetFilterPanel}
+            >
+              Reset All Filters
+            </button>
+          </lightning-layout-item>
+          <lightning-layout-item padding="around-small">
+            <button class={applyBtnClass} value="Apply" onclick={applyFilter}>
+              Apply
+            </button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </div>
+  </template>
+</template>

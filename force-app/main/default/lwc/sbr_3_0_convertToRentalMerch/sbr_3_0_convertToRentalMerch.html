@@ -1,0 +1,69 @@
+<!--
+  @description       : 
+  @author            : pmeshram@salesforce.com
+  @group             : 
+  @last modified on  : 06-05-2024
+  @last modified by  : pmeshram@salesforce.com
+-->
+<template>
+  <!-- shared form info here -->
+
+  <lightning-modal-body>
+    <p class="slds-m-left_x-large slds-m-bottom_large">
+      Review information and select Submit to confirm.
+    </p>
+    <lightning-record-view-form
+      object-api-name={objectApiName}
+      record-id={recordId}
+    >
+      <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+        <div class="slds-size_1-of-2">
+          <div class="slds-m-left_x-large">
+            <label class="slds-form-element__label">Description</label>
+            <lightning-output-field field-name="SM_PS_Description__c" variant="label-hidden" ></lightning-output-field><br />
+            <label class="slds-form-element__label">Stock Class</label>
+            <lightning-output-field field-name="SM_PS_Stock_Class__c" variant="label-hidden"></lightning-output-field><br />
+            <label class="slds-form-element__label">Cat/Class Description</label><br>
+            <lightning-formatted-text value={catClassDescription}></lightning-formatted-text><br><br>
+            <label class="slds-form-element__label">Quantity Available</label>
+            <lightning-output-field field-name="SM_PS_Quantity_Available__c" variant="label-hidden"></lightning-output-field><br />            
+            <template if:true={showSpinner}>
+              <div class='slds-is-relative'>
+                <lightning-spinner></lightning-spinner>
+              </div>     
+            </template> 
+            <template if:false={showSpinner}>
+              <template lwc:if={rentalProduct.isBulk}>
+                <c-sbr_3_0_convert-to-rent-quantity-field available-qty={availableQty} onitemqtychange={handleItemQtyChange}></c-sbr_3_0_convert-to-rent-quantity-field>
+              </template>
+              <template if:false={rentalProduct.isBulk}>
+                <c-sbr_3_0_convert-to-rent-serial-num-field></c-sbr_3_0_convert-to-rent-serial-num-field>
+              </template>
+            </template>
+          </div>
+        </div>
+        <div class="slds-size_1-of-2">
+          <div class="slds-m-left_x-large">
+            <label class="slds-form-element__label">Item #</label>
+            <lightning-output-field field-name="SM_PS_Item_Number__c" variant="label-hidden"></lightning-output-field
+            ><br>
+            <label class="slds-form-element__label">Current Location</label><br>
+                <lightning-formatted-text value={currLocation}></lightning-formatted-text><br><br>                
+            <label class="slds-form-element__label">RSV Item #</label><br />
+            <lightning-formatted-text
+              value={rsvNumber}
+            ></lightning-formatted-text
+            ><br /><br />
+            <label class="slds-form-element__label">Average Cost</label><br />
+            <lightning-output-field field-name="SM_PS_Average_Cost__c" variant="label-hidden"></lightning-output-field><br />
+            <label class="slds-form-element__label">Extended Cost</label><br />
+            <lightning-formatted-text
+              value={extendedCost}
+            ></lightning-formatted-text
+            ><br /><br />
+          </div>
+        </div>
+      </div>
+    </lightning-record-view-form>
+  </lightning-modal-body>
+</template>

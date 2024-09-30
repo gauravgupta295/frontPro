@@ -1,0 +1,289 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-27-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card class="slds-card_boundary" icon-name="standard:product_consumed">
+        <h1 slot="title">{title}</h1>
+        <template if:false={hideDiscountForL}>
+            <lightning-button 
+                style="margin-right: 1%;margin-left: -2%;" 
+                class="header-button" 
+                slot="actions" 
+                variant="brand"
+                label="Calculate Discount" 
+                onclick={handleCalculateDiscount}>
+            </lightning-button>
+        </template>
+        <lightning-button 
+            class="header-button" 
+            slot="actions" 
+            variant="brand" 
+            label="Add New Line items"
+            onclick={addRow}>
+        </lightning-button>
+        <div class="slds-card__body slds-card__body_inner">
+            <template if:false={isReviewScreen}>
+                <div class="slds-align_absolute-center slds-var-m-around_xx-small">
+                    <span style="color : Red; text-align : center ">
+                        <Strong>{label.messageForSellingPrice}</Strong>
+                    </span>
+                </div>
+            </template>
+            <table class="slds-table slds-table_bordered" id="parts-table">
+                <thead>
+                    <tr>
+                        <template for:each={columnList} for:item="column">
+                            <th key={column.apiName}>
+                                <div class="slds-truncate">{column.label}</div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={rows} for:item="row" for:index="index">
+                        <tr class="inputRows" key={row.uuid} id={index}>
+                            <!--Item number-->
+                            <td data-id={row.uuid} style="width:282px">
+                                <c-sbr_3_0_sfs-generic-lookup 
+                                    icon-name="standard:product" 
+                                    s-object-api-name="Product2"
+                                    label="" 
+                                    default-record-id={row.ProductItemId} 
+                                    onlookupupdate={handleProductChange}
+                                    placeholder="Search" 
+                                    filter-query=" Product2.Product_Type__c like '%MISC%'" 
+                                    data-id={row.uuid} 
+                                    otherfield="true"
+                                    other-field-api-name="Stock_class__c,SM_PS_Item_number__c">
+                                </c-sbr_3_0_sfs-generic-lookup>
+                                <template if:true={row.isErrorParts}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                                <template if:true={row.isErrorPriceBookEntry}>
+                                    <span style="color:red">Product does not have valid pricebook entry.</span>
+                                </template>
+                            </td>
+                            <!--Description-->
+                            <td style="vertical-align: middle;">
+                                <template if:true={row.Description}>
+                                    <div class={row.tooltip} data-title={row.descTitle}> {row.SF_PS_Description__c}</div>
+                                    <!-- <lightning-formatted-text title={row.descTitle} value={row.SF_PS_Description__c}></lightning-formatted-text> -->
+                                </template>
+                                <template if:false={row.Description}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <!--UOM-->
+                            <td>
+                                <template if:true={row.SF_PS_Unit_Of_Measure__c}>
+                                    <lightning-formatted-text
+                                        value={row.SF_PS_Unit_Of_Measure__c}>
+                                    </lightning-formatted-text>
+                                </template>
+                                <template if:false={row.SF_PS_Unit_Of_Measure__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <!--Labor Code-->
+                            <td style="vertical-align: center;">
+                                <lightning-combobox 
+                                    style="width: 200px;" 
+                                    name="LaborCodeTravel" 
+                                    label=" Labor Code"
+                                    value={row.SF_PS_Labor_Code__c} 
+                                    options={pcLaborCodes}
+                                    onchange={handleChangeLaborCode} 
+                                    variant="label-hidden" 
+                                    data-id={row.uuid}>
+                                </lightning-combobox>
+                                <template if:true={row.isErrorLbrc}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                            </td>
+                            <!--QOH-->
+                            <!--<td>
+                                    <template if:true={row.QuantityOnHand}>
+                                        <lightning-formatted-number value={row.QuantityOnHand}></lightning-formatted-number> 
+                                    </template>
+                                    <template if:false={row.QuantityOnHand}>
+                                        <lightning-formatted-text value="-"></lightning-formatted-text> 
+                                    </template>
+                                </td>
+                            -->
+                            <!--Quantity-->
+                            <td>
+                                <lightning-input 
+                                    style="width: 60px;" 
+                                    type="number"
+                                    message-when-bad-input="Numbers are only allowed."
+                                    message-when-step-mismatch="Decimals are not allowed." 
+                                    variant="label-hidden"
+                                    data-field="qty" 
+                                    class="qty" 
+                                    min="1" 
+                                    step="1" 
+                                    onchange={handleQuantityChange}
+                                    value={row.QuantityConsumed} 
+                                    data-id={row.uuid} 
+                                    placeholder="0">
+                                </lightning-input>
+                                <template if:true={row.isErrorQtyConsumed}>
+                                    <span style="color:red">Complete this field.</span>
+                                </template>
+                                <template if:true={row.qohError}>
+                                    <span style="color:red">Entered Quantity exceeds<br>Quantity On hand</span>
+                                </template>
+                            </td>
+                            <!--List Price-->
+                            <td>
+                                <template if:true={row.SF_PS_List_Price__c}>
+                                    $<lightning-formatted-number value={row.SF_PS_List_Price__c}>
+                                    </lightning-formatted-number>
+                                </template>
+                                <template if:false={row.SF_PS_List_Price__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <!--Original Selling Price-->
+                            <td>
+                                <template if:true={row.SF_PS_Orig_Selling_Price__c}>
+                                    $<lightning-formatted-number value={row.SF_PS_Orig_Selling_Price__c}>
+                                    </lightning-formatted-number>
+                                </template>
+                                <template if:false={row.SF_PS_Orig_Selling_Price__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <!--Discount%-->
+                            <td>
+                                <template if:true={disableDiscount}>
+                                    <template if:true={row.SF_PS_Orig_Selling_Price__c}>
+                                        <lightning-formatted-number value=0></lightning-formatted-number>
+                                    </template>
+                                    <template if:false={row.SF_PS_Orig_Selling_Price__c}>
+                                        <lightning-formatted-text value="-"></lightning-formatted-text>
+                                    </template>
+                                </template>
+                                <template if:false={disableDiscount}>
+                                    <lightning-input style="width: 70px;" type="number" variant="label-hidden" data-field="Disc%"
+                                        onchange={handleDiscountChange} value={row.SF_PS_Discount_Percentage__c} data-id={row.uuid} placeholder="0"
+                                        step="0.01">
+                                    </lightning-input>
+                                    <template if:true={row.isErrorDiscount}>
+                                        <span style="color:red">Discount must be <br>between 0 to 99.99% <br /></span>
+                                    </template>
+                                </template>
+                            </td>
+                            <!--New Selling Price-->
+                            <td>
+                                <template if:true={disableSellingPrice}>
+                                    <template if:true={row.SF_PS_Selling_Price__c}>
+                                        $<lightning-formatted-number
+                                            value={row.SF_PS_Selling_Price__c}>
+                                        </lightning-formatted-number>
+                                    </template>
+                                    <template if:false={row.SF_PS_Selling_Price__c}>
+                                        <lightning-formatted-text value="-"></lightning-formatted-text>
+                                    </template>
+                                </template>
+                                <template if:false={disableSellingPrice}>
+                                    <lightning-input 
+                                        style="width: 120px;" 
+                                        type="number"
+                                        message-when-bad-input="Numbers are only allowed." 
+                                        variant="label-hidden"
+                                        data-field="sellingprice" 
+                                        class="sellingprice"
+                                        min={minimumSellingPrice}
+                                        step="0.01"
+                                        onchange={handleSellingPriceChange} 
+                                        value={row.SF_PS_Selling_Price__c}
+                                        data-id={row.uuid} 
+                                        disabled={disableSellingPrice}>
+                                        <!--message-when-step-mismatch="Decimals are not allowed." -->
+                                    </lightning-input>
+                                    <template if:true={row.isErrorsellingPrice}>
+                                        <span style="color:red">Complete this field.</span><br>
+                                    </template>
+                                    <template if:true={row.avgError}>
+                                        <span style="color:red">Selling price cannot <br> be less than Cost price<br /></span>
+                                    </template>
+                                    <template if:true={row.warningError}>
+                                        <lightning-icon class="warning-icon" icon-name="utility:warning" alternative-text="warning" title="warning"
+                                            size="xx-small"></lightning-icon>
+                                        <span style="color:#d9b302"> Selling price is <br>lesser than Warning price<br /></span>
+                                    </template>
+                                    <template if:true={row.minPriceError}>
+                                        <span style="color:red">Discount applied is <br />greater than the <br />amount allowed. <br />Please update the
+                                            sell <br />price.</span>
+                                    </template>
+                                </template>
+                            </td>
+                            <!--Cost Price-->
+                            <td style="vertical-align: left;">
+                                <template if:true={row.SF_PS_Cost_Price__c}>
+                                    $<lightning-formatted-number
+                                        value={row.SF_PS_Cost_Price__c}>
+                                    </lightning-formatted-number>
+                                </template>
+                                <template if:false={row.SF_PS_Cost_Price__c}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <!--Extended Amount-->
+                            <td>
+                                <template if:true={row.extended}>
+                                    $<lightning-formatted-number value={row.extended}></lightning-formatted-number>
+                                </template>
+                                <template if:false={row.extended}>
+                                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                                </template>
+                            </td>
+                            <td>
+                                <lightning-button 
+                                    class="delete-button" 
+                                    value={index} 
+                                    variant="destructive"
+                                    label="Delete" 
+                                    onclick={removeRow}>
+                                </lightning-button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="slds-var-p-around_large" style="margin-left:auto; width:300px;">
+                <span>
+                    <Strong>Total Miscellaneous charges:</Strong>
+                </span>
+                <span>${calculateTotal}</span>
+            </div>
+        </div>
+    </lightning-card>
+    <template if:true={showButtons}>
+        <c-sbr_3_0_sfs-desktop-flow-buttons 
+            show-next-button={showNextButton} 
+            show-summary="true"
+            show-skip-button="true" 
+            lable-summary-button="Go to Summary" 
+            lable-next-button="Next"
+            lable-previous-button="back" 
+            lable-skip-button="Skip" 
+            show-cancel-button=true 
+            lable-cancel-button="Cancel"
+            call-from="Lwc" 
+            onprevious={handlePrevious} 
+            onsummary={handleSummary} 
+            oncancel={handleCancel}
+            onnext={hanldeNext} 
+            onskip={handle} 
+            record-to-be-deleted={recordToBeDeleted}
+            display-next-screen-message=true 
+            next-screen-message={NextScreenMessage}>
+        </c-sbr_3_0_sfs-desktop-flow-buttons>
+    </template>
+</template>

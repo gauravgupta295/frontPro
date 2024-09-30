@@ -1,0 +1,247 @@
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="list-header-container slds-m-top_small">
+        <c-sbr_3_0_item-search-assets-header
+          lwc:ref="assetHeader"
+          onfiltercriteriachange={handleSearchCriteriaChange}
+          active-tab="Asset"
+          record-id={recordId}
+          inventory={inventorySize}
+        >
+          <!--FRONT-19115 -->
+        </c-sbr_3_0_item-search-assets-header>
+        <hr />
+      </div>
+    </lightning-layout-item>
+    <template if:false={showSpinner}>
+      <div class="spinner">
+        <lightning-spinner
+          alternative-text="Loading"
+          variant="brand"
+          size="medium"
+        >
+        </lightning-spinner>
+      </div>
+    </template>
+    <template if:true={showSpinner}>
+      <lightning-layout-item size="12">
+      <template lwc:if={isDataAvailable}>
+        <lightning-card class="serialCard">
+        <!-- Added class for FRONT-31110-->
+        <template for:each={result} for:item="asset">
+          <div key={asset.Asset} class="slds-p-around_small">
+            <div
+              class={computedMainDivClass}
+              data-id={asset.Id}
+              data-key={asset.Id}
+            >
+              <div class="slds-col slds-size_6-of-6 slds-p-bottom_x-small">
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                  <div class="slds-size_2-of-3">
+                    <div class="display-name" data-asset-id={asset.Id}>
+                      <b>Asset # {asset.Name}</b>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="slds-col slds-size_6-of-6 accountDetails">
+                <div class="slds-grid slds-wrap">
+                  <div class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                    <span class={fieldsTitleClass}
+                      ><b>Asset Description</b></span
+                    >
+                  </div>
+                  <div class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                    <span
+                      class="data"
+                      data-asset-id={asset.id}
+                      onclick={handleMobileViewAssetDetails}
+                      >{asset.SM_PS_Cat_Class_Description__c}</span
+                    >
+                  </div>
+                  <div class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                    <span class={fieldsTitleClass}
+                      ><b>Last/Est. Return Date</b></span
+                    >
+                  </div>
+                  <div class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                    <span class="data">
+                      <lightning-formatted-date-time
+                        value={asset.SM_PS_Due_Off_Rent_Date__c}
+                        month="2-digit"
+                        day="2-digit"
+                        year="numeric"
+                      ></lightning-formatted-date-time>
+                    </span>
+                  </div>
+                  <div class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                    <span class={fieldsTitleClass}><b>Status</b></span>
+                  </div>
+                  <div class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                    <span class="data">{asset.Status}</span>
+                  </div>
+                  <div class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                    <span class={fieldsTitleClass}
+                      ><b>Current Location</b></span
+                    >
+                  </div>
+                  <div class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                    <span class="data"
+                      >{asset.SM_PS_Current_Branch_Location_Number__c}</span
+                    >
+                  </div>
+                </div>
+                <div>
+                  <template lwc:if={asset.ViewMore}>
+                    <div
+                      class="toggle-text slds-p-bottom_medium sbrGreenColor"
+                      data-asset-id={asset.Id}
+                      data-toggle-type="ViewMore"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.VIEW_LESS}
+                    </div>
+                    <div class="slds-col slds-size_6-of-6 accountDetails">
+                      <div class="slds-grid slds-wrap">
+                        <div
+                          class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class={fieldsTitleClass}><b>Type</b></span>
+                        </div>
+                        <div
+                          class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class="data"
+                            >{asset.SM_PS_Asset_Record_Type_Text__c}</span
+                          >
+                        </div>
+                        <div
+                          class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class={fieldsTitleClass}><b>Cat Class</b></span>
+                        </div>
+                        <div
+                          class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class="data">{asset.SM_PS_Cat_Class__c}</span>
+                        </div>
+                        <div
+                          class="fieldLabelFont slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class={fieldsTitleClass}><b>Year</b></span>
+                        </div>
+                        <div
+                          class="fieldValueFont slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class="data">{asset.SM_PS_Model_Year__c}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <template lwc:else>
+                    <div
+                      class="toggle-text slds-p-bottom_medium sbrGreenColor"
+                      data-asset-id={asset.Id}
+                      data-toggle-type="ViewMore"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.VIEW_MORE}
+                    </div>
+                  </template>
+                </div>
+                <div>
+                  <template lwc:if={asset.HideComments}>
+                    <div
+                      class="toggle-text slds-p-bottom_medium sbrGreenColor"
+                      data-asset-id={asset.Id}
+                      data-toggle-type="EquipComments"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.HIDE_EQUIPMENT_COMMENTS}
+                    </div>
+                    <div class="slds-col slds-size_6-of-6 accountDetails">
+                      <div class="slds-grid slds-wrap">
+                        <div
+                          class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                        >
+                          <span class={fieldsTitleClass}
+                            >{asset.SM_PS_Equipment_Condition_Comment__c}</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                  <template lwc:else>
+                    <div
+                      class="toggle-text slds-p-bottom_medium sbrGreenColor"
+                      data-asset-id={asset.Id}
+                      data-toggle-type="EquipComments"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.EQUIPMENT_COMMENTS}
+                    </div>
+                  </template>
+                </div>
+
+                <lightning-layout>
+                  <lightning-layout-item size="12">
+                    <template lwc:if={asset.showRemoveButton}>
+                      <lightning-button
+                        class="remove-button brand-outline-button brand-button1"
+                        label="Remove"
+                        stretch
+                        onclick={handleAssignAsset}
+                        data-id={asset.Id}
+                        data-label={asset.calculatedBtnVariable}
+                        disabled={asset.StatusDisabled}
+                      ></lightning-button>
+                    </template>
+                    <template lwc:else>
+                      <lightning-button
+                      class="brand-button brand-button1"
+                      label="Select"
+                      onclick={handleAssignAsset}
+                      variant={asset.calculatedBtnVariant}
+                      data-id={asset.Id}
+                      data-label={asset.calculatedBtnVariable}
+                      disabled={asset.StatusDisabled}
+                      stretch
+                    ></lightning-button>
+                    </template>
+                  </lightning-layout-item>
+                </lightning-layout>
+              </div>
+            </div>
+          </div>
+          <div
+            key={asset.Asset}
+            class="slds-border_bottom slds-p-top_x-small"
+          ></div>
+        </template>
+        </lightning-card>
+      </template>
+      <template lwc:else>
+        <lightning-card>
+          <div
+            class="slds-illustration slds-illustration_small backCl"
+            aria-hidden="true"
+          >
+            <img
+              class="slds-illustration__svg"
+              alt=""
+              src={noContentimageUrl}
+            />
+            <h2
+              class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+            >
+              {noRecordsFound} <br />{assetMessage}
+            </h2>
+          </div>
+        </lightning-card>
+      </template>
+    </lightning-layout-item>
+    </template>
+  </lightning-layout>
+</template>

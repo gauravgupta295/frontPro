@@ -1,0 +1,72 @@
+<template>
+    <lightning-modal-header label="Edit">
+    </lightning-modal-header>
+    <lightning-modal-body>
+        <lightning-record-edit-form record-id={recordId} object-api-name="PO_Line_Item__c"
+            onsuccess={handleSuccess} onsubmit={handleSubmit}>
+        <div class="slds-p-around_medium slds-hyphenate">
+            <div class="slds-page-header">
+                <h2>General</h2>
+            </div>
+            
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Item_Number__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Item_Description_Calc__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Manufacturer__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Stock_Class__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Item_Class__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Stock_Status__c" disabled></lightning-input-field></div>
+            </div>
+            <div class="slds-page-header">
+                <h2>Pricing Info</h2>
+            </div>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Quantity__c" required></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Units__c" required></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Unit_Cost__c" required></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Total_Cost_Calc__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Conversion_Factor__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Pricing_Schedule__c" disabled></lightning-input-field></div>
+                
+            </div>
+            <div class="slds-page-header">
+                <h2>Shipping Info</h2>
+            </div>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Due_Date__c"></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Request_Date__c"></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Drop_Shipment__c"></lightning-input-field></div>
+            </div>
+            <div class="slds-page-header">
+                <h2>Additional Info</h2>
+            </div>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Equipment_Num__c"></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="GL_Account__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Average_Monthly_Usage__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Reorder_Point__c" disabled></lightning-input-field></div>
+                <div class="slds-col slds-size_6-of-12"><lightning-input-field field-name="Reorder_Quantity__c" disabled></lightning-input-field></div>
+            </div>
+            <div class="slds-page-header">
+                <h2>Messages</h2>
+            </div>
+            <div class="slds-grid slds-wrap slds-p-around_medium">
+                <div class="slds-col slds-size_12-of-12"><lightning-input-field field-name="Messages__c">
+                </lightning-input-field></div>
+            </div> 
+            <input type="submit" class="hidden">
+        </div>
+    </lightning-record-edit-form>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <template if:true={showPctIncrease}>
+            <div style="text-align: center;color: #993300">
+                <h2>&#9888; {pctIncreaseMsg}</h2>
+            </div>
+        </template>
+        <lightning-button label="Save" onclick={handleSave} variant="brand" style="padding-left: 10px">
+            </lightning-button>
+            <lightning-button label="Cancel" onclick={handleCancel} class="slds-p-left_small">
+            </lightning-button>
+        </lightning-modal-footer>
+ </template>

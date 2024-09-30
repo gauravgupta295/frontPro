@@ -1,0 +1,22 @@
+.bgColor {
+    background-color : #444444;
+}
+.iconBgColor{
+    --sds-c-icon-color-foreground: white;
+    --sds-c-icon-color-background: #444444;
+}
+.warnHeight {
+    margin-top: 4px;
+    padding-left: 45px;
+    font-size:14px;
+}
+.headerClass {
+    padding-left: 45px;
+    margin-top: -31px;
+    font-size:17px;
+}
+
+.bottomClass {
+    padding-left: 45px;
+    font-size:12px;
+}

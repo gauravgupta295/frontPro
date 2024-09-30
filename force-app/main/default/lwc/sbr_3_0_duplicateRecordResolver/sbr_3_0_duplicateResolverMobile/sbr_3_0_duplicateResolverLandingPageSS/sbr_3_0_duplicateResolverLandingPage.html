@@ -1,0 +1,181 @@
+<template>
+  <section
+    role="dialog"
+    aria-labelledby="dup-heading"
+    aria-modal="true"
+    aria-describedby="dup-content"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container">
+      <div class="slds-page-header__controls page-info-header slds-p-vertical_small slds-align_absolute-center">
+        <!--<button class="slds-button close-btn-class" value="Close" onclick={closeAccountSearchMobile}>Close</button>-->
+          <p class="page-info-title slds-align_absolute-center">{header}</p>
+        
+      </div>
+      <div
+        class="slds-modal__content slds-var-p-around_medium"
+        id="dup-content"
+      >
+        <div lwc:if={isLoading}>
+          <lightning-spinner
+            class="spins"
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+
+        
+        <lightning-layout
+          vertical-align="stretch" multiple-rows="true" 
+          class="slds-var-p-bottom_medium"
+        >
+          <lightning-layout-item>
+            <h2 class="duplicate-sub-heading">{totalDuplicateSubHeading}</h2>
+          </lightning-layout-item>
+          <lightning-layout-item
+          class="slds-var-p-vertical_small"
+        >
+          <ul class="existing-account-list">
+            <li>{duplicateRecordMessage}</li>
+          </ul>
+        </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout horizontal-align="space" multiple-rows>
+          <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+            <h2 class="attribute-label">{proceedLabel}</h2>
+          </lightning-layout-item>
+
+          <template for:each={methodOptions} for:item="method">
+            <lightning-layout-item
+              size="12"
+              key={method.value}    
+              class="radio-section"
+            >
+              <span class="slds-radio section">
+                <input
+                  name="duperesolveselection"
+                  id={method.value}
+                  type="radio"
+                  value={method.value}
+                  onchange={handleResolveChange}
+                  checked={method.checked}
+                />
+                <label class="slds-radio__label" for={method.value}>
+                  <span class="slds-radio_faux"></span>
+                    <div>
+                  <span
+                    class="slds-form-element__label slds-text-heading--label"
+                    >{method.label}</span>
+                  </div>
+                 
+            </label>
+            <div class="slds-m-left_x-large">
+              <p
+                class="slds-var-p-vertical_xxx-small"
+              >
+                {method.info}
+            </p>
+          </div>
+              </span>
+            </lightning-layout-item>
+          </template>
+        </lightning-layout>
+        <div class="existing-accounts-header">
+          <span class="slds-icon_container">
+              <lightning-icon icon-name={iconName} size="medium" alternative-text="icon" ></lightning-icon>
+          </span>
+          <span class="existing-accounts-header-text">Existing Accounts</span>
+        </div>
+        
+          <template
+          for:each={duplicateRecords}
+          for:item="duplicateRecord"
+          >
+          <div key={duplicateRecord.Id}>
+            <div class="slds-grid slds-wrap item-box" data-id="divItem">  
+              <div class="slds-col slds-size_1-of-12">
+                <span class="slds-radio radio-icon">
+                    <input
+                      name={duplicateRecord.Name}
+                      id={duplicateRecord.Id}
+                      type="radio"
+                      value={duplicateRecord.Id}
+                      checked={duplicateRecord.isSelected}
+                      onchange={handleRecordSelectionChange}
+                      disabled={duplicateRecord.isDisabled}
+                    />
+                    <label
+                    class="slds-radio__label"
+                    for={duplicateRecord.Id}
+                      >
+                      <span class="slds-radio_faux"></span>
+                    </label>
+                </span>
+              </div>
+                <div class="slds-col slds-size_11-of-12">
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_9-of-12 duplicate-record-name">
+                      <span
+                        class="display-name slds-form-element__label slds-text-heading--label"
+                      >{duplicateRecord.Name}</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-12">
+                      <span class={duplicateRecord.computedStatusClasses}>{duplicateRecord.Status__c}</span>
+                    </div>
+                  </div>
+                  <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_2-of-5">
+                        <span class="title">Phone #</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-5">
+                        <span class="data">{duplicateRecord.Phone}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-5" >
+                        <span class="title">Billing Address</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-5">
+                        <span class="data">{duplicateRecord.BillingAddress}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-5">
+                        <span class="title">D/L State</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-5">
+                        <span class="data">{duplicateRecord.Driver_s_License_State__c}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-5">
+                        <span class="title">D/L Number</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-5">
+                        <span class="data">{duplicateRecord.Drivers_License__c}</span>
+                    </div>
+                    <div class="slds-col slds-size_2-of-5">
+                      <span class="title">Email</span>
+                    </div>
+                    <div class="slds-col slds-size_3-of-5 slds-truncate">
+                        <span class="data slds-truncate">{duplicateRecord.E_mail_Address__c}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>            
+          </template>
+ 
+      </div>
+      <footer class="slds-modal__footer stickyFooter bottomfooter">
+        <lightning-button
+          label="Cancel"
+          onclick={handleCloseModal}
+          class="neutral-button"
+        ></lightning-button>
+        <lightning-button
+          label="Continue"
+          onclick={handleContinueClick}
+          variant="brand"
+          disabled={isContinueButtonDisabled}
+          class="brand-button"
+        ></lightning-button>
+      </footer>
+    </div>
+  </section>  
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

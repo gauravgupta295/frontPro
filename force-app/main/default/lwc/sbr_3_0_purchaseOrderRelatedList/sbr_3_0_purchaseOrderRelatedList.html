@@ -1,0 +1,55 @@
+<template>
+   <!-- <template if:false={isMobileView}>
+            <div
+                class="slds-col slds-size_1-of-1 slds-p-right_small slds-p-top_small"> 
+               <div class="slds-page-header"
+                    style="height:90px; padding:20px 20px; background-color:lightgrey;">
+                    <b class="slds-page-header__title slds-truncate">Purchase
+                        Orders</b>
+                    <p style="padding-top:10px;">{totalNoOfRecords} results</p>
+                </div>
+                <div class="record-container">
+                    <lightning-datatable hide-checkbox-column key-field="Id"
+                        data={allRecords} columns={columns} sorted-by={sortBy}
+                        sorted-direction={sortDirection} onsort={handleSorting}>
+                    </lightning-datatable>
+                </div>
+            </div>
+       
+    </template>-->
+    <template if:true={isMobileView}>
+        <lightning-card>
+         <div class="slds-border_bottom">
+				<div style="padding-top:20px;">
+					<div class="slds-page-header slds-page-header_record-home">
+						<div class="slds-page-header__row">
+							<div class="slds-page-header__col-title">
+								<div class="slds-media">
+									<div class="slds-media__figure">
+										<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+									</div>
+									<div class="slds-media__body" style="line-height: 13px;">
+										<span class="slds-page-header__title slds-truncate" title="Totals">Purchase Orders ({totalNoOfRecords})</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="slds-p-vertical_x-small" style="padding-left: 15px">
+					<c-sbr_3_0_po-mobile-custom-wrapper
+                    title="Purchase Order"
+                    is-div="true"
+                    has-filter="false"
+                    is-purchase-order-filter="false"
+                    no-header-section="true"
+                    record-list={recordList}
+                    onfilter={getSearchValue}
+                    oneditpo={handleEditPO}
+                    onreset={handleReset}>
+                   </c-sbr_3_0_po-mobile-custom-wrapper>
+				</div>
+        </div>
+        </lightning-card>
+    </template>
+</template>

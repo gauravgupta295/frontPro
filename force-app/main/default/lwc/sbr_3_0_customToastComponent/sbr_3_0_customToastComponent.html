@@ -1,0 +1,37 @@
+<template>
+  <template if:true={showToastBar}>
+    <div class="slds-notify_container slds-is-relative toastSet">
+      <div class={outerClass} role="status">
+        <span class="slds-assistive-text">{variant}</span>
+        <template lwc:if={showIcon}>
+          <span class={innerClass} title={message}>
+            <lightning-icon
+              icon-name={getIconName}
+              alternative-text="icon"
+              styleclass="slds-icon slds-icon_small"
+              variant="inverse"
+              size="small"
+            ></lightning-icon>
+          </span>
+        </template>
+        <div class="slds-notify__content">
+          <h6 class="slds-text-heading_small">{title}</h6>
+          <lightning-formatted-rich-text
+            class={classList}
+            value={message}
+          ></lightning-formatted-rich-text>
+        </div>
+        <div class="slds-notify__close">
+          <lightning-button-icon
+            icon-name="utility:close"
+            variant="bare-inverse"
+            size="large"
+            alternative-text="Settings"
+            title="Settings"
+            onclick={hideToast}
+          ></lightning-button-icon>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

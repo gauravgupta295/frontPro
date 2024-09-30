@@ -1,0 +1,239 @@
+
+.sourcingContainer .slds-button_icon-bare{
+    display: none;
+}
+
+.defaultTabsDropdown .slds-button_icon-bare{
+    display: none;
+}
+.notes-icon-color button{
+color: #25683E;
+border: none;
+float:left;
+}
+.notes-icon-color{
+color: #25683E;
+border: none;
+float:right;
+padding-right:15px;    
+}
+.successLink{
+  color: #25683E !important;
+}
+.span slds-grid_align-end{
+  padding-right: 30px;
+}
+
+.wrapped-header-datatable .slds-table .slds-th__action .slds-truncate{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: unset;
+    white-space: pre-line;
+    /*  uncomment this if you want break the words further */
+    /* word-wrap: break-word;*/
+
+}
+
+.menuGreen{
+    color: #008545 !important; 
+}
+
+.removeButtonStyling button, .removeButtonStyling button:focus{
+	border: none;
+	padding: 0;
+  background: none;
+}
+
+.sourcingContainer .slds-truncate {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding-left: 20px;
+}
+.sourcingContainer svg.slds-button__icon.slds-button__icon_left.slds-icon.slds-icon-text-default.slds-icon_x-small {
+    margin-left:5px;
+}
+.sourcingContainer button.section-control.slds-button.slds-button_reset.slds-accordion__summary-action {
+    text-decoration: none;
+}
+.sourcingContainer span.slds-grid.slds-grid_align-spread {
+    padding-left:20px;
+}
+
+.sourcingContainer .wrapped-header-datatable .slds-table .slds-th__action .slds-truncate{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: unset;
+    white-space: pre-line;
+}
+.sourcingContainer section.slds-accordion__section.slds-is-open {
+    padding: 10px 0px 0px 0px;
+}
+.no-availability{
+    border-bottom: 1px solid #BA0517;
+    background-color: #FAFFBD;
+}
+
+/* .order-rental-item-icon-color div[part="help-text"] > lightning-button-icon > button {
+    margin-left: -0.25rem !important;
+    top: -0.1rem !important;
+    color: #BA0517!important;
+} */
+
+.defaultLocationContainer .slds-button_icon-bare{
+  display:none;
+}
+
+.sbrSourcingBorder {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #aeaeae !important;
+  --slds-c-button-neutral-color-border-hover: #aeaeae !important;
+}
+
+.search-border .slds-input{
+    border-color: #C9C9C9 !important;
+}
+
+/* .slds-popover_tooltip, .slds-popover--tooltip { background: #BA0517 !important; color:white; } */
+/* Started for FRONT-9233*/
+.quantityClass td[data-label="Quantity"] {
+    padding-right: 52px !important;
+  }
+/*below lines added for FRONT-28167 */
+.quantityClassRental th[aria-label="Qty"] .slds-th__action {
+  justify-content: right;
+} 
+.quantityClassRental th[aria-label="Notes"] .slds-th__action {
+  justify-content: center;
+} 
+.quantityClassRental th[aria-label="Price"] .slds-th__action {
+  justify-content: right;
+} 
+.quantityClassRental td[data-label="Notes"]{
+  padding-right:15px !important
+}
+.quantityClassRental th[aria-label="Hr/Mi"] .slds-th__action {
+    justify-content: right;
+  } 
+.quantityClassRental th[aria-label="Min Rate"] .slds-th__action {
+    justify-content: right;
+  }
+.quantityClassRental th[aria-label="Day"] .slds-th__action {
+    justify-content: right;
+  }
+.quantityClassRental th[aria-label="Week"] .slds-th__action {
+    justify-content: right;
+  }
+.quantityClassRental th[aria-label="4 Week"] .slds-th__action {
+    justify-content: right;
+  }
+
+/*28167 changes ends here*/
+
+  /* Ended for FRONT-9233*/
+
+  /* START FRONT-10473 */
+.disabled-text .slds-button {
+    color: black !important;
+  }
+  /* END FRONT-10473 */
+/*
+.slds-table tbody tr.slds-is-selected>td, .slds-table tbody tr.slds-is-selected>th, .slds-table tbody tr.slds-is-selected>td:hover, .slds-table tbody tr.slds-is-selected>th:hover{
+	background-color:#F0F8F2;
+}*/
+
+.item-search-asset-container .slds-is-selected td,.item-search-asset-container .slds-is-selected th {
+  background: #EDF6EF !important;
+}
+
+/*START: FRONT-11309 control the width of the table in cart screen for Sales Items*/
+.cartSalesLineItems .slds-scrollable_y {
+  width: 100% !important;
+}
+
+.cartSalesLineItems .slds-scrollable_x {
+  overflow-x: hidden !important;
+}
+
+.cartSalesLineItems table {
+  width: 99.99% !important;
+  table-layout: auto !important;
+}
+.slds-is-active.slds-tabs_scoped__link{
+  background-color: green !important;
+}
+/*END: FRONT-11309 control the width of the table in cart screen for Sales Items*/
+
+/* FRONT-11845 */
+table .slds-dropdown__item>a{
+  color: #25683E !important;
+  border-bottom: 1px solid #ccc;
+}
+    
+/*FRONT-25818*/
+.accordianBorder .slds-accordion__summary-action{
+  margin: 0.05rem;
+  background: #69696929;
+}
+/*FRONT-28168,FRONT-29680*/
+.searchBoxWrapper .slds-form-element__control input:focus{
+  box-shadow:none;
+  border: 2px solid #25683E;
+}
+/*FRONT-29680*/
+.searchBoxWrapperRed .slds-form-element__control input{
+  box-shadow:none;
+  border: 2px solid #C23934 !important;
+}
+/*FRONT-28890*/
+.quantityClassRental .slds-dropdown.slds-dropdown_left{
+  width:10% !important;
+  padding-bottom: 0px;
+}
+
+/*FRONT-29150*/
+/*.quantityClassRental .slds-table_bordered{
+  //border-radius: 10px !important;
+}*/
+/*added for FRONT-29178*/
+.salesData div[class="slds-table_header-fixed_container slds-scrollable_x"]{
+  border-top: 1.5px solid #C9C9C9 !important;
+}
+/*added for 31715*/
+.salesData span[class='slds-resizable__divider']{
+display: none !important
+}
+
+/*added for FRONT-29178*/
+.salesData td[data-label="Available"] span[class="slds-grid slds-grid_align-spread"]{
+  justify-content: right !important;
+  padding-right: 15px;
+}
+/*added for FRONT-29178*/
+.salesData th[aria-label="Available"] .slds-th__action {
+  justify-content: right;
+}
+ /*FRONT-16653*/   
+.menu-item .slds-button{
+width: 2rem !important;
+height: 2rem !important; 
+}
+
+/*FRONT-27948*/  
+.inputBoxSize .slds-input{
+border-left: none;
+border-radius: 0px 4px 4px 0px;
+}
+
+/*FRONT-28588*/
+.removeTableBorder .dt-outer-container {
+  border-style: solid;
+  border-width: thin;
+  border-color: #C9C9C9;
+}
+
+/*FRONT-28588*/
+.removeTableBorder .slds-is-selected td,.removeTableBorder .slds-is-selected th{
+  background: #FFFFFF !important;
+}

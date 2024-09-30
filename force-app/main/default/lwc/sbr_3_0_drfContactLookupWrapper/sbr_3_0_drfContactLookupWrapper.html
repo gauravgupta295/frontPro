@@ -1,0 +1,57 @@
+<template>
+  <lightning-layout horizontal-align="space">
+      <lightning-layout-item size={lookupWrapperSize}>
+        <c-s-b-r_3_0_required-custom-lookup-cmp
+          record-id={orderedBy}
+          label="Ordered By"
+          default-record={orderedBy}
+          fields-to-include="LastName, FirstName"
+          s-object-api-name="Contact"
+          placeholder="Search Contacts..."
+          icon-name="standard:contact"
+          onlookupupdate={handleOrderedByChange}
+          where-clause={orderedByWhere}
+          value={orderedBy}
+          show-new-contact-button={showNewContactButton}
+          app-name={appName}
+          acc-id={accountId}
+          onkeydown={handleEnterKey}
+    
+    
+        ></c-s-b-r_3_0_required-custom-lookup-cmp>
+      </lightning-layout-item>
+    <lightning-layout-item size="2" class="slds-p-top_medium slds-p-left_small" lwc:if={showEditButtons}>
+        <!-- Added for FRONT-20769 -->
+        <template lwc:if={isMobile}>
+          <lightning-icon
+            icon-name="action:edit_groups"
+            alternative-text="edit_groups"
+            size="small"
+            title="edit_groups"
+            class={btnIconClass}
+            onclick={handleEdit}
+          ></lightning-icon>
+        </template>
+        <template lwc:else>
+          <lightning-button
+            stretch="true"
+            variant="brand"
+            label="Edit Info"
+            class="brand-button"
+            disabled={disableEditInfo}
+            onclick={handleEdit}
+          ></lightning-button>
+        </template>
+      </lightning-layout-item>
+  </lightning-layout>
+
+  <!-- Added for FRONT-20769 -->
+  <template lwc:if={showEditBtnScreen}>
+    <c-sbr_3_0_custom-edit-contact-component
+      record-id={contactId}
+      onclosemodal={closeModal}
+      onsubmitupdate={handleSubmitChange}
+    ></c-sbr_3_0_custom-edit-contact-component>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
+</template>

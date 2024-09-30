@@ -1,0 +1,151 @@
+<template>
+  <template if:true={isMobile}>
+    <c-sbr_3_0_mobile-screen props={mobileProps}>
+      <lightning-layout slot="title" class="white-color-bg">
+        <lightning-layout-item size="12">
+          <div
+            lwc:if={contractSalesTab}
+            class="slds-panel__header slds-p-around_none"
+          >
+            <lightning-button-icon
+              class="slds-panel__back"
+              icon-name="utility:chevronleft"
+              variant="bare"
+              onclick={backToItemSearch}
+            >
+            </lightning-button-icon>
+            <h2
+              class="slds-panel__header-title slds-text-heading_small slds-truncate panel-title"
+              title={productName}
+            >
+              {productName}
+            </h2>
+          </div>
+          <div lwc:else class="back-item-ctr">
+            <lightning-button-icon
+              icon-name="utility:back"
+              size="large"
+              variant="bare"
+              alternative-text="Back"
+              class="back-button-icon"
+              onclick={backToItemSearch}
+              title="Back"
+            >
+            </lightning-button-icon>
+            <button
+              class={itemSearchBackBtnClass}
+              value="Back to Item Search"
+              onclick={backToItemSearch}
+            >
+              Back to Item Search
+            </button>
+            <template if:true={isNotRecordPage}>
+              <lightning-button-icon
+                icon-name="utility:adduser"
+                size="large"
+                variant="bare"
+                onclick={toggleAddCustomerMob}
+                alternative-text="Add Customer"
+                class="add-user-icon on-select"
+                title="Add Customer"
+              >
+              </lightning-button-icon>
+              <template if:true={isCustomerAdded}>
+                <span class="cust-added"></span>
+              </template>
+            </template>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+      <div style="border-bottom: 1px solid #dddddd"></div>
+      <lightning-card class="spotlight-card slds-scrollable_y">
+        <template if:false={isMiscProductType}>
+          <div class="slds-m-bottom_none" slot="title">
+            <!-- slds-card__header -->
+            <c-sbr_3_0_product-details-cmp
+              variant="mobileSalesTabDetailPanel"
+              product-id={mobileProductId}
+              is-contract-sales-tab={contractSalesTab}
+            >
+            </c-sbr_3_0_product-details-cmp>
+          </div>
+          <div style="border-bottom: 1px solid #dddddd"></div>
+
+          <c-sbr_3_0_item-search-sales-price-info
+            cost-price={costPrice}
+            sales-price={salesPrice}
+          ></c-sbr_3_0_item-search-sales-price-info>
+          <div style="border-bottom: 1px solid #dddddd"></div>
+
+          <c-sbr_3_0_parts-and-merchandise-availability-cmp
+            selected-product-ids={mobileProductId}
+            calling-from="spotlight"
+            location-info={locationInfo}
+          ></c-sbr_3_0_parts-and-merchandise-availability-cmp>
+          <div style="border-bottom: 1px solid #dddddd"></div>
+
+          <div class="slds-section slds-is-close" data-id="Description">
+            <h3 class="slds-section__title" data-buttonid="Description">
+              <button
+                type="button"
+                class="slds-button action-title-mobile"
+                data-buttonid="Description"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class="slds-section__title-action-icon slds-button__icon_left"
+                ></lightning-icon>
+                <span
+                  class="slds-truncate slds-p-horizontal_small custom-button"
+                  title="Description"
+                  >Description</span
+                >
+              </button>
+            </h3>
+            <div
+              aria-hidden="false"
+              class="slds-section__content slds-p-left_x-small slds-p-right_x-small"
+            >
+              <lightning-formatted-rich-text value={selectedProductDescription}>
+              </lightning-formatted-rich-text>
+            </div>
+          </div>
+        </template>
+        <template if:true={isMiscProductType}>
+          <template lwc:if={isNotContractSalesTab}>
+            <div class="slds-m-bottom_none" slot="title">
+              <c-sbr_3_0_product-details-cmp
+                variant="mobileSalesTabDetailPanel"
+                product-id={mobileProductId}
+              >
+              </c-sbr_3_0_product-details-cmp>
+            </div>
+            <div style="border-bottom: 1px solid #dddddd"></div>
+          </template>
+
+          <c-sbr_3_0_item-search-sales-price-info
+            cost-price={costPrice}
+            sales-price={salesPrice}
+            product-type={isMiscProductType}
+          ></c-sbr_3_0_item-search-sales-price-info>
+        </template>
+      </lightning-card>
+
+      <div slot="footer">
+        <c-sbr_3_0_add-to-cart-cmp
+          record-id={recordId}
+          is-parent-add-to-cart={isParentAddToCart}
+          object-api-name={objectApiName}
+          company-code={companyCode}
+          selected-item-panel={selectedProductWithRates}
+          onparentitemqtychange={handleParentItemQtyChange}
+          variant="consumableSalesAddOn"
+          contract-sales-tab={contractSalesTab}
+        ></c-sbr_3_0_add-to-cart-cmp>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+</template>

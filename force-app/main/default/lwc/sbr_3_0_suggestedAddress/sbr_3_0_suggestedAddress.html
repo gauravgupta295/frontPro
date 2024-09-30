@@ -1,0 +1,106 @@
+<!--
+  @description       : Suggested Address component to allow user to select user input or suggested address
+  @author            : Kunal Patel
+  @group             : 
+  @last modified on  : 03-07-2024
+  @last modified by  : Kunal Patel
+-->
+<template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" padding="around-small">
+            <div class="slds-text-title_bold">
+                The info you entered doesn't match the suggested address we found. 
+                Please review the options below and select one before proceeding. 
+                Click "Previous" to return to the map and enter another address if needed.
+            </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" medium-device-size="6" small-device-size="12" padding="around-small">
+            
+            <span class="slds-radio">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-8">
+                        <label for="radio-0-1">
+                            <input type="radio" name="radioOption" id="radio-0-1" checked required="" onclick={suggestedSelected}>
+                            <span class="slds-radio_faux"></span>
+                        </label>
+                    </div>
+                    <div class="slds-col slds-size_7-of-8">
+                        <label for="radio-0-1" class="slds-radio__label">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-text-heading_small slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Suggested Address
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Street: {streetSuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    City: {citySuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    State: {stateSuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Zip/Postal Code: {zipSuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Country: {countrySuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Lat: {latSuggested}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12">
+                                    Long: {lngSuggested}
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </span>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" medium-device-size="6" small-device-size="12" padding="around-small">
+
+            <span class="slds-radio">
+                <div class="slds-grid">
+                    <div class="slds-col slds-size_1-of-8">
+                        <label for="radio-0-2">
+                            <input type="radio" name="radioOption" id="radio-0-2" required="" onclick={defaultSelected}>
+                            <span class="slds-radio_faux"></span>
+                        </label>
+                    </div>
+                    <div class="slds-col slds-size_7-of-8">
+                        <label for="radio-0-2" class="slds-radio__label">
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-text-heading_small slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Original Address
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Street: {street}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    City: {city}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    State: {state}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Zip/Postal Code: {zip}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Country: {country}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12 slds-p-bottom_medium">
+                                    Lat: {lat}
+                                </div>
+                                <div class="slds-col slds-size_12-of-12">
+                                    Long: {lng}
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </span>
+        </lightning-layout-item>
+    </lightning-layout>
+
+</template>

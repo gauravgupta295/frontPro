@@ -1,0 +1,19 @@
+.backCancelButtonCss{
+    background-color:white;
+    color:#008545;
+    height:32px;
+    width:65px;
+    justify-content: center;
+    padding-left:8px;
+    padding-right:8px
+}
+
+.nextSaveButtonCss{
+    background-color:#008545;
+    color:white;
+    height:32px;
+    min-width:65px;
+    justify-content: center;
+    padding-left:8px;
+    padding-right:8px
+}

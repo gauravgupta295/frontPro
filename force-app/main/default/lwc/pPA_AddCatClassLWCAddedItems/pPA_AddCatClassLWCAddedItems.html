@@ -1,0 +1,44 @@
+<template>
+    <lightning-modal-header label="Selected Products"></lightning-modal-header>
+    <lightning-modal-body>
+        <template if:true={showSpinner}>
+            <lightning-spinner size="medium"></lightning-spinner>
+        </template>
+        
+        <div style="height: 300px;">
+            <template for:each={addedRecords} for:item="rec" >
+                <lightning-layout key={rec.Id}>
+                    <lightning-layout-item>
+                        <lightning-button-icon data-key={rec.Id} icon-name="utility:delete" onclick={handleRemoveProduct} style="padding-right: 10px;"></lightning-button-icon>                            
+                    </lightning-layout-item>    
+                    <lightning-layout-item>
+                        <p><b>{rec.ProductName}</b></p>
+                        <p>Cat-Class: {rec.CatClass}</p>
+                        <p>Product SKU: {rec.PPA_Product_SKU__c}</p>
+                        <p>&nbsp;</p>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+    </lightning-modal-body>
+
+    <lightning-modal-footer>
+        <div class="slds-clearfix">
+            <div class="slds-float_left">
+                <lightning-layout>
+                    <lightning-layout-item>
+                        <lightning-button label="Remove All" onclick={handleRemoveAll}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            <div class="slds-float_right">
+                <lightning-layout>
+                    <lightning-layout-item >
+                        <lightning-button label="Close" onclick={handleClose}></lightning-button>
+                        <lightning-button label="Add to Price List" variant="brand" style="padding-left: 10px" onclick={addToPriceList}></lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>    
+    </lightning-modal-footer>
+</template>

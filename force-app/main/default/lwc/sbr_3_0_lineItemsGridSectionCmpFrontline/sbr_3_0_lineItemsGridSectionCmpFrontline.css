@@ -1,0 +1,178 @@
+.brand-button {
+    --slds-c-button-brand-color-background: #25683E;
+    --slds-c-button-brand-color-background-hover: #25683E;
+    --slds-c-button-brand-color-border: #25683E;
+    --slds-c-button-brand-color-border-hover: #25683E;
+    --slds-c-button-brand-text-color-hover: #fff;
+    --slds-c-button-brand-color-background-active: #25683E;
+    margin-left: 20px;
+    height: 2px;
+}
+
+.selected-btn {
+    color: #25683E;
+    font-weight: 400;
+    border-bottom: #E5E5E5;
+}
+
+.border-class {
+    border-bottom: 1pt solid #C9C9C9;
+    border-top: 1pt solid #C9C9C9;
+    width: 100%;
+    background-color: #EDF6EF;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.selected-item {
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.select-all {
+    margin-left: 17px;
+    font-weight: bold;
+}
+
+.textInput {
+    -webkit-text-fill-color: #25683E !important;
+    font-weight: bold;
+    --slds-c-checkbox-color-border: #C9C9C9;
+    --slds-c-checkbox-color-border-focus: #C9C9C9;
+    --slds-c-checkbox-shadow-focus: white;
+}
+
+.textBold {
+    font-weight: bold;
+}
+
+.no-availability {
+    border-bottom: 1px solid #BA0517;
+    background-color: #FAFFBD;
+}
+
+.no-availability-icon {
+    --slds-c-icon-color-foreground-default: #BA0517 !important;
+    left: 14px;
+    /*FRONT-8793*/
+    position: relative;
+    /*FRONT-8793*/
+}
+
+.no-availability-tooltip {
+    --slds-c-tooltip-color-background: #BA0517 !important;
+    position: absolute;
+    top: -25px;
+    left: 50px;
+    /*FRONT-8793*/
+    height: 70px !important;
+    /*FRONT-8793*/
+    width: 250px !important;
+    /*FRONT-8793*/
+}
+
+.fake-link {
+    color: #25683e;
+    cursor: pointer;
+    pointer-events: none;
+}
+
+/*FRONT-8793*/
+.no-availability-tooltip.hide-tooltip {
+    visibility: hidden;
+}
+
+/*START: FRONT-1958*/
+.partially-converted-tooltip {
+    position: absolute;
+    top: -65px;
+    left: 43px;
+    height: 56px !important;
+    width: 300px !important;
+    --slds-c-tooltip-font-size: 13px;
+}
+
+.partially-converted-tooltip.hide-tooltip {
+    visibility: hidden;
+}
+
+.partially-converted-icon {
+    padding-left: 15px;
+}
+
+.fully-converted-text {
+    -webkit-text-fill-color: #3E3E3C !important;
+    font-weight: bold;
+    --slds-c-checkbox-color-border: #C9C9C9;
+    --slds-c-checkbox-color-border-focus: #C9C9C9;
+    --slds-c-checkbox-shadow-focus: white;
+    margin-left: 7px;
+}
+
+.converted-chevron {
+    margin-top: 10px;
+}
+
+.converted-icon {
+    padding-top: 10px;
+}
+
+.converted-tooltip {
+    position: absolute;
+    top: -45px;
+    left: -11px;
+    height: 56px !important;
+    width: 300px !important;
+    --slds-c-tooltip-font-size: 13px;
+}
+
+.converted-tooltip.hide-tooltip {
+    visibility: hidden;
+}
+
+.partially-converted-text {
+    margin-left: 7px;
+}
+
+/*END: FRONT-1958*/
+
+.item-list-ctr {
+    border-bottom: 1px solid #C9C9C9;
+    border-top: 1px solid #C9C9C9;
+}
+
+.line-item {
+    border-top: 1px solid #C9C9C9;
+}
+
+
+
+/* FRONT-11379 */
+.selected-row-count-config {
+    display: flex;
+    align-items: center;
+}
+
+.selection-panel {
+    border-top-color: #C9C9C9;
+    border-bottom-color: #C9C9C9;
+    background-color: #EDF6EF;
+}
+
+.select-all-btn-config {
+    --slds-c-button-text-color: #25683E;
+    --slds-c-button-text-color-hover: #25683E;
+
+    --slds-c-button-color-border: #EDF6EF;
+    --slds-c-button-color-border-active: #EDF6EF;
+    --slds-c-button-color-border-hover: #EDF6EF;
+
+    --slds-c-button-color-background: #EDF6EF;
+    --slds-c-button-color-background-active: #EDF6EF;
+    --slds-c-button-color-background-hover: #EDF6EF;
+}
+
+.remove-btn-config {
+    --slds-c-button-brand-color-background: #24693E;
+    --slds-c-button-brand-color-background-hover: #24693E;
+}

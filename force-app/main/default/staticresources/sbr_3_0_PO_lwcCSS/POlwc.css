@@ -1,0 +1,251 @@
+.hideFirstColTable table th:first-child, .hideFirstColTable table td:first-child{
+    display: none !important;
+}
+
+lightning-input.changedInput > lightning-primitive-input-simple > div > div > input {
+    background-color: #F9E3B6 !important;
+}
+
+@media screen and (min-width: 1280px) {
+	.htmltable {
+		zoom: 55% !important;
+	}
+}
+
+@media screen and (min-width: 1400px) {
+	.htmltable {
+		zoom: 65% !important;
+	}
+
+}
+@media screen and (min-width: 1600px) {
+	.htmltable {
+		zoom: 85% !important;
+	}
+
+}
+@media screen and (min-width: 2000px) {
+	.htmltable {
+		zoom: 94% !important;
+	}
+
+}
+@media screen and (min-width: 2560px) {
+	.htmltable {
+		zoom: 115% !important;
+	}
+
+}
+
+/* For Tablet View */
+@media screen and (min-device-width: 768px) 
+    and (max-device-width: 1024px) {
+	.htmltable {
+		zoom: 45% !important;
+	}
+}
+
+/* For Mobile Portrait View */
+@media screen and (max-device-width: 480px) 
+    and (orientation: portrait) {
+	.htmltable {
+		zoom: 35% !important;
+	}
+}
+
+/* For Mobile Landscape View */
+@media screen and (max-device-width: 640px) 
+    and (orientation: landscape) {
+	.htmltable {
+		zoom: 25% !important;
+	}
+}
+
+/* For Mobile Phones Portrait or Landscape View */
+@media screen
+    and (max-device-width: 640px) {
+	.htmltable {
+		zoom: 25% !important;
+	}
+}
+
+/* iPhone specific css*/
+@media only screen and (max-width: 1000px) {
+	.slds-button_icon-x-small {
+		height: 20px !important;
+		width: 20px !important;
+	}
+	.slds-checkbox_faux  {
+		height: 15px !important;
+		width: 15px !important;
+	}
+	.slds-input:focus, .slds-input:active, .slds-combobox__input:focus, .slds-combobox__input:active, .slds-combobox__input-value:focus, .slds-combobox__input-value:active, .slds-textarea:focus, .slds-textarea:active,
+	 .slds-radio_button:focus, .slds-radio_button:active, .slds-button:focus,.slds-button:active
+	{
+		border-color: #008545 !important;
+		box-shadow: 0 0 3px #008545 !important;
+	}
+	.slds-radio {
+		--slds-c-radio-mark-color-foreground: #008545 !important;
+	}
+	.slds-checkbox {
+		--slds-c-checkbox-mark-color-foreground: #008545 !important;
+	}
+}
+
+.brand-button {
+	--slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25,78,45,1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25,78,45,1);
+    --slds-c-button-brand-text-color-hover: #fff;
+}
+
+.neutral-button {
+    --slds-c-button-text-color: #25683e;
+    --slds-c-button-neutral-color-border: #aeaeae;
+    --slds-c-button-neutral-color-border-hover: #aeaeae;
+}
+
+.record-container {
+    height: 400px;
+    overflow: auto;
+}
+
+td.onhold > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #ffaa05 !important;
+    color: black !important;
+}
+
+td.active > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #008545 !important;
+    color: white !important;
+}
+
+td.cancelled > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #be1223 !important;
+    color: white !important;
+}
+
+td.draft > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #a0a0a0 !important;
+    color: white !important;
+}
+
+td.received > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #0176D3 !important;
+    color: white !important;
+}
+
+td.backorder > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #e4a201 !important;
+    color: white !important;
+}
+
+td.patrec > lightning-primitive-cell-factory > span > div {
+	padding: 0.4em !important;
+    border-radius: 0.3em !important;
+    background: #ba0517 !important;
+    color: white !important;
+}
+
+.rightAlignCols table th[aria-label="Unit Cost"] .slds-th__action {
+	justify-content: right;
+}
+.rightAlignCols table th[aria-label="Qty"] .slds-th__action {
+	justify-content: right;
+}
+.rightAlignCols table th[aria-label="Extended Cost"] .slds-th__action {
+	justify-content: right;
+}
+.rightAlignCols table th[aria-label="Ord Qty"] .slds-th__action {
+	justify-content: right;
+}
+.rightAlignCols table th[aria-label="Rcd Qty"] .slds-th__action {
+	justify-content: right;
+}
+.rightAlignCols table th[aria-label="B/O Qty"] .slds-th__action {
+	justify-content: right;
+}
+
+
+.hideButton > lightning-primitive-cell-factory > span > div {
+	display: none !important;
+}
+.showButton > lightning-primitive-cell-factory > span > div {
+	display: block !important;
+}
+
+.backdrop_open {
+	min-height: 150vh;
+	min-width: 150vw;
+	top: auto !important;
+	left: -100vh !important;
+}
+
+.slds-modal__container[c-sbr_3_0_customAccountListViewCmp_sbr_3_0_customAccountListViewCmp] {
+	width: 100% !important;
+}
+
+/* PO Landing Page Begins*/
+.btnStretch:active {
+    outline: none;
+    border: none;
+}
+
+.btnStretch.slds-button:focus {
+    box-shadow: none;
+    outline: 0;
+}
+
+.activeTab {
+    background-color: #EDF6EF;
+    color: #25683E;
+}
+
+.btnStretch.slds-button:hover {
+    color: #25683E;
+}
+
+.btnStretch.slds-button {
+    color: #25683E;
+}
+
+.btnGroup.slds-button-group {
+    display: flex !important;
+}
+/* PO Landing Page Ends*/
+
+table > tbody > tr > td.my-vertical-padding {
+  padding-left: 10px;
+}
+
+td.lockedRow > lightning-primitive-cell-factory > span > lightning-primitive-icon {
+	padding-left: 13px;
+}
+
+.reset-mobile-button {
+	--slds-c-button-text-color: #25683E;
+  }
+
+.mobileheight > div > div > lightning-base-combobox > div > div > div > button > span {
+   height: 42.5px !important;
+padding-top: 6px !important;
+}
+
+/* Overriding to keep disabled color*/
+.slds-table tbody tr.slds-is-selected a[aria-disabled=true] {
+    color: #c9c9c9 !important;
+}

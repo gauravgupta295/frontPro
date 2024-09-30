@@ -1,0 +1,158 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-12-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={loadSpinner}>
+        <template if:false={hidePartsMisc}> 
+            <c-sbr_3_0_sfs-desktop-parts-cmp
+                base-url-from-flow={baseUrlFromFlow}
+                company-code={companyCode}
+                branch-loc={branchLoc}
+                expense-to-loc={expenseToLoc}
+                screen="Review"
+                default={defaultParts}
+                default-inventory={defaultInventoryParts}
+                default-labor-code={defaultLaborCode}
+                onpartotal={handlePartTotal}
+                onpartwithoutinventorytotal={handlePartWithoutInventoryTotal}
+                wo-type={type}
+                work-order-description={worOrderDesc}
+                ontaxcalculate={taxCalucateButtonShowHide}
+                ongettaxcalucationanddiscount={gettaxcalucationanddiscountMethod}
+                ondelrow={handledisableTax}
+            >
+            </c-sbr_3_0_sfs-desktop-parts-cmp>
+        </template>
+        <br>
+        <c-sbr_3_0_sfs-desktop-labor-cmp
+            screen="Review"
+            default-labor-rows={defaultLabor}
+            default-travel-rows={defaultTravel}
+            default-labor-code={defaultLaborCode}
+            onlabortotal={handleLaborTotal}
+            ontraveltotal={handleTravelTotal}
+        >
+        </c-sbr_3_0_sfs-desktop-labor-cmp>
+        <br>
+          <template if:false={hidePartsMisc}> 
+            <c-sbr_3_0_sfs-desktop-misc-items-cmp
+                base-url-from-flow={baseUrlFromFlow}
+                company-code={companyCode}
+                branch-loc={branchLoc}
+                expense-to-loc={expenseToLoc}
+                screen="Review"
+                default={defaultMiscItems}
+                default-labor-code={defaultLaborCode}
+                onmisctotal={handleMiscTotal}
+                wo-type={type}
+                ontaxcalculate={taxCalucateButtonShowHide}
+                ondelrow={handledisableTax}
+            >
+            </c-sbr_3_0_sfs-desktop-misc-items-cmp>
+        </template>
+        <br>
+
+        <!-- Outside Labor comp is commented as part of SERV-19167-->
+        <!-- <template if:true={woQuote}>
+            <c-sbr_3_0_sfs-desktop-outside-labor-cmp
+            screen="Review"
+            default-labor-rows={defaultOutSideLabor}
+            onlabortotal={handleOutSideLabor}
+            bill-cust-loc-l={billCustLocL}
+            expense-to-loc={expenseToLoc}
+            >
+            </c-sbr_3_0_sfs-desktop-outside-labor-cmp>
+        </template> -->
+        
+    <!--<lightning-accordion active-section-name="totalsection" allow-multiple-sections-open>
+            <lightning-accordion-section name="totalsection" label="Parts and Labor">
+                <table class="slds-table slds-table_cell-buffer slds-table_header-hidden" aria-label=" Example headless table of Opportunities with no borders ">
+                    <thead class="slds-assistive-text">
+                    <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                    <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th class="" scope="col">
+                    <div class="slds-truncate" title="Name">Total</div>
+                    </th>
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Parts amount">
+                            <div class="slds-truncate" title="Parts amount">Parts amount</div>
+                        </td>
+                    <td data-label="Parts amount" style="text-align:end">
+                    <div title="Parts amount">${totalPartsAmt}</div>
+                    </td>
+                    
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Internal labor amount" >
+                            <div class="slds-truncate" title="Internal labor amount">Internal labor amount</div>
+                            </td>
+                    <td data-label={laborTotal} style="text-align:end">
+                    <div  title={laborTotal}>${laborTotal}</div>
+                    </td>
+                    
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Mileage amount">
+                            <div class="slds-truncate" title="Mileage amount">Mileage amount</div>
+                        </td>
+                    <td data-label="Mileage total amount" style="text-align:end">
+                    <div  title="Mileage total amount">${travelTotal}</div>
+                    </td>
+                    
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Miscellaneous charges">
+                            <div class="slds-truncate" title="Miscellaneous charges">Miscellaneous charges</div>
+                        </td>
+                    <td data-label="Miscellaneous charges" style="text-align:end">
+                    <div  title="Miscellaneous charges">${miscTotal}</div>
+                    </td>
+                    
+                    </tr>
+                    <tr class="slds-hint-parent slds-border_top">
+                        <td data-label="Total Invoice amount">
+                            <div class="slds-truncate" title="Parts amount">Total Invoice amount</div>
+                        </td>
+                    <td data-label="Total" style="text-align:end">
+                    <div class="slds-truncate" title="Total">${totalAmt}</div>
+                    </td>
+                    
+                    </tr>
+                    
+                    </tbody>
+                    </table>
+                
+            </lightning-accordion-section>
+            
+        </lightning-accordion>-->
+        <br>
+        <c-sbr_3_0_sfs-desktop-flow-buttons
+                show-next-button=true
+                lable-next-button="Update"
+                lable-previous-button="back"
+                disable-next-button={disableButtonTaxCalculate}
+                show-cancel-button=true
+                lable-cancel-button="Cancel"
+                call-from="Lwc"
+                onprevious={handlePrevious}
+                onnext={hanldeNext}
+                oncancel={handleCancel}
+                record-to-be-deleted={recordToBeDeleted}
+        ></c-sbr_3_0_sfs-desktop-flow-buttons>
+    </template>
+    <template if:true={loadSpinner}>
+        <div style="align:center;">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+</template>

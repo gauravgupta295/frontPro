@@ -1,0 +1,33 @@
+<template>
+  <c-sbr_3_0_custom-toast-component></c-sbr_3_0_custom-toast-component>
+  <template lwc:if={dynamicForms}>
+    <div class="dynamic-form-container" data-form-id={config}>
+      <lightning-record-edit-form
+        record-id={recordId}
+        object-api-name={objectApiName}
+        onsubmit={handleSubmit}
+        onload={handleLoad}
+      >
+        <lightning-messages> </lightning-messages>
+        <template lwc:if={storeInitialized}>
+          <template for:each={dynamicForms} for:item="page">
+            <template if:true={showPageLabel}>
+              <span class="heading" key={page.label}>{page.label}</span>
+            </template>
+
+            <c-sbr_3_0_dynamic-record-form-page
+              key={page.externalId}
+              page={page}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              ondrf_fieldchange={handleCustomFieldChange}
+              onshowtoast={showToastNotification}
+              onhidetoast={hideToastNotification}
+            ></c-sbr_3_0_dynamic-record-form-page>
+          </template>
+          <button type="submit" class="slds-hide drf_submitBtn"></button>
+        </template>
+      </lightning-record-edit-form>
+    </div>
+  </template>
+</template>

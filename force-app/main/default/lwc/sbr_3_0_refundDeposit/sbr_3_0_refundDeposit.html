@@ -1,0 +1,460 @@
+<template>
+    <div class="refund-deposit-container">
+        <template if:true={showSpinner}>
+
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                <div class="slds-modal__container">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small" id="close"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <div class="slds-modal__content slds-var-p-around_medium">
+                        <div class="spinnermodal">
+                            <div class="slds-spinner_container">
+                                <div role="status" class="slds-spinner slds-spinner_large">
+                                    <span class="slds-assistive-text">Loading</span>
+                                    <div class="slds-spinner__dot-a"></div>
+                                    <div class="slds-spinner__dot-b"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </template>
+        <template if:false={refundPaymentProcessing}>
+            <template if:false={showSpinner}>
+                <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                    <div class="slds-modal__container">
+                        <button
+                            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                            title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small" id="close1"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+
+                        <header class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">{label.RefundDeposit}</h2>
+                        </header>
+                        <div>
+                            <template if:true={isfromcancel}>
+                                <div class="Cancel_Message slds-text-heading_medium">
+                                &nbsp;&nbsp;&nbsp;<lightning-icon icon-name="utility:info" class="my-icon"
+                                    alternative-text="info" title="info"></lightning-icon>
+                                &nbsp;&nbsp;{label.DepositOnReservation}</br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                    class="slds-text-heading_small">{label.RefundCancelReservation}</span>
+                            </div>
+                            </template>
+                            <template if:true={isFromCreateReturn}><!--FRONT-15078-->
+                                <div class="Cancel_Message slds-text-heading_medium">
+                                    &nbsp;&nbsp;&nbsp;<lightning-icon icon-name="utility:info" class="my-icon" alternative-text="info"
+                                        title="info"></lightning-icon>
+                                    &nbsp;&nbsp;{label.RefundOnCreateReturn}</br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                        class="slds-text-heading_small">{label.RefundOnCreateReturnDescription}</span>
+                                </div>
+                            </template>
+                            <template if:true={showWarning}>
+                                <div class="slds-scoped-notification slds-media slds-media_center slds-theme_warning warningbackground"
+                                    role="status">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:warning" size="small" variant="inverse">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <p class="exceptionfont">{warningRequest}</p>
+                                        <p class="warningfont">{warninginformation}&nbsp;<lightning-formatted-url value={label.RequestUrl} label={label.SubmitRequest} target="_blank"></lightning-formatted-url></p>
+                                    </div>
+                                </div>
+                            </template>
+                            <template if:true={showError}>
+                                <div class="slds-scoped-notification slds-media slds-media_center slds-theme_error errorbackground"
+                                    role="status">
+                                    <div class="slds-media__figure">
+                                        <lightning-icon icon-name="utility:error" size="small" variant="inverse">
+                                        </lightning-icon>
+                                    </div>
+                                    <div class="slds-media__body">
+                                        <p class="exceptionfont">{label.RefundDepositError}
+                                        </p>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="slds-modal__content slds-var-p-around_medium">
+                            <template if:true={noRefund}>
+                                <div class="Error_Message slds-text-heading_medium">
+                                    </br>&nbsp;&nbsp;&nbsp;<lightning-icon icon-name="utility:info" class="my-icon"
+                                        alternative-text="info" title="info"></lightning-icon>
+                                    &nbsp;&nbsp; {label.ZeroRefund}</br>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                        class="slds-text-heading_small">{label.AddFunds}</span>
+                                </div>
+                                <div class="slds-modal__content slds-p-around_medium">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                                            <span>{label.TotalDeposit}</span>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-text-align_right slds-p-top_large">
+                                            <span>{depositAmountUI}</span>
+                                        </div>
+                                    </div>
+                                    </br>
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-2">
+                                            <span>{label.AvailableDepositforRefund}</span>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                            <span>{refundAmountUIvalue}</span>
+                                        </div>
+                                    </div>
+                                    </br>
+                                </div>
+                                </br>
+                            </template>
+
+                            <template if:false={noRefund}>
+                                <template if:true={isCashOrCheckPayment}>
+                                    <div class="slds-modal__content slds-p-around_medium">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                                                <span>{label.TotalDeposit}</span>
+                                            </div>
+                                            <div
+                                                class="slds-col slds-size_1-of-2 slds-text-align_right slds-p-top_large">
+                                                <span>{depositAmountUI}</span>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <span>{label.AvailableDepositforRefund}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                                <span>{refundAmountUIvalue}</span>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        </br>
+
+                                            <br>
+                                            <div>Select the method you would like to refund.</div>
+                                            <br>
+                                            <table
+                                                class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="slds-grid slds-wrap slds-p-top_small">
+                                                            <div class="slds-col slds-size_2-of-4 cardlabel">Method
+                                                            </div>
+                                                            <div
+                                                                class="slds-col slds-size_2-of-4 slds-text-align_right">
+                                                                {label.NetChargesLabel}
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={data} for:item="obj">
+                                                        <tr key={obj.Id}>
+                                                            <th scope="col">
+                                                                <div class="slds-grid slds-wrap">
+                                                                    <div
+                                                                        class="slds-col slds-size_1-of-12 slds-text-align_left">
+                                                                        <lightning-input type="radio" id={obj.Name}
+                                                                            value={obj.Id} name="refundType"
+                                                                            onchange={handleRadioChangeTable}
+                                                                            checked={obj.checked}
+                                                                            disabled={obj.disabled}>
+                                                                        </lightning-input>
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-col slds-size_3-of-12 slds-text-align_left">
+                                                                        <span>{obj.Id}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-col slds-size_8-of-12 slds-text-align_right">
+                                                                        <div>{obj.Name}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                            </br>
+                                        <div class="slds-grid slds-wrap">
+                                        </br>
+                                        <div class="slds-size_3-of-3">
+                                            </br>
+                                            <abbr title="required" class="slds-required">* </abbr><label
+                                                for="refundidcash">{label.RefundAmount}</label>
+                                            <lightning-input id="refundidcashNew" type="number" formatter="currency"
+                                                class="refundAmountClass" value={refundAmountUI}
+                                                variant="label-hidden" data-recid="amountCollected"
+                                                onchange={handleAmountChange} step=".01" required></lightning-input>
+                                            </br>
+                                        </div>
+                                    </div>
+                                    <template if:true={isRefundChangeDue}>
+                                        <p class="slds-border_bottom"></p>
+                                        </br>
+                                        <div class="slds-size_6-of-6">
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-2">
+                                                    <span><b><label
+                                                                for="changeDueId">{label.RefundChangeDue}</label></b></span>
+                                                </div>
+                                                <div
+                                                    class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_medium">
+                                                    <span><b>{cashDueValueUI}</b></span>
+                                                </div>
+                                            </div>
+                                            </br>
+                                        </div>
+                                    </template>
+                                    <template if:true={isCheckNumber}>
+                                        <div class="slds-size_6-of-6">
+                                            <abbr title="required" class="slds-required">* </abbr><label
+                                                for="CheckId">{label.CheckNumber}</label>
+                                            <lightning-input id="CheckIdNew" class="checkClass"
+                                                pattern="^[A-Za-z0-9]{1,9}$"
+                                                message-when-pattern-mismatch="Please specify valid check number"
+                                                maxlength="9" value={checkValue} variant="label-hidden"
+                                                onchange={handleCheckChange} required>
+                                            </lightning-input>
+                                            </br>
+                                        </div>
+                                    </template>
+                                    </div>
+                                </template>
+                                <template if:true={isCardPayment}>
+                                    <div class="slds-modal__content slds-p-around_medium">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                                                <span>{label.TotalDeposit}</span>
+                                            </div>
+                                            <div
+                                                class="slds-col slds-size_1-of-2 slds-text-align_right slds-p-top_large">
+                                                <span>{depositAmountUI}</span>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2">
+                                                <span>{label.AvailableDepositforRefund}</span>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                                <span>{refundAmountUIvalue}</span>
+                                            </div>
+                                        </div>
+                                        </br>
+                                        </br>
+                                        <template if:true={showRadioGroup}>
+                                            <p class="mild-bold">Would you like to issue a refund to the previous {CardOrMethodLowerCase}?</p>
+                                            <br />
+                                            <lightning-input type="radio" id="option1" name="paymentOption"
+                                                label={label.PreviousPaymentMethod} value="option1"
+                                                onchange={handleRadioChange} checked={isOption1Checked}>
+                                            </lightning-input>
+                                            <br />
+                                            <lightning-input type="radio" id="option2" name="paymentOption2"
+                                                label={label.NewPaymentMethod} value="option2"
+                                                onchange={handleRadioChange} checked={isOption2Checked}>
+                                            </lightning-input>
+                                            <br />
+                                        </template>
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-size_1-of-1">
+                                                <template if:true={isComboboxVisible}>
+                                                    <br />
+                                                    <abbr title="required" class="slds-required">* </abbr> <label
+                                                        for="payid">{label.PaymentMethod}</label>
+                                                    <lightning-combobox id="paymentId" class="paymentClass"
+                                                        value={paymentOptionSelected} options={paymentOptions}
+                                                        variant="label-hidden" onchange={handlePaymentMethod}
+                                                        required></lightning-combobox>
+                                                    </br>
+                                                    <template if:false={noRefundGiven}> <!--FRONT-16361-->
+                                                        <div class="slds-size_3-of-3">
+                                                            <abbr title="required" class="slds-required">* </abbr><label for="refundid">Refund Amount</label>
+                                                            <lightning-input id="refundid1" type="number" formatter="currency" class="refundAmountClass"
+                                                                value={refundAmountUI} variant="label-hidden" data-recid="amountCollected" onchange={handleAmountChange}
+                                                                step=".01" required></lightning-input>
+                                                            </br>
+                                                        </div>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                            <template if:true={noRefundGiven}> <!--FRONT-16361-->
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-size_3-of-3">
+                                                        <abbr title="required" class="slds-required">* </abbr><label for="reasonidcheck">Reason</label>
+                                                        <lightning-input id="reasonidcheck" type="text" value={reasonvalue} variant="label-hidden"
+                                                            data-recid="reasoncheck" class="reasonClass" onchange={handlereason} required></lightning-input>
+                                                        </br>
+                                                    </div>
+                                                    </br>
+                                                    <span>{label.CreateReturnReason}</span>
+                                                </div>
+                                            </template>
+                                            <template if:true={isTerminalVisible}>
+                                                <div class="slds-size_4-of-4">
+                                                    <abbr title="required" class="slds-required">* </abbr><label
+                                                        for="terminalId">{label.Terminal}</label>
+                                                    <lightning-combobox id="terminalId" class="terminalClass"
+                                                        value={terminalValue} options={terminalOptions}
+                                                        variant="label-hidden" onchange={handleTerminal}
+                                                        required></lightning-combobox>
+                                                </div>
+                                                </br>
+                                            </template>
+                                            <template if:true={isRefundChangeDueNew}>
+                                                <p class="slds-border_bottom"></p>
+                                                </br>
+                                                <div class="slds-size_4-of-4">
+                                                    <div class="slds-grid slds-wrap">
+                                                        <div class="slds-col slds-size_1-of-2">
+                                                            <span><b><label
+                                                                        for="changeDueId">{label.RefundChangeDue}</label></b></span>
+                                                        </div>
+                                                        <div
+                                                            class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_medium">
+                                                            <span><b>{cashDueValueUI}</b></span>
+                                                        </div>
+                                                    </div>
+                                                    </br>
+                                                </div>
+                                            </template>
+                                            <template if:true={isCheckNumberNew}>
+                                                <div class="slds-size_4-of-4">
+                                                    <abbr title="required" class="slds-required">* </abbr><label
+                                                        for="CheckId">{label.CheckNumber}</label>
+                                                    <lightning-input id="CheckIdNew1" class="checkClass"
+                                                        pattern="^[A-Za-z0-9]{1,9}$"
+                                                        message-when-pattern-mismatch="Please specify valid check number"
+                                                        maxlength="9" value={checkValue} variant="label-hidden"
+                                                        onchange={handleCheckChange} required>
+                                                    </lightning-input>
+                                                    </br>
+                                                </div>
+                                            </template>
+                                        </div>
+
+                                        <template if:false={isComboboxVisible}>
+                                            <br>
+                                            <div>Select the {CardOrMethodLowerCase} you would like to refund.</div>
+                                            <br>
+                                            <table
+                                                class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col" class="slds-grid slds-wrap slds-p-top_small">
+                                                            <div class="slds-col slds-size_2-of-4 cardlabel">{CardOrMethodLabel}
+                                                            </div>
+                                                            <div
+                                                                class="slds-col slds-size_2-of-4 slds-text-align_right">
+                                                                {label.NetChargesLabel}
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={data} for:item="obj">
+                                                        <tr key={obj.Id}>
+                                                            <th scope="col">
+                                                                <div class="slds-grid slds-wrap">
+                                                                    <div
+                                                                        class="slds-col slds-size_1-of-12 slds-text-align_left">
+                                                                        <lightning-input type="radio" id={obj.Name}
+                                                                            value={obj.Id} name="refundType"
+                                                                            onchange={handleRadioChangeTable}
+                                                                            checked={obj.checked}
+                                                                            disabled={obj.disabled}>
+                                                                        </lightning-input>
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-col slds-size_3-of-12 slds-text-align_left">
+                                                                        <span>{obj.Id}</span>
+                                                                    </div>
+                                                                    <div
+                                                                        class="slds-col slds-size_8-of-12 slds-text-align_right">
+                                                                        <div>{obj.Name}</div>
+                                                                    </div>
+                                                                </div>
+                                                            </th>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                            </br>
+                                            <div class="slds-grid slds-wrap">
+                                                </br>
+                                                <div class="slds-size_3-of-3">
+                                                        <abbr title="required" class="slds-required">* </abbr><label for="refundid">Refund
+                                                            Amount</label>
+                                                        <lightning-input id="refundid" type="number" formatter="currency" class="refundAmountClass" value={refundAmountUI}
+                                                            variant="label-hidden" data-recid="amountCollected" onchange={handleAmountChange} step=".01"
+                                                            required></lightning-input>
+                                                        </br>
+                                                </div>
+                                                <template if:true={isRefundChangeDueMixed}>
+                                                    <p class="slds-border_bottom"></p>
+                                                    </br>
+                                                    <div class="slds-size_4-of-4">
+                                                        <div class="slds-grid slds-wrap">
+                                                            <div class="slds-col slds-size_1-of-2">
+                                                                <span><b><label for="changeDueId">{label.RefundChangeDue}</label></b></span>
+                                                            </div>
+                                                            <div class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_medium">
+                                                                <span><b>{cashDueValueUI}</b></span>
+                                                            </div>
+                                                        </div>
+                                                        </br>
+                                                    </div>
+                                                </template>
+                                                <template if:true={isCheckNumberMixed}>
+                                                    <div class="slds-size_4-of-4">
+                                                        <abbr title="required" class="slds-required">* </abbr><label for="CheckId">{label.CheckNumber}</label>
+                                                        <lightning-input id="CheckIdNew2" class="checkClass" pattern="^[A-Za-z0-9]{1,9}$"
+                                                            message-when-pattern-mismatch="Please specify valid check number" maxlength="9" value={checkValue}
+                                                            variant="label-hidden" onchange={handleCheckChange} required>
+                                                        </lightning-input>
+                                                        </br>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+
+                        <div class="slds-modal__footer">
+                            <lightning-button type="cancel" label="Cancel" variant="neutral" onclick={closeModal}>
+                            </lightning-button>
+                            <lightning-button style="padding-left: 14px" type="submit" label="Confirm" variant="brand"
+                                onclick={handleSubmit} disabled={noRefund}></lightning-button>
+                        </div>
+                    </div>
+                </section>
+            </template>
+        </template>
+        <template if:true={refundPaymentProcessing}>
+            <c-sbr_3_0_payment-processing recid={recordId} refundprocessing={isrefundProcessing}
+                payment-method={valueTable} deposit-amount={refundAmountValue}
+                processadditionaldeposit={isProcessAdditionalDeposit} terminal-value={terminalValue}
+                payment-method-related-data={paymentMethodRelatedData} isfromcancel={isfromcancel}
+                error-message={errorMessage} transaction-id={transactionId}
+                record-details={rec} is-from-create-return={isFromCreateReturn} no-refund-given={noRefundGiven}
+                is-api-call-complete={isApiCallComplete}>
+            </c-sbr_3_0_payment-processing>
+        </template>
+    </div>
+</template>

@@ -1,0 +1,66 @@
+<template>
+    <lightning-modal-header label="Add Cat-Class">
+        <div class="slds-clearfix">
+            <div class="slds-float_right">
+                <lightning-button label={selectedProducts} variant="base" icon-name="utility:cart" onclick={onSelectedProducts}></lightning-button>
+            </div>
+        </div>
+        <template if:true={showSpinner}>
+            <lightning-spinner size="medium"></lightning-spinner>
+        </template>    
+    </lightning-modal-header>
+
+    <lightning-modal-body>    
+        <div style="height: 350px">
+            <lightning-layout>
+                <lightning-layout-item>
+                    <lightning-input label="Keyword" value={keyword} onchange={handleKeyword} variant="label-hidden" placeholder="Search Product Name or Cat-Class Number"></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button label="Apply" variant="brand" onclick={applySearch} style="padding-left: 10px"></lightning-button>  
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <p style="padding-left: 10px">Top Products:</p>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-input type="toggle" label="Top Products" variant="label-hidden" onchange={toggleTop} checked={IisActive}
+                        style="padding-left: 10px" disabled={disableTopProducts}> </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <p style="padding-left: 10px">Like CatClass:</p>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-input type="toggle" label="Like CatClass" variant="label-hidden" onchange={toggleLikeCatClass}
+                        checked={isActive} disabled={disableLikeCatClass} style="padding-left: 10px"> </lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+            <br>
+            <lightning-layout>
+                <lightning-layout-item class="fixed-combobox-size">
+                    <lightning-combobox options={superCategoryOptions} value={selectedSuperCategory} onchange={handleSuperCategorySelection} placeholder="Super Category" variant="label-hidden" disabled={isSuperCategoryDisabled} class="fixed-combobox-size" style="padding-left: 10px;"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item class="fixed-combobox-size">
+                    <lightning-combobox options={categoryOptions} value={selectedCategory} onchange={handleCategorySelection} placeholder="Product Category" variant="label-hidden" disabled={isCategoryDisabled} class="fixed-combobox-size" style="padding-left: 10px;"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item class="fixed-combobox-size">
+                    <lightning-combobox options={subCategoryOptions} value={selectedSubCategory} onchange={handleSubCategorySelection} placeholder="Sub Category" variant="label-hidden" disabled={isSubCategoryDisabled} class="fixed-combobox-size" style="padding-left: 10px;"></lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
+            <br>
+
+            <div style="height: 225px">
+                <lightning-datatable
+                    key-field="Id"
+                    data={allRecords}
+                    columns={column}
+                >
+                </lightning-datatable>
+            </div>
+        </div>
+    </lightning-modal-body>
+    
+    <lightning-modal-footer>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+        <lightning-button label="Add to Cart" variant="brand" style="padding-left: 10px" onclick={addToCart}></lightning-button>
+    </lightning-modal-footer>
+</template>

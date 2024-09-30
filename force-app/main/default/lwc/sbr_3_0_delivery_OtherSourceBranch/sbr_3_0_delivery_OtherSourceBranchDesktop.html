@@ -1,0 +1,47 @@
+<template>
+	<div class="defaultLocationContainer slds-m-vertical_x-small slds-m-horizontal_medium">
+		<div class="slds-grid slds-wrap slds-m-bottom_large">
+			<div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12">
+				<p class="slds-text-title">{label.CURRENTSOURCINGBRANCHLABEL}</p>
+				<h2 class="slds-m-top_small">{sourcingBranchValue}</h2>
+			</div>
+			<div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12 customSearch">
+				<p class="slds-text-title">{label.SEARCHLOCATIONLABEL}</p>
+				
+				<lightning-input class="slds-input-has-icon_right iserror item-search-input slds-m-top_xxx-small search-border"
+					type="search" onkeydown={searchItems} onchange={handleSearchChange} value={searchKey}
+					variant="label-hidden" placeholder={itemSearchPlaceholder}></lightning-input>
+
+			</div>
+		</div>
+
+		<template if:true={isSearchLocation}>
+			<div class="customHeight">
+				<div class="customTable">
+					<template if:true={showSpinner}>
+						<lightning-spinner size="medium" variant="brand" alternative-text="Processing..."></lightning-spinner>
+					</template>
+					<template if:false={showSpinner}>
+					<lightning-datatable key-field="Id" data={locationData} columns={columns} resize-column-disabled 
+						wrap-text-max-lines="2" max-row-selection="1" class="wrapped-header-datatable"
+						selected-rows={selectedRow} column-widths-mode = "auto"> 
+					</lightning-datatable>
+					</template>
+				</div>
+			</div>
+		</template>
+		<template if:false={isSearchLocation}>
+			<div class="slds-illustration slds-illustration_medium customMessage" aria-hidden="true">
+				<img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+				<div class="slds-text-color_weak">
+					<template if:false={isLocationNotFound}>
+						<h3 class="slds-text-heading_medium">{label.OTHERSOURCEBRANCHLOCATIONSEARCHMSG}</h3>
+					</template>
+					<template if:true={isLocationNotFound}>
+						<h3 class="slds-text-heading_medium">{label.OTHERSOURCEBRANCHNOLOCATIONFOUNDMSG}</h3>
+					</template>
+				</div>
+			</div>
+		</template>
+	</div>
+</template>

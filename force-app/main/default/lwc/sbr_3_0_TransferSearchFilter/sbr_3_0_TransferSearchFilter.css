@@ -1,0 +1,55 @@
+.dummy{
+	color : black;
+}:host {
+    z-index: 5000;
+    position: relative;
+    width: 30%;
+  }
+  
+  .brand-button {
+    --slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-text-color-hover: #fff;
+  }
+  .setCss {
+    top: 50px;
+  }
+  .filter-options {
+    visibility: hidden;
+    opacity: 1;
+    top: 100%;
+    transition: opacity var(--lwc-durationQuickly, 0.3s) linear,
+      visibility var(--lwc-durationQuickly, 0.3s) linear;
+  }
+  .is-filter-open {
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    top: 100%;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity var(--lwc-durationQuickly, 0.3s) linear,
+      visibility var(--lwc-durationQuickly, 0.3s) linear;
+  }
+  
+  .filter-element-quote {
+    padding-top: 50px;
+  }
+  .footer-title {
+    text-align: left;
+    overflow: hidden;
+}
+
+.filter-option1 {
+    visibility: hidden;
+    opacity: 0;
+    top: 80%;
+    transition: opacity var(--lwc-durationQuickly, 0.3s) linear,
+      visibility var(--lwc-durationQuickly, 0.3s) linear;
+  }
+
+  .slds-datepicker {
+    z-index: 1000; /* Adjust this value as needed */
+}

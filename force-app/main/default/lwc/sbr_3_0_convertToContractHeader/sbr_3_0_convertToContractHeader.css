@@ -1,0 +1,14 @@
+.bordercl{
+    border: 1pt solid #C2BCBC;
+}
+
+.header-title {
+font-weight: 700;
+font-size: 0.9 rem;
+line-height: 1.3 rem;
+}
+
+.boxColor{
+    /* border: 1pt solid #DDDBDA !important; */
+    --slds-c-input-color-border: #DDDBDA;
+}

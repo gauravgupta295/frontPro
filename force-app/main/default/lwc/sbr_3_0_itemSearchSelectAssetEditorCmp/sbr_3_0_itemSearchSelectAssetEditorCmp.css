@@ -1,0 +1,8 @@
+.horizontal-separator-line {
+  border-bottom: var(--lwc-borderWidthThin, 1px) solid #aeaeae;
+}
+
+.helptext-tooltip {
+  /* --slds-c-tooltip-padding-top: 0px; */
+  padding-top: 0px !important;
+}

@@ -1,0 +1,7 @@
+<aura:component implements="lightning:isUrlAddressable">
+  <aura:attribute name="flowName" type="String" />
+  <aura:attribute name="inputVariables" type="List" />
+  <lightning:workspaceAPI aura:id="workspace" />
+
+  <c:sBR30flowExecutionLWC onsetflowname="{!c.handleSetFlowName}"></c:sBR30flowExecutionLWC>
+</aura:component>

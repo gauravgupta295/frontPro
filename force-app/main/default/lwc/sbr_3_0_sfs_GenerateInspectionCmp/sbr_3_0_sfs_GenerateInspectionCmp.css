@@ -1,0 +1,88 @@
+:host {
+
+    --slds-c-button-success-color-background:#008545;
+    --slds-c-button-success-text-color:white;
+    --sds-c-button-radius-border:8px;
+    --slds-c-card-shadow:2px 2px 5px 2px rgba(0, 0, 0, 0.1);
+    --slds-c-card-sizing-border:1.5px;
+    --slds-c-card-radius-border:0.73rem;
+    --slds-c-icon-color-foreground-default:black;
+    
+}
+
+.container{
+    background-color: white;
+    padding:10px;
+}
+
+
+.expiry-card{
+    /*background-color:#F8CB0C;*/
+    background-color:#f4b35f;
+    font-weight: bold;
+    border: 7px Solid #f4b35f;
+    border-radius:5px;
+    box-shadow: 1px 1px #888888;
+    padding-top:4px;
+    padding-bottom:4px;
+}
+
+.warn-icon{
+    --sds-c-icon-color-foreground-default:  black;
+    border:1px Solid black;
+    border-radius: 50%;
+    
+}
+
+.circle-icon{
+
+    border: 1px Solid black;
+    border-radius: 50%;
+    height: 30px;
+    width: 35px;
+    font-size: 22px;
+    color: #F8CB0C;
+    background-color: black;
+    text-align: center;
+
+}
+
+.alert-card{
+    /* background-color:white;*/
+    font-weight: bold; 
+    /* border: 7px Solid #F8CB0C; */
+    border-radius:5px;
+    /* box-shadow: 1px 1px #888888;*/
+    padding-top:1px;
+    padding-bottom:1px; 
+
+}
+
+.alert-icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px Solid black;
+    border-radius: 50%;
+    height: 27px;
+    width: 27px;
+    font-size: 1rem;
+    color: white;
+    background-color: black;
+    text-align: center;
+    font-size: 14px;
+
+
+}
+.alert-body{
+    /*min-height: calc(1.5rem + (var(--lwc-borderWidthThin,1px) * 2));*/
+    
+}
+
+.workorder-card{
+     border-radius:5px;
+     padding-top:4px;
+     padding-bottom:4px;
+     /*padding-left:4px;*/
+
+}

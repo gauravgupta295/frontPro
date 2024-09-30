@@ -1,0 +1,136 @@
+<template>
+    <template if:true={isBase}>
+        <div class="addon-tabset">
+            <lightning-tabset  variant="scoped">
+                <lightning-tab label="Rental Add-Ons" title="Rental Add-Ons">
+                    <p title={productName}></p>
+                    <div if:true={rentalAddonsLoaded} class="addon-tiles">
+                        <ul class="slds-has-dividers_bottom-space">
+                            <template if:false={isRentalAOEmpty}>
+                                <template if:false={isRentalAvailEmpty}>
+                                    <template iterator:rentalitem={productDetails.rentalAddOns}>
+                                        <li class="slds-item" key={rentalitem.catClass}>
+                                        <article class="slds-tile slds-tile_board">
+                                            <c-sbr_3_0_add-on-item-cmp item-type={rentalType} item-data={rentalitem} record-id={recordId} object-api-name={objectApiName}
+                                            chronos-enabled={chronosEnabled} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                                        </article>
+                                        </li>
+                                    </template>
+                                </template>
+                            </template>
+                            <template if:true={rentalAOEmpty}>
+                                <p class="description-no-inventory">There are no rental add-ons at this time.</p>
+                            </template>
+                        </ul>
+                    </div>
+                    <div if:false={rentalAddonsLoaded} class="slds-is-relative" style="min-height: 50vh;">
+                        <lightning-spinner
+                            alternative-text="Loading..." variant="brand">
+                        </lightning-spinner>
+                    </div>
+                </lightning-tab>
+                <lightning-tab label="Sales Add-Ons" title="Sales Add-Ons">
+                    <div class="addon-tiles">
+                        <ul class="slds-has-dividers_bottom-space">
+                            <template if:false={isSalesAOEmpty}>
+                                <template if:false={isSalesAvailEmpty}>
+                                    <template iterator:saleitem={productDetails.salesAddOns}>
+                                        <li class="slds-item" key={saleitem.catClass}>
+                                            <article class="slds-tile slds-tile_board">
+                                            <c-sbr_3_0_add-on-item-cmp item-type={salesType} item-data={saleitem} record-id={recordId} object-api-name={objectApiName}
+                                            chronos-enabled={chronosEnabled} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                                            </article>
+                                        </li>
+                                    </template>
+                                </template>
+                            </template>
+                            <template if:true={salesAOEmpty}>
+                                <p class="description-no-inventory">There are no sales add-ons at this time.</p>
+                            </template>
+                        </ul>
+                    </div>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+    </template>
+
+    <!-- may not be used -->
+    <template if:true={isCompact}>
+        <lightning-accordion allow-multiple-sections-open>
+            <lightning-accordion-section name="Rental Add-Ons" label="Rental Add-Ons">
+                <div class="addon-tiles">
+                    <ul class="slds-has-dividers_bottom-space">
+                        <template iterator:rentalitem={productDetails.rentalAddOns}>
+                            <li class="slds-item" key={rentalitem.value.catClass}>
+                                <article class="slds-tile slds-tile_board">
+                                    <c-sbr_3_0_add-on-item-cmp item-type={rentalType} item-data={rentalitem} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                                    <c-sbr_3_0_add-to-cart-cmp variant="mobile" record-id={recordId} object-api-name={objectApiName}></c-sbr_3_0_add-to-cart-cmp>
+                                </article>
+                            </li>
+                        </template>
+                    </ul>
+                </div>        
+            </lightning-accordion-section>
+            <lightning-accordion-section name="Sales Add-Ons" label="Sales Add-Ons">
+                <div class="addon-tiles">
+                    <ul class="slds-has-dividers_bottom-space">
+                        <template iterator:saleitem={productDetails.saleAddOns}>
+                            <li class="slds-item" key={saleitem.value.catClass}>
+                                <article class="slds-tile slds-tile_board">
+                                    <c-sbr_3_0_add-on-item-cmp item-type={salesType} item-data={saleitem} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                                    <c-sbr_3_0_add-to-cart-cmp variant="mobile" record-id={recordId} object-api-name={objectApiName}></c-sbr_3_0_add-to-cart-cmp>
+                                </article>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+
+    <template if:true={isMobileRental}>
+        <div class="addon-tiles slds-p-top_none">
+            <ul class="slds-has-dividers_bottom-space">
+                <template if:false={isRentalAOEmpty}>
+                    <template if:false={isRentalAvailEmpty}>
+                        <template iterator:rentalitem={productDetails.rentalAddOns}>
+                            <li class="slds-item" key={rentalitem.catClass}>
+                            <article class="slds-tile slds-tile_board">
+                                <c-sbr_3_0_add-on-item-cmp item-type={rentalType} item-data={rentalitem} record-id={recordId} object-api-name={objectApiName}
+                                chronos-enabled={chronosEnabled} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                            </article>
+                            </li>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={rentalAOEmpty}>
+                    <p class="description-no-inventory slds-p-around_small">There are no rental add-ons at this time.</p>
+                </template>
+            </ul>
+        </div>     
+    </template>
+
+    <template if:true={isMobileSales}>
+        <div class="addon-tabset">
+            <div class="addon-tiles">
+                <ul class="slds-has-dividers_bottom-space">
+                    <template if:false={isSalesAOEmpty}>
+                        <template if:false={isSalesAvailEmpty}>
+                            <template iterator:saleitem={productDetails.salesAddOns}>
+                                <li class="slds-item" key={saleitem.catClass}>
+                                    <article class="slds-tile slds-tile_board">
+                                        <c-sbr_3_0_add-on-item-cmp item-type={salesType} item-data={saleitem} record-id={recordId} object-api-name={objectApiName}
+                                        chronos-enabled={chronosEnabled} parent-qty={parentQty}></c-sbr_3_0_add-on-item-cmp>
+                                    </article>
+                                </li>
+                            </template>
+                        </template>
+                    </template>
+                    <template if:true={salesAOEmpty}>
+                        <p class="description-no-inventory slds-p-around_small">There are no sales add-ons at this time.</p>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </template>
+</template>

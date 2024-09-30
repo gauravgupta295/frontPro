@@ -1,0 +1,42 @@
+<template>
+    <div class="slds-card custom-card">
+        <div class="slds-card__header slds-p-top_medium custom-card__header">Send Email</div>
+        <template if:true={showSpinner}>
+            <div class="spinner-container">
+                <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+            </div>
+        </template>
+        <template if:false={showSpinner}>
+            <!-- Start - Email Body -->
+            <div class="slds-card__body slds-var-p-horizontal_large slds-var-m-bottom_x-large">
+                <div class="slds-grid slds-var-p-top_small">
+                    <div class="slds-col slds-size_1-of-5">Enter Recipients:</div>
+                    <div class="slds-col slds-size_4-of-5">
+                        <c-sbr_3_0_send-email-input-cmp onselection={handleToAddressChange}></c-sbr_3_0_send-email-input-cmp>
+                    </div>
+                </div>
+
+                <!-- Start - Email Actions and Attachment-->
+                <div if:true={files} class="attachment-container slds-var-m-top_x-large">
+                    <template for:each={files} for:item="file" for:index="index">
+                        <div key={file.contentVersionId} class="attachment">
+                            <lightning-pill label={file.name} onremove={handleRemove} data-id={file.contentVersionId} data-index={index}>
+                                <lightning-icon icon-name="doctype:attachment" size="xx-small" alternative-text="attach"></lightning-icon>
+                            </lightning-pill>
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-end action-container">
+                    <div class="btn-upload-file">
+                        <lightning-input type="file" name="fileUploader" accept={acceptedFormats} onchange={handleUploadFinished}></lightning-input>
+                    </div>
+                    <div class="btn-send-email">
+                        <lightning-button variant="brand" label="Send" title="send" onclick={handleSendEmail}></lightning-button>
+                    </div>
+                </div>
+                <!-- End - Email Actions and Attachment -->
+            </div>
+            <!-- End - Email Body -->
+        </template>
+    </div>
+</template>

@@ -1,0 +1,7 @@
+.tableContainer {
+    height: 300px;
+}
+
+.autoHeightTable{
+    height : auto;
+}

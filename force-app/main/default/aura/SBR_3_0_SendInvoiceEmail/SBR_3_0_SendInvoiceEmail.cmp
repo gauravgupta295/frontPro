@@ -1,0 +1,36 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId">
+
+
+<aura:attribute name="workOrderRecord" type="Object"/>
+<aura:attribute name="WorkOrder" type="Object"/> 
+<aura:attribute name="isCustomerEmail" type="Boolean" default="false"/> 
+<aura:attribute name="showChild" type="Boolean" default="false"/> 
+
+
+
+    <aura:html tag="style">
+        .closeIcon {
+            display:none !important;
+        }
+        .slds-modal{
+            display:none !important;
+        }      
+        .slds-backdrop{
+            display:none !important;
+        } 
+    </aura:html>
+
+    <force:recordData aura:id="oppRecordLoader"
+            recordId="{!v.recordId}"
+            targetRecord="{!v.WorkOrder}"
+            targetFields="{!v.workOrderRecord}"
+            recordUpdated="{!c.handleRecordUpdated}"
+            fields="Id,Account.E_mail_Address__c"
+    />
+
+
+<aura:if isTrue="{!v.showChild}">
+    <c:sbr_3_0_GenerateWOPDF recordId="{!v.recordId}" aura:id="sbr_3_0_GenerateWOPDF" sendEmail="true" onclose="{!c.closeModal}" customerEmail="{!v.isCustomerEmail}"></c:sbr_3_0_GenerateWOPDF>
+</aura:if>
+
+</aura:component>

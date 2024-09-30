@@ -1,0 +1,126 @@
+<!--
+FRONT : 9208 : Implemented new view for mobile screens
+-->
+<template>
+  <template if:true={isMobile}>
+    <template if:true={isLoading}>
+      <lightning-spinner class="spins" size="large"></lightning-spinner>
+    </template>
+
+    <c-sbr_3_0_mobile-screen props={mobileProps} title={lineItemName}>
+      <div class="mobile-main-panel">
+        <div
+          class="slds-button-group prod-inq-mob-group border-class"
+          role="group"
+        >
+          <button
+            class={editBtnClass}
+            value="Editor"
+            onclick={tabChangeHandler}
+            type="button"
+          >
+            Editor
+          </button>
+          <template if:false={isMiscItem}>
+            <!-- FRONT-14363 starts -->
+            <button
+              class={rateMatrixBtnClass}
+              value="Availability"
+              onclick={tabChangeHandler}
+              type="button"
+            >
+              Availability
+            </button>
+            <button
+              class={availabilityBtnClass}
+              value="Rate Matrix"
+              onclick={tabChangeHandler}
+              type="button"
+            >
+              Rate Matrix
+            </button>
+          </template>
+          <!-- FRONT-14363 ends -->
+        </div>
+      </div>
+      <!-- FRONT-14363  -->
+      <div class={editorDisplay}>
+        <lightning-layout>
+          <lightning-layout-item size="12">
+            <c-sbr_3_0_line-item-editor-cmp-frontline
+              line-id={lineId}
+              record-id={recordId}
+              group-id={selectedItemGroup}
+              total-requested-quantity={totalRequestedQuantity}
+              remaining-quantity={remainingQuantity}
+              filled-quantity={filledQuantity}
+              is-rental={isRental}
+              is-misc-item={isMiscItem}
+            ></c-sbr_3_0_line-item-editor-cmp-frontline>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <div class={rateMatrixDisplay}>
+        <lightning-layout>
+          <c-sbr_3_0_line-item-edit-availability-component
+            class="availability-comp slds-var-p-right_x-small slds-var-p-left_x-small"
+            product-cat={productCat}
+            location-info={locationInfo}
+          >
+          </c-sbr_3_0_line-item-edit-availability-component>
+        </lightning-layout>
+      </div>
+      <div class={availabilityDisplay}>
+        <lightning-layout>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none rateSection"
+            data-id="Rates"
+          >
+            <h2 class="slds-section__title slds-theme_shade">
+              <span class="slds-truncate slds-p-horizontal_small" title="Rates"
+                >Rates Qty: 1</span
+              >
+            </h2>
+            <template if:false={rates}>
+              <div>
+                <lightning-spinner
+                  class="spins"
+                  size="small"
+                ></lightning-spinner>
+              </div>
+            </template>
+
+            <c-sbr_3_0_rates-cmp
+              rates={rates}
+              item-qty={parentItemQty}
+              active-tab={activeTab}
+            ></c-sbr_3_0_rates-cmp>
+          </div>
+        </lightning-layout>
+      </div>
+
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <div>
+          <lightning-button
+            label={cancelLabel}
+            onclick={handleCancel}
+            class="neutral-button"
+          >
+          </lightning-button>
+        </div>
+        <div>
+          <lightning-button
+            label={saveLabel}
+            onclick={handleSubmit}
+            variant="brand"
+            disabled={disabled}
+            class="brand-button"
+          ></lightning-button>
+        </div>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+</template>
+<!--
+  END : FRONT
+  -->

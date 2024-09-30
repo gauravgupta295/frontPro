@@ -1,0 +1,94 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-30-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-page-header page-header-padding">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media media-wrapper">
+                        <div class="slds-media__figure">
+                            <lightning-icon 
+                                icon-name="standard:forecasts"
+                                alternative-text="Asset Inquiry"
+                                title="Asset Inquiry" 
+                                class="custom-forecasts"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="Asset Inquiry">
+                                            Asset Inquiry
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+                <div class="list-header-container">
+                    <c-sbr_3_0_asset-Inquiry-Header-cmp onlevelchange={handleLevelChangeEvent} ontoggleassetfilter={handleToggleAssetFilter} onsearchfilterchange={handleSearchFilterChange} ontoggleproductfilter={handleToggleProductFilter}>
+                    </c-sbr_3_0_asset-Inquiry-Header-cmp>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <lightning-layout>
+                    <lightning-layout-item size="12">
+                        <div class="scrollable-list-container">
+                            <c-sbr_3_0_asset-Inquiry-Product-Attribute-Filter-Main-Cmp onproductfilterchange={handleProductFilterChange}>
+                            </c-sbr_3_0_asset-Inquiry-Product-Attribute-Filter-Main-Cmp>
+
+                            <c-sbr_3_0_asset-Inquiry-Asset-Filter-Cmp onapplyassetattributefilter={handleApplyAssetAttributeFilterEvent}>
+                            </c-sbr_3_0_asset-Inquiry-Asset-Filter-Cmp>
+                        
+                            <c-sbr_3_0_asset-Inquiry-Asset-List-cmp onsearchfilterfieldsetevent={handleSearchFieldSetEvent} onassetselected={handleAssetRowSelection}>
+                            </c-sbr_3_0_asset-Inquiry-Asset-List-cmp>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout> 
+    </template>
+    
+    <!-- Asset Availability Panel Modal -->
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse">
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    </svg>
+                    <span class="slds-assistive-text">Cancel and close</span>
+                </button>
+                <!-- Modal Header -->
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Asset Availability</h1>
+                </div>
+                <!-- Modal Body -->
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c-sbr_3_0_asset-Inquiry-Asset-Availablity-Panel-Cmp onbranchchange={handleBranchChange}>
+                    </c-sbr_3_0_asset-Inquiry-Asset-Availablity-Panel-Cmp>
+                </div>
+                <!-- Modal Footer -->
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={isMobile}>
+        <!-- Mobile component to be incorporated here -->
+    </template>
+</template>

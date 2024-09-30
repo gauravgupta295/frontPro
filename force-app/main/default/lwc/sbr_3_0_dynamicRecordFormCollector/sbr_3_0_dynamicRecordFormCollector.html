@@ -1,0 +1,193 @@
+<template>
+  <div>
+    <template if:false={createReservation}>
+      <template if:true={callCreateOrder}>
+        <!-- Added for FRONT-13995 -->
+        <div class={spinnerClass} lwc:if={isLoading}>
+          <lightning-spinner
+            lwc:if={isLoading}
+            variant="brand"
+            alternative-text="Loading"
+            data-message={spinnerMessage}
+          ></lightning-spinner>
+        
+        </div>
+
+        <div
+          class="dynamic-form-footer"
+          lwc:if={showButtons}
+          data-collector-id={objectApiName}
+        >
+          <!-- <lightning-button
+        name="Cancel"
+        label="Cancel"
+        onclick={handleCancelClick}
+      ></lightning-button> -->
+
+          <template if:true={showUpdateTotalsFooter}>
+            <!-- START FRONT - 13994 -->
+            <div>
+              <button
+                class="slds-button slds-button_neutral cancel-button"
+                value="Cancel"
+                onclick={handleCloseClick}
+              >
+                Close
+              </button>
+              <button
+                class="slds-button slds-button_neutral save-button"
+                value="Save"
+                onclick={handleRetryClick}
+              >
+                Retry
+              </button>
+            </div>
+          </template>
+          <!--Start for Front-13084-->
+          <template lwc:if={isContract}>
+            <button
+            class="slds-button slds-button_neutral cancel-button"
+            value="Cancel"
+            onclick={handleCancelClick}
+          >
+            {cancelButtonText}
+          </button>
+        <lightning-button
+        variant="brand"
+        label={saveButtonText}
+        title="Create Contract"
+        disabled = "true"
+    >
+    </lightning-button>
+          </template>
+          <template lwc:else>
+          <!--End for Front-13084-->
+          <template if:false={showUpdateTotalsFooter}>
+            <!-- END FRONT - 13994 -->
+            <template lwc:if={hasRentalManId}>
+              <button
+                class="slds-button slds-button_neutral cancel-button"
+                value="Cancel"
+                onclick={handleCancelClick}
+              >
+                {cancelButtonText}
+              </button>
+              <button
+                class="slds-button slds-button_neutral save-button"
+                value="Save"
+                onclick={handleSaveClick}
+              >
+                {saveButtonText}
+              </button>
+            </template>
+            <template lwc:else>
+              <button
+                class="slds-button slds-button_neutral save-button"
+                value="Save"
+                onclick={handleSaveClick}
+              >
+                {saveButtonText}
+              </button>
+              <button
+                class="slds-button slds-button_neutral cancel-button"
+                value="Cancel"
+                onclick={handleCancelClick}
+              >
+                {cancelButtonText}
+              </button>
+            </template>
+          </template>
+        </template> <!--Added for 13084-->
+          <!--<button
+        class="slds-button slds-button_neutral save-button"
+        value="Save"
+        onclick={handleSaveClick}
+      >
+        {saveButtonText}
+      </button>
+        <button
+          class="slds-button slds-button_neutral cancel-button"
+          value="Cancel"
+          onclick={handleCancelClick}
+        >
+          Cancel
+        </button>  -->
+          <!-- <lightning-button
+        class="slds-var-p-left_small"
+        name="Save"
+        label="Save"
+        variant="brand"
+        onclick={handleSaveClick}
+      ></lightning-button> -->
+          <!--<button
+        class="slds-button slds-button_neutral save-button"
+        value="Save"
+        onclick={handleSaveClick}
+      >
+        Save
+      </button>-->
+        </div>
+      </template>
+      <!-- Added for FRONT-13995 -->
+      <!-- START : FRONT-13995 -->
+      <template if:false={callCreateOrder}>
+        <lightning-card>
+          <lightning-icon
+            icon-name="utility:error"
+            alternative-text="Error!"
+            variant="error"
+            title="error variant large"
+            size="large"
+            class="slds-align_absolute-center"
+          ></lightning-icon>
+          <p class="slds-align_absolute-center" style="height: 4rem">
+            {errMsg}
+          </p>
+          <div class="slds-float_right slds-p-around_x-small">
+            <lightning-button
+              label="Close"
+              onclick={closeAuraAction}
+              class="button-color-close slds-m-left_x-small"
+            ></lightning-button>
+          </div>
+        </lightning-card>
+      </template>
+      <!-- END : FRONT-13995 -->
+    </template>
+  </div>
+  <template if:true={createReservation}>
+    <div class="record-form-collector-container">
+      <template if:false={paymentProcessing}>
+        <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+          <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+              title="Close" onclick={closeAuraAction}>
+              <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                size="small"></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <div class="slds-modal__content slds-var-p-around_medium">
+              <div class="spinnermodal">
+                <div class="slds-spinner_container">
+                  <div role="status" class="slds-spinner slds-spinner_large">
+                    <span class="slds-assistive-text">Loading</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </template>
+  
+      <template if:true={paymentProcessing}>
+        <c-sbr_3_0_payment-processing recid={recordId} paymentprocessing=true payment-method={paymentOptionSelected}
+          deposit-amount={depositAmountValue} terminal-value={terminalValue}
+          payment-method-related-data={paymentMethodRelatedData}
+          transaction-id={transactionId} is-from-create-reservation={createReservation} object-api-name={objectApiName}
+          record-details={recordDetails} error-message={errorMessage} is-api-call-complete={isApiCallComplete}></c-sbr_3_0_payment-processing>
+      </template>
+    </div>
+  </template>
+</template>

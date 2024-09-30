@@ -1,0 +1,21 @@
+table {
+    border-collapse: collapse;
+    display: block;
+    height: 435px;
+    overflow-y: scroll;
+    white-space: nowrap;
+    table-layout: fixed;
+}
+
+td, th {
+    border: 1px solid black;
+    border-collapse: collapse;
+    padding: 0.25rem;
+}
+
+th {
+    background-color: white;
+    position: sticky;
+    top: 0; /* Don't forget this, required for the stickiness */
+    z-index: 9999;
+}

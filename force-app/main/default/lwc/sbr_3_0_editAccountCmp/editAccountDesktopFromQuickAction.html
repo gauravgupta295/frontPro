@@ -1,0 +1,371 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <div class={searchModalComputedClasses}>
+    <div if:true={isLoading}>
+      <lightning-spinner
+        variant="brand"
+        size="medium"
+        alternative-text="loading..."
+      ></lightning-spinner>
+    </div>
+    <div class="slds-modal__container fullWidth">
+      <button
+        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+        title="Close"
+        onclick={handleCancelClick}
+      >
+        <lightning-icon
+          icon-name="utility:close"
+          alternative-text="close"
+          variant="inverse"
+          size="small"
+        ></lightning-icon>
+        <span class="slds-assistive-text">{label.CLOSE}</span>
+      </button>
+      <div class="slds-modal__header">
+        <h1
+          id="edit-account-modal-heading"
+          class="slds-modal__title slds-hyphenate"
+        >
+          {headerLabel}
+        </h1>
+      </div>
+      <div
+        class="slds-modal__content slds-p-around_medium"
+        id="edit-modal-content"
+      >
+        <div class="general-header">
+          <h3 class="slds-section__title slds-var-p-left_small">
+            {informationHeader}
+          </h3>
+        </div>
+
+        <div if:true={showProspectForm}>
+          <lightning-layout-item
+            size="12"
+            large-device-size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            class="slds-var-p-around_small"
+          >
+            <lightning-layout multiple-rows="">
+              <lightning-layout-item
+                size="12"
+                class="slds-var-p-around_x-small"
+              >
+                <lightning-input
+                  type="text"
+                  label={label.ACCOUNTNAME}
+                  required
+                  name="Name"
+                  value={accountRecord.Name}
+                  data-field
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+              </lightning-layout-item>
+            </lightning-layout>
+            <h4 class="slds-var-p-top_x-small">
+              <abbr class="slds-required" title="required">*</abbr>
+              {label.CONTACTINFO}
+            </h4>
+            <lightning-layout multiple-rows="">
+              <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                <lightning-input
+                  label={label.PHONE}
+                  name="Phone"
+                  type="Tel"
+                  class="prospectPhone"
+                  value={accountRecord.Phone}
+                  data-field="Phone"
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                <lightning-input
+                  label={label.ACC_EMAIL}
+                  name="E_mail_Address__c"
+                  class="prospectEmail"
+                  value={accountRecord.E_mail_Address__c}
+                  data-field
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout multiple-rows="">
+              <lightning-layout-item
+                size="12"
+                class="slds-var-p-around_x-small"
+              >
+                <lightning-textarea
+                  name="Comments__c"
+                  label={label.COMMENTS}
+                  data-field
+                  onblur={handleFieldFocusOut}
+                  value={accountRecord.Comments__c}
+                ></lightning-textarea>
+              </lightning-layout-item>
+            </lightning-layout>
+          </lightning-layout-item>
+          <div class="general-header">
+            <h3 class="slds-section__title slds-var-p-left_small">
+              {label.ADDRESSINFO}
+            </h3>
+          </div>
+          <lightning-layout-item
+            size="12"
+            large-device-size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            class="slds-var-p-around_small"
+          >
+            <div class="addressFieldCss">
+              <!-- START FRONT-12393 -->
+              <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                <div class="slds-col billingaddress-header">
+                  <legend
+                    class="slds-form-element__label slds-form-element__legend"
+                  >
+                    {label.STREET_ADDRESS}&nbsp;&nbsp;
+                  </legend>
+                  <lightning-helptext
+                    class="helpText-address"
+                    content={label.SELECT_STREET_ADDRESS}
+                  >
+                  </lightning-helptext>
+                </div>
+                <lightning-input-address
+                  variant="label-hidden"
+                  address-lookup-placeholder={label.SEARCH_ADDRESS}
+                  street-label={label.SHIP_STREET}
+                  city-label={label.SHIP_CITY}
+                  country-label={label.SHIP_COUNTRY}
+                  province-label={label.SHIP_STATE}
+                  postal-code-label={label.SHIP_ZIPCODE}
+                  street={accountRecord.ShippingStreet}
+                  city={accountRecord.ShippingCity}
+                  country-options={countryOptions}
+                  country={accountRecord.ShippingCountryCode}
+                  province={accountRecord.ShippingStateCode}
+                  province-options={stateOptions}
+                  postal-code={accountRecord.ShippingPostalCode}
+                  required
+                  show-address-lookup
+                  data-field
+                  data-name="ShippingAddress"
+                  onchange={handleFieldChange}
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input-address>
+              </div>
+            </div>
+            <!-- END FRONT-12393 -->
+          </lightning-layout-item>
+        </div>
+        <div if:true={showNonCreditForm}>
+          <lightning-layout-item
+            size="12"
+            large-device-size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            class="slds-var-p-around_small"
+          >
+            <lightning-layout multiple-rows="">
+              <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                <lightning-input
+                  type="text"
+                  label={label.CONFIRSTNAME}
+                  name="FirstName"
+                  onchange={handleFieldChange}
+                  max-length="255"
+                  required
+                  value={contactRecord.FirstName}
+                  data-field
+                  data-context="Contact"
+                  onblur={handleFieldFocusOut}
+                ></lightning-input>
+                <lightning-input
+                  label={label.CONLASTNAME}
+                  name="LastName"
+                  onchange={handleFieldChange}
+                  max-length="255"
+                  required
+                  value={contactRecord.LastName}
+                  data-field
+                  data-context="Contact"
+                  onblur={handleFieldFocusOut}
+                ></lightning-input>
+                <lightning-input
+                  type="text"
+                  label={label.ACCOUNTNAME}
+                  name="Name"
+                  placeholder="Last Name, First Name"
+                  onchange={handleFieldChange}
+                  max-length="255"
+                  required
+                  value={accountRecord.Name}
+                  data-field
+                  onblur={handleFieldFocusOut}
+                  disabled
+                ></lightning-input>
+                <lightning-input
+                  label={label.PHONE}
+                  name="Phone"
+                  type="Tel"
+                  minlength="10"
+                  maxlength="10"
+                  value={accountRecord.Phone}
+                  data-field="Phone"
+                  class="nonCreditPhone"
+                  required
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+                <lightning-input
+                  label={label.ACC_EMAIL}
+                  name="E_mail_Address__c"
+                  value={accountRecord.E_mail_Address__c}
+                  class="nonCreditEmail"
+                  data-field
+                  required
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                <lightning-combobox
+                  label={label.DLSTATE}
+                  name="Driver_s_License_State__c"
+                  options={dlOptions}
+                  value={accountRecord.Driver_s_License_State__c}
+                  data-field
+                  required
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-combobox>
+                <lightning-input
+                  label={label.DLNUMBER}
+                  name="Drivers_License__c"
+                  value={accountRecord.Drivers_License__c}
+                  data-field
+                  required
+                  onblur={handleFieldFocusOut}
+                >
+                </lightning-input>
+                <lightning-input
+                  type="date"
+                  name="BirthDate__c"
+                  label={label.DOB}
+                  required
+                  title="DOB"
+                  onchange={handleFieldChange}
+                  onblur={handleFieldFocusOut}
+                  max={today}
+                  value={accountRecord.BirthDate__c}
+                  date-style="short"
+                  data-bad-input-message={label.DOBERRMSG}
+                  message-when-range-underflow="Date has to be from 1950s to current year."
+                  message-when-range-overflow={dateOfBirthOverFlowMessage}
+                ></lightning-input>
+                <lightning-textarea
+                  name="Comments__c"
+                  label={label.COMMENTS}
+                  onblur={handleFieldFocusOut}
+                  data-field
+                  value={accountRecord.Comments__c}
+                ></lightning-textarea>
+              </lightning-layout-item>
+            </lightning-layout>
+          </lightning-layout-item>
+          <div class="general-header">
+            <h3 class="slds-section__title slds-var-p-left_small">
+              {label.BILLINGINFO}
+            </h3>
+          </div>
+          <lightning-layout-item
+            size="12"
+            large-device-size="12"
+            medium-device-size="6"
+            small-device-size="12"
+            class="slds-var-p-around_small"
+          >
+            <lightning-layout multiple-rows>
+              <lightning-layout-item
+                size="12"
+                class="slds-var-p-around_x-small"
+              >
+                <div class="addressFieldCss">
+                  <!-- START FRONT-12393 -->
+                  <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                    <div class="slds-col billingaddress-header">
+                      <legend
+                        class="slds-form-element__label slds-form-element__legend"
+                      >
+                        {label.BILL_ADDRESS}&nbsp;&nbsp;
+                      </legend>
+                      <lightning-helptext
+                        class="helpText-address"
+                        content={label.SELECT_BILL_ADDRS}
+                      >
+                      </lightning-helptext>
+                    </div>
+                    <lightning-input-address
+                      variant="label-hidden"
+                      address-lookup-placeholder={label.SEARCH_ADDRESS}
+                      street-label={label.BILL_STREET}
+                      city-label={label.BILL_CITY}
+                      country-label={label.BILL_COUNTRY}
+                      province-label={label.BILL_STATE}
+                      postal-code-label={label.BILL_POSTALCODE}
+                      street={accountRecord.BillingStreet}
+                      city={accountRecord.BillingCity}
+                      country-options={countryOptions}
+                      province-options={stateOptions}
+                      postal-code={accountRecord.BillingPostalCode}
+                      country={accountRecord.BillingCountryCode}
+                      province={accountRecord.BillingStateCode}
+                      required
+                      show-address-lookup
+                      data-field
+                      data-name="BillingAddress"
+                      onchange={handleFieldChange}
+                      onblur={handleFieldFocusOut}
+                    >
+                    </lightning-input-address>
+                  </div>
+                </div>
+                <!-- END FRONT-12393 -->
+              </lightning-layout-item>
+            </lightning-layout>
+          </lightning-layout-item>
+        </div>
+      </div>
+      <div class="slds-modal__footer stickyFooter">
+        <lightning-button
+          label={label.CANCEL}
+          class="neutral-button"
+          onclick={handleCancelClick}
+        ></lightning-button>
+        <lightning-button
+          variant="brand"
+          label={label.SAVE}
+          class="brand-button slds-var-p-left_small"
+          onclick={handleSaveClick}
+        ></lightning-button>
+      </div>
+    </div>
+  </div>
+  <!--FRONT-4466-->
+
+  <template lwc:if={duplicateResolverPayload}>
+    <c-sbr_3_0_duplicate-record-resolver
+      props={duplicateResolverPayload}
+      onresolveselection={handleDuplicateResolveClick}
+      onresolvecancel={handleDuplicateCancelClick}
+      screenname={screenName}
+      onhardstopcancel={handleDuplicateHardStopCancel}
+    ></c-sbr_3_0_duplicate-record-resolver>
+  </template>
+</template>

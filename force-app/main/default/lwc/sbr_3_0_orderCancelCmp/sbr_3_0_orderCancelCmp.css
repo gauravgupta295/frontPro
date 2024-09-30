@@ -1,0 +1,12 @@
+.slds-modal__close{
+    display:none !important;
+}
+.successbackground{
+    background: #067717;
+}
+.exceptionfont{
+    font-size: 16px;
+}
+.warningfont{
+    font-size: 16px;
+}

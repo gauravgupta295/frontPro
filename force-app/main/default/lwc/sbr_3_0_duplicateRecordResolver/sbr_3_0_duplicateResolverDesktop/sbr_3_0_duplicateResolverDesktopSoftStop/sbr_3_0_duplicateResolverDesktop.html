@@ -1,0 +1,224 @@
+<template>
+  <section
+    role="dialog"
+    aria-labelledby="dup-heading"
+    aria-modal="true"
+    aria-describedby="dup-content"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container large-modal-content">
+      <header class="slds-modal__header">
+        <!-- sldsValidatorIgnoreNextLine -->
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          title="Close"
+          onclick={handleCloseModal}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small"
+          ></lightning-icon>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="dup-heading" class="slds-text-heading_medium slds-hyphenate">
+          {header}
+        </h2>
+      </header>
+      <div class="slds-modal__content" id="dup-content">
+        <div lwc:if={isLoading} class="spinner">
+          <lightning-spinner
+            class="spins"
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+
+        <lightning-layout
+          horizontal-align="space"
+          class="slds-var-p-around_large"
+          multiple-rows
+        >
+          <lightning-layout-item size="12">
+            <h2 class="attribute-label">{totalDuplicateSubHeading}</h2>
+          </lightning-layout-item>
+          <lightning-layout-item
+            size="12"
+            class="slds-var-p-left_medium slds-var-p-vertical_small"
+          >
+            <ul class="slds-var-p-left_medium existing-account-list">
+              <li>{duplicateRecordMessage}</li>
+            </ul>
+          </lightning-layout-item>
+        </lightning-layout>
+      
+        <lightning-layout
+          horizontal-align="space"
+          multiple-rows
+          class="slds-var-p-around_large">
+          <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+            <h2 class="attribute-label">{proceedLabel}</h2>
+          </lightning-layout-item> 
+          <template for:each={methodOptions} for:item="method">
+            <lightning-layout-item
+              size="12"
+              key={method.value}
+              class="slds-var-p-vertical_small"
+            >
+              <span class="slds-radio">
+                <input
+                  name="duperesolveselection"
+                  id={method.value}
+                  type="radio"
+                  value={method.value}
+                  onchange={handleResolveChange}
+                  checked={method.checked}
+                />
+                <label class="slds-radio__label" for={method.value}>
+                  <span class="slds-radio_faux"></span>
+                  <span
+                    class="slds-form-element__label slds-text-heading--label"
+                    >{method.label}</span
+                  >
+                  <p
+                    class="slds-var-m-left_xx-large slds-var-p-vertical_x-small"
+                  >
+                    {method.info}
+                  </p>
+                </label>
+              </span>
+            </lightning-layout-item>
+          </template>
+        </lightning-layout>
+        <lightning-layout lwc:if={duplicateRecords} multiple-rows>
+          <lightning-layout-item
+            size="12"
+            class="duplicate-record-list-layout-item"
+          >
+            <div class="slds-var-p-around_medium duplicate-record-list-header">
+              {duplicateRecordListHeader}
+            </div>
+          </lightning-layout-item>
+          <lightning-layout-item size="12">
+            <table
+              class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped"
+              aria-label=" Example headless table of Opportunities with cell content wrapped "
+            >
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <th class="action-cell" scope="col" title="action"></th>
+                  <template for:each={columns} for:item="column">
+                    <th
+                      class={column.classes}
+                      scope="col"
+                      key={column.fieldName}
+                    >
+                      <div
+                        class="slds-var-p-vertical_x-small"
+                        title={column.label}
+                      >
+                        {column.label}
+                      </div>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <template
+                  for:each={duplicateRecords}
+                  for:item="duplicateRecord"
+                >
+                  <tr class="slds-hint-parent" key={duplicateRecord.Id}>
+                    <td data-label="action" scope="row" class="action-cell">
+                      <div class="" title="Select">
+                        <span class="slds-radio">
+                          <input
+                            name={duplicateRecord.Name}
+                            id={duplicateRecord.Id}
+                            type="radio"
+                            value={duplicateRecord.Id}
+                            checked={duplicateRecord.isSelected}
+                            onchange={handleRecordSelectionChange}
+                            disabled={duplicateRecord.isDisabled}
+                          />
+                          <label
+                            class="slds-radio__label"
+                            for={duplicateRecord.Id}
+                          >
+                            <span class="slds-radio_faux"></span>
+                            <span
+                              class="slds-form-element__label slds-text-heading--label"
+                            ></span>
+                          </label>
+                        </span>
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Name">
+                      <div class="" title={duplicateRecord.Name}>
+                        {duplicateRecord.Name}
+                      </div>
+                    </td>
+
+                    <td class="slds-cell-wrap" data-label="Status">
+                      <div
+                        class={duplicateRecord.computedStatusClasses}
+                        title={duplicateRecord.Status__c}
+                      >
+                        {duplicateRecord.Status__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Phone">
+                      <div class="" title={duplicateRecord.Phone}>
+                        {duplicateRecord.Phone}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Billing Address">
+                      <div class="" title={duplicateRecord.BillingAddress}>
+                        {duplicateRecord.BillingAddress}
+                      </div>
+                    </td>
+
+                    <td class="slds-cell-wrap" data-label="D/L State">
+                      <div
+                        class=""
+                        title={duplicateRecord.Driver_s_License_State__c}
+                      >
+                        {duplicateRecord.Driver_s_License_State__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="D/L Number">
+                      <div class="" title={duplicateRecord.Drivers_License__c}>
+                        {duplicateRecord.Drivers_License__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Email">
+                      <div class="" title={duplicateRecord.E_mail_Address__c}>
+                        {duplicateRecord.E_mail_Address__c}
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <footer class="slds-modal__footer">
+        <lightning-button
+          label="Cancel"
+          onclick={handleCloseModal}
+          class="neutral-button"
+        ></lightning-button>
+        <lightning-button
+          label="Continue"
+          onclick={handleContinueClick}
+          variant="brand"
+          disabled={isContinueButtonDisabled}
+          class="slds-var-p-left_small brand-button"
+        ></lightning-button>
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

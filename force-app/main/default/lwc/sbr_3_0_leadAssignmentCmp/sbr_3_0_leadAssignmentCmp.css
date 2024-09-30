@@ -1,0 +1,69 @@
+.title {
+    font-size: 16px;
+    background-color: white;
+    display: flex;
+    font-weight: 700;
+    line-height: 50px;
+    width: 50vh;
+}
+
+.mobile-header {
+    background-color: white;
+    justify-content: flex-start;
+}
+
+.flex-card{
+    display: flex;
+
+}
+
+.mobile-header-title{
+font-size: 16px;
+}
+
+
+.brand-button {
+        --slds-c-button-brand-color-background: #25683E;
+        --slds-c-button-brand-color-background-hover: rgb(25,78,45,1);
+        --slds-c-button-brand-color-border:#25683E;
+        --slds-c-button-brand-color-border-hover:rgb(25,78,45,1);
+        --slds-c-button-brand-text-color-active: #fff;
+				--slds-c-button-brand-text-color-hover: #fff;
+    }
+
+.reverse-neutral-button {
+				background-color: #25683E;
+				color: #fff;
+				border-color: #25683E;
+				height: 2.5em;
+		border-radius: 4px;
+    }
+
+.neutral-button {
+        --slds-c-button-text-color:  #25683E;
+        --slds-c-button-neutral-color-border: #AEAEAE;
+        --slds-c-button-neutral-color-border-hover: #AEAEAE;
+    }
+
+
+.alert-margin{
+    margin-top: 11%;
+}
+
+.my-card {
+    display: block;
+}
+
+.sbr-radio-button {
+    margin-left: 2%;
+    margin-right: 1%;
+}
+
+.sbr-details {
+    margin-left: 3%;
+    margin-top : 3%;
+}
+
+.margin-2_card{
+    margin-top: 2px;
+}

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+ <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordAction</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__GlobalAction</target>
+    </targets>
+    <targetConfigs>
+       <targetConfig targets="lightning__FlowScreen">
+            <property name="skiptoSummaryPageLabor" type="Boolean" label="Skip to Summary Labor" role="outputOnly" />
+            <property name="labors" type="@salesforce/schema/WorkOrderLineItem[]" label="OutSide Labor Records" role="outputOnly"/>
+            <property name="baseUrlFromFlow" type="String" label="Enter Base URL" role="inputOnly"/>
+            <property name="defaultLaborCode" type="String" label="Default Labor Code" role="inputOnly"/>
+            <property name="recordToBeDeleted" label="RecordId to Delete" type="String"  role="inputOnly"/>
+            <property name="expenseToLoc" type="String" label="Bill Cust Or Loc"/>
+        </targetConfig>
+    </targetConfigs>
+
+</LightningComponentBundle>

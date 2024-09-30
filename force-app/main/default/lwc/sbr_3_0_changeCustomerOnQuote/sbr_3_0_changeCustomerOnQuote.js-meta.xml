@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Change Customer On Quote Custom Cmp</masterLabel>
+    <description>Component to gather fields to create a quote</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="accountId" label="Account Id" type="String" />
+          <property
+        name="officeAccountId"
+        label="Office Account Id"
+        type="String"
+      />
+          <property name="quoteName" label="Quote Name" type="String" />
+          <property
+        name="orderedBy"
+        label="Ordered By (Contact)"
+        type="String"
+      />
+          <property name="useJobSite" label="Use Job Site" type="Boolean" />
+          <property
+        name="externalQuote"
+        label="External Quote Used"
+        type="Boolean"
+      />
+          <property
+        name="accountWhere"
+        label="Where clause for account look up"
+        type="String"
+      />
+          <property
+        name="quoteRecordType"
+        label="Record Type for Quote"
+        type="String"
+      />
+          <property
+        name="currentUser"
+        label="Current User"
+        type='@salesforce/schema/User'
+      />
+          <property
+        name="accountRecordType"
+        label="Record Type for Account"
+        type="String"
+      />
+       <!--Start FRONT-16849 -->
+      <property
+      name="flowName"
+      label="Flow Name"
+      type="String"
+    />
+     <!--End FRONT-16849 -->
+          <!-- below property will be used in future sprints, thus leaving it as is. -->
+          <property name="showNewContact" label="Show Contact" type="Boolean" />
+          <!--Below  property added for the story#19214 by Gopal Raj-->
+          <property name="hideExternalTool" label="Hide External Tool" type="Boolean" />
+      </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

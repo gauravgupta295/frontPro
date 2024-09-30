@@ -1,0 +1,131 @@
+<template>
+    <template if:true={showSpinner}>
+        <div class="slds-modal__container">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                title="Close" onclick={closeModal}>
+                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                    size="small"></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+            </button>
+            <div class="slds-modal__content slds-var-p-around_medium">
+                <div class="spinnermodal">
+                    <div class="slds-spinner_container">
+                        <div role="status" class="slds-spinner slds-spinner_large">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+    <template if:true={showPaymentModal}>
+        <template class="slds-m-left_large slds-m-right_large" if:false={paymentProcessing}>
+            <c-sbr_3_0_mobile-screen title={label.header}>
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium" style="font-size: 14px;">
+                        <div class="slds-grid slds-wrap">
+                            </br>
+                            <div class="slds-size_1-of-1 slds-p-top_small">
+                                <div class="slds-grid slds-wrap">
+                                    <div class="slds-col slds-size_1-of-2">
+                                        <span><label for="changeDueId">Amount Due</label></span>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                        <span>{invoiceAmountUI}</span>
+                                    </div>
+                                </div>
+                                </br>
+                            </div>
+
+                            <div class="slds-size_2-of-2 slds-p-top_small">
+                                <abbr title="required" class="slds-required">* </abbr> <label
+                                    for="payid">{label.PaymentMethod}</label>
+                                <lightning-combobox id="paymentId" class="paymentClass" value={paymentOptionSelected}
+                                    options={paymentOptions} variant="label-hidden" onchange={handlePaymentMethod}
+                                    required></lightning-combobox>
+                            </div>
+
+                            <template if:true={isPaymentCash}>
+                                <div class="slds-size_3-of-3 slds-p-top_small">
+                                    <abbr title="required" class="slds-required">* </abbr><label
+                                        for="cashid">{label.CashReceived}</label>
+                                    <lightning-input id="cashid" type="number" formatter="currency" step=".01"
+                                        class="cashReceivedClass" value={cashReceivedValue} variant="label-hidden"
+                                        required onblur={handleCashChange}></lightning-input>
+                                </div>
+                            </template>
+
+                            <div class="slds-size_4-of-4 slds-p-top_small">
+                                <abbr title="required" class="slds-required">* </abbr><label for="depid">Payment
+                                    Amount</label>
+                                <lightning-input id="depid" type="number" formatter="currency"
+                                    class="invoiceAmountClass" value={invoiceAmountValue} variant="label-hidden"
+                                    data-recid="amountCollected" onchange={handleAmountChange} step=".01"
+                                    required></lightning-input>
+                                    <template if:true={isPaymentCash}>
+                                        <div class="slds-border_bottom slds-p-top_medium"></div>
+                                        </br>
+                                    </template>
+                            </div>
+
+                            <template if:true={isTerminalVisible}>
+                                <div class="slds-size_5-of-5 slds-p-top_small">
+                                    <abbr title="required" class="slds-required">* </abbr><label
+                                        for="terminalId">{label.Terminal}</label>
+                                    <lightning-combobox id="terminalId" class="terminalClass" value={terminalValue}
+                                        options={terminalOptions} variant="label-hidden" onchange={handleTerminal}
+                                        required></lightning-combobox>
+                                </div>
+                            </template>
+
+                            <template if:true={isPaymentCheck}>
+                                <div class="slds-size_6-of-6 slds-p-top_small">
+                                    <abbr title="required" class="slds-required">* </abbr><label
+                                        for="CheckId">{label.CheckNumber}</label>
+                                    <lightning-input id="CheckId" class="checkClass" pattern="^[A-Za-z0-9]{1,9}$"
+                                        message-when-pattern-mismatch="Please specify valid check number" maxlength="9"
+                                        value={checkValue} variant="label-hidden" onchange={handleCheckChange}
+                                        required></lightning-input>
+                                </div>
+                            </template>
+
+                            <template if:true={isPaymentCash}>
+                                <div class="slds-size_6-of-6">
+                                    <div class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-2 slds-p-top_xx-small">
+                                            <span><b><label for="changeDueId">{label.ChangeDue}</label></b></span>
+                                        </div>
+                                        <div
+                                            class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_medium">
+                                            <span><b>{cashDueValue}</b></span>
+                                        </div>
+                                    </div>
+                                    </br>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <footer class="slds-modal__footer slds-p-bottom_medium">
+                        <lightning-button type="previous" label="Previous" variant="brand" onclick={previousModal}
+                            class=" button1 cancel-button slds-float_left"></lightning-button>
+                        <lightning-button type="submit" label="Confirm" variant="brand" onclick={handleSubmit}
+                            class="button success-button slds-float_right"></lightning-button>
+                    </footer>
+                </div>
+            </c-sbr_3_0_mobile-screen>
+        </template>
+    </template>
+    <template if:true={paymentProcessing}>
+            <c-sbr_3_0_payment-processing recid={recordId} uncollectedprocessing={isuncollectedProcessing} 
+            payment-method={paymentOptionSelected} deposit-amount={invoiceAmount} terminal-value={terminalValue} 
+            onhandleskip={closeModal} invoice-related-data={invoiceRelatedData} transaction-id={transactionId}
+            is-api-call-complete={isApiCallComplete} error-message={errorMessage} record-details={rec}>
+        </c-sbr_3_0_payment-processing>
+    </template>
+    </div>
+</template>

@@ -1,0 +1,48 @@
+:host {
+    --slds-c-accordion-summary-color-background : rgb(243, 243, 243);    
+    --slds-c-accordion-heading-font-size : 0.95rem;
+  }
+
+
+.main-panel, .side-panel, .mobile-main-panel{
+    height: 100%;
+}
+.max-width-ctr{
+    max-width: 1940px;
+    margin: 0 auto;
+}
+.line-items{
+    display: none;
+}
+.line-items.show{
+    display: block;
+}
+.cust-info.show {
+    display: block;
+}
+.cust-info {
+    display: none;
+}
+.HeadlineCSS{
+    text-decoration: solid;
+    font-size: large;
+    font-weight: bold;
+}
+.slds-accordian_summary-action{
+    background-color: white;
+}
+.totalCSS{
+    background-color: lightgrey;
+    font-size: larger;
+    font-weight: bold;
+}
+
+.table-container {
+    min-height: 0px;
+    overflow: auto;
+}
+
+.btn-width {
+    min-width: 50vw;
+    overflow: auto;
+}

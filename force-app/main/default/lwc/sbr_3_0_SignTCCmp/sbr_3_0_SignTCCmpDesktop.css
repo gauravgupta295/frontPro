@@ -1,0 +1,26 @@
+label {
+    font-size: 12px;
+  }
+  .font-14-px {
+    font-size: 14px;
+  }
+  
+  .font-weight-700 {
+    font-weight: 700;
+  }
+  
+  .disabled-method-section {
+    opacity: 0.7;
+  }
+  
+  .contact-attribute {
+    line-height: 32px;
+  }
+  
+  .selected-contact {
+    background-color: #e5e5e5;
+  }
+  
+  .contact-attribute-label {
+    margin-bottom: 4px;
+  }

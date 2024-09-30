@@ -1,0 +1,70 @@
+<template>
+  <div if:true={chronosEnabled}>
+    <template if:true={badge1}>
+      <span class="slds-badge pending-badge1">
+        <span class="slds-badge__icon slds-badge__icon_left">
+          <lightning-icon
+            icon-name="utility:check"
+            size="x-small"
+          ></lightning-icon>
+        </span>
+        Book it. Available to Promise.
+      </span>
+    </template>
+
+    <template if:true={badge2}>
+      <span class="slds-badge pending-badge2">
+        <span class="slds-badge__icon slds-badge__icon_left">
+          <lightning-icon
+            icon-name="utility:warning"
+            size="x-small"
+          ></lightning-icon>
+        </span>
+        Caution! Not Available to Promise.
+      </span>
+    </template>
+
+    <template if:true={badge3}>
+      <span class="slds-badge pending-badge3">
+        <span class="slds-badge__icon slds-badge__icon_left">
+          <lightning-icon
+            icon-name="utility:warning"
+            size="x-small"
+          ></lightning-icon>
+        </span>
+        Warning. No Inventory Near Job Site.
+      </span>
+    </template>
+
+    <template if:true={badge4}>
+      <span class="slds-badge pending-badge3">
+        <span class="slds-badge__icon slds-badge__icon_left">
+          <lightning-icon
+            icon-name="utility:warning"
+            size="x-small"
+          ></lightning-icon>
+        </span>
+        Warning. No Inventory Near Job Site.
+      </span>
+    </template>
+  </div>
+  <div class="slds-grid slds-m-vertical_small">
+    <div class="slds-col slds-size_1-of-3">
+      <lightning-icon
+        size="xx-small"
+        icon-name="utility:checkin"
+        alternative-text="checkin"
+        title="checkin"
+      ></lightning-icon>
+      <span class="branch-link slds-m-left_xx-small" onclick={navigateToRecord}
+        >Branch: {branchDisplay}</span
+      >
+    </div>
+    <div if:true={chronosEnabled} class="slds-col slds-size_1-of-3">
+      <span class="chronos-header">{atpFieldLabel}: </span>{atp}
+    </div>
+    <div if:true={chronosEnabled} class="slds-col slds-size_1-of-3">
+      <span class="chronos-header">Util: </span>{utilvalue}
+    </div>
+  </div>
+</template>

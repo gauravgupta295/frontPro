@@ -1,0 +1,157 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+    </template>
+    
+    <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle} active-section-name={activeSections}>
+        <lightning-accordion-section name="Sales" label={salesLabel} class="slds-accordian_summary-action">
+            <div class="slds-grid slds-wrap slds-m-top_small">
+                <div class="slds-col slds-size_9-of-12">    
+                    <lightning-icon class="slds-m-bottom_small"
+                    icon-name="standard:lead_list"
+                    size="medium"
+                    alternative-text="Indicates approval">
+                    </lightning-icon>
+
+                    <!--asdfb -->
+                    <span class="HeadlineCSS slds-p-bottom_small slds-p-left_small">Receive Sales/Misc Items</span>                    
+                </div>
+                <div class="slds-col slds-size_3-of-12 slds-text-align_right">
+                    <template if:true={showRemoveAssetButton}>
+                        <lightning-button label="Auto-Fill Received Qty" title="Non-primary action" variant="neutral" onclick={handleAutoFill} disabled={Buttontrue} class="slds-m-left_large"></lightning-button>
+                        <span>
+                            <lightning-button label="Receive Item(s)" title="Non-primary action" data-value="Sale" variant="neutral" onclick={handleOpenReceiveItemModal} disabled={Buttontrue}></lightning-button>
+                        </span>
+                    </template>
+                </div>
+                <div class="slds-col slds-size_2-of-12">                        
+                    <div style="margin-right:40px;">  
+                        <!--<template if:true={openCreateModal} >
+                        <c-s-b-r_3_0_create-p-o-line-item record-id={recordId} onclose={modalCloseHandler}> </c-s-b-r_3_0_create-p-o-line-item>
+                        </template>-->
+                        <!-- Sachin Khambe -->
+                        <!--<template if:true={isModalOpen}>
+                        <c-s-b-r_3_0_confirm-p-o-line-items-delete-modal onprogressvaluechange={handleModalState} ondeletelineitem={handleYesButton}></c-s-b-r_3_0_confirm-p-o-line-items-delete-modal>
+                        </template>-->
+                        <!-- Sachin Khambe -->
+                        <template if:true={openReceiveItemModal} >
+                            <c-sbr_3_0_receive-sales-misc-items-modal purchase-order-id={recordId} receive-item-type={receiveItemType} receive-items-input={receiveLineItems} onclosereceiveitem={handleCloseReceiveItemModal}> </c-sbr_3_0_receive-sales-misc-items-modal>
+                        </template>
+                        <!-- Nikhil Shende-->
+                        <template if:true={showModalOnCancelBOQty}>
+                            <c-s-b-r_-3_-0_-cancel-back-order-qty-order-modal  onclosebackorder={handleBackOrderModalClose} onyesbackorder={handleBackOrderModal}></c-s-b-r_-3_-0_-cancel-back-order-qty-order-modal>
+                        </template>
+                    </div>
+              </div>
+        </div>
+                 <!--Addline Item Starts -->
+            <!--<c-sbr_3_0_purchase-order-add-line-item onaddlineitem={handleAddLineItem} record-id={recordId} onrefreshpoldata={handleSaveOnAddPOL}></c-sbr_3_0_purchase-order-add-line-item>-->
+            <template if:true={showitems}>
+            <div class='hideFirstColTable rightAlignCols'>
+                <template if:false={isCancelledReceived}>
+                <lightning-datatable
+                key-field="Id"
+                data={saleslineItems}
+                data-id="SaleItemTable"
+                columns={columns}
+                draft-values={draftValues}
+                onsave={saveHandleAction}
+                onrowselection={handleSalesRowChange}
+                onrowaction={handleRowLevelAct}
+                selected-rows={selectedRowIds}
+                max-row-selection={enabledRowCount}
+                 > <!-- Start - Yash code-->
+                </lightning-datatable>
+                </template>
+                <template if:true={isCancelledReceived}>
+                <lightning-datatable
+                key-field="Id"
+                data={saleslineItems}
+                data-id="SaleItemTable"
+                columns={columns2}
+                draft-values={draftValues}
+                onsave={saveHandleAction}
+                onrowselection={handleSalesRowChange}
+                onrowaction={handleRowLevelAct}
+                max-row-selection={enabledRowCount}
+                 > <!-- Start - Yash code-->
+                </lightning-datatable>
+                </template>
+
+            </div>
+            <div class="slds-grid slds-wrap totalCSS slds-p-top_small slds-p-bottom_small">
+                <div class="slds-col slds-size_3-of-6 slds-align_center" >
+                    <div style="margin-left:10px">
+                            <p>Received Totals</p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-6 slds-align_left" >
+                    <div style="margin-left:-50px">
+                        <p>Received Qty: {totalSalesQty}</p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-6 slds-align_right">
+                    <div>
+                        <p>Received Amt: {totalSalesCost}</p>
+                    </div>
+                </div>
+            </div>
+             </template>
+        </lightning-accordion-section>
+           
+
+        <lightning-accordion-section name="Asset" label={assetLabel} class="slds-accordian_summary-action">        
+            <div class="slds-grid slds-wrap slds-m-top_small">
+                <div class="slds-col slds-size_10-of-12">
+                    <lightning-icon class="slds-m-bottom_small"
+                        icon-name="standard:lead_list"
+                        size="medium"
+                        alternative-text="Indicates approval">
+                    </lightning-icon>
+                    <span class="HeadlineCSS slds-p-bottom_small slds-p-left_small" >Receive Assets</span>                        
+                </div>
+                        
+                <template if:true={showRemoveAssetButton}>
+                    <div class="slds-col slds-size_2-of-12 slds-text-align_right">
+                        <lightning-button label="Receive Item(s)" title="Non-primary action" variant="neutral" data-value="Asset" onclick={handleOpenReceiveItemModal} disabled={AssetButtontrue} class="slds-m-left_large"></lightning-button>
+                    </div>
+                </template>
+            </div>
+            <template if:true={showitems}>
+            <div class='hideFirstColTable rightAlignCols'>
+                <lightning-datatable
+                    key-field="Id"
+                    data-id="AssetTable"
+                    data={assetlineItems}
+                    columns={assetcolumns}
+                    draft-values={draftValues}
+                    onsave={saveAssetHandleAction}
+                    onrowselection={handleAssetRowChange}
+                    onrowaction={handleRowLevelAct}
+                    max-row-selection={enabledRowCount}
+                    selected-rows={selectedRowIdsAsset}
+                    >
+                </lightning-datatable>
+             
+            </div>
+            <div class="slds-grid slds-wrap totalCSS slds-p-top_small slds-p-bottom_small">
+                    <div class="slds-col slds-size_2-of-6 slds-align_center" >
+                        <div style="margin-left:10px">
+                            <p>Received Totals</p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6 slds-align_left" >
+                        <div style="margin-left:75px">
+                            <p>Received Qty: {totalAssetQty}</p>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_3-of-6 slds-align_right">
+                        <div style="margin-left:60px">
+                            <p>Received Amt: {totalAssetsCost}</p>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

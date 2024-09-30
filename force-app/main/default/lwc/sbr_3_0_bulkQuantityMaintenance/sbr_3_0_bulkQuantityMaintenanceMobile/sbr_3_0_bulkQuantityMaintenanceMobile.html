@@ -1,0 +1,171 @@
+<template>
+  <c-sbr_3_0_mobile-screen title={label.BULK_QUANTITY_MAINTENANCE}>
+    <div class="slds-modal__container slds-m-around_none slds-p-around_none">
+        <div class="slds-modal__content slds-m-around_none" >
+            <template lwc:if={showSpinner}>
+              <div class="sbr_min-height">
+                <lightning-spinner
+                  variant="brand"
+                  size="medium"
+                  alternative-text="loading..."
+                ></lightning-spinner>
+              </div>
+            </template>
+            
+            
+            <template lwc:else>
+              <template lwc:if={showError}>
+                <div class="inline-error">
+                  <c-sbr_3_0_inline-error-card
+                  title="The change quantity cannot be greater than the actual quantity."
+                  message="Please adjust and submit again."
+                  variant="Error"
+                ></c-sbr_3_0_inline-error-card>
+                </div>
+              </template>
+
+              <div class="bulk-maintenance-info slds-p-around_small">
+                <div class="product-item-info slds-m-bottom_medium">
+                  <div
+                    class="slds-text-align_left"
+                  >
+                    <p class="slds-text-title">{label.RSV_ITEM_NUM}</p>
+                    <h2 class="slds-m-vertical_small">{rsvItemNum}</h2>
+                  </div>  
+  
+                  <div
+                    class="slds-text-align_left"
+                  >
+                    <p class="slds-text-title">{label.LOCATION}</p>
+                    <h2 class="slds-m-vertical_small">{locationName}</h2>
+                  </div>
+  
+                  <div class="slds-text-align_left">
+                    <p class="slds-text-title">{label.TOTAL_OWNED}</p>
+                    <h2 class="slds-m-vertical_small">{totalOwned}</h2>
+                  </div>
+                </div>
+  
+                <table
+                  class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right slds-m-bottom_medium"
+                  aria-label="Product Items and their Statuses And Quantities"
+                >
+                  <thead>
+                    <tr class="slds-line-height_reset">
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="Status">Status</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="Quantity">Quantity</div>
+                      </th>
+                      <th class="" scope="col">
+                        <div class="slds-truncate" title="New Quantity">New Quantity</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <template iterator:it={statuses}>
+                      <tr key={it.value.Id} class="slds-hint-parent">
+                        <th data-label="Status" scope="row">
+                          <div class="slds-truncate" title="Available">
+                            {it.value.Label}
+                          </div>
+                        </th>
+                        <td data-label="Available Quantity">
+                          <div class="slds-truncate" title="availableQuantity">
+                            {it.value.Quantity}
+                          </div>
+                        </td>
+                        <td data-label="New Quantity">
+                          <div class="slds-truncate" title="newQuantity">
+                            {it.value.NewQuantity}
+                          </div>
+                        </td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+                <template lwc:if={showEditLayout}>
+                  <form id="status_update_form" class="slds-m-bottom_medium">
+                    <div>
+                      <lightning-combobox
+                        name="move_from_status"
+                        label="Move from"
+                        value={moveFrom}
+                        placeholder="Select Progress"
+                        options={moveFromDropdown}
+                        onchange={handleMoveFrom}
+                        class="slds-input_height"
+                      ></lightning-combobox>
+                    </div>
+                    <div>
+                      <lightning-combobox
+                        name="move_to_status"
+                        label="Move to"
+                        value={moveTo}
+                        placeholder="Select Progress"
+                        options={moveToDropdown}
+                        onchange={handleMoveTo}
+                        class="slds-input_height"
+                      ></lightning-combobox>
+                    </div>
+                    <div>
+                      <lightning-input
+                      type="number"
+                      name="quantity_input"
+                      label="Quantity"
+                      value={newQuantity}
+                      onchange={handleUpdateQuantity}
+                      ></lightning-input>
+                    </div>
+                  </form>
+                </template>
+                
+                <div class="bulk-maintenance-info-bottom-margin">
+                </div>
+
+                <template lwc:if={showError}>
+                  <div class="bulk-maintenance-info-bottom-margin">
+                  </div>
+                </template>
+              </div>
+              
+              <footer class="slds-modal__footer">
+                <template lwc:if={showEditLayout}>
+                  <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium slds-m-horizontal_small"> 
+                    <lightning-button
+                      label={label.CANCEL}
+                      onclick={closeAuraAction}
+                      class="slds-m-left_none sbrSourcingBorder mobileButtonTextColor slds-col"
+                    ></lightning-button>
+                    <lightning-button
+                      label={label.NEXT}
+                      variant="brand"
+                      onclick={handleNext}
+                      disabled={isNextDisabled}
+                      class="slds-m-right_none mobileButtonBackgroundColor sbrSourcingBorder slds-col"
+                    ></lightning-button>
+                  </div>
+                </template>
+                <template lwc:else>
+                  <div class="slds-grid slds-grid_align-spread slds-m-bottom_medium slds-m-horizontal_small"> 
+                    <lightning-button
+                      label={label.PREVIOUS}
+                      onclick={handlePrevious}
+                      class="slds-m-left_none mobileButtonTextColor sbrSourcingBorder"
+                    ></lightning-button>
+                    <lightning-button
+                      label={label.SUBMIT}
+                      variant="brand"
+                      onclick={handleSubmit}
+                      disabled={isDisabled}
+                      class="slds-m-right_none mobileButtonBackgroundColor sbrSourcingBorder"
+                    ></lightning-button>
+                  </div>
+                </template>
+              </footer>
+          </template>
+        </div>
+    </div>
+  </c-sbr_3_0_mobile-screen>
+</template>

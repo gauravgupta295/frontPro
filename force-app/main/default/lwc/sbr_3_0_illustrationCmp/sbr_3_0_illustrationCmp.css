@@ -1,0 +1,7 @@
+.blue-refresh {
+  --lwc-colorTextIconDefault: #3989c6;
+}
+.message {
+  font-weight: 400;
+  font-size: 20px;
+}

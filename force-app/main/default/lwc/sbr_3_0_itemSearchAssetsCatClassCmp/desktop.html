@@ -1,0 +1,102 @@
+<template>
+  <!-- FRONT-25706 -->
+  <c-sbr_3_0_custom-toast-component></c-sbr_3_0_custom-toast-component>
+  <!-- end -->
+
+  <template lwc:if={showSpinner}>
+    <lightning-spinner
+      variant="brand"
+      size="medium"
+      alternative-text="loading..."
+    >
+    </lightning-spinner>
+  </template>
+  <c-sbr_3_0_item-search-assets-header
+    onfiltercriteriachangeevt={handleApplyStatus}
+    onfiltercriteriachange={handleSearchCriteriaChange}
+    active-tab="CatClass"
+    record-id={recordId}
+    selected-cat-class-val={selectedCatClassVal}
+    onswitchtodescription={handleSwitchToDescription}
+    inventory={inventorySize}
+    selected-location-filter={selectedLocationFilter}
+    is-mobile={isMobile}
+    asset-flag={isAssetFlag}
+  ></c-sbr_3_0_item-search-assets-header>
+
+  <div class="tablebg bordercl tableHeight wrapped-header-datatable">
+    <c-sbr_3_0_custom-data-table-cmp
+      key-field="id"
+      columns={columns}
+      data={result}
+      wrap-text-max-lines="2"
+      hide-checkbox-column="true"
+      onrowaction={callRowAction}
+      default-sort-direction={defaultSortDirection}
+      sorted-direction={sortDirection}
+      sorted-by={sortedBy}
+      onsort={handleOnSort}
+      enable-infinite-loading
+      onloadmore={loadMoreData}
+    ></c-sbr_3_0_custom-data-table-cmp>
+    <div
+      class="slds-illustration slds-illustration_small backCl"
+      aria-hidden="true"
+      if:false={isDataAvailable}
+    >
+      <div
+        class="slds-illustration slds-illustration_small backCl"
+        aria-hidden="true"
+      >
+        <img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+        <h2 class="slds-text-heading_medium noContImg">{noCatContentLabel}</h2>
+      </div>
+    </div>
+  </div>
+
+  <c-sbr_3_0_modal-cmp
+    lwc:ref="selectedAssetContainerModal"
+    header={modalHeader}
+    is-dynamic-footer="true"
+  >
+    <span slot="modalContent">
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="orderItemObject"
+        selected-asset={selectedAssetRow}
+        current-active-tab={activeTab}
+        order-data={orderData}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+    </span>
+    <!--Added as part of FRONT-10855-->
+    <span slot="footer">
+      <template lwc:if={hideEditorFooter}>
+        <lightning-button
+          label="Back"
+          onclick={handleBack}
+          class="neutral-button"
+        >
+        </lightning-button>
+      </template>
+      <template lwc:else>
+        <div>
+          <lightning-button
+            label="Cancel"
+            onclick={handleCancelButtonClick}
+            class="neutral-button"
+          >
+          </lightning-button>
+
+          <lightning-button
+            label="Confirm"
+            variant="brand"
+            class="brand-button slds-p-left_x-small"
+            onclick={handleConfirm}
+            disabled={isDisable}
+          ></lightning-button>
+        </div>
+      </template>
+    </span>
+    <!--FRONT-10855 Ends-->
+  </c-sbr_3_0_modal-cmp>
+</template>

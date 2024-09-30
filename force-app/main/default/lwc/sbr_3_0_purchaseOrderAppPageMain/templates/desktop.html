@@ -1,0 +1,43 @@
+<template>
+    <lightning-card>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-p-right_small" style="padding-left: 15px">
+                    <p>Search</p>
+                    <lightning-input data-name="searchBox"
+                        variant="label-hidden" type="search" label="Search"
+                        placeholder="Search for Vendor or Purchase Order"
+                        pattern="[a-zA-Z0-9\-_ ]*"
+                        message-when-pattern-mismatch="Special Characters are not allowed"
+                        onkeypress={handleSearch} oncommit={handleClear}>
+                    </lightning-input>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <div class="slds-clearfix" style="padding-right: 15px">
+                    <div class="slds-float_right">
+                        <h3>Quick Links</h3>
+                        <template for:each={quickLinks} for:item="link">
+                            <div key={link.DeveloperName}>
+                                <a href={link.URL__c}
+                                    target="_blank">{link.MasterLabel}</a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-2">
+                <div style="padding-left: 15px">
+                    <c-sbr_3_0_get-all-vendors></c-sbr_3_0_get-all-vendors>
+                </div>
+            </div>
+            <div class="slds-col slds-size_1-of-2">
+                <div style="padding-left: 15px">
+                    <c-sbr_3_0_get-all-purchase-orders></c-sbr_3_0_get-all-purchase-orders>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,17 @@
+<!-- sldsValidatorIgnore -->
+<template>
+        <lightning-quick-action-panel>
+        <!-- <lightning-quick-action-panel header="Generate PDF Document"> -->
+        <div style="height:20rem;position:relative">
+            <lightning-spinner alternative-text="Loading" size="medium" if:true={spinner}></lightning-spinner>
+            <div if:false={spinner}> 
+                <span class="slds-align_absolute-center">Are you sure you want to generate PDF.?</span>
+                </br> 
+                <span class="slds-align_absolute-center">
+                    <lightning-button label="Download" title="Download action" icon-name="utility:download" class="slds-m-left_x-small" onclick={getPDF} ></lightning-button>
+                    <lightning-button variant="neutral" label="No" class="slds-m-left_x-small" onclick={handleCancel}></lightning-button>
+                </span>
+            </div>
+        </div>        
+    </lightning-quick-action-panel>
+</template>

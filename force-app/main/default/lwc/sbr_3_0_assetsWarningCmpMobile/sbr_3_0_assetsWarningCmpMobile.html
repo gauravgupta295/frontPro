@@ -1,0 +1,42 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-02" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <div class="slds-modal__header title-header">
+            <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Warning - Assigned Asset(s) in this Reservation</h1>
+          </div>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <lightning-layout>
+                <lightning-layout-item size="12">
+                    <h2>This Reservation has assets currently assigned to it. Would you like to keep the assigned asset(s) or remove them?</h2>
+                    <lightning-radio-group name="radioGroup"
+                    options={options}
+                    onchange={handleRadioChange}
+                    class = "my-radio-group"
+                    value={value}
+                    type="radio"></lightning-radio-group>
+                </lightning-layout-item>
+            </lightning-layout>
+          </div>
+          <div class="slds-modal__footer">
+            <lightning-layout horizontal-align="spread">
+                <lightning-layout-item>
+                    <lightning-button
+                    label={label.GO_BACK}
+                    class="neutral-button"
+                    onclick={hideModalBox}
+                    ></lightning-button>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <lightning-button
+                    label={label.CONFIRM}
+                    onclick={confirmModalBox}
+                    variant="brand"
+                    class="brand-button"
+                    disabled={isDisabled}
+                    ></lightning-button>
+                </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </div>
+      </section>
+</template>

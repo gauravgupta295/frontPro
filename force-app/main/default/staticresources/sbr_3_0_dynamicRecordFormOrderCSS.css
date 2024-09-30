@@ -1,0 +1,76 @@
+.input-field-element.mobile input[disabled] {
+    background-color: #c9c9c9;
+    color: black;
+    opacity: 1;
+    text-decoration-color: black;
+    padding-left: 10px;
+}
+
+.input-field-element input[disabled] {
+    padding-left: 10px;
+}
+
+.dynamic-form-footer[data-collector-id="Order"],  .dynamic-form-footer[data-collector-id="SBQQ__Quote__c"]{
+    justify-content: space-between;
+    padding: 0 10px;
+    display: flex;
+}
+lightning-timepicker.slds-form-element {
+  width: 50%;
+}
+lightning-datepicker.slds-form-element {
+  width: 50%;
+}
+
+.slds-theme_info,
+.slds-theme--info {
+    background-color: #747474 !important;
+}
+
+@media screen and (max-width: 600px){
+.slds-theme_info,
+.slds-theme--info {
+    background-color: #747474;
+}
+/*Started for Front-13084*/
+input[type="datetime-local"]
+{
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	min-height: 1.2em;
+	min-width:95%;
+    text-align: left !important;
+}
+ .outputLinkClass a {
+    color: black !important;
+    pointer-events: none;
+    cursor: default;
+  }
+  input::-webkit-date-and-time-value {
+    text-align: left;
+}
+
+/*Ended for Front-13084*/
+}
+
+lightning-accordion-section[data-accordion-section-id="Order_Item_Search_Tab_Section"] .slds-accordion__section {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.drf_mobile .slds-accordion__summary-action{
+    border-top: 1px solid #E5E5E5
+}
+
+.messageFont span {
+    font-size: 16px;
+}
+
+.helpTextHideClass .slds-form-element__icon{
+    display: none !important;
+
+}
+
+.helpTextClass .slds-form-element__icon{
+    padding-top: 2px;
+}

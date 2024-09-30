@@ -1,0 +1,140 @@
+<template>
+	<lightning-modal-header label={addFreightLabel}></lightning-modal-header>
+	<lightning-modal-body>
+		<div class="slds-modal__content slds-hyphenate slds-p-around_medium" id="modal-content-id-1">
+			<div class="slds-m-top_x-small slds-m-bottom_large">
+				<div class="slds-box slds-box_xx-small slds-text-heading_small"
+					style="background-color:lightgrey;padding-left:10px">
+					Usage
+				</div>
+				<div class="slds-p-around_medium">
+					<lightning-radio-group options={usageOptions} value={selectedUsage} type="radio"
+						variant="label-hidden" onchange={handleUsageChange}></lightning-radio-group>
+				</div>
+				<div class="slds-box slds-box_xx-small slds-text-heading_small"
+					style="background-color:lightgrey;padding-left:10px">
+					Freight Details
+				</div>
+				<template if:false={isSpecialEvent}>
+					<div class="slds-grid slds-wrap slds-p-around_medium">
+						<div class="slds-col slds-size_5-of-12">
+							<template if:true={isDeliverPickup}>
+								<!-- <lightning-record-picker data-name="contract" label="Contract #"
+									placeholder="Search for Contract #" object-api-name="Order" value={contract}
+									onchange={handleContractChange} onfocus={handleContractFocus} required>
+								</lightning-record-picker> -->
+
+								<lightning-input class="customBorder" placeholder="Search for Contract #" data-name="contract"
+									data-id="contractSearch" label="Contract #" type="search" 
+									value={contract} onchange={handleContractChange} onfocus={handleContractFocus} onblur={handleSelectContract} required></lightning-input>
+								
+								<!-- Include child component -->
+								<!-- <c-sbr_3_0_contract-search open-modal={openChildModal}
+									onclosecontractmodal={handleCloseContractModal}
+									onselectrecords={handleSelectedContract} record-id={recordId}>
+								</c-sbr_3_0_contract-search> -->
+
+								<c-sbr_3_0_purchase-order-contract-search-modal open-modal={openChildModal}
+									onclosecontractmodal={handleCloseContractModal}
+									onselectrecords={handleSelectedContract} record-id={recordId}>
+								</c-sbr_3_0_purchase-order-contract-search-modal>
+
+
+							</template>
+							<template if:false={isDeliverPickup}>
+								<lightning-input data-name="transfer" label="Transfer #"
+									placeholder="Search for Transfer #" object-api-name="ProductTransfer"
+									value={transfer} onchange={handleTransferChange} required></lightning-input>
+							</template>
+						</div>
+						<div class="slds-col slds-size_2-of-12">
+						</div>
+						<div class="slds-col slds-size_5-of-12">
+							<lightning-combobox data-name="reasonvalue" name="Reason for Outside Freight"
+								label="Reason for Outside Freight" value={poLineItemRecord.Freight_Reason__c} placeholder="Select"
+								options={reasonOptions} onchange={handleInputChange} required></lightning-combobox>
+						</div>
+						<div class="slds-col slds-size_5-of-12 slds-p-vertical_x-small">
+							<lightning-input data-name="freightcost" type="number" name="Freight Cost"
+								label="Freight Cost" value={unitCost} onchange={handleFreightChange} required>
+							</lightning-input>
+						</div>
+					</div>
+				</template>
+				<template if:true={isSpecialEvent}>
+					<div class="slds-grid slds-wrap slds-p-around_medium">
+						<div class="slds-col slds-size_5-of-12 ">
+							<lightning-combobox name="Event #" data-name="eventnose" label="Event #" value={eventNo} placeholder="Select"
+                                options={eventOptions} onchange={handleEventChange} required></lightning-combobox>
+							<!--<lightning-combobox name="Event #" label="Event #" value={eventValue} placeholder="Select"
+                                options={eventOptions} onchange={handleEventChange} required></lightning-combobox>-->
+						</div>
+						<div class="slds-col slds-size_2-of-12">
+						</div>
+						<div class="slds-col slds-size_5-of-12 ">
+							<lightning-combobox data-name="reasonvaluese" name="Reason for Outside Freight"
+								label="Reason for Outside Freight" value={reasonValue} placeholder="Select"
+								options={reasonOptions} onchange={handleReasonChange} required></lightning-combobox>
+						</div>
+						<div class="slds-col slds-size_5-of-12 slds-p-vertical_x-small">
+							<lightning-input data-name="freightcostse" type="number" name="Freight Cost"
+								label="Freight Cost" value={unitCost} onchange={handleFreightChange} required>
+							</lightning-input>
+						</div>
+						<div class="slds-col slds-size_2-of-12">
+						</div>
+						<div class="slds-col slds-size_5-of-12 slds-p-vertical_x-small">
+							<lightning-input data-name="equipmentse" type="text" name="Equipment #" label="Equipment #"
+								value={equipmentNumber} onchange={handleEquipmentChange} required></lightning-input>
+						</div>
+						<div class="slds-col slds-size_5-of-12 ">
+							<lightning-input data-name="contractse" label="Contract #"
+								placeholder="Search for Contract #" object-api-name="Order" value={contract}
+								field-level-help="Enter either Contract # or Transfer #"
+								onchange={handleContractChange}>
+							</lightning-input>
+						</div>
+						<div class="slds-col slds-size_2-of-12">
+						</div>
+						<div class="slds-col slds-size_5-of-12 ">
+							<lightning-input type="text" variant="standard" name="name" data-name="transferse" label="Transfer #"
+								placeholder="Search for Transfer #" value={transfer} onchange={handleTransferChange}>
+							</lightning-input>
+						</div>
+					</div>
+				</template>
+				<div class="slds-box slds-box_xx-small slds-text-heading_small"
+					style="background-color:lightgrey;padding-left:10px">
+					Additional Info
+				</div>
+				<div class="slds-grid slds-wrap slds-p-around_medium">
+					<div class="slds-col slds-size_5-of-12">
+						<lightning-input type="text" label="G/L #" disabled></lightning-input>
+					</div>
+					<div class="slds-col slds-size_2-of-12">
+					</div>
+					<div class="slds-col slds-size_5-of-12">
+						<lightning-input type="text" label="Pro Number" value={proNum} onchange={handleProNumberChange}>
+						</lightning-input>
+					</div>
+				</div>
+				<div class="slds-box slds-box_xx-small slds-text-heading_small"
+					style="background-color:lightgrey;padding-left:10px">
+					Messages
+				</div>
+				<div class="slds-grid slds-wrap slds-p-around_medium">
+					<div class="slds-col slds-size_12-of-12">
+						<lightning-textarea name="Messages" label="Messages" value={message}
+							onchange={handleMessageChange}></lightning-textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</lightning-modal-body>
+	<lightning-modal-footer>
+		<lightning-button label="Cancel" onclick={handleCancel} class="slds-p-left_small">
+		</lightning-button>
+		<lightning-button label="Save" onclick={handleSave} variant="brand" style="padding-left: 10px">
+		</lightning-button>
+	</lightning-modal-footer>
+</template>

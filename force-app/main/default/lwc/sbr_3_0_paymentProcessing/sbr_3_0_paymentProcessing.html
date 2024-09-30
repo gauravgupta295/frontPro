@@ -1,0 +1,74 @@
+<template>
+	<div class="payment-processing-container">
+		<template if:true={processing}>
+			<section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<h2 class="slds-text-heading_medium">{header}</h2>
+					</div>
+					<div class="custom-modal-content slds-modal__content">
+						<br />
+						<p>{waitMessage}</p>
+						<br /><br />
+						<div style="height:5rem;position:relative">
+							<div class="slds-spinner_container">
+								<div role="status" class="slds-spinner slds-spinner_large">
+									<span class="slds-assistive-text">Loading</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+		<template if:true={cancelmodal}>  
+			<template if:true={success}>
+				<template if:true={processadditionaldeposit}>
+					<c-sbr_3_0_payment-processing-successful payment-option-selected={paymentMethod}
+						paymentprocessingsuccessful={ispaymentProcessingSuccessful}
+						refundprocessingsuccessful={isrefundProcessingSuccessful}
+						refundadditionaldeposit ={isrefundAdditionalDeposit}
+						isfromcancelprocessing=true
+						recid-n={recid}></c-sbr_3_0_payment-processing-successful>
+				</template>
+				<template if:false={processadditionaldeposit}>
+					<c-sbr_3_0_order-cancel-cmp order-id={recid} is-refund-not-available={isrefundnotavailable} is-refund-available={isrefundavailable}></c-sbr_3_0_order-cancel-cmp>
+				</template>
+			</template>
+			<template if:true={failure}>
+				<c-sbr_3_0_payment-processing-failed duedeposit-n={duedeposit} recid-n={recid} failmessage ={responseMessage} 
+					payment-method-passed={paymentMethod} deposit-amount-passed={depositAmount}
+					terminal-value-passed={terminalValue} is-from-deposit-screen={paymentprocessing} is-from-refund-screen={refundprocessing}
+					process-additional-deposit={processadditionaldeposit} payment-method-related-data={paymentMethodRelatedData}
+					is-from-uncollected-screen={uncollectedprocessing} isfromcancelprocessing={isfromcancel}> </c-sbr_3_0_payment-processing-failed>
+			</template>
+		</template>
+		<template if:false={cancelmodal}>
+			<template if:true={success}>
+				<c-sbr_3_0_payment-processing-successful payment-option-selected={paymentMethod}
+					paymentprocessingsuccessful={ispaymentProcessingSuccessful}
+					refundprocessingsuccessful={isrefundProcessingSuccessful}
+					uncollectedprocessingsuccessful={isuncollectedProcessingSuccessful}
+					roaprocessingsuccessful ={isroaProcessingSuccessful}
+					refundadditionaldeposit ={isrefundAdditionalDeposit}
+					is-from-create-reservation={isFromCreateReservation}
+					recid-n={recid} is-from-create-return={isFromCreateReturn}
+					payment-method-related-data={paymentMethodRelatedData}></c-sbr_3_0_payment-processing-successful>
+			</template>
+			<template if:true={failure}>
+				<c-sbr_3_0_payment-processing-failed duedeposit-n={duedeposit} recid-n={recid}
+					payment-method-passed={paymentMethod} deposit-amount-passed={depositAmount}
+					terminal-value-passed={terminalValue} is-from-deposit-screen={paymentprocessing} is-from-refund-screen={refundprocessing}
+					process-additional-deposit={processadditionaldeposit} payment-method-related-data={paymentMethodRelatedData}
+					is-from-uncollected-screen={uncollectedprocessing} is-from-roa-screen={roaprocessing}
+					invoice-related-data={invoiceRelatedData} is-from-create-reservation={isFromCreateReservation}
+					object-api-name={objectApiName} record-details={recordDetails}
+					error-message={errorMessage} roa-detail-related-data={roaDetailRelatedData}
+					is-from-create-return={isFromCreateReturn} no-refund-given={noRefundGiven}>
+				</c-sbr_3_0_payment-processing-failed>
+			</template><!--15915 passed paymentprocessing,refundprocessing -->
+		</template>		
+	</div>
+</template>

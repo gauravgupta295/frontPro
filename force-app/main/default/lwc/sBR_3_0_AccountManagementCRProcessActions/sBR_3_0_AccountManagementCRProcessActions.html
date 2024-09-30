@@ -1,0 +1,14 @@
+<template>
+    <lightning-modal-header label="Approval Request"></lightning-modal-header>
+    <lightning-modal-body>
+        <p> {SelectedButtond} Request Confirmation</p><br/><br/>
+        
+        <p> Are you sure you want to {SelectedButtond} the selected requests ?</p><br/><br/>
+
+        <p><lightning-textarea name="Comments" value ={Comments} placeholder="Enter the Comments" label="Comments"></lightning-textarea></p><br/><br/><br/><br/>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button variant="neutral" label="Cancel" onclick={hideModalBox}></lightning-button>
+        <lightning-button variant="brand" label="Save" class="slds-m-left_x-small" onclick={inputComments}></lightning-button>
+    </lightning-modal-footer>
+</template>

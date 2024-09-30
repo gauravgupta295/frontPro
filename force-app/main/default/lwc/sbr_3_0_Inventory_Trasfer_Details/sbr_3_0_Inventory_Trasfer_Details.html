@@ -1,0 +1,186 @@
+<template>
+    <template if:true={isOpen}>
+        <div class="slds-section slds-is-open white-background">
+            <h3 class="slds-section__title">
+            <button aria-controls="general-open" aria-expanded="true" class="slds-button slds-section__title-action" onclick={toggleSection}>
+            <lightning-icon icon-name="utility:chevrondown" size="x-small" alternative-text="Toggle"></lightning-icon>
+            <span class="slds-truncate" title="Section Title"> General</span>
+            </button>
+            </h3>
+
+            <div id="general-content" class={generalClass}>
+                <div class="slds-grid slds-wrap">
+                    <template lwc:if={isMobileDevice}>
+                        <div class="slds-m-around_medium full-width-container">
+                            <lightning-layout-item size="12"  class="slds-p-around_x-small" flexibility="auto">
+                                    <lightning-input disabled required label="Transfer From:" value={userLocationNumber} ></lightning-input>
+                            </lightning-layout-item>
+                       
+                            <lightning-layout-item size="12"  class="slds-p-around_x-small">
+                                <c-sbr_3_0_-inventory-transferto-lookup icon-name="custom:custom78" label="Transfer to:"
+                                s-object-api-name="Location" 
+                                placeholder="Search Branches..."
+                                fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                                onlookupupdate={handlePickupBranch} 
+                                default-record-id={transferToLocationId}
+                                record-id={transferToLocationId}
+                                >
+                            </c-sbr_3_0_-inventory-transferto-lookup>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12"  class="slds-p-around_x-small"  flexibility="auto"
+                            >
+                            <c-sbr_3_0_-inventory-transfer-order-by-lookup icon-name="custom:custom78" label="Ordered by"
+                                s-object-api-name="User_Location__c" 
+                                placeholder="Search User..."
+                                fields-to-include="User__c,Sales_Rep_Name__c "
+                                onlookupupdate={handleOrderByselection}  
+                                has-custom-name-field={hasCustomNameField} 
+                                custom-name-field="Sales_Rep_Name__c" 
+                                where-clause={orderByWhereClause}
+                                default-record-id={recRep}
+                                record-id={recRep}
+                                value={recRep}
+                                >
+                            </c-sbr_3_0_-inventory-transfer-order-by-lookup>
+                            </lightning-layout-item>
+
+                            <div class="slds-text-body_medium bold-text">Transfer Date and Time</div>   
+                            <lightning-layout-item size="12"  class="slds-p-around_x-small full-width-container">
+                                <lightning-input type="date" name="inputdate" timezone={userTimeZone} label="Date"  onchange={handleMobileDateChange} value={mobileDate} required></lightning-input>
+                            </lightning-layout-item>
+                            
+                            <lightning-layout-item size="12" class="slds-p-around_x-small full-width-container">
+                                <lightning-input type="time" name="inputtime"  timezone={userTimeZone} label="Time"  onchange={handleMobileTimeChange} value={mobileTime} required></lightning-input>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12"  class="slds-p-around_x-small"> 
+                                <lightning-combobox
+                                  name="Status"
+                                  label="Transfer Status"
+                                  value={permTransfer}
+                                  options={options}
+                                  onchange={handleChange} 
+                                  required >
+                                </lightning-combobox>
+                               </lightning-layout-item>
+                           
+
+                            <lightning-layout-item size="12" class="slds-p-around_x-small">
+                                    <lightning-input label="Notes" value={notes} onchange={handleChange}></lightning-input>
+                            </lightning-layout-item>
+                       
+                        </div>
+                    </template>
+
+
+
+
+
+                    
+                    <!-- *-!- Desktop -->
+                    <!-- *-!-* -->
+                    <template lwc:else>
+                    <div class="slds-col slds-size_1-of-2">
+                            <div class="slds-m-around_medium">
+                                <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small">
+                                        <lightning-input disabled required label="Transfer From:" value={userLocationNumber} ></lightning-input>
+                                </lightning-layout-item>
+                             
+                               
+                                
+                                <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"
+                                >
+                                <c-sbr_3_0_-inventory-transfer-order-by-lookup icon-name="custom:custom78" label="Ordered by"
+                                    s-object-api-name="User_Location__c" 
+                                    placeholder="Search User..."
+                                    fields-to-include="User__c,Sales_Rep_Name__c "
+                                    onlookupupdate={handleOrderByselection}  
+                                    has-custom-name-field={hasCustomNameField} 
+                                    custom-name-field="Sales_Rep_Name__c" 
+                                    where-clause={orderByWhereClause}
+                                    default-record-id={recRep}
+                                    record-id={recRep}
+                                    value={recRep}
+                                    >
+                                </c-sbr_3_0_-inventory-transfer-order-by-lookup>
+                                </lightning-layout-item>
+
+                                <div class="slds-text-body_medium bold-text">Transfer Date and Time</div>   
+                                <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small">
+                                    <lightning-input type="date" name="inputdate"   timezone={userTimeZone} label="Date"  onchange={handleDesktopDateChange} value={startDate} required></lightning-input>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"> 
+                                    <lightning-combobox
+                                      name="Status"
+                                      label="Transfer Status"
+                                      value={permTransfer}
+                                      options={options}
+                                      onchange={handleChange} 
+                                      required >
+                                    </lightning-combobox>
+                                   </lightning-layout-item>
+                               
+                            </div>
+                        
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="slds-m-around_medium">
+                            <div class="field-container1">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small">
+                                <c-sbr_3_0_-inventory-transferto-lookup icon-name="custom:custom78" label="Transfer to:"
+                                s-object-api-name="Location" 
+                                placeholder="Search Branches..."
+                                fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                                onlookupupdate={handlePickupBranch} 
+                                default-record-id={transferToLocationId}
+                                record-id={transferToLocationId}
+                                >
+                            </c-sbr_3_0_-inventory-transferto-lookup>
+                                    
+                            </lightning-layout-item>
+                            </div>
+
+
+                            <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12" class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small">
+                                <lightning-input type="time" name="inputtime"  timezone={userTimeZone} label="Time"  onchange={handleDesktopTimeChange} value={startTime} required></lightning-input>
+                            </lightning-layout-item>
+
+
+                            <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12" class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small">
+                                    <lightning-input label="Notes" value={notes} onchange={handleChange}></lightning-input>
+                            </lightning-layout-item>
+                        </div>
+                            
+                        </div>
+                    </template>
+                    </div>
+                
+                </div>
+                
+            </div>
+            <footer class="footer">
+                
+                <template lwc:if={isMobileDevice}> 
+                  <lightning-button label="Cancel" variant="brand" class="slds-float_left" style="padding-left: 10px"></lightning-button>
+                  <lightning-button label="Submit" variant="brand" class="slds-float_right" style="padding-right: 10px" disabled></lightning-button>
+                </template>
+                <template lwc:else> 
+                  <lightning-button label="Next Tab" style="font-size: 14px;" variant="brand" class="slds-m-right_small" ></lightning-button>
+                </template>
+       </footer>
+    </template>
+    
+    <template if:false={isOpen}>
+        <div class="slds-section">
+            <h3 class="slds-section__title">
+              <button aria-controls="expando-unique-id" aria-expanded="false" class="slds-button slds-section__title-action" onclick={toggleSection}>
+                <lightning-icon icon-name="utility:chevronright" size="x-small" alternative-text="Toggle"></lightning-icon>
+                <span class="slds-truncate" title="Section Title"> General</span>
+              </button>
+            </h3>
+          </div>
+    </template>
+    
+    </template>

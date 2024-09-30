@@ -1,0 +1,433 @@
+<template>    
+    <lightning-card icon-name="standard:account" variant="Narrow" class="displayCard slds-card_boundary">
+        <div slot="title">
+            <h2>{companyName}</h2>
+        </div>
+        <div slot="actions">
+            <br>
+            <template if:true={showActionButtons}>
+                <lightning-button label="Add CatClass" variant="brand" onclick={handleAddCatClass}></lightning-button>
+                <lightning-button label="Mass Edit" variant="brand" onclick={handleMassEdit} style="padding-left: 10px;padding-right: 10px"></lightning-button>
+            </template>
+            <template if:true={showEditButton}>
+                <lightning-button class="slds-m-left--x-small" label="Edit Mode" title="" icon-name="utility:edit" variant="brand"
+                    onclick={handleEdit}></lightning-button>
+            </template>
+            <template if:true={showRevertButton}>
+                <lightning-button class="slds-m-left--x-small" label="Cancel Edit Mode" title="" icon-name="utility:clear"
+                    variant="brand" onclick={handleCancel}></lightning-button>
+            </template>
+        </div>
+        <lightning-layout>
+            <lightning-layout-item>
+                <p style="padding-left: 15px"><b>Total # of Items:</b> {productCount}</p>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <p style="padding-left: 15px"><b># of Items Displayed:</b> {displayCount}</p>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <p style="padding-left: 15px"><b>RA Improvement %:</b> {raImprovePct}%</p>
+            </lightning-layout-item>           
+        </lightning-layout>
+        <template if:true={showNationalAccFields}>
+            <lightning-layout class="slds-p-top_x-small">
+                <lightning-layout-item>
+                    <p style="padding-left: 15px"><b>NonStrategic RA Improvement %:</b> {nonStrategicAccountRAImprovePct}%</p>
+                </lightning-layout-item>
+                <lightning-layout-item>                    
+                    <p style="padding-left: 15px"><b>Strategic RA Improvement %:</b> {strategicAccountRAImprovePct}%</p>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                    <p style="padding-left: 15px"><b>National RA Improvement %:</b> {nationalAccountRAImprovePct}%</p>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </lightning-card>
+    <br>
+
+    <template if:true={showSpinner}>
+        <lightning-spinner size="medium"></lightning-spinner>
+    </template>
+
+    <div class="slds-clearfix">
+        <div class="slds-float_left">
+            <lightning-layout>
+                <template if:true={showActionButtons}>
+                    <lightning-layout-item>
+                        <lightning-input type="checkbox" label="Select All" checked={isSelectAllChecked} onchange={handleSelectAll} style="padding-left: 10px;"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-button-icon icon-name="utility:delete" label="Mass Delete" onclick={handleMassDelete} style="padding-left: 10px"></lightning-button-icon>
+                    </lightning-layout-item>
+                </template>
+                <template if:true={showTop10Toggle}>
+                    <template if:false={showtop10Records}>
+                        <lightning-layout-item>
+                            <lightning-combobox label="Sort By:" options={sortOptions} value={sortFilter} onchange={handleSorting} variant="label-hidden" style="width:150px; padding-left: 10px" placeholder="Sort By"></lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <template if:true={showUpButton}>
+                                <lightning-button-icon icon-name="utility:arrowup" label="Sort Order" onclick={handleAscendingSorting} style="padding-left: 10px" tooltip="Top to Bottom"></lightning-button-icon>
+                            </template>
+                            <template if:false={showUpButton}>
+                                <lightning-button-icon icon-name="utility:arrowdown" label="Sort Order" onclick={handleDescendingSorting} style="padding-left: 10px" tooltip="Bottom to Top"></lightning-button-icon>
+                            </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-combobox label="Filter By:" options={filterOptions} value={selectedFilter} onchange={handleFilterSelection} variant="label-hidden" placeholder="Filter By" style="width:150px; padding-left: 10px"></lightning-combobox>
+                        </lightning-layout-item>                
+                        <lightning-layout-item>
+                            <template if:false={showCheckbox}>
+                                <lightning-input type={inputType} label="Keyword" value={keyword} onchange={handleKeyword} variant="label-hidden" style="width:150px; padding-left: 10px"></lightning-input>
+                            </template>
+                            <template if:true={showCheckbox}>
+                                <lightning-input type="checkbox" label="Yes/No" checked={isChecked} onchange={handleCheckbox} style="padding-left: 10px"></lightning-input>
+                            </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item>
+                            <lightning-button onclick={handleApplyFilter} label="Apply" variant="brand" class="slds-m-right_small" style="padding-left: 10px"></lightning-button>
+                        </lightning-layout-item>
+                    </template> 
+                </template>
+            </lightning-layout>
+        </div>
+        <div class="slds-float_right">
+            <template if:true={showTop10Toggle}>
+                <lightning-layout>
+                    <lightning-layout-item>
+                        <p style="padding-left: 10px">Top 10 Products</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-input type="toggle" label="Top 10 Products" variant="label-hidden" onchange={toggleTop10} checked={IsActive} style="padding-left: 10px"> </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <p style="padding-left: 10px">Top 10 %:</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item>
+                        <lightning-input value={displayPercentage} variant="label-hidden" style="width:100px; height: 10px; padding-left: 10px" disabled></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>    
+            </template>
+        </div>
+    </div>
+    <br>
+   
+    <template if:true={error}>
+        <p>{error}</p>                
+    </template>
+
+    <template if:true={showtop10Records}>
+        <template if:false={top10EditClicked}>
+            <div class={top10datatableClass}>
+                <lightning-datatable key-field="Id" data={top10Records} columns={colDisplay} onrowaction={handleRowAction}
+                    onsave={handleSave}>
+                </lightning-datatable>
+            </div>
+        </template>
+        <template if:true={top10EditClicked}>
+            <table class="htmltable slds-table slds-table_bordered slds-table_col-bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="CatClass">CatClass</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col" style="min-width: 300px !important">
+                            <div title="Class Name">Class Name</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Loaded">Loaded</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Rental Revenue">Rental Revenue</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Times Rented">Times Rented</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Current Day">Current Day</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Current Week">Current Week</div>
+                        </th>
+                        <th class="slds-cell-wrap customwidth" scope="col">
+                            <div title="Current Month">Current Month</div>
+                        </th>
+                        <template if:true={showAdditionalCols}>
+                            <th class="slds-cell-wrap customwidth" scope="col">
+                                <div title="New Day">New Day</div>
+                            </th>
+                            <th class="slds-cell-wrap customwidth" scope="col">
+                                <div title="New Week">New Week</div>
+                            </th>
+                            <th class="slds-cell-wrap customwidth" scope="col">
+                                <div title="New Month">New Month</div>
+                            </th>
+                            <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                <div title="D%">D%</div>
+                            </th>
+                            <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                <div title="W%">W%</div>
+                            </th>
+                            <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                <div title="M%">M%</div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={top10Records} for:item="item" for:index="index">
+                        <tr key={item.Id} class={item.PPA_RowColorClass__c}>
+                            <td class="slds-cell-wrap">{item.PPA_CatClass__c}
+                            </td>
+                            <td class="slds-cell-wrap">{item.PPA_Product_Name__c}
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <template if:true={item.PPA_Rates_Loaded__c}>
+                                    <span>&#10003;</span>
+                                </template>
+                            </td>
+                            <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Rental_Revenue__c}
+                                    format-style="currency" currency-code="USD"></lightning-formatted-number>
+                            </td>
+                            <td class="slds-cell-wrap">{item.PPA_Times_Rented__c}
+                            </td>
+                            <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Day__c}
+                                    format-style="currency" currency-code="USD"></lightning-formatted-number>
+                            </td>
+                            <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Week__c}
+                                    format-style="currency" currency-code="USD"></lightning-formatted-number>
+                            </td>
+                            <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Month__c}
+                                    format-style="currency" currency-code="USD"></lightning-formatted-number>
+                            </td>
+                            <template if:true={showEditableCols}>
+                                <td class="slds-cell-wrap">
+                                    <lightning-input class="inptCls" label="" variant="label-hidden" data-id="PPA_New_Day__c"
+                                        data-index={index} data-recordid={item.Id}
+                                        data-value={item.PPA_New_Day__c} type="number" formatter="currency" step="0.01"
+                                        value={item.PPA_New_Day__c} onchange={handleNewDayChange}
+                                        disabled={item.monthOnly} max="999999999.99"></lightning-input>
+                                </td>
+                                <td class="slds-cell-wrap">
+                                    <lightning-input class="inptCls" label="" variant="label-hidden" data-id="PPA_New_Week__c"
+                                        data-index={index} data-recordid={item.Id}
+                                        data-value={item.PPA_New_Week__c} type="number" formatter="currency" step="0.01"
+                                        value={item.PPA_New_Week__c} onchange={handleNewWeekChange}
+                                        disabled={item.monthOnly} max="999999999.99"></lightning-input>
+                                </td>
+                                <td class="slds-cell-wrap">
+                                    <lightning-input class="inptCls" label="" variant="label-hidden" data-id="PPA_New_Month__c"
+                                        data-index={index} data-recordid={item.Id}
+                                        data-value={item.PPA_New_Month__c} type="number" formatter="currency" step="0.01"
+                                        value={item.PPA_New_Month__c} data-monthonly={item.monthOnly}
+                                        data-newdays={item.Number_Of_Days__c} data-newweeks={item.Number_Of_Weeks__c}
+                                        onchange={handleNewMonthChange} max="999999999.99"></lightning-input>
+                                </td>
+                            </template>
+                            <template if:false={showEditableCols}>
+                                <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_New_Day__c}
+                                        format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </td>
+                                <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_New_Week__c}
+                                        format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </td>
+                                <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_New_Month__c}
+                                        format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                </td>
+                            </template>
+                            <template if:true={showAdditionalCols}>
+                                <td class="slds-cell-wrap">{item.PPA_Change_Day__c}
+                                </td>
+                                <td class="slds-cell-wrap">{item.PPA_Change_Week__c}
+                                </td>
+                                <td class="slds-cell-wrap">{item.PPA_Change_Month__c}
+                                </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            <div class="slds-align_absolute-center slds-p-top_small">
+                <template if:true={showCancelButton}>
+                    <lightning-button label="Cancel" variant="brand" onclick={handleCancel}
+                        icon-name="utility:clear"></lightning-button>
+                </template>
+                <template if:true={showSaveButton}>
+                    <lightning-button label="Save" variant="brand" onclick={handleSaveRecords} data-index={allRecords}
+                        icon-name="utility:save" class="slds-m-left--x-small"></lightning-button>
+                </template>
+            </div>
+        </template>
+    </template>    
+
+    <template if:false={showtop10Records}>
+        <template if:false={editClicked}>
+            <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                <template for:each={mapData} for:item="rec">
+                    <lightning-accordion-section key={rec.key} name={rec.key} label={rec.key}>
+                        <div class={catClassDatatableClass}>
+                            <lightning-datatable
+                                key-field="Id"
+                                data={rec.value}
+                                columns={colDisplay}
+                                onrowaction={handleRowAction}
+                                onsave={handleSave}
+                            >
+                            </lightning-datatable>
+                        </div>
+                    </lightning-accordion-section>
+                </template>    
+            </lightning-accordion> 
+        </template>
+    </template>
+    <template if:true={editClicked}>
+        <div>
+            <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                <template for:each={mapData} for:item="rec">
+                    <lightning-accordion-section key={rec.key} name={rec.key} label={rec.key}>
+                        <table class="htmltable slds-table slds-table_bordered slds-table_col-bordered">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="CatClass">CatClass</div>
+                                    </th>
+                                    <th class="slds-cell-wrap" scope="col" style="min-width: 300px !important">
+                                        <div title="Class Name">Class Name</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Loaded">Loaded</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Rental Revenue">Rental Revenue</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Times Rented">Times Rented</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Current Day">Current Day</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Current Week">Current Week</div>
+                                    </th>
+                                    <th class="slds-cell-wrap customwidth" scope="col">
+                                        <div title="Current Month">Current Month</div>
+                                    </th>
+                                    <template if:true={showAdditionalCols}>
+                                        <th class="slds-cell-wrap customwidth" scope="col">
+                                            <div title="New Day">New Day</div>
+                                        </th>
+                                        <th class="slds-cell-wrap customwidth" scope="col">
+                                            <div title="New Week">New Week</div>
+                                        </th>
+                                        <th class="slds-cell-wrap customwidth" scope="col">
+                                            <div title="New Month">New Month</div>
+                                        </th>
+                                        <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                            <div title="D%">D%</div>
+                                        </th>
+                                        <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                            <div title="W%">W%</div>
+                                        </th>
+                                        <th class="slds-cell-wrap" scope="col" style="max-width: 120px !important">
+                                            <div title="M%">M%</div>
+                                        </th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={rec.value} for:item="item" for:index="index">
+                                    <tr key={item.Id} class={item.PPA_RowColorClass__c}>
+                                        <td class="slds-cell-wrap">{item.PPA_CatClass__c}
+                                        </td>
+                                        <td class="slds-cell-wrap">{item.PPA_Product_Name__c}
+                                        </td>
+                                        <td class="slds-cell-wrap">
+                                            <template if:true={item.PPA_Rates_Loaded__c}>
+                                                <span>&#10003;</span>
+                                            </template>
+                                        </td>
+                                        <td class="slds-cell-wrap"><lightning-formatted-number
+                                                value={item.PPA_Rental_Revenue__c} format-style="currency"
+                                                currency-code="USD"></lightning-formatted-number>
+                                        </td>
+                                        <td class="slds-cell-wrap">{item.PPA_Times_Rented__c}
+                                        </td>
+                                        <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Day__c}
+                                                format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                        </td>
+                                        <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Week__c}
+                                                format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                        </td>
+                                        <td class="slds-cell-wrap"><lightning-formatted-number value={item.PPA_Old_Month__c}
+                                                format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                        </td>
+                                        <template if:true={showEditableCols}>
+                                            <td class="slds-cell-wrap">
+                                                <lightning-input class="inptCls" label="" variant="label-hidden"
+                                                    data-id="PPA_New_Day__c" data-index={index} data-key={rec.key}
+                                                    data-recordid={item.Id} data-value={item.PPA_New_Day__c} type="number"
+                                                    formatter="currency" step="0.01" value={item.PPA_New_Day__c}
+                                                    onchange={handleNewDayChange}
+                                                    disabled={item.monthOnly} max="999999999.99"></lightning-input>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <lightning-input class="inptCls" label="" variant="label-hidden"
+                                                    data-id="PPA_New_Week__c" data-index={index} data-key={rec.key}
+                                                    data-recordid={item.Id} data-value={item.PPA_New_Week__c} type="number"
+                                                    formatter="currency" step="0.01" value={item.PPA_New_Week__c}
+                                                    onchange={handleNewWeekChange}
+                                                    disabled={item.monthOnly} max="999999999.99"></lightning-input>
+                                            </td>
+                                            <td class="slds-cell-wrap">
+                                                <lightning-input class="inptCls" label="" variant="label-hidden"
+                                                    data-id="PPA_New_Month__c" data-index={index} data-key={rec.key}
+                                                    data-recordid={item.Id} data-value={item.PPA_New_Month__c} type="number"
+                                                    formatter="currency" step="0.01" value={item.PPA_New_Month__c}
+                                                    data-monthonly={item.monthOnly} data-newdays={item.Number_Of_Days__c}
+                                                    data-newweeks={item.Number_Of_Weeks__c}
+                                                    onchange={handleNewMonthChange} max="999999999.99"></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={showEditableCols}>
+                                            <td class="slds-cell-wrap"><lightning-formatted-number
+                                                    value={item.PPA_New_Day__c} format-style="currency"
+                                                    currency-code="USD"></lightning-formatted-number>
+                                            </td>
+                                            <td class="slds-cell-wrap"><lightning-formatted-number
+                                                    value={item.PPA_New_Week__c} format-style="currency"
+                                                    currency-code="USD"></lightning-formatted-number>
+                                            </td>
+                                            <td class="slds-cell-wrap"><lightning-formatted-number
+                                                    value={item.PPA_New_Month__c} format-style="currency"
+                                                    currency-code="USD"></lightning-formatted-number>
+                                            </td>
+                                        </template>
+                                        <template if:true={showAdditionalCols}>
+                                            <td class="slds-cell-wrap">{item.PPA_Change_Day__c}
+                                            </td>
+                                            <td class="slds-cell-wrap">{item.PPA_Change_Week__c}
+                                            </td>
+                                            <td class="slds-cell-wrap">{item.PPA_Change_Month__c}
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div class="slds-align_absolute-center slds-p-top_small">
+                            <template if:true={showCancelButton}>
+                                <lightning-button label="Cancel" variant="brand" onclick={handleCancel}
+                                    icon-name="utility:clear"></lightning-button>
+                            </template>
+                            <template if:true={showSaveButton}>
+                                <lightning-button label="Save" variant="brand" onclick={handleSaveRecords}
+                                    data-index={allRecords} icon-name="utility:save"
+                                    class="slds-m-left--x-small"></lightning-button>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+        </div>
+    </template>
+</template>

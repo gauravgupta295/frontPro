@@ -1,0 +1,20 @@
+<template>
+  <template for:each={records} for:item="record">
+    <div class="item-class" key={record.id}>
+      <template for:each={columns} for:item="column">
+        <div key={record.id} class="slds-m-horizontal_medium">
+          <c-sbr_3_0_custom-mobile-data-table-row-item
+            hide-checkbox-column={hideCheckboxColumn}
+            max-row-selection={maxRowSelection}
+            record={record}
+            selected-rows={selectedRows}
+            column={column}
+            onrowselection={getSelectedRecords}
+            onrowbuttonevent={passRowButtonEvent}
+          >
+          </c-sbr_3_0_custom-mobile-data-table-row-item>
+        </div>
+      </template>
+    </div>
+  </template>
+</template>

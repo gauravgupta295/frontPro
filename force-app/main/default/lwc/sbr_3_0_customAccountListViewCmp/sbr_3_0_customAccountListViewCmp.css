@@ -1,0 +1,105 @@
+.slds-modal__container {
+  width: 90%;
+  max-width: 95rem;
+}
+.filters {
+  padding: 1rem 0;
+  width: 100%;
+}
+.filters .slds-form-element {
+  display: inline-grid;
+  padding: 0 0.5rem;
+}
+.slds-p-left_large {
+  padding: unset;
+}
+
+.filters .filters-searchButton {
+  float: right;
+  padding: 1rem;
+}
+.slds-modal__content {
+  padding: unset;
+}
+.tableheader {
+  padding: 1rem 0;
+  background-color: #e5e5e5;
+}
+.tableheader.main {
+  padding: 0 0.5rem;
+  font-size: large;
+  font-weight: 700;
+}
+.tableheader.sub {
+  display: inline-grid;
+  padding: 0 0.5rem 0 0.5rem;
+}
+.table-header .table-cell {
+  padding: 1rem;
+  background-color: rgb(243, 243, 243);
+  font-weight: 600;
+}
+.table-body .table-cell {
+  padding: 0.3rem 1rem;
+  /*max-width: 10rem;*/
+  white-space: break-spaces;
+  overflow-wrap: break-word;
+}
+
+lightning-pill-container {
+  color: #25683e;
+}
+
+.no_scrollbar {
+  overflow-y: hidden;
+}
+
+/* .tableFixHead {
+  height: 20rem !important;
+}  */
+
+.tableFixHead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.wrap-column-text{
+  white-space: normal;
+}
+
+.color-boxes{
+  display : inline-block;
+  border-radius : 4px;
+  color : white;
+  padding : 4px;
+}
+
+.greenColor{
+  background-color : #008545;
+}
+
+.greyColor{
+  background-color : #8D8D8D;/*Modified as part of FRONT-12413*/
+}
+
+.orangeColor{
+  background-color : #FFAA05;
+}
+
+.redColor{
+  background-color : #BA0517;
+}
+
+.action-cell{
+  display: flex;
+  justify-content: center;
+}
+/*
+.lgc-bg .menuItem span{
+  color: #2E844A!important;
+}
+
+.lgc-bg .slds-dropdown__item a {
+  color:#2E844A!important;
+}*/

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordAction</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__GlobalAction</target>
+    </targets>
+    <targetConfigs>
+    <targetConfig targets="lightning__FlowScreen">
+        <property name="defaultOutSideLabor" type="@salesforce/schema/WorkOrderLineItem[]" label="Enter Deafult OutSide Labor Values" role="inputOnly"/>
+        <property name="defaultMiscItems" type="@salesforce/schema/ProductConsumed[]" label="Enter Deafult Misc Values" role="inputOnly"/>
+        <property name="defaultParts" type="@salesforce/schema/ProductConsumed[]" label="Enter Default Parts Values" role="inputOnly"/>
+        <property name="defaultInventoryParts" type="@salesforce/schema/ProductConsumed[]" label="Enter Default Inventory Parts Values" role="inputOnly"/>
+        <property name="defaultLabor" type="@salesforce/schema/WorkOrderLineItem[]" label="Enter Default Labors Values" role="inputOnly"/>
+        <property name="defaultTravel" type="@salesforce/schema/WorkOrderLineItem[]" label="Enter Default Travels Values" role="inputOnly"/>
+        <property name="finalParts" type="@salesforce/schema/ProductConsumed[]" label="Final Parts" role="outputOnly"/>
+         <property name="finalInventoryParts" type="@salesforce/schema/ProductConsumed[]" label="Final Inventory Parts" role="outputOnly"/>
+        <property name="finalLaborTravels" type="@salesforce/schema/WorkOrderLineItem[]" label="Final Labor Travels" role="outputOnly"/>
+        <property name="finalMiscItems" type="@salesforce/schema/ProductConsumed[]" label="Final Parts" role="outputOnly"/>
+        <property name="finalOutSideLabor" type="@salesforce/schema/WorkOrderLineItem[]" label="Final OutSide Labor" role="outputOnly"/>
+        <property name="baseUrlFromFlow" type="String" label="Enter Base URL" role="inputOnly"/>
+        <property name="branchLoc" type="String" label="Branch Location Number"/>
+        <property name="companyCode" type="String" label="Company Code"/>
+        <property name="expenseToLoc" type="String" label="Bill Cust Or Loc"/>
+        <property name="defaultLaborCode" type="String" label="Default Labor Code" role="inputOnly"/>
+        <property name="review" type="String" label="Clone/Normal" role="inputOnly"/>
+        <property name="recordToBeDeleted" label="RecordId to Delete" type="String"  role="inputOnly"/>
+        <property name="type" type="String" label="Type of WorkOrder" role="inputOnly"/>
+        <property name="workOrder" type="String" label="WorkOrder Id" role="inputOnly"/>
+        <property name="totalTaxOnSales" type="String" label="Tax On Sales" role="outputOnly"/>
+        <property name="totalinvoiceAmount" type="String" label="Total Invoice Amount" role="outputOnly"/>
+        <property name="totalStatetaxAmount" type="String" label="State Tax Amount" role="outputOnly"/>
+        <property name="totalCountyTaxAmount" type="String" label="County Tax Amount" role="outputOnly"/>
+        <property name="worOrderDesc" type="String" label="Work Order Description" role="inputOnly"/>
+        <property name="is_Show_Damage_Estimator" type="Boolean" label="Is Show Damage Estimator"/>
+        <property name="showEstimatorButton" type="Boolean" label="Show Damage Estimator Button" role="inputOnly"/>
+    </targetConfig> 
+</targetConfigs>
+</LightningComponentBundle>

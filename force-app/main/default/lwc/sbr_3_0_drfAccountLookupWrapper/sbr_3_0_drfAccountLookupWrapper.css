@@ -1,0 +1,17 @@
+:host {
+  --slds-c-toast-color-background: #747474;
+}
+
+.btn-icon-disabled-class {
+  --slds-c-icon-color-background: gray;
+}
+
+.btn-icon-enabled-class {
+  --slds-c-icon-color-background: #2e844a;
+}
+
+@media only screen and (min-width: 468px) {
+  .editBtnCls {
+    padding-top: 18px;
+  }
+}

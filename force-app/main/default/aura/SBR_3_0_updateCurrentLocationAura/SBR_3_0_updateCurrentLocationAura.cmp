@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:hasSObjectName,force:lightningQuickAction" access="global" >
+    <aura:html tag="style">
+        .slds-modal__container{
+        width: 50%;
+        max-width: 40rem;
+        }
+        .modal-body{
+        height : 400px !important;
+        max-height: 550px !important;
+        }
+    </aura:html>
+	<c:sbr_3_0_updateCurrentLocationFrontline aura:id="GlobalAction" onmodalclose="{!c.handleClose}"></c:sbr_3_0_updateCurrentLocationFrontline> 
+</aura:component>

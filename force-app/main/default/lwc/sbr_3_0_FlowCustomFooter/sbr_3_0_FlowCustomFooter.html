@@ -1,0 +1,16 @@
+<template>
+    <div class="slds-modal__footer slds-grid slds-grid_align-center">
+        <template if:true={showCancelButton}>
+            <button class="slds-button backCancelButtonCss" title={lableCancelButton} onclick={handleCancel}>{lableCancelButton}</button>
+        </template>
+        <template if:true={showPreviousButton}>
+            <button class="slds-button backCancelButtonCss" title={lablePreviousButton} onclick={handlePrevious}>{lablePreviousButton}</button>
+        </template>
+        <template if:true={showNextButton}>
+            <button class="slds-button nextSaveButtonCss" title={lableNextButton} onclick={handleNext}>{lableNextButton}</button>
+        </template>
+        <template if:true={showSaveButton}>
+            <button class="slds-button nextSaveButtonCss" title={lableSaveButton} onclick={handleNext}>{lableSaveButton}</button>
+        </template>
+    </div>
+</template>

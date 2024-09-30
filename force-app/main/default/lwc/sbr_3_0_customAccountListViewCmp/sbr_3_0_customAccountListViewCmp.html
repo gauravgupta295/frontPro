@@ -1,0 +1,264 @@
+<template>
+  <!-- Modal/Popup Box LWC starts here -->
+  <!-- removed aria describedby and aria labelledby attributes for FRONT-11596-->
+  <section
+    role="dialog"
+    tabindex="-1"
+
+    aria-modal="true"
+
+    class={searchModalComputedClasses}
+  >
+    <div class="slds-modal__container">
+      <!-- Modal/Popup Box LWC header here -->
+      <header class="slds-modal__header">
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse customModalCloseButton"
+          onclick={hideResults}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small"
+          ></lightning-icon>
+          <!-- Commented as part of FRONT-11968 -->
+          <!-- <span class="slds-assistive-text">Close</span> -->
+        </button>
+        <!-- FRONT-12372 : Header tag changed from h2 to h1-->
+        <h1
+          id="modal-heading-01"
+          class="slds-text-heading_medium slds-hyphenate"
+          if:false={editRecordForm}
+        >
+          {modalHeader}
+        </h1>
+        <!-- END : FRONT-12372 -->
+      </header>
+      <!-- Modal/Popup Box LWC body starts here -->
+      <div
+        class="slds-modal__content slds-p-around_medium no_scrollbar"
+        id="modal-content-id-1"
+        if:false={editRecordForm}
+      >
+        <div class="slds-p-bottom_large slds-p-left_large">
+          <div class="slds-p-around_medium lgc-bg">
+            <lightning-layout>
+              <!-- FRONT-3020 Changed size of Customer Info field from 2 to 3 -->
+              <lightning-layout-item
+                class="slds-var-p-vertical_small slds-var-p-horizontal_x-small"
+                size="3"
+              >
+                <!-- FRONT-3020 Added onkeypress event, placeholder and modified onchange event -->
+                <lightning-input
+                  class="filters-accountName"
+                  type="search"
+                  label="Customer Info"
+                  value={searchKey}
+                  placeholder={customerInfoPlaceHolder}
+                  field-level-help="Search by Account Name, Phone, Email or Account #"
+                  onchange={handleEmptyFieldValue}
+                  onkeydown={handleOnKeyDown}
+                ></lightning-input>
+              </lightning-layout-item>
+
+              <!--Custom comobobox filter here-->
+              <lightning-layout-item padding="around-medium" size="3">
+                <!-- FRONT-3020 Removed the syncing of 'Customer Info Value' to 'Account Name value in Filters' -->
+                <c-sbr_3_0_custom-combobox-filter
+                  onfilterevent={handleFilters}
+                ></c-sbr_3_0_custom-combobox-filter>
+              </lightning-layout-item>
+            </lightning-layout>
+            <div class="slds-var-p-around_x-small">
+              <lightning-pill-container
+                class="applied-filters"
+                items={comboboxFilters}
+                variant="bare"
+                onitemremove={handlePillRemoveClick}
+              ></lightning-pill-container>
+              <div aria-live="assertive" class="slds-assistive-text" id="filterRemoved" role="status">{filterRemoved}</div>
+                  
+            </div>
+          </div>
+        </div>
+        <div class="tableheader">
+          <lightning-layout>
+            <lightning-layout-item size="6" padding="around-small">
+              <div>
+                <!-- FRONT-12372 : changed table header tag from h1 to h2-->
+                <h2 class="tableheader main">Accounts</h2>
+                <!-- END : FRONT-12372-->
+              </div>
+              <div>
+                <h3 class="tableheader sub">{countLabel}</h3>
+              </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" padding="around-small">
+              <button
+                class="slds-button slds-button_neutral slds-float_right"
+                onclick={showAccountCreationModal}
+                title="New Account"
+              >
+                New Account
+              </button></lightning-layout-item
+            >
+          </lightning-layout>
+        </div>
+        <template if:true={isSearchLoading}>
+          <div class="slds-is-relative">
+            <lightning-spinner
+              variant="brand"
+              alternative-text="loading..."
+            ></lightning-spinner>
+          </div>
+        </template>
+        <!--FRONT-7984 Created 2 tables instead of one so that can implement scrollbar in the second table
+            i.e. table with the data-->
+        <div class="tableFixHead">
+          <table
+            class="slds-table slds-table_bordered slds-table_fixed-layout"
+            role="grid"
+          >
+            <tr class="slds-line-height_reset table-header">
+              <template for:each={newColumns} for:item="column">
+                <th key={column.fieldName} class="table-cell">
+                  <span
+                    class="slds-truncate wrap-column-text"
+                    title={column.label}
+                  >
+                    {column.label}
+                  </span>
+                </th>
+              </template>
+              <th class="table-cell"></th>
+            </tr>
+          </table>
+        </div>
+        <div class="slds-scrollable_y">
+          <table
+            class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_edit slds-table_resizable-cols slds-table_fixed-layout inner-table"
+            role="grid"
+          >
+            <tbody>
+              <template for:each={lstResult} for:item="account">
+                <tr key={account.Id} class="table-body">
+                  <!-- Start FRONT-8624  -->
+                  <template if:false={account.allowAccountSelection}>
+                    <td class="table-cell">{account.Name}</td>
+                  </template>
+                  <template if:true={account.allowAccountSelection}>
+                    <!-- End FRONT-8624  -->
+                    <td class="table-cell" id={account.Id}>
+                      <!-- FRONT-12382 : added role and tabindex for tabfocus-->
+                      <a
+                        value={account.Name}
+                        id={account.Id}
+                        data-id={account.Id}
+                        title={account.Name}
+                        onclick={onAccountNameClicked}
+                        role="link"
+                        tabindex="0"
+                        >{account.Name}</a
+                      >
+                      <!-- END : FRONT-12382-->
+                    </td>
+                  </template>
+                  <!-- FRONT-8624  -->
+                  <td class="table-cell">{account.RecordType.Name}</td>
+                  <!-- FRONT-1681 added Status__c field as column-->
+                  <td class="table-cell">
+                    <div
+                      class={account.computedStatusClasses}
+                      data-status={account.Status__c}
+                    >
+                      {account.Status__c}
+                    </div>
+                  </td>
+                  <td class="table-cell">{account.BillingStreet}</td>
+                  <td class="table-cell">
+                    <lightning-formatted-phone
+                      value={account.Phone}
+                    ></lightning-formatted-phone>
+                  </td>
+                  <td class="table-cell">{account.BillingCountryCode}</td>
+                  <td class="table-cell">
+                    {account.Driver_s_License_State__c}
+                  </td>
+                  <td class="table-cell">{account.Drivers_License__c}</td>
+                  <td class="table-cell">{account.E_mail_Address__c}</td>
+
+                  <td
+                    class="slds-cell_action-mode action-cell"
+                    lwc:if={account.ShowPopUpFlag}
+                    role="gridcell"
+                  >
+                    <div class="slds-p-around_medium lgc-bg">
+                      <template if:true={account.ShowPopUpFlag}>
+                        <lightning-button-menu
+                          menu-alignment={account.menuAlignment}
+                          alternative-text="More actions"
+                          icon-size="x-small"
+                          data-id={account.Id}
+                        >
+                          <lightning-menu-item
+                            class="menuItem"
+                            value="Edit"
+                            label="Edit"
+                            data-id={account.Id}
+                            onclick={openEditForm}
+                          ></lightning-menu-item>
+                          <template if:true={account.showProspectConversion}>
+                            <lightning-menu-item
+                              class="wrapText menuItem"
+                              value="Convert to Non-Credit"
+                              label="Convert to Non-Credit"
+                              data-id={account.Id}
+                              onclick={handleConversionClick}
+                            ></lightning-menu-item>
+                          </template>
+                        </lightning-button-menu>
+                      </template>
+                    </div>
+                  </td>
+                  <td class="table-cell" lwc:else></td>
+                </tr>
+              </template>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <footer class="slds-modal__footer" if:false={editRecordForm}>
+        <button
+          class="slds-button slds-button_neutral"
+          onclick={hideResults}
+          title="Cancel"
+        >
+          Cancel
+        </button>
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+  <template if:true={editRecordForm}>
+    <c-sbr_3_0_edit-account-cmp
+      onclosemodal={closeModal}
+      onselectaccount={selectAccount}
+      props={props}
+      onrefreshcomponent={handleForceRefresh}
+      parentcmp={parentcmp}
+      onhideresults={handleHideResult}
+    ></c-sbr_3_0_edit-account-cmp>
+  </template>
+
+  <template if:true={editConversionFrom}>
+    <c-sbr_3_0_convert-prospect-to-non-credit-account
+      onclosemodal={closeModal}
+      record-id={accId}
+      parentcmp={parentcmp}
+      onselectaccount={selectAccount}
+      onrefreshcomponent={handleForceRefresh}
+      onhideresults={handleHideResult}
+    ></c-sbr_3_0_convert-prospect-to-non-credit-account>
+  </template>
+</template>

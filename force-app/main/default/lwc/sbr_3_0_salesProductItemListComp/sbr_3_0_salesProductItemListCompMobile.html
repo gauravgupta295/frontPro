@@ -1,0 +1,127 @@
+<template>
+  <!-- <lightning-card> -->
+  <!-- 11395 -->
+  <!-- <template if:false={isDetailPage}> -->
+  <div
+    class="slds-scrollable_y prod-mob-ctr bgcolor"
+    onscroll={loadMoreDataMobile}
+    lwc:if={_productItems}
+  >
+    <ul class="slds-dropdown_list">
+      <template for:each={_productItems} for:item="prod" for:index="index">
+        <li
+          key={prod.product.Id}
+          class="slds-var-p-left_medium slds-var-p-right_medium product-list"
+          role="presentation"
+          data-key={prod.product.Id}
+          value={index}
+        >
+          <!-- <lightning-input type="checkbox" name={prod.ProductName}></lightning-input>
+                        <strong>{prod.ProductName}</strong> -->
+
+          <!-- <div class="slds-form-element">
+            <div class="slds-form-element__control">
+              <div class="slds-checkbox">
+                <input
+                  type="checkbox"
+                  name="options"
+                  id={prod.product.Id}
+                  data-product-id={prod.product.Id}
+                  data-value={prod.product}
+                  onchange={handleCheckboxChange}
+                />
+                <label class="slds-checkbox__label" for={prod.product.Id}>
+                  <span class="slds-checkbox_faux"></span>
+                  <span class="slds-form-element__label">
+                    <strong>{prod.product.Name}</strong>
+                  </span>
+                </label>
+                <div
+                  class="slds-var-p-left_x-large product-item-description-class"
+                >
+                  <div>Part/Item#: {prod.product.Item_Number__c}</div>
+                  <div>Stock/Vendor: {prod.product.Stock_class__c}</div>
+                  <div>Available: {prod.availableQty}</div>
+                </div>
+              </div>
+            </div>
+          </div> -->
+
+          <!-- FRONT-30614 changes -->
+          <lightning-layout
+            class="slds-var-p-top_x-small slds-var-p-bottom_x-small"
+            multiple-rows
+          >
+            <lightning-layout-item size="1">
+              <lightning-input
+                id={prod.product.Id}
+                data-product-id={prod.product.Id}
+                data-value={prod.product}
+                onchange={handleCheckboxChange}
+                type="checkbox"
+                label="options"
+                name={prod.product.Name}
+                variant="label-hidden"
+              ></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="11">
+              <div
+                style="overflow-wrap: break-word"
+                class="slds-var-p-top_x-small"
+              >
+                <strong class="label-header-class">{prod.product.Name}</strong>
+                <br />
+                <div
+                  lwc:if={showAvailability}
+                  class="product-item-description-class"
+                >
+                  Part/Item#: {prod.product.Item_Number__c}
+                  <br />
+                  Stock/Vendor: {prod.product.Stock_class__c}
+                  <br />
+                  Available: {prod.availableQty}
+                </div>
+
+                <div lwc:else class="product-item-description-class">
+                  Part/Item#: {prod.product.Item_Number__c}
+                  <br />
+                  Stock/Vendor: {prod.product.Stock_class__c}
+                </div>
+              </div>
+            </lightning-layout-item>
+          </lightning-layout>
+        </li>
+
+        <!-- {prod.ProductName} -->
+      </template>
+    </ul>
+  </div>
+  <!-- </lightning-card> -->
+  <!-- </template> -->
+
+  <template if:true={mobileIsLoading}>
+    <div class="spinner">
+      <lightning-spinner
+        alternative-text="Loading"
+        variant="brand"
+        size="medium"
+      >
+      </lightning-spinner>
+    </div>
+  </template>
+
+  <!-- 11395 -->
+  <template if:true={isDetailPage}>
+    <c-sbr_3_0_consumabale-spotlight-panel-cmp
+      onbackitemsearchevent={handleBackToItemSearchButton}
+      mobile-product-id={productId}
+      product-item-id={productItemId}
+      object-api-name={objectApiName}
+      location-info={locationInfo}
+      product-description={productDescription}
+      selected-products={selectedItems}
+      record-id={recordId}
+      contract-sales-tab={isContractSalesTab}
+    ></c-sbr_3_0_consumabale-spotlight-panel-cmp>
+  </template>
+</template>

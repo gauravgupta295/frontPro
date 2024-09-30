@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+        <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Custom list view component</masterLabel>
+    <description
+  >This is a component to mimic a SF list view component</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+</LightningComponentBundle>

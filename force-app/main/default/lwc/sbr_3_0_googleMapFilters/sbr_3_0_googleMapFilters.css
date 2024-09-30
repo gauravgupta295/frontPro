@@ -1,0 +1,15 @@
+:host {
+    overflow-y: scroll;
+}
+
+.scrolling {
+    overflow-y: visible;
+}
+
+.stopoverflow {
+    max-width: 580px;
+}
+
+.text-underline {
+    text-decoration : underline ;
+}

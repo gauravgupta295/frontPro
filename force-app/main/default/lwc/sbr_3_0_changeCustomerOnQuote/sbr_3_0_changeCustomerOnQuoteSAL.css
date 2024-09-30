@@ -1,0 +1,9 @@
+.mobileMainDiv {
+    height: 75vh;
+}
+.mobileButtonDiv {
+    height: 5vh;
+}
+.slds-section__content {
+    min-height: 350px;
+}

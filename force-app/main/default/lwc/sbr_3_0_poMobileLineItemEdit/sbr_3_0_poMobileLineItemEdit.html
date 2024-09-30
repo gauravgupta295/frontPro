@@ -1,0 +1,126 @@
+<template>
+	<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+		aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+		<div class="slds-modal__container">
+			<div class="slds-grid slds-wrap slds-m-top_small">
+				<div class="slds-col slds-size_4-of-12">
+					<div class="slds-page-header__controls title-header slds-p-around_small slds-text-align_left"
+						style="position:left">
+						<b>{headerLabel}</b>
+					</div>
+				</div>
+				<div class="slds-col slds-size_6-of-12">
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<lightning-button-icon icon-name="utility:close" onclick={handleCancel}></lightning-button-icon>
+				</div>
+			</div>
+			<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+				<div class="slds-p-around_medium slds-m-bottom_medium">
+					<!--General-->
+					<div class="slds-page-header" style="background-color:white;">
+						<h2><b>General</b></h2>
+					</div>
+					<lightning-input label="Item Number" value={poLineItemRecord.Item_Number__c} data-field="itemNumber"
+						disabled></lightning-input>
+					<lightning-input label="Record Type/Option" value={poLineItemRecord.Item_Description_Calc__c}
+						data-field="itemDescription" disabled></lightning-input>
+					<lightning-input label="Manufacturer #" value={poLineItemRecord.Manufacturer__c}
+						data-field="manufacturerNumber" disabled></lightning-input>
+					<lightning-input label="Stock Class" value={poLineItemRecord.Stock_Class__c} data-field="stockClass"
+						disabled></lightning-input>
+					<lightning-input label="Item Class" value={poLineItemRecord.Item_Class__c} data-field="itemClass"
+						disabled></lightning-input>
+					<lightning-input label="Stock Status" value={poLineItemRecord.Stock_Status__c}
+						data-field="stockStatus" disabled></lightning-input>
+					<!--Pricing Info-->
+					<div class="slds-page-header slds-m-top_x-large" style="background-color:white;">
+						<h2><b>Pricing Info</b></h2>
+					</div>
+					<lightning-input label="Order Quantity" type="number" step=".01"
+						value={poLineItemRecord.Quantity__c} data-field="orderQuantity" data-validation="true"
+						onchange={handleInputChange} required message-when-value-missing="This is a required Field.">
+					</lightning-input>
+					<lightning-combobox label="U/M" value={poLineItemRecord.Units__c} data-field="unit"
+						data-validation="true" options={unitTypes} onchange={handleInputChange} required
+						message-when-value-missing="This is a required Field.">
+					</lightning-combobox>
+					<lightning-input label="Unit Cost" type="number" step=".001" value={poLineItemRecord.Unit_Cost__c}
+						data-field="unitCost" data-validation="true" onchange={handleInputChange} required
+						message-when-value-missing="This is a required Field.">
+					</lightning-input>
+					<lightning-input label="Extended Cost" value={poLineItemRecord.Total_Cost_Calc__c}
+						data-field="extendedCost" disabled></lightning-input>
+					<lightning-input label="Conversion Factor" value={poLineItemRecord.Conversion_Factor__c}
+						data-field="conversionFactor" disabled></lightning-input>
+					<lightning-input label="Pricing Schedule" value={poLineItemRecord.Pricing_Schedule__c}
+						data-field="pricingSchedule" disabled></lightning-input>
+					<!--Shipping Info-->
+					<div class="slds-page-header slds-m-top_x-large" style="background-color:white;">
+						<h2><b>Shipping Info</b></h2>
+					</div>
+					<lightning-input label="Committed Date" type="date" value={poLineItemRecord.Due_Date__c}
+						data-field="committedDate" data-validation="true" onchange={handleInputChange}>
+					</lightning-input>
+					<lightning-input label="Available Early Date" type="date" value={poLineItemRecord.Request_Date__c}
+						data-field="availableEarlyDate" data-validation="true" onchange={handleInputChange}>
+					</lightning-input>
+					<label>Drop Shipment</label>
+					<lightning-input type="checkbox" checked={poLineItemRecord.Drop_Shipment__c}
+						data-field="dropShipment" onchange={handleInputChange}>
+					</lightning-input>
+					<!--Additional Info-->
+					<div class="slds-page-header slds-m-top_x-large" style="background-color:white;">
+						<h2><b>Additional Info</b></h2>
+					</div>
+					<lightning-input label="Equipment #" value={poLineItemRecord.Equipment_Num__c}
+						data-field="equipmentNumber" data-validation="true"
+						max-length={objectFields.equipmentNumber.length} onchange={handleInputChange}>
+					</lightning-input>
+					<lightning-input label="Average Monthly Usage" value={poLineItemRecord.Average_Monthly_Usage__c}
+						data-field="averageMonthlyUsage" disabled></lightning-input>
+					<lightning-input label="Customer B/O" value={productItem.SM_PS_Customer_BackOrders__c}
+						data-field="customerBO" disabled></lightning-input>
+					<lightning-input label="Reorder Quantity" value={poLineItemRecord.Reorder_Quantity__c}
+						data-field="reorderQuantity" disabled></lightning-input>
+					<lightning-input label="G/L #" value={poLineItemRecord.GL_Account__c} data-field="glAccount"
+						disabled></lightning-input>
+					<lightning-input label="Quantity Available" value={productItem.SM_PS_Quantity_Available__c}
+						data-field="quantityAvailable" disabled></lightning-input>
+					<lightning-input label="Reorder Point" value={poLineItemRecord.Reorder_Point__c}
+						data-field="reorderPoint" disabled></lightning-input>
+					<lightning-input label="Quantity On Order" value={productItem.SM_PS_Quantity_on_Order_to_Vendor__c}
+						data-field="quantityOnOrder" disabled></lightning-input>
+					<!--Messages-->
+					<div class="slds-page-header slds-m-top_x-large" style="background-color:white;">
+						<h2><b>Messages</b></h2>
+					</div>
+					<lightning-textarea label="Messages" value={poLineItemRecord.Messages__c} data-field="messages"
+						data-validation="true" onchange={handleInputChange}>
+					</lightning-textarea>
+				</div>
+			</div>
+			<div class="slds-modal__footer cancelBut">
+				<template if:true={showPctIncrease}>
+					<div style="text-align: center;color: #993300">
+						<h2>&#9888; {pctIncreaseMsg}</h2>
+					</div>
+				</template>
+				<div class="slds-grid slds-wrap slds-m-top_small">
+					<div class="slds-col slds-size_2-of-12">
+						<lightning-button label="Cancel" onclick={handleCancel} class="slds-p-left_small"
+							style="position:left">
+						</lightning-button>
+					</div>
+					<div class="slds-col slds-size_8-of-12">
+					</div>
+					<div class="slds-col slds-size_2-of-12">
+						<lightning-button label="Save" onclick={handleSave} variant="brand" class="brand-button"
+							style="padding-right: 10px; position:right">
+						</lightning-button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</template>

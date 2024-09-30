@@ -1,0 +1,359 @@
+<template>
+	<lightning-card>
+		<div>
+			<div class={salesClass} lwc:ref="salesDiv">
+				<div>
+					<div 
+						class="slds-grid slds-wrap slds-p-bottom_medium slds-border_bottom" 
+						style="background-color: #FAFAF9;">
+						<div class="slds-col slds-size_1-of-1">
+							<div class="slds-p-top_x-small">&nbsp;</div>
+							<div class="slds-p-horizontal_small">
+								<lightning-layout variant="label-hidden">
+									<lightning-layout-item 
+										size="10" 
+										class="slds-p-bottom_medium slds-p-right_x-small">
+										<lightning-input 
+											data-name="searchBox" 
+											variant="label-hidden" 
+											type="search"
+											label="test test" 
+											placeholder="Search Catclass"
+											onkeypress={handleSearch}>
+										</lightning-input>
+									</lightning-layout-item>
+									<lightning-layout-item size="2">
+										<lightning-icon 
+											icon-name="utility:filterList" 
+											title="Open popup" 
+											onclick={handleFilter}>
+										</lightning-icon>
+										<!-- style="border:none !important;margin:0px !important;" -->
+									</lightning-layout-item>
+								</lightning-layout>
+							</div>
+						</div>
+					</div>
+					<div class="slds-grid slds-p-bottom_medium slds-border_bottom">
+						<div class="slds-col slds-size_1-of-1">
+							<div class="slds-p-right_small" style="padding-left: 15px">
+								<lightning-layout>
+									<lightning-layout-item size="12">
+										<b class="slds-page-header__title slds-truncate">
+										All Items
+										</b>
+									</lightning-layout-item><br>
+								</lightning-layout>
+								<p style="padding-top:10px">
+									{totalNoOfRecords} Items. Sorted by {sortByName}. Filter by All Items
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="slds-p-bottom_medium">
+						<template for:each={data} for:item="data" for:index="index">
+							<span class="slds-radio slds-border_bottom" style="width: 100% !important;" key={data.Id}>
+								<input type="radio" id={index} value={index} name="default"
+									onchange={handleRadioButtonChange} data-id={data.Id} data-name={data.Name}
+									data-cost={data.Last_Cost__c} />
+								<label class="slds-radio__label" for={index}>
+									<span class="slds-radio_faux" style="vertical-align: top;"></span>
+									<span class="slds-form-element__label">
+										<div style="display:inline-flex !important;">
+											<ul>
+												<li key={data.Id} style="list-style-type:none">
+													<div class="slds-grid slds-grid_vertical slds-m-top_medium"
+														size="12">
+														<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+															<b>Name: {data.Name}</b>
+														</div>
+														<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+															Part/Item #: {data.Item_Number__c}
+														</div>
+														<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+															Stock/Vendor: {data.Stock_class__c}
+														</div>
+													</div>
+												</li>
+											</ul>
+										</div>
+									</span>
+								</label>
+							</span>
+						</template>
+					</div>
+					<div if:true={isLoaded} class="slds-align_absolute-center">
+						<lightning-spinner alternative-text="Loading...">
+						</lightning-spinner>
+					</div>
+				</div>
+			</div>
+			<div class={assetRequisitionsClass} lwc:ref="assetRequisitionsDiv">
+				<div class="slds-col slds-size_1-of-1">
+					<div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+		<template if:true={filterVisibility}>
+			<div class="slds-modal slds-fade-in-open" style="background: #fff;">
+				<lightning-card title="Filters" style="height: 80% !important; max-height: 120% !important">
+					<lightning-button variant="base" slot="actions" icon-name="utility:close" onclick={handleClose}>
+					</lightning-button>
+					<div style="padding: 10px 10px 10px">
+						<lightning-combobox data-name="itemSuperCategory" value={selectedSuperCategory}
+								options={optionsSuperCategory} label="Item Super Category"
+								onchange={handleItemSuperCategoryInput}></lightning-combobox>
+							<lightning-combobox data-name="itemCategory" value={selectedCategory}
+								options={optionsCategory} label="Item Category" onchange={handleItemCategoryInput}>
+							</lightning-combobox>
+							<lightning-combobox data-name="itemSubCategory" value={selectedSubCategory}
+								options={optionsSubCategory} label="Item Sub-Category"
+								onchange={handleItemSubCategoryInput}></lightning-combobox>
+							<lightning-input data-name="catClass" label="Cat Class" type="text" value={catClass}
+								onchange={handleCatClassInput}></lightning-input>
+					</div>
+					<!--<p slot="footer" style="padding: 10px 10px 10px;margin-top:80%">
+						<lightning-layout>
+							<lightning-layout-item size="2">
+								<lightning-button label="Cancel" title="Cancel" onclick={handleCancel}
+									class="slds-m-left_x-small"></lightning-button>
+							</lightning-layout-item>
+							<lightning-layout-item class="slds-text-align_center" size="6"
+								style="padding-top:10px;padding-right:5px">
+								<a onclick={handleReset}>Reset All Filters</a>
+							</lightning-layout-item>
+							<lightning-layout-item size="2">
+								<lightning-button variant="brand" label="Apply" title="Successful action"
+									onclick={handleApply}></lightning-button>
+							</lightning-layout-item>
+						</lightning-layout>
+					</p>-->
+				<div class="slds-m-top_medium slds-grid slds-grid_align-spread slds-docked-form-footer stickyFooter bottomfooter">
+              <div class="slds-col slds-size_3-of-4">
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}
+                  class="neutral-button"></lightning-button>
+                <span>&nbsp;&nbsp;</span>
+                <lightning-button class="reset-mobile-button" label="Reset All Filters" variant="base"
+                  onclick={handleReset}></lightning-button>
+              </div>
+              <div class="slds-col slds-size_1-of-4">
+                <lightning-button label="Apply" variant="brand" onclick={handleApply}
+                  class="brand-button"></lightning-button>
+              </div>
+            </div>
+				</lightning-card>
+			</div>
+
+
+		</template>
+
+		<!--  Nikhil -->
+
+		<template if:true={salesVisibility}>
+			<div class="slds-modal slds-fade-in-open slds-modal_full"
+				style="background: #fff;height: 100% !important; max-height: 100% !important" data-id="salesVisDiv">
+				<lightning-card title={title}>
+					<lightning-button variant="base" slot="actions" icon-name="utility:close" onclick={handleSalesClose}>
+					</lightning-button>
+					<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; border-radius: 0.25rem;">
+						<lightning-card>
+							<!-- single item__________________________________________ -->
+							<template if:true={showQtyErrorBox}>
+								<c-sbr_3_0_message-box title="Error" type="error" message={errorMessage}>
+								</c-sbr_3_0_message-box>
+							</template>
+							<div style="padding: 10px 10px 10px">
+								<lightning-layout-item>
+									<lightning-formatted-text value="Unit Cost" style="padding: 5px;">
+									</lightning-formatted-text>
+										<template if:true={singleUnitCost}>
+										<p class="slds-float_right" style="padding-right: 10px;">
+											<b>${singleUnitCost}
+											</b>
+										</p><br>
+										</template>
+										<template if:false={singleUnitCost}> 
+											<p class="slds-float_right" style="padding-right: 10px;">
+												<b>-</b></p><br>
+										</template>
+								</lightning-layout-item>
+							</div>
+
+							<!-- <footer class="slds-footer slds-footer_fixed-bottom">
+								<div class="slds-align_absolute-center">
+									<span><lightning-button-icon icon-name="utility:dash" variant="border-filled"
+										alternative-text="decreaseQuantity" title="decreaseQuantity"
+										onclick={decreaseQuantity}>
+									</lightning-button-icon></span>
+									<span>
+										<lightning-input class="slds-p-left_xx-small" type="number"
+											onchange={changeQuantity} name="inputQuantity" label="Qty" min="1"
+											variant="label-hidden" value={quantity} style="width: 55px"
+											message-when-range-underflow="Enter a valid value." step="1"
+											message-when-step-mismatch="Enter a valid value." required>
+										</lightning-input>
+									</span>
+									<span class="slds-col_bump-right slds-p-left_xx-small">
+										<lightning-button-icon icon-name="utility:add" variant="border-filled"
+											alternative-text="increaseQuantity" title="increaseQuantity"
+											onclick={increaseQuantity}>
+										</lightning-button-icon>
+									</span>
+								</div>
+								<div class="slds-align_absolute-center">
+									<span>
+										<lightning-button label="Add to Purchase Order" variant="brand" class="brand-button" onclick={handleAddPurchaseOrderMobile}></lightning-button>
+									</span>
+								</div>
+							</footer> -->
+
+							<!-- ############ OLD FOOTER STARTS ################################ -->
+
+							<!-- <div class="slds-m-top_medium slds-grid slds-grid_align-spread slds-docked-form-footer stickyFooter bottomfooter"> -->
+									<!-- <div class="slds-col slds-size_3-of-4"> -->
+									<!-- <span>&nbsp;&nbsp;&nbsp;</span> -->
+									<!-- <div class="slds-grid slds-grid_align-center"
+										style="background-color:rgba(228, 226, 226, 0.863);padding:10px;border-top:1.5px solid #c7c4c4;border-bottom:1.5px solid #c7c4c4;">
+										<div class="slds-col slds-size_12-of-12">	
+											<div class="slds-grid">
+												<div class="slds-col">
+													<lightning-button-icon icon-name="utility:dash" variant="border-filled"
+														alternative-text="decreaseQuantity" title="decreaseQuantity"
+														onclick={decreaseQuantity}>
+													</lightning-button-icon>
+												</div>
+												<div class="slds-col">
+													<lightning-input class="slds-p-left_xx-small" type="number"
+														onchange={changeQuantity} name="inputQuantity" label="Qty" min="1"
+														variant="label-hidden" value={quantity} style="width: 55px"
+														message-when-range-underflow="Enter a valid value." step="1"
+														message-when-step-mismatch="Enter a valid value." required>
+													</lightning-input>
+												</div> -->
+												<!-- <div class="slds-col_bump-right slds-p-left_xx-small"> -->
+												<!-- <div class="slds-col slds-p-left_xx-small">
+													<lightning-button-icon icon-name="utility:add" variant="border-filled"
+														alternative-text="increaseQuantity" title="increaseQuantity"
+														onclick={increaseQuantity}>
+													</lightning-button-icon>
+												</div>
+											</div>
+										</div> -->
+										<!-- <span>&nbsp;&nbsp;</span> -->
+										<!-- <div class="slds-col slds-size_12-of-12">
+											<lightning-button label="Add to Purchase Order" variant="brand" class="brand-button" onclick={handleAddPurchaseOrderMobile}></lightning-button>
+										</div>
+									</div>
+							</div> -->
+							<!-- </div> -->
+							<!-- ############ OLD FOOTER ENDS ################################ -->
+
+							<!-- New Footer ******************************************************** STARTS  -->
+						</lightning-card>
+							<div class="slds-docked-form-footer stickyFooter bottomfooter">
+								
+								<!-- <div class="slds-col slds-size_12-of-12" style="padding-left: 110px;"> -->
+								<div class="slds-grid slds-wrap">
+									<div class="slds-col slds-size_6-of-12">
+										<div class="slds-grid slds-wrap">
+											<div class="slds-col">
+												<lightning-button-icon 
+													class="slds-p-left_x-small"
+													icon-name="utility:dash" 
+													variant="border-filled"
+													alternative-text="decreaseQuantity" 
+													title="decreaseQuantity"
+													onclick={decreaseQuantity}>
+												</lightning-button-icon>
+											</div>
+											<div class="slds-col">
+												<!-- class="slds-p-left_xx-small" -->
+												<lightning-input 
+													 
+													type="number"
+													onchange={changeQuantity} 
+													name="inputQuantity" 
+													label="Qty" 
+													min="1"
+													variant="label-hidden" 
+													value={quantity} 
+													style="width: 70px"
+													message-when-range-underflow="Enter a valid value." 
+													step="0.01"
+													message-when-step-mismatch="Maximum of 2 decimal places allowed" 
+													required>
+												</lightning-input>
+											</div>
+											<div class="slds-col">
+												<!-- class="slds-p-left_xx-small" -->
+												<lightning-button-icon 
+													 
+													icon-name="utility:add" 
+													variant="border-filled"
+													alternative-text="increaseQuantity" 
+													title="increaseQuantity"
+													onclick={increaseQuantity}>
+												</lightning-button-icon>
+											</div>
+										</div>
+									</div>
+								
+									<!-- <div class="slds-col slds-size_12-of-12 slds-p-top_small" style="padding-right: 110px;"> -->
+									<div class="slds-col slds-size_8-of-12 slds-p-left_xx-large slds-m-left_xx-large slds-p-top_small">
+										<lightning-button 
+											label="Add to Purchase Order" 
+											variant="brand" 
+											class="brand-button" 
+											onclick={handleAddPurchaseOrderMobile}>
+										</lightning-button>
+									</div>
+								</div>
+							</div>
+
+							<!-- New Footer ******************************************************** ENDS  -->
+
+							<!-- <div style="padding: 10px 10px 10px;">
+								<div slot="footer" style="margin-top:80%">
+									<div class="slds-grid"
+										style="background-color:rgba(228, 226, 226, 0.863);padding:10px;border-top:1.5px solid #c7c4c4;border-bottom:1.5px solid #c7c4c4;">
+										<div>
+											<lightning-button-icon icon-name="utility:dash" variant="border-filled"
+												alternative-text="decreaseQuantity" title="decreaseQuantity"
+												onclick={decreaseQuantity}>
+											</lightning-button-icon>
+										</div>
+										<div>
+											<lightning-input class="slds-p-left_xx-small" type="number"
+												onchange={changeQuantity} name="inputQuantity" label="Qty" min="1"
+												variant="label-hidden" value={quantity} style="width: 45px"
+												message-when-range-underflow="Enter a valid value." step="1"
+												message-when-step-mismatch="Enter a valid value." required>
+											</lightning-input>
+										</div>
+										<div class="slds-col_bump-right slds-p-left_xx-small">
+											<lightning-button-icon icon-name="utility:add" variant="border-filled"
+												alternative-text="increaseQuantity" title="increaseQuantity"
+												onclick={increaseQuantity}>
+											</lightning-button-icon>
+										</div>
+										<div>
+											<lightning-button label="Add to Purchase Order" variant="brand" class="brand-button" onclick={handleAddPurchaseOrderMobile} style="font-size:13px;margin-left:5px">
+
+											</lightning-button>
+										</div>
+									</div>
+								</div>
+							</div> -->
+							<!-- single item__________________________________________ -->
+						<!-- </lightning-card> -->
+					</div>
+				</lightning-card>
+			</div>
+
+		</template>
+<!-- Nikhil -->
+	</lightning-card>
+</template>

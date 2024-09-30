@@ -1,0 +1,113 @@
+<template>
+    <div onclick={handleOpenModal} style="cursor: pointer;">
+        <lightning-input class="customBorder" placeholder="Search for Carrier"
+            data-id="carrierSearch" label="Carrier Name"
+            type="search" required="true"
+            message-when-value-missing="Complete this field."
+            value={getCarrierNameFromParent}
+            onkeypress={handleKeyPress}
+            onclick={handleOpenModal}
+            ondblclick={handleOpenModal}
+            oncommit={handleClearCarrier}></lightning-input>
+    </div>
+    <template if:false={isMobileView}>
+        <template if:true={showModal}>
+            <section role="dialog" tabindex="-1"
+                aria-labelledby="modal-heading-01"
+                aria-modal="true"
+                aria-describedby="modal-content-id-1"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container"
+                    style="min-width: 50vw !important; width: 100% !important;">
+                    <div class="slds-modal__header">
+                        <lightning-button-icon class="slds-modal__close"
+                            title="Close" icon-name="utility:close" size="large"
+                            variant="bare" icon-class="slds-button_icon-inverse"
+                            onclick={handleCloseModal}></lightning-button-icon>
+                        <h2 id="modal-heading-01"
+                            class="slds-text-heading_medium slds-hyphenate">Carrier
+                            Search</h2>
+                    </div>
+                    <div class="slds-modal__content" id="modal-content-id-2">
+                        <template if:true={showErrorMessage}>
+                            <div class="slds-theme_error">
+                                <lightning-icon icon-name="utility:error"
+                                    variant="inverse"
+                                    size="small"></lightning-icon>
+                                <span
+                                    class="slds-p-left_xx-small">{errorMessage}</span>
+                            </div>
+                        </template>
+                        <div class="slds-grid slds-wrap">
+                            <div
+                                class="slds-col slds-size_8-of-12 slds-p-right_small slds-p-top_small slds-p-left_small">
+                                <p>Carrier Info</p>
+                                <lightning-input data-name="searchBox"
+                                    variant="label-hidden" type="search"
+                                    pattern="[a-zA-Z0-9\-_ ]*"
+                                    message-when-pattern-mismatch="Special Characters are not allowed"
+                                    label="test test"
+                                    placeholder="Search for Carrier"
+                                    onkeypress={handleSearch}
+                                    oncommit={handleClear}>
+                                </lightning-input>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_5-of-12">
+                        </div>
+                        <div class="slds-modal__content slds-p-around_medium"
+                            id="modal-content-id-3"
+                            style="min-height: 65vh !important;">
+                            <div class="slds-page-header"
+                                style="height:65px;background-color:lightgrey">
+                                <b
+                                    class="slds-page-header__title slds-truncate">Carrier</b>
+                                <p style="padding-top:2px">{totalNoOfRecords}
+                                    Results</p>
+                            </div>
+                            <div class="record-container"
+                                style="height: 700px !important;">
+                                <lightning-datatable
+                                    hide-checkbox-column="true"
+                                    key-field="Id" data={data}
+                                    columns={columns}
+                                    sorted-by={sortBy}
+                                    sorted-direction={sortDirection}
+                                    onsort={handleSorting}
+                                    onrowaction={handleRowAction}>
+                                </lightning-datatable>
+                            </div>
+                            <div class="slds-border_top slds-p-around_small">
+                                <div
+                                    class="footerContainer slds-grid slds-grid_align-spread">
+                                    <div class="navigation-bar__spacer"></div>
+                                    <div class="navigation-bar__right-align">
+                                        <lightning-button label="Cancel"
+                                            onclick={handleCloseModal}
+                                            variant="nuetral"></lightning-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="backdrop backdrop_open" role="presentation"></div>
+        </template>
+    </template>
+    <template if:true={isMobileView}>
+        <template if:true={showModal}>
+            <c-sbr_3_0_po-mobile-custom-wrapper
+            title="Carrier"
+            is-modal="true"
+            has-search="true"
+            record-list={recordList}
+            onsearch={handleSearchMobile}
+            onselect={handleRowSelect}
+            onclear={handleMobileClear}
+            onclosemodal={handleCloseModal}>
+        </c-sbr_3_0_po-mobile-custom-wrapper>
+        </template>
+    </template>
+
+</template>

@@ -1,0 +1,208 @@
+<template>
+  <div class="slds-page-header__name-title bgcolor">
+    <h2>
+      <span
+        class="slds-page-header__title slds-truncate slds-p-left_medium slds-p-bottom_small"
+        title="Assets"
+      >
+        <!-- Added as part of FRONT-10330-->
+        <template lwc:if={isItemSearchAssetsTab}>
+          <span class="assetsTitle slds-p-top_small">Assets (50+)</span>
+        </template>
+        <!--FRONT-10330 ends-->
+        <template lwc:else> Inventory ({inventory}) </template></span
+      >
+    </h2>
+
+    <div
+      class="lookupInputContainerMobile"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      role="combobox"
+    >
+      <!-- added as part of FRONT-6277-->
+      <template if:true={isOtherLocationActive}>
+        <div class="slds-p-bottom_small slds-p-left_small slds-p-right_small">
+          <!--FRONT-8712 start-->
+          <!-- FRONT - 15209 : Issue1 fix added -->
+          <lightning-input
+            class="otherLocationSearch"
+            type="search"
+            data-source="locationSearchInput"
+            variant="label-hidden"
+            placeholder={otherLocationSearchPlaceholder}
+            onkeyup={searchLocations}
+            onchange={handleLocationSearchChange}
+            is-loading={isSearchLoading}
+          >
+          </lightning-input>
+          <!--FRONT-8712 end-->
+        </div>
+      </template>
+      <!--Front-6277 ends-->
+      <div class="searchfilt">
+        <div class="searcfl">
+          <div
+            class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+            role="none"
+          >
+            <div
+              class="searchBoxWrapper slds-show slds-p-bottom_small slds-p-left_small"
+            >
+              <!-- Added as part of FRONT-10330-->
+              <template lwc:if={isItemSearchAssetsTab}>
+                <lightning-input
+                  class="slds-input-has-icon_right item-search-input"
+                  type="search"
+                  data-source="searchInputField"
+                  variant="label-hidden"
+                  placeholder="Search Asset Number"
+                  onkeydown={searchItems}
+                  onchange={handleSearchChange}
+                >
+                </lightning-input>
+              </template>
+              <template lwc:else>
+                <!--FRONT-10330 ends here -->
+                <lightning-input
+                  class="slds-input-has-icon_right item-search-input"
+                  type="search"
+                  onkeydown={searchItems}
+                  onchange={handleSearchChange}
+                  value={searchKey}
+                  variant="label-hidden"
+                  placeholder={itemSearchPlaceholder}
+                  data-source="searchInputField"
+                ></lightning-input> </template
+              ><!-- Added as part of FRONT-10330-->
+            </div>
+          </div>
+        </div>
+        <div>
+          <span
+            class="slds-media__figure slds-listbox__option-icon"
+            onclick={toggleFilter}
+          >
+            <span class="slds-icon_container slds-m-around_x-small">
+              <lightning-icon
+                icon-name="utility:filterList"
+                size="small"
+                alternative-text="icon"
+              ></lightning-icon>
+            </span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="slds-page-header__row">
+      <div class="pillsContainer slds-p-bottom_medium">
+        <template if:false={isOtherLocationActive}>
+          <span
+            class="customPills slds-pill slds-pill_pink slds-m-right_medium"
+            onclick={focusLocationFilter}
+          >
+            <span class="slds-pill__label">{locationFilter}</span>
+          </span>
+        </template>
+        <template if:true={appliedStatusList}>
+          <template for:each={appliedStatusList} for:item="filter">
+            <lightning-pill
+              key={filter}
+              label={filter}
+              onremove={handlePillsRemove}
+              class="filterPills slds-p-left_small slds-m-top_small slds-m-bottom_small"
+            ></lightning-pill>
+          </template>
+        </template>
+      </div>
+    </div>
+  </div>
+  <template if:true={filterDisplay}>
+    <c-sbr_3_0_mobile-screen title="Filters">
+      <div id="modal-content-id-1">
+        <template if:false={isOtherLocationActive}>
+          <div class="slds-page-header__control slds-p-around_small">
+            <lightning-combobox
+              name="location"
+              label=""
+              variant="label-hidden"
+              options={locationOptions}
+              onchange={handleChangeLocation}
+              onfocus={handleLocationComboboxFocus}
+              value={selectedLocation}
+            ></lightning-combobox>
+          </div>
+        </template>
+        <div class="slds-page-header__control slds-p-around_small">
+          <template if:true={allListViewOptions}>
+            <c-sbr_3_0_multi-select-picklist
+              multi-select="true"
+              is-mobile={isMobile}
+              onselectoption={handleSelectOptionList}
+              options={allListViewOptions}
+              selected-values={selectedValueList}
+              is-any-checked={isAnySelected}
+            ></c-sbr_3_0_multi-select-picklist>
+          </template>
+        </div>
+      </div>
+      <div slot="footer">
+        <lightning-layout
+          vertical-align="center"
+          horizontal-align="space"
+          pull-to-boundary="small"
+          size="12"
+        >
+          <lightning-layout-item size="3">
+            <lightning-button
+              class="neutral-button"
+              value="Cancel"
+              onclick={toggleFilter}
+              label="Cancel"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" class="slds-p-right_xx-large">
+            <!--FRONT-13026 Resolved UI Bug -->
+            <lightning-button
+              class="reset-button"
+              value="Reset All Filters"
+              onclick={resetFilterPanel}
+              label="Reset All Filters"
+              variant="base"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="3" class="">
+            <lightning-button
+              class="brand-button"
+              value="Apply"
+              onclick={applyFilter}
+              label="Apply"
+              variant="brand"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+    <!-- <section
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <div
+          class="slds-page-header__controls customer-info-header slds-p-vertical_small slds-align_absolute-center"
+        >
+          <p class="customer-info-title slds-align_absolute-center">Filters</p>
+        </div>
+        
+       
+      </div>
+    </section>-->
+  </template>
+</template>

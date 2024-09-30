@@ -1,0 +1,32 @@
+.head-Class{
+    font-size: 14px;
+    line-height: 22px;
+    white-space: nowrap;
+ }
+ .body-Class{
+    font-size: 14px;
+    line-height: 22px;
+    width: 100%;
+    min-width: 270px;
+    overflow-wrap: break-word;
+ }
+.custom-alert {
+   background-color: #FE9339;
+   color: #181818;
+   border: 1px solid #FE9339;
+   padding: 15px;
+}
+
+.custom-alert .slds-icon-utility-warning {
+   fill: #181818;
+}
+.alert-content {
+   display: inline-block;
+   vertical-align: middle;
+}
+ 
+ @media screen and (min-width: 1025px) {
+   .slds-modal__content{
+      overflow-y: hidden !important;
+   }
+}

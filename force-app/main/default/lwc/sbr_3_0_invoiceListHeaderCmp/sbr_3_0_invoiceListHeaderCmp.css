@@ -1,0 +1,176 @@
+@media (max-width: 480px) {
+
+    .invoice-header{
+        padding: 2.3rem 0 0 0;
+        width: unset;
+    }
+    .invoice-header--date{
+        width: unset;
+    }
+
+    .header-mob {
+        background-color: #FAFAF9;
+        border-width: 1px;
+        border-color: #E5E5E5;
+        border-style: solid;
+    }
+
+    .mobile-search {
+        flex-grow: 1;
+    }
+
+    .all-items {
+        background: #ffffff;
+        color: #444;
+    }
+
+    .cat-box {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        padding: 0px;
+        gap: 10px;
+
+        width: 16px;
+        height: 16px;
+
+        background: #FFFFFF;
+
+        border-top: 1px solid #E9E9E9;
+        padding: 4px;
+
+        --slds-c-checkbox-mark-color-foreground: #24693E;
+    }
+
+    .cat-label {
+        font-weight: 700;
+        font-size: 13px;
+        color: #444444;
+    }
+
+    .subcat-value-class {
+        width: 306px;
+        height: 16px;
+
+        font-style: normal;
+        font-weight: 400;
+        font-size: 13px;
+        line-height: 16px;
+        /* identical to box height, or 123% */
+
+        display: flex;
+        align-items: center;
+        color: #444444;
+    }
+
+    .reset-cat-txt {
+        font-weight: 400;
+        font-size: 12px;
+        color: #24693E;
+    }
+
+    .icon-class {
+        --lwc-colorTextIconDefault: #25683E;
+    }
+
+    .slds-checkbox {
+        border-top: 1px solid #E9E9E9;
+        padding: 4px;
+    }
+
+    .on-select {
+        --lwc-brandAccessibleActive: #25683E;
+    }
+
+    .filter-panel {
+        position: sticky;
+        overflow-x: hidden;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        top: 0;
+        margin-bottom: 4em;
+    }
+
+    .filter-header {
+        background-color: #FFFFFF;
+        position: sticky;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .filter-footer {
+        background-color: #F3F3F3;
+        position: sticky !important;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 50;
+        transform: translate3d(0,0,0);
+    }
+
+    .selected-btn {
+        color: #25683E;
+        font-weight: 400;
+    }
+
+    .active-state {
+        color: #25683E;
+        background: #EDF6EF;
+        font-weight: 400;
+        border: none;
+    }
+
+    .reset-btn-class {
+        font-weight: 400;
+        color: #25683E;
+    }
+
+    .reset-txt-class {
+        font-weight: 400;
+        color: #25683E;
+        font-size: 12px;
+        visibility: hidden;
+    }
+
+    .apply-btn-class {
+        font-weight: 400;
+        color: #FFFFFF;
+        background-color: #25683E;
+    }
+
+    .sticky-footer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+    }
+    .sticky-footer .slds-button {
+        font-size: 12px;
+        line-height: 18px;
+        color: #25683E;
+    }
+    .sticky-footer .slds-button.slds-button_brand {
+        padding: 4px 10px;
+        font-size: 13px;
+        line-height: 20px;
+        background-color: #25683E;
+        font-weight: 400;
+        color: #fff;
+    }
+    .sticky-footer .slds-text-color_weak {
+        font-size: 13px;
+        line-height: 20px;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .show {
+        display: block;
+    }
+}

@@ -1,0 +1,37 @@
+<template>
+    <template if:true={isOpen}>
+        <div class="slds-section slds-is-open white-background">
+            <h3 class="slds-section__title">
+            <button aria-controls="general-open" aria-expanded="true" class="slds-button slds-section__title-action" onclick={toggleSection}>
+            <lightning-icon icon-name="utility:chevrondown" size="x-small" alternative-text="Toggle"></lightning-icon>
+            <span class="slds-truncate slds-p-left_small title_font" title="Section Title"> Comments </span>
+            </button>
+            </h3>
+        
+
+        <div class="slds-m-around_medium "> 
+            <lightning-layout-item class="inputs" size="12" medium-device-size="6" large-device-size="6" flexibility="auto">
+                <lightning-textarea name="external" label="External Notes" value={externalNotes} placeholder="Placholder"></lightning-textarea>        
+            </lightning-layout-item>
+            <lightning-layout-item class="inputs" size="12" medium-device-size="6" large-device-size="6" flexibility="auto">
+                <lightning-textarea name="internal" label="Internal Notes" value={internalNotes} placeholder="Placholder"></lightning-textarea>        
+            </lightning-layout-item>
+            <lightning-layout-item class="inputs" size="12" medium-device-size="6" large-device-size="6" flexibility="auto">
+                <lightning-textarea name="delivInst" label="Delivery/Special Instructions" value={deliveryInst} placeholder="Placeholder"></lightning-textarea>        
+            </lightning-layout-item>
+         </div>
+        </div>
+    </template>
+
+    <template if:false={isOpen}>
+        <div class="slds-section">
+            <h3 class="slds-section__title">
+              <button aria-controls="expando-unique-id" aria-expanded="false" class="slds-button slds-section__title-action" onclick={toggleSection}>
+                <lightning-icon icon-name="utility:chevronright" size="x-small" alternative-text="Toggle"></lightning-icon>
+                <span class="slds-truncate slds-p-left_small title_font" title="Section Title"> Comments </span>
+              </button>
+            </h3>
+          </div>
+    </template>
+
+</template>

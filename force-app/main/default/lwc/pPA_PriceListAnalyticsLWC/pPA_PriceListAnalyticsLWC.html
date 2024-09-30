@@ -1,0 +1,56 @@
+<template>
+    <lightning-tabset>
+        <lightning-tab label="Customer Summary" if:true={enableCustSumTab}>
+            <div style="height: 400px; overflow: scroll-hidden;" >
+                <lightning-datatable
+                    key-field="Id"
+                    data={allRecords}
+                    columns={colDisplay}
+                    onrowaction={handleRowAction}
+                    hide-checkbox-column
+                    resize-column-disabled
+                    sorted-direction={sortDirection}
+                    sorted-by={sortedBy}
+                    onsort={onHandleSort}
+                    >
+                </lightning-datatable>
+            </div>
+            <template if:true={showTotalRSD}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={}
+                    columns={colDisplay4}
+                    hide-checkbox-column
+                    resize-column-disabled
+                    >
+                </lightning-datatable>
+            </template>
+            <template if:true={showTotalSCR}>
+                <lightning-datatable
+                    key-field="Id"
+                    data={}
+                    columns={colDisplay5}
+                    hide-checkbox-column
+                    resize-column-disabled
+                    >
+                </lightning-datatable>
+            </template>
+        </lightning-tab>
+        <lightning-tab label="Customer Details" >
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12" class="slds-grid">
+                    <p style="padding-left: 20px">Started: </p>
+                    <lightning-input type="toggle" variant="label-hidden" onchange={toggleStarted} checked={isActive} style="padding-left: 10px"></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item padding="around-small" size="12">
+                    <div style="height: 400px;">
+                        <lightning-datatable key-field="Id" data={allRecords} columns={colDisplay2} onrowaction={handleRowAction}
+                            hide-checkbox-column resize-column-disabled sorted-direction={sortDirection} sorted-by={sortedBy}
+                            onsort={onHandleSort}>
+                        </lightning-datatable>
+                    </div>
+                </lightning-layout-item>
+                </lightning-layout>
+        </lightning-tab>
+    </lightning-tabset>
+</template>

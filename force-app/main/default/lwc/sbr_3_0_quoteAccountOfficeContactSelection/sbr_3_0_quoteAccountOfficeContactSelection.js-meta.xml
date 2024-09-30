@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Select Account, Office, and Ordered By on Quote</masterLabel>
+    <description>Component to gather fields to create a quote</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="accountId" label="Account Id" type="String"/>
+          <property name="officeAccountId" label="Office Account Id" type="String" />
+          <property name="quoteName" label="Quote Name" type="String" />
+          <property name="orderedBy" label="Ordered By (Contact)" type="String" />
+      </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

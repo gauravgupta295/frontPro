@@ -1,0 +1,59 @@
+<template>
+  <template if:false={isMobile}>
+    <lightning-tabset
+      class="slds-m-top_x-small"
+      active-tab-value={activetabValue}
+    >
+      <!--Modified for Front-1958-->
+      <lightning-tab label="Editor" value="EditTab" onactive={handleActive}>
+        <c-sbr_3_0_line-item-editor-cmp-frontline
+          line-id={lineId}
+          record-id={recordId}
+          group-id={selectedItemGroup}
+          total-requested-quantity={totalRequestedQuantity}
+          remaining-quantity={remainingQuantity}
+          filled-quantity={filledQuantity}
+          is-misc-item={isMiscItem}
+        ></c-sbr_3_0_line-item-editor-cmp-frontline>
+      </lightning-tab>
+
+      <template if:false={isMiscItem}>
+        <!-- FRONT-14360 starts  -->
+        <lightning-tab
+          label="Availability"
+          value="AvailabilityTab"
+          onactive={handleActive}
+        >
+          <c-sbr_3_0_line-item-edit-availability-component
+            class="availability-comp slds-var-p-right_x-small slds-var-p-left_x-small"
+            product-cat={productCat}
+            location-info={locationInfo}
+          >
+          </c-sbr_3_0_line-item-edit-availability-component>
+        </lightning-tab>
+
+        <lightning-tab
+          label="Rate Matrix"
+          value="RatesTab"
+          class="Ratemat"
+          onactive={handleActive}
+        >
+          <template if:false={rates}>
+            <div>
+              <lightning-spinner class="spins" size="small"></lightning-spinner>
+            </div>
+          </template>
+        </lightning-tab>
+      </template>
+      <!-- FRONT-14360 ends  -->
+    </lightning-tabset>
+
+    <div>
+      <c-sbr_3_0_rates-cmp
+        class={rateMatrixShow}
+        rates={rates}
+        item-qty={parentItemQty}
+      ></c-sbr_3_0_rates-cmp>
+    </div>
+  </template>
+</template>

@@ -1,0 +1,172 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 05-17-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={state.isLoading}>
+        <lightning-spinner variant=”brand” size=”large”></lightning-spinner>
+    </template>
+
+    <article class="slds-card" style="height: 100%;overflow-y: scroll;">
+        <div class="slds-card__header slds-grid slds-page-header">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container slds-icon-custom-custom18" title="SearchDetails">
+                        <lightning-icon icon-name={props.headericon}></lightning-icon>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <a href="#" class="slds-card__header-link slds-truncate" title="Search Details">
+                            <span>{props.header}</span>
+                        </a>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <lightning-record-edit-form object-api-name={objectApiName} record-id={props.recordid}
+                onsubmit={onSubmit} onsuccess={onSuccess}  onerror={onError} onload={onLoad}
+                record-type-id={props.recordtypeid}>
+
+                <!-- <lightning-messages> </lightning-messages> -->
+                <div class="slds-grid slds-wrap">
+                    <div class={fieldWidth} style={props.innercss}>
+                        <div class="slds-form-element ">
+                            <div >
+                                <div >
+                                    <div class="slds-form-element__label"
+                                        style="text-align: left; width: 100%; margin-top: 0.25rem; margin-left: 0.15rem;">
+                                        Product item
+                                    </div>
+                                </div>
+                                <div >
+                                    <c-sbr_3_0_sfs-generic-lookup if:true={additionalQuery}
+                                        icon-name="standard:product_item"
+                                        s-object-api-name="ProductItem"
+                                        label=""
+                                        is-disable=true
+                                        default-record-id={productItemId}
+                                        onlookupupdate={handleProductItemChange}
+                                        placeholder="Search parts here"
+                                        filter-query={additionalQuery}
+                                        otherfield="true"
+                                        other-field-api-name="SM_PS_Stock_Class__c,SM_PS_Item_Number__c">
+                                    </c-sbr_3_0_sfs-generic-lookup>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template for:each={props.fieldSetOne} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange}
+                                name={field.apiname} disabled={field.disabled} required={field.required}>
+
+                            </lightning-input-field>
+                        </div>
+                    </template>
+
+                    <template for:each={props.fieldSetTwo} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange}
+                                name={field.apiname}  disabled="false" required={field.required}>
+
+                            </lightning-input-field>
+                            <!--disabled={field.disabled}-->
+                        </div>
+                    </template>
+
+                    <template for:each={props.fieldSetThree} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange}
+                                name={field.apiname} disabled={field.disabled} required={field.required}>
+                            </lightning-input-field>
+                        </div>
+                    </template>
+
+                    <template for:each={props.fieldSetFour} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange}
+                                name={field.apiname} disabled={field.disabled} required={field.required}  style=".slds-input{padding-left: 11px}">
+
+                            </lightning-input-field>
+                        </div>
+                    </template>
+
+                    <template for:each={props.fieldSetFive} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange}
+                                name={field.apiname} disabled={field.disabled} required={field.required}>
+
+                            </lightning-input-field>
+                            <template if:true={field.invalidValueError}>
+                                <div style="color:red">
+                                    Please enter a correct value.
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <div class={fieldWidth} >
+                        <lightning-input-field  class="SF_PS_Discount_Percentage__c" field-name="SF_PS_Discount_Percentage__c" onchange={handleDiscountChange}
+                        value={changeValues.SF_PS_Discount_Percentage__c} disabled={isDiscountDisabled}>
+                        </lightning-input-field>
+                        <template if:true={changeValues.isErrorDiscount}>
+                            <span style="color:red">Discount must be between 0 to 99.99% <br /></span>
+                        </template>
+                    </div>
+
+                    <!--Labor Code here-->
+                    <template for:each={props.fieldSetSix} for:item="field" for:index="index">
+                        <div class={fieldWidth} key={field.apiname} style={props.innercss}>
+                            <lightning-input-field field-name={field.apiname} onchange={handleChange} data-name={field.apiname}
+                                name={field.apiname} disabled={field.disabled} required={field.required}>
+
+                            </lightning-input-field>
+
+                        </div>
+                    </template>
+
+                    <div class={fieldWidth} >
+                        <lightning-input-field class="SF_PS_Selling_Price__c" field-name="SF_PS_Selling_Price__c" onchange={handleSellingPriceChange}
+                        value={changeValues.SF_PS_Selling_Price__c}  disabled={isDiscountDisabled}>
+                        </lightning-input-field>
+                        <template if:true={changeValues.isErrorsellingPrice}>
+                            <span style="color:red">Complete this field.</span><br>
+                        </template>
+                        <template if:true={changeValues.avgError}>
+                            <span style="color:red">Selling price cannot be less than Cost price.<br/><br/></span>
+                        </template>
+                        <template if:true={changeValues.warningError}>
+                            <lightning-icon class="warning-icon" icon-name="utility:warning" alternative-text="warning" title="warning" size="xx-small"></lightning-icon>
+                            <span style="color:#d9b302"> Selling price is lesser than Warning price. <br/></span>
+                        </template>
+                        <template if:true={changeValues.minPriceError}>
+                            <span style="color:red">Discount applied is greater than the amount allowed. Please update the sell price.</span>
+                        </template>
+                    </div>
+                    <div class={fieldWidth} >
+                        <lightning-input-field class="SF_PS_Sub_Total__c" field-name="SF_PS_Sub_Total__c" value={extended} disabled>
+                        </lightning-input-field>
+                    </div>
+                    <div class={fieldWidth}>
+                        <lightning-input-field  field-name="SF_PS_Is_Primary_Part__c" value={changeValues.isPrimaryPart}>
+                        </lightning-input-field>
+                    </div>
+                </div>
+                <div class="slds-var-m-top_large slds-grid slds-grid_align-center">
+                    <lightning-button variant="brand" label="Cancel" type="cancel"
+                        onclick={handleCancel}></lightning-button>
+                    &nbsp;&nbsp;
+                    <lightning-button type="submit" disabled={checkValidations} variant="brand" label="Save"></lightning-button>
+                    &nbsp;&nbsp;
+                </div>
+                <br/><br />
+            </lightning-record-edit-form>
+        </div>
+    </article>
+</template>

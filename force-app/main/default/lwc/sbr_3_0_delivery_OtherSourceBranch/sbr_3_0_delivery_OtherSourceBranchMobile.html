@@ -1,0 +1,67 @@
+<template>
+  <div
+    class="defaultLocationContainer slds-m-vertical_x-small"
+  >
+    <div class="slds-grid slds-wrap slds-m-bottom_large slds-m-horizontal_medium">
+      <div
+        class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12"
+      >
+        <p class="slds-text-title">{label.CURRENTSOURCINGBRANCHLABEL}</p>
+        <h2 class="slds-m-top_small">{sourcingBranchValue}</h2>
+      </div>
+      <div
+        class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-large-size_4-of-12 customSearch"
+      >
+        <br />
+        <p class="slds-text-title slds-p-bottom_xx-small">{label.SEARCHLOCATIONLABEL}</p>
+        <lightning-input
+          class="slds-input-has-icon_right iserror item-search-input slds-m-top_xxx-small sbrSourcingBorder"
+          type="search"
+          onkeydown={searchItems}
+          onchange={handleSearchChange}
+          value={searchKey}
+          variant="label-hidden"
+          placeholder={itemSearchPlaceholder}
+        ></lightning-input>
+      </div>
+    </div>
+    <template if:true={isSearchLocation}>
+      <template if:true={showSpinner}>
+        <lightning-spinner
+          size="medium"
+          variant="brand"
+          alternative-text="Processing..."
+        ></lightning-spinner>
+      </template>
+      <template if:false={showSpinner}>
+        <c-sbr_3_0_-generic-data-table-mobile
+          columns={columns}
+          selected-rows={selectedRow}
+          records={locationData}
+        >
+        </c-sbr_3_0_-generic-data-table-mobile>
+        <div class="border-bottom"></div>
+      </template>
+    </template>
+    <template if:false={isSearchLocation}>
+      <div
+        class="slds-illustration slds-illustration_medium customMessage"
+        aria-hidden="true"
+      >
+        <img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+        <div class="slds-text-color_weak">
+          <template if:false={isLocationNotFound}>
+            <h3 class="slds-text-heading_medium">
+              {label.OTHERSOURCEBRANCHLOCATIONSEARCHMSG}
+            </h3>
+          </template>
+          <template if:true={isLocationNotFound}>
+            <h3 class="slds-text-heading_medium">
+              {label.OTHERSOURCEBRANCHNOLOCATIONFOUNDMSG}
+            </h3>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
+</template>

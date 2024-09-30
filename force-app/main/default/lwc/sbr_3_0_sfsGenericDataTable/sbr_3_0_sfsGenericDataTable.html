@@ -1,0 +1,77 @@
+<template>
+    <div class="slds-box slds-theme_default" style="height:100%">
+        <p style="font-size:22px;"><b>{title}</b> </p>
+        <br/> 
+        <!--Retro-->
+        <template if:true={message}>
+            <b>{messageTitle}</b>{message}
+            <br/> <br/>
+        </template>
+       <template if:false={hideAllButtons}>
+            <div>
+                <template if:true={showAddButton}>
+                    <button  class="slds-button slds-button_success" title={addButtonLabel} onclick={handleAddClick}>{addButtonLabel}</button>
+                </template>
+                <template if:true={showViewButton}>
+                    <button class="slds-button slds-button slds-button_success" title={viewButtonLabel} onclick={handleViewClick}>{viewButtonLabel}</button>
+                </template>
+                <template if:true={showEditButton}>
+                    <button class="slds-button slds-button_success" title={editButtonLabel} onclick={handleEditClick} >{editButtonLabel}</button>
+                </template>
+                <template if:true={showDeleteButton}>
+                    <button class="slds-button slds-button_destructive" title={deleteButtonLabel} onclick={handleDeleteClick}>{deleteButtonLabel}</button>
+                </template>
+            </div>
+        
+        </template> 
+        <template if:true={hideAllButtons}>
+            <div class="slds-text-align_center" style="color:red">
+                <p>{buttonHideMsg}</p>
+             </div>
+        </template>
+        <br/> 
+        <table class="slds-table slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr>
+                    <th class="" scope="col">
+                        <div class="slds-truncate" title="Rec Name"></div>
+                    </th>
+                    <template for:each={columns} for:item="column">
+                    <th key={column.label} class="" scope="col">
+                        <div class="slds-truncate" style="font-size:12px;" title={column.label}>{column.label}</div>
+                    </th>
+                    </template>      
+                </tr>
+            </thead>
+            <tbody>
+                <template if:true={showTable}>
+                    <template for:each={tableRecs} for:item="rec">
+                        <tr key={rec.Id} data-field="row" id={rec.Id}>
+                            <td class="cell" style="width:30px;padding: 5px 4px 5px 4px">
+                                <label class="container">
+                                <input  data-field="checkbox"  class= "checkbox" type="checkbox" id={rec.Id} data-id={rec.Id} data-detail={rec.detail} onchange={handleSelect}>
+                                <span class="checkmark"></span>
+                                </label>
+                            </td>  
+                            <td class="cell" style="font-size:11px;padding: 5px 2px 5px 4px;justify-content: center;" data-id="columnOne">{rec.columnOne}</td>
+                            <td class="cell" style="font-size:11px;padding: 5px 2px 5px 4px;justify-content: center;" data-id="columnTwo">{rec.columnTwo}</td>
+                            <td style="font-size:11px;padding: 5px 2px 5px 4px;justify-content: center;white-space: pre-line" data-id="columnThree">{rec.columnThree}</td>
+                            <td class="cell" style="font-size:11px;padding: 5px 2px 5px 4px;justify-content: center;" data-id="columnFour">{rec.ColumnFour}</td>
+                            <template if:false={hideLastColumn}>
+                            <td class="cell" style="font-size:11px;padding: 5px 2px 5px 4px;justify-content: center;" data-id="ColumnFive">{rec.ColumnFive}</td>
+                        </template>
+                        </tr>
+                    </template>
+                </template>
+                  
+            </tbody>
+        </table>
+        <template if:false={showTable}>
+            <br/> <br/>
+            <div class="slds-grid slds-grid_align-center">
+            <p>No records to display.</p>
+            </div>
+        </template>
+    </div>    
+
+</template>

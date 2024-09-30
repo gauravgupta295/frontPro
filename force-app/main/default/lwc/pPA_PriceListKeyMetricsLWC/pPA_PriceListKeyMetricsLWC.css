@@ -1,0 +1,16 @@
+.display-text {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.padded {
+    padding-left: 5px;
+}
+
+.above {
+    color: green;
+}
+
+.below {
+    color: red;
+}

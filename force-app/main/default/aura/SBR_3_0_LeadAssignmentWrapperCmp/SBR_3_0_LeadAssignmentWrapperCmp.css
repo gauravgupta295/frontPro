@@ -1,0 +1,53 @@
+/* @media screen and (min-width: 601px) {
+    .THIS .slds-modal__container {
+        width: 70%;
+        max-width: 950px;
+        min-width: 480px;
+    }
+} */
+
+@media screen and (max-width: 600px) {
+    /* .THIS .slds-modal__container {
+        width: 70%;
+        max-width: 550px;
+        min-width: fit-content;
+    } */
+    /* .THIS .slds-notify_toast {
+        min-width: auto;
+    } */
+    .THIS #mobile-header {
+        display: flex;
+        background: #FAFAF9;
+    }
+    .THIS #mobile-header h1 {
+        margin: auto;
+        display: flex;
+        align-items: center;
+        text-align: center;
+    }
+    .THIS button {
+        margin-right: auto;
+        color: #25683E;
+    }
+    .THIS .footer {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        background-color: #f1f1f1;
+    }
+    .THIS .save-button-container {
+        text-align: right;
+        padding: 10px;
+    }
+    .THIS .save-button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,69 @@
+<template>
+    <c-sbr_3_0_mobile-screen title="Create Sales Quote">
+        <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_small" > 
+                <template lwc:if={recordTypePage}>
+                    <c-sbr_3_0_select-sales-quote-record-type
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      default-record-type={recordType}
+                      onrecordtypechange={handleRecordTypeChange}
+                    >
+                    </c-sbr_3_0_select-sales-quote-record-type>
+                </template>
+                <template lwc:if={customerInfoPage}> 
+          
+                    <c-sbr_3_0_create-quote-from-account-company-info 
+                        record-id={recordId}
+                        account-name={accountName}
+                        onaccountchange={handleAccountChange}
+                        onorderedbychange={handleOrderedByChange}>
+                    </c-sbr_3_0_create-quote-from-account-company-info>
+                    <template lwc:if={accountIdMissing}> 
+                      <div class="error_message">Please select an Account<br></div>
+                    </template>
+                    <template lwc:if={orderedByMissing}> 
+                      <div class="error_message">Please select an Ordered By Contact</div>
+                      
+                    </template>
+                </template>
+
+             </div> 
+            <footer class="slds-modal__footer">             
+            <template lwc:if={customerInfoPage} >
+                <lightning-button
+                  label="Cancel"
+                  onclick={closeModal}
+                  class="mobileButtonTextColor cancel-button slds-float_left slds-p-around_x-small"
+                ></lightning-button>
+              </template>
+                <template lwc:if={recordTypePage}>
+                    <lightning-button
+                    label="Previous"
+                    variant="brand"
+                    onclick={closeModal}
+                    class="mobileButtonTextColor cancel-button slds-float_left slds-p-around_x-small"
+                  ></lightning-button>
+                  <lightning-button
+                    label="Next"
+                    variant="brand"
+                    onclick={closeRecordTypePage}
+                    class="button success-button slds-float_right slds-p-around_x-small "
+                  ></lightning-button>
+                </template>
+            
+                <template lwc:if={customerInfoPage}>
+                    <!-- value should be onclick{closeCustomerInfoPage} to click throught to the next page once it's created -->
+                  <lightning-button
+                    label="Next"
+                    variant="brand"
+                    onclick={closeModal} 
+                    class="button success-button slds-float_right slds-p-around_x-small"
+                  ></lightning-button>
+                </template>
+        </footer>
+      </div> 
+
+
+    </c-sbr_3_0_mobile-screen>
+</template>

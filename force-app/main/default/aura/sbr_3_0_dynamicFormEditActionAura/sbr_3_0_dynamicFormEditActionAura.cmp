@@ -1,0 +1,10 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName,lightning:actionOverride"
+>
+  <c:sbr_3_0_dynamicFormEditActionDelegator
+    recordId="{!v.recordId}"
+    objectApiName="{!v.sObjectName}"
+    oncloseauraaction="{!c.handleCloseAction}"
+  >
+  </c:sbr_3_0_dynamicFormEditActionDelegator>
+</aura:component>

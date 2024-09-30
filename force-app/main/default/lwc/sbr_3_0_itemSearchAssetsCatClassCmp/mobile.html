@@ -1,0 +1,418 @@
+<template>
+  <c-sbr_3_0_custom-toast-component></c-sbr_3_0_custom-toast-component>
+  <!-- <template if:true={isMobileLoading}>
+    <div class="spinner">
+      <lightning-spinner
+        alternative-text="Loading"
+        variant="brand"
+        size="medium"
+      >
+      </lightning-spinner>
+    </div>
+  </template>
+  <template if:false={isMobileLoading}> -->
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div
+        class="list-header-container slds-m-top_small"
+        data-id="scrollIntoView"
+      >
+        <c-sbr_3_0_item-search-assets-header
+          onfiltercriteriachange={handleSearchCriteriaChange}
+          active-tab="CatClass"
+          cat-class-val={selectedCatClassVal}
+          selected-location-filter={selectedLocationFilter}
+          selected-cat-class-val={selectedCatClassVal}
+          onswitchtodescription={handleSwitchToDescription}
+          product-rows-offset={productRowsOffset}
+          is-mobile={isMobile}
+          onshowdata={showdata}
+          inventory={inventorySize}
+          record-id={recordId}
+          asset-flag={isAssetFlag}
+        ></c-sbr_3_0_item-search-assets-header>
+      </div>
+    </lightning-layout-item>
+    <template if:true={isMobileLoading}>
+        <c-sbr_3_0_mobile-screen props={mobileProps} >
+            <div slot="title" class="slds-grid slds-grid_align-center">
+            <div class="slds-m-bottom_large">
+            <div class="spinner">
+              <lightning-spinner
+                alternative-text="Loading"
+                size="medium"
+              >
+              </lightning-spinner>
+            </div>
+          </div>
+        </div>
+      </c-sbr_3_0_mobile-screen>
+    </template>
+    <template if:false={isMobileLoading}>
+      <lightning-layout-item size="12">
+        <template lwc:if={isDataAvailable}>
+          <template for:each={result} for:item="asset">
+            <div key={asset.Asset} class="slds-p-around_small">
+              <div
+                class="slds-grid slds-wrap"
+                data-id={asset.Id}
+                data-key={asset.Id}
+              >
+                <div class="slds-col slds-size_6-of-6 slds-p-bottom_x-small">
+                  <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                    <div class="slds-size_2-of-3">
+                      <div class="display-name" data-asset-id={asset.Id}>
+                        <b>Asset # {asset.Name}</b>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="slds-col slds-size_6-of-6 accountDetails">
+                  <div class="slds-grid slds-wrap">
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class={fieldsTitleClass}
+                        ><b>Asset Description</b></span
+                      >
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span
+                        class="data"
+                        data-asset-id={asset.id}
+                        onclick={handleMobileViewAssetDetails}
+                        >{asset.SM_PS_Cat_Class_Description__c}</span
+                      >
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class={fieldsTitleClass}
+                        ><b>Last/Est. Return Date</b></span
+                      >
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="data">
+                        <lightning-formatted-date-time
+                          value={asset.SM_PS_Due_Off_Rent_Date__c}
+                          month="2-digit"
+                          day="2-digit"
+                          year="numeric"
+                        ></lightning-formatted-date-time>
+                      </span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class={fieldsTitleClass}><b>Status</b></span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="data">{asset.Status}</span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class={fieldsTitleClass}
+                        ><b>Current Location</b></span
+                      >
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="data"
+                        >{asset.SM_PS_Current_Branch_Location_Number__c}</span
+                      >
+                    </div>
+                  </div>
+                  <div>
+                    <template lwc:if={asset.ViewMore}>
+                      <div
+                        class="toggle-text slds-p-bottom_medium"
+                        data-asset-id={asset.Id}
+                        data-toggle-type="ViewMore"
+                        onclick={toggleViewContent}
+                      >
+                        {LABELS.VIEW_LESS}
+                      </div>
+                      <div class="slds-col slds-size_6-of-6 accountDetails">
+                        <div class="slds-grid slds-wrap">
+                          <div
+                            class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class={fieldsTitleClass}><b>Type</b></span>
+                          </div>
+                          <div
+                            class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class="data"
+                              >{asset.SM_PS_Equipment_Type__c}</span
+                            >
+                          </div>
+                          <div
+                            class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class={fieldsTitleClass}
+                              ><b>Cat Class</b></span
+                            >
+                          </div>
+                          <div
+                            class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class="data">{asset.SM_PS_Cat_Class__c}</span>
+                          </div>
+                          <div
+                            class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class={fieldsTitleClass}><b>Year</b></span>
+                          </div>
+                          <div
+                            class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class="data"
+                              >{asset.SM_PS_Model_Year__c}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                    <template lwc:else>
+                      <div
+                        class="toggle-text slds-p-bottom_medium"
+                        data-asset-id={asset.Id}
+                        data-toggle-type="ViewMore"
+                        onclick={toggleViewContent}
+                      >
+                        {LABELS.VIEW_MORE}
+                      </div>
+                    </template>
+                  </div>
+                  <div>
+                    <template lwc:if={asset.HideComments}>
+                      <div
+                        class="toggle-text slds-p-bottom_medium"
+                        data-asset-id={asset.Id}
+                        data-toggle-type="EquipComments"
+                        onclick={toggleViewContent}
+                      >
+                        {LABELS.HIDE_EQUIPMENT_COMMENTS}
+                      </div>
+                      <div class="slds-col slds-size_6-of-6 accountDetails">
+                        <div class="slds-grid slds-wrap">
+                          <div
+                            class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                          >
+                            <span class={fieldsTitleClass}
+                              >{asset.SM_PS_Equipment_Condition_Comment__c}</span
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </template>
+                    <template lwc:else>
+                      <div
+                        class="toggle-text slds-p-bottom_medium"
+                        data-asset-id={asset.Id}
+                        data-toggle-type="EquipComments"
+                        onclick={toggleViewContent}
+                      >
+                        {LABELS.EQUIPMENT_COMMENTS}
+                      </div>
+                    </template>
+                  </div>
+                </div>
+                <lightning-layout class="slds-col slds-size_6-of-6">
+                  <lightning-layout-item size="12">
+                    <lightning-button
+                      class={customClass}
+                      label={asset.calculatedBtnVariable}
+                      onclick={callRowAction}
+                      variant={asset.calculatedBtnVariant}
+                      data-asset-id={asset.Id}
+                      disabled={asset.StatusDisabled}
+                      stretch
+                    ></lightning-button>
+                  </lightning-layout-item>
+                </lightning-layout>
+              </div>
+            </div>
+            <div
+              key={asset.Asset}
+              class="slds-border_bottom slds-p-top_x-small"
+            ></div>
+          </template>
+        </template>
+        <template lwc:elseif={isProductsAvailable}>
+          <lightning-card>
+            <template
+              for:each={catClassDataForMobile}
+              for:item="item"
+              for:index="index"
+            >
+              <div key={item.Id}>
+                <div class="slds-col slds-size_6-of-6">
+                  <div class="customheight slds-border_top"></div>
+                  <div class="slds-grid slds-wrap">
+                    <div
+                      class="slds-col slds-size_5-of-5 slds-p-bottom_x-small slds-p-top_large fieldsTitleheader"
+                    >
+                      <b>{item.ProductName}</b>
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="fieldsTitleClass"><b>Cat Class #</b></span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span>{item.Product2.PPA_CatClass__c}</span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="fieldsTitleClass"><b>Available</b></span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small"
+                    >
+                      <span>{item.SM_PS_Quantity_Available__c}</span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_3-of-5 slds-p-bottom_x-small"
+                    >
+                      <span class="fieldsTitleClass"><b>Reservation</b></span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-5 slds-p-bottom_x-small fieldsTitleClassGreen"
+                    >
+                      <span>{item.SM_PS_Quantity_Reserved__c}</span>
+                    </div>
+                  </div>
+                  <lightning-layout>
+                    <lightning-layout-item size="12">
+                      <template lwc:if={item.Product2.Bulk_Item__c}>
+                        <template lwc:if={item.showRemoveButton}>
+                          <lightning-button
+                            class="neutral-button brand-outline-button brand-button1 remove-button"
+                            label="Remove"
+                            stretch
+                            onclick={callRowAction}
+                            data-product-id={item.Product2.Id}
+                          ></lightning-button>
+                        </template>
+                        <template lwc:else>
+                          <!--Added for Front-18999-->
+                          <lightning-button
+                            class="brand-button brand-button1"
+                            label="Select"
+                            onclick={callRowAction}
+                            variant="brand"
+                            data-index={index}
+                            data-product-id={item.Product2.Id}
+                            value={item.Product2.Product_SKU__c}
+                            stretch
+                          ></lightning-button>
+                        </template>
+                        <!--Ended for Front-18999-->
+                      </template>
+                      <template lwc:else>
+                        <lightning-layout>
+                          <lightning-layout-item size="12">
+                            <lightning-button
+                              class="brand-button brand-button1"
+                              label="View Assets"
+                              onclick={callRowAction}
+                              variant="brand"
+                              data-index={index}
+                              value={item.Product2.Product_SKU__c}
+                              stretch
+                            ></lightning-button>
+                          </lightning-layout-item>
+                        </lightning-layout>
+                      </template>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </div>
+              </div>
+            </template>
+          </lightning-card>
+        </template>
+        <template lwc:else>
+          <lightning-card>
+            <div
+              class="slds-illustration slds-illustration_small backCl"
+              aria-hidden="true"
+            >
+              <img
+                class="slds-illustration__svg"
+                alt=""
+                src={noContentimageUrl}
+              />
+              <h2
+                class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+              >
+                {labelTextForSearchField}
+              </h2>
+            </div>
+          </lightning-card>
+        </template>
+      </lightning-layout-item>
+    </template>
+  </lightning-layout>
+  <!--Started for Front-18999-->
+  <template lwc:if={showEditorRate}>
+    <c-sbr_3_0_mobile-screen
+      title={modalHeader}
+      onratematrixclicked={handleTabClicked}
+    >
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="orderItemObject"
+        selected-asset={selectedAssetRow}
+        current-active-tab={activeTab}
+        order-data={orderData}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+      <template if:true={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-center">
+          <div class="slds-m-bottom_large">
+            <lightning-button
+              label="Back"
+              onclick={handleBack}
+              class="small-button"
+            >
+            </lightning-button>
+          </div>
+        </div>
+      </template>
+      <template if:false={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-spread">
+          <div>
+            <lightning-button
+              label="Cancel"
+              onclick={handleCancel}
+              class="neutral-button"
+            >
+            </lightning-button>
+          </div>
+          <div>
+            <lightning-button
+              label="Confirm"
+              variant="brand"
+              class="brand-button"
+              onclick={handleConfirm}
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!--Ended for Fornt-18999-->
+  <!-- </template> -->
+</template>

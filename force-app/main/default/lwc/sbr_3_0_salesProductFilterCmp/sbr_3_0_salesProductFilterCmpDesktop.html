@@ -1,0 +1,70 @@
+<template>
+  <template if:false={isMobile}>
+    <template if:true={callFilterCmp}>
+      <div class="slds-panel slds-size_full slds-is-open" aria-hidden="false">
+        <div class="productFilterPanel">
+          <div class="slds-panel__header">
+            <h2
+              class="slds-panel__header-title slds-text-heading_small slds-truncate"
+            >
+              Product Filter
+            </h2>
+            <lightning-button-icon
+              icon-name="utility:close"
+              variant="bare"
+              onclick={handleCancelFilter}
+            ></lightning-button-icon>
+          </div>
+          <div class="slds-panel__body">
+            <label class="slds-form-element__label">{labels.QUANTITY_LABEL}</label>
+            <lightning-input
+              type="checkbox"
+              label="Available Only"
+              name="quantity"
+              onchange={handleChange}
+              checked={availableOnly}
+            ></lightning-input>
+            <br />
+            <lightning-input
+              type="search"
+              label={labels.STOCK_VENDOR_LABEL}
+              name="stockvendor"
+              onchange={handleChange}
+              value={stockVendorValue}
+              placeholder="Search a Stock/Vendor"
+              class="small-width"
+            ></lightning-input>
+            <br />
+            <lightning-input
+              type="text"
+              label={labels.MANUFACTURER_LABEL}
+              name="manufacturer"
+              onchange={handleChange}
+              value={manufacturerValue}
+              class="small-width"
+            ></lightning-input>
+          </div>
+          <div class="slds-modal__footer">
+            <div class="slds-float_left">
+              <button
+                class="slds-button slds-button_neutral"
+                onclick={handleCancelFilter}
+              >
+                Cancel
+              </button>
+              <button class="slds-button" onclick={handleResetFilter}>
+                Reset All Filters
+              </button>
+            </div>
+            <button
+              class="slds-button slds-button_brand"
+              onclick={handleAppyFilter}
+            >
+              Apply
+            </button>
+          </div>
+        </div>
+      </div>
+    </template>
+  </template>
+</template>

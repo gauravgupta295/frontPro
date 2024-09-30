@@ -1,0 +1,17 @@
+<template>
+  <div class="slds-is-relative" lwc:if={isConfirm}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </div>
+  <c-sbr_3_0_custom-data-table-cmp
+    key-field="Id"
+    columns={rentalColumns}
+    data={selectedRows}
+    class="quantityClassRental removeTableBorder"
+    resize-column-disabled
+    onrowselection={handleLineItemSelection}
+    selected-rows={preSelectedRemovedRows}
+  ></c-sbr_3_0_custom-data-table-cmp>
+</template>

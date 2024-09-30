@@ -1,0 +1,33 @@
+<template>
+  <div class="slds-notify_container slds-is-relative">
+    <div class={styleClass} role="status">
+      <span class="slds-assistive-text">error</span>
+      <span
+        class="slds-icon_container slds-icon-utility-error slds-m-right_small slds-no-flex slds-align-top"
+      >
+        <template lwc:if={isError}>
+          <lightning-icon
+            icon-name="utility:error"
+            size="small"
+            alternative-text="Indicates error"
+            variant="inverse"
+          >
+          </lightning-icon>
+        </template>
+        <template lwc:if={isInfo}>
+          <lightning-icon
+            icon-name="utility:info"
+            size="small"
+            alternative-text="Indicates warning"
+            variant="inverse"
+          >
+          </lightning-icon>
+        </template>
+      </span>
+      <div class="slds-notify__content">
+        <h2 class="slds-text-heading_small">{title}</h2>
+        <p>{message}</p>
+      </div>
+    </div>
+  </div>
+</template>

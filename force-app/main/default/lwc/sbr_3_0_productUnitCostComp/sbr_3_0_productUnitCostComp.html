@@ -1,0 +1,75 @@
+<template>
+	<lightning-layout>
+		<lightning-layout-item size="12">
+			<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; ">
+				<lightning-card>
+					<div class="slds-card slds-card_header"
+						style="padding: 10px; display: flex; justify-content: space-between; align-items: center;">
+						<span style="font-weight: bold; font-size: larger; color: green; text-align: left;">{recordName}</span>
+
+						<lightning-icon icon-name="action:delete" alternative-text="Delete" variant="destructive"
+							size="xx-small" class="slds-float_right custom-icon"
+							style="margin-left: 15px;--sds-c-icon-color-background: #CB0015;" title="Delete"
+							onclick={handleDelete}></lightning-icon>
+					</div>
+					<div style="padding: 5px 10px 5px">
+						<lightning-layout-item>
+							<template if:true={unitCost}>
+								<div class="slds-float_left" style="font-size: larger;">Unit Cost: <b>${unitCost}</b>
+								</div><br>
+                    </template>
+								<template if:false={unitCost}>
+									<div class="slds-float_left" style="font-size: larger;">Unit Cost: <b>-</b></div><br>
+                    </template>
+						</lightning-layout-item>
+					</div>
+
+					<div style="display: flex; align-items: center;">
+						<div class="slds-grid slds-wrap">
+							<div class="slds-col slds-size_1-of-12 slds-p-left_x-small slds-m-left_xxx-small slds-p-right_medium slds-m-right_xx-small">
+								<span>
+									<lightning-button-icon 
+										icon-name="utility:dash"  
+										variant="border-filled" 
+										alternative-text="decreaseQuantity" 
+										title="decreaseQuantity"
+										onclick={decreaseQuantity}>
+									</lightning-button-icon>
+								</span>
+							</div>
+							<div class="slds-col slds-size_3-of-12 slds-m-left_medium slds-p-right_xx-small">
+								<span>
+									<lightning-input 
+										type="number" 
+										onchange={changeQuantity} 
+										name="inputQuantity" 
+										label="Qty" 
+										variant="label-hidden" 
+										value={quantity}
+										min="1"
+										message-when-range-underflow="Enter a valid value" 
+										step="0.01"
+										message-when-step-mismatch="Maximum of 2 decimal places allowed"
+										required>								
+									</lightning-input>
+								</span>
+							</div>
+							<div class="slds-col slds-size_1-of-12">
+								<span>
+									<lightning-button-icon 
+										icon-name="utility:add"  
+										variant="border-filled" 
+										alternative-text="increaseQuantity" 
+										title="increaseQuantity"
+										onclick={increaseQuantity}>
+									</lightning-button-icon>
+								</span>
+							</div>
+						</div>
+					</div>
+
+				</lightning-card>
+			</div>
+		</lightning-layout-item>
+	</lightning-layout>
+</template>

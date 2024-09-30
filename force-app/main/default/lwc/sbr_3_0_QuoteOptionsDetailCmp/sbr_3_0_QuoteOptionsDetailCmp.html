@@ -1,0 +1,234 @@
+<template>
+  <!--Display Title and Edit Button -->
+  <div class="slds-card__header slds-grid">
+    <div class="slds-media slds-media_center slds-has-flexi-truncate">
+      <div class="slds-media__figure">
+        <lightning-icon
+          icon-name="standard:orders"
+          size="small"
+        ></lightning-icon>
+      </div>
+      <div class="slds-media__body">
+        <h2 class="slds-card__header-title">
+          <span>Quote Options</span>
+        </h2>
+      </div>
+      <!-- <template if:true={showEdit}>
+				<div class="slds-clearfix slds-float_right">
+					<button class="slds-button slds-button_brand" onclick={handleEdit} >Edit</button>
+				</div>
+			</template> -->
+    </div>
+  </div>
+  <div lwc:if={isLoaded} class="slds-is-relative">
+    <lightning-spinner alternative-text="Loading..." variant="brand">
+    </lightning-spinner>
+  </div>
+ 
+    <lightning-record-edit-form
+      record-id={recordId}
+      object-api-name={objectApiName}
+      onsubmit={handleSubmit}
+      onsuccess={handleSuccess}
+    >
+      <div class="slds-grid">
+        <!--Rental Protection Field-->
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="RPP__c"
+            disabled={readOnly}
+            data-field="RentalProtection"
+          >
+          </lightning-input-field>
+        </div>
+        <template if:true={showStandbyField}>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="Apply_Standby_Rates__c"
+                disabled={readOnly}
+                data-field="StandbyOrder"
+                onchange={handleChange}
+              >
+              </lightning-input-field>
+            </div>
+        </template>
+      </div>
+      <div class="slds-grid">
+        <!--Seasoanl Order Field-->
+        <template if:true={showSeasonalField}>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Seasonal_Quote__c"
+              disabled={readOnly}
+              data-field="SeasoanlOrder"
+              onchange={handleChange}
+            >
+            </lightning-input-field>
+          </div>
+        </template>
+         <!--Contingency Order Field-->
+        <template if:true={showContingencyField}>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Contingency_Quote__c"
+              disabled={readOnly}
+              data-field="ContingencyOrder"
+              onchange={handleChange}
+            >
+            </lightning-input-field>
+          </div>
+        </template>
+      </div>
+      <div class="slds-grid">
+         <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Include_Advanced_Scope__c"
+              disabled={readOnly}
+              data-field="IncludeAdvanceScope"
+              onchange={handleChange}
+            >
+            </lightning-input-field>
+          </div>
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Shift_Rate__c"
+              disabled={readOnly}
+              data-field="ShiftRate"
+              onchange={handleChange}
+            >
+            </lightning-input-field>
+          </div>
+      </div>
+      <div class="slds-grid">
+          <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Show_Crew_Expense_Calculator__c"
+              disabled={readOnly}
+              data-field="ShowCrewExpCalc"
+              onchange={handleChange}
+            >
+            </lightning-input-field>
+          </div>
+      </div>
+
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <div class="slds-card__header slds-grid">
+            <div class="slds-media slds-media_center slds-has-flexi-truncate">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name="standard:orders"
+                  size="small"
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                  <span>Template Options</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <!--Rental Protection Field-->
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Show_Details__c"
+            disabled={readOnly}
+            data-field="ShowDetails"
+          >
+          </lightning-input-field>
+        </div>
+            <div class="slds-col slds-size_1-of-2">
+              <lightning-input-field
+                field-name="Show_Crew_Details__c"
+                disabled={readOnly}
+                data-field="ShowCrewDetails"
+              >
+              </lightning-input-field>
+            </div>
+      </div>
+      <div class="slds-grid">
+            <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Show_Ancillary_Charges__c"
+            disabled={readOnly}
+            data-field="ShowAncillaryCharges"
+          >
+          </lightning-input-field>
+        </div>
+        <div class="slds-col slds-size_1-of-2">
+          <lightning-input-field
+            field-name="Show_Expense_Details__c"
+            disabled={readOnly}
+            data-field="ShowExpenseDetails"
+          >
+          </lightning-input-field>
+        </div>
+      </div>
+      
+      <!-- FRONT-1635 -->
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+          <div class="slds-card__header slds-grid">
+            <div class="slds-media slds-media_center slds-has-flexi-truncate">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name="standard:orders"
+                  size="small"
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body">
+                <h2 class="slds-card__header-title">
+                  <span>Comments</span>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="External_Notes__c"
+              disabled={readOnly}
+            >
+            </lightning-input-field>
+        </div>
+      
+        <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Internal_Notes__c"
+              disabled={readOnly}
+            >
+            </lightning-input-field>
+        </div>
+      </div>
+      <div class="slds-grid">
+        <div class="slds-col slds-size_1-of-2">
+            <lightning-input-field
+              field-name="Delivery_Special_Instructions__c"
+              disabled={readOnly}
+              data-field="Delivery/SpecialInstructions"
+            ></lightning-input-field>
+        </div>
+      </div>
+        <!-- FRONT- 1635 -->
+
+      <!--Footer : Save & Cancel buttons -->
+      <!-- <template if:false={showEdit}>
+				<template if:true={isEdit}>
+					<footer class="slds-card__footer">
+						<div class="slds-clearfix slds-align_absolute-center">
+							<lightning-button variant="base" label="Cancel" title="Cancel" onclick={handleCancel}
+								class="slds-m-left_x-small"></lightning-button>
+							<lightning-button variant="brand" label="Save" title="Save" type="submit"
+								class="slds-m-left_x-small"></lightning-button>
+						</div>
+					</footer>
+				</template>
+			</template> -->
+      <button type="submit" class="slds-hide btnclass"></button>
+    </lightning-record-edit-form>
+</template>

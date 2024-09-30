@@ -1,0 +1,5 @@
+<aura:component implements="lightning:actionOverride,force:lightningQuickActionWithoutHeader" access="global">
+<ui:message title="Error" severity="warning" closable="true">
+    Please navigate to the Order record page or Order home page to perform this action
+</ui:message>
+</aura:component>

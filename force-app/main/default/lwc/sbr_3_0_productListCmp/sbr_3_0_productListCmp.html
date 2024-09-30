@@ -1,0 +1,115 @@
+<template>
+  <template if:false={isMobile}>
+    <div class="slds-is-relative">
+      <template if:true={showTable}>
+        <div
+          class="slds-is-absolute pl-inner-container"
+          style={listHeightStyle}
+        >
+          <template lwc:if={maxRowSelection}>
+            <c-sbr_3_0_custom-line-items
+              key-field="Id"
+              columns={columns}
+              data={data}
+              default-sort-direction={defaultSortDirection}
+              sorted-direction={sortDirection}
+              sorted-by={sortedBy}
+              onsort={onHandleSort}
+              resize-column-disabled
+              wrap-text-max-lines="2"
+              enable-infinite-loading
+              onloadmore={loadMoreItems}
+              onrowselection={updateSelectedRows}
+              max-row-selection={maxRowSelection}
+            >
+            </c-sbr_3_0_custom-line-items>
+          </template>
+          <!-- FRONT-20801 : making radio button selection -->
+          <template lwc:else>
+            <c-sbr_3_0_custom-line-items
+              key-field="Id"
+              columns={columns}
+              data={data}
+              default-sort-direction={defaultSortDirection}
+              sorted-direction={sortDirection}
+              sorted-by={sortedBy}
+              onsort={onHandleSort}
+              resize-column-disabled
+              wrap-text-max-lines="2"
+              enable-infinite-loading
+              onloadmore={loadMoreItems}
+              onrowselection={updateSelectedRows}
+            >
+            </c-sbr_3_0_custom-line-items>
+          </template>
+        </div>
+      </template>
+    </div>
+  </template>
+  <template if:true={isMobile}>
+    <lightning-card>
+      <div class="slds-scrollable_y prod-mob-ctr" onscroll={loadMoreDataMobile}>
+        <ul class="slds-dropdown_list">
+          <template for:each={data} for:item="prod" for:index="index">
+            <li
+              key={prod.Id}
+              class="slds-box product-list"
+              role="presentation"
+              onclick={showItemSpotlight}
+              data-key={prod.Id}
+              value={index}
+            >
+             <input type="radio" name="items-list" id={index} value={index} if:true={showRadioButtons} class="item-radio"/> <!--FRONT-22428-->
+              <div class="slds-col slds-size_1-of-3 prod-img">
+                <c-sbr_3_0_cdt_img-column-cmp
+                  img-url={prod.Primary_Image_URL__c}
+                  alt-text={prod.Name}
+                >
+                </c-sbr_3_0_cdt_img-column-cmp>
+              </div>
+              <div class="slds-col slds-size_2-of-3 prod-text">
+                <p class="prod-name">{prod.Name}</p>
+                <p class="cat-class">Cat Class / SKU : {prod.Product_SKU__c}</p>
+              </div>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </lightning-card>
+    <template if:true={mobileIsLoading}>
+      <div class="spinner">
+        <lightning-spinner
+          alternative-text="Loading"
+          variant="brand"
+          size="medium"
+        >
+        </lightning-spinner>
+      </div>
+    </template>
+  </template>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</template>

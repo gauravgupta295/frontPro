@@ -1,0 +1,27 @@
+.input-label {
+  font-weight: 400;
+  font-size: 13px;
+  color: #444444;
+}
+
+.checkbox {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.label {
+  padding-bottom: 0;
+}
+
+.available-quantity {
+  color: #181818;
+  font-size: 13px;
+}
+
+.input-value {
+  font-size: 13px;
+}
+
+.layout-item {
+  height: 68px;
+}

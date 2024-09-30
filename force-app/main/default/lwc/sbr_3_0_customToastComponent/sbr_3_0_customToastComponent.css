@@ -1,0 +1,26 @@
+.dummy{
+	color : black;
+}
+
+.temp{
+	min-width: auto;
+}
+.toastSet{
+	position:fixed;
+	top:90px;
+	background-attachment: fixed;
+}
+.slds-notify_container {
+    animation: 0.5s forwards enter;
+}
+
+@keyframes enter {
+    from {
+        top: 85px;
+        opacity: 0;
+    }
+    to {
+        top: 90px;
+        opacity: 1;
+    }
+}

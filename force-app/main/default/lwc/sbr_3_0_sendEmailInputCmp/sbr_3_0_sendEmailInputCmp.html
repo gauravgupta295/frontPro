@@ -1,0 +1,11 @@
+<template>
+    <div class="slds-combobox_container">
+        <div class="slds-combobox__form-element slds-has-focus">
+            <template for:each={selectedValues} for:item="selectedValue" for:index="index">
+                <lightning-pill key={selectedValue} label={selectedValue} onremove={handleRemove}
+                    data-index={index}></lightning-pill>
+            </template>
+            <input type="text" id="to" class="input" required onkeypress={handleKeyPress} onblur={handleBlur} />
+        </div>
+    </div>
+</template>

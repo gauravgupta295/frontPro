@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName">
+    <aura:attribute name="isAuraCmp" type="Boolean" default="true"/>        
+    
+    <c:sbr_3_0_generateReservationContractOrderPDF recordId="{!v.recordId}" isAuraCmp="{!v.isAuraCmp}" aura:id="sbr_3_0_generateReservationContractOrderPDF" onvaluechange="{!c.getValueFromLwc}"></c:sbr_3_0_generateReservationContractOrderPDF>
+ </aura:component>

@@ -1,0 +1,41 @@
+<template>
+  <c-sbr_3_0_mobile-screen title={label.TITLE_FOR_CUST_INFO_CHANGE_WARNING}>
+    <div
+      class="slds-modal__content slds-p-around_medium"
+      id="modal-content-id-2"
+    >
+      <p>
+        <b> {WarningMessageHeading} </b>
+      </p>
+      <div class="contentstyle">
+        <span>{label.BULLETS_HEADER_FOR_CUST_INFO_CHANGE_WARNING}</span>
+        <ul class="bulletstyle">
+          <li>{label.BULLET1_FOR_CUST_INFO_CHANGE_WARNING}</li>
+          <li>{label.BULLET2_FOR_CUST_INFO_CHANGE_WARNING}</li>
+          <li>{label.BULLET3_FOR_CUST_INFO_CHANGE_WARNING}</li>
+        </ul>
+      </div>
+      <span>{label.BOTTOM_NOTE_FOR_CUST_INFO_CHANGE_WARNING}</span>
+    </div>
+    <!-- Modal/Popup Box LWC footer starts here -->
+    <div
+      slot="footer"
+      class="footer-section slds-grid slds-grid_align-spread slds-p-horizontal_small"
+    >
+      <!--<lightning-button
+        class="slds-button_neutral"
+        variant="neutral"
+        label={label.GO_BACK}
+        onclick={closeModal}
+      ></lightning-button>-->
+      <button class="slds-button slds-button_neutral goBackbtn" value={label.GO_BACK} onclick={closeModal}>{label.GO_BACK}</button>
+      <!--<lightning-button
+        variant="brand"
+        label={label.CONFIRM_BUTTON_LABEL}
+        class="slds-m-left_x-small slds-button_brand"
+        onclick={confirmModal}
+      ></lightning-button>-->
+      <button class="slds-button slds-button_neutral confirmbtn" value={label.CONFIRM_BUTTON_LABEL} onclick={confirmModal}>{label.CONFIRM_BUTTON_LABEL}</button>
+    </div>
+  </c-sbr_3_0_mobile-screen>
+</template>

@@ -1,0 +1,37 @@
+<!-- sldsValidatorIgnore -->
+<template>
+        <lightning-quick-action-panel header="Generate Document">
+            <div style="height:20rem;position:relative">
+            <lightning-spinner alternative-text="Loading" size="medium" if:true={spinner}></lightning-spinner>
+            <div if:false={spinner}>
+                <span if:true={showTemplateCondition} class="slds-align_absolute-center">Select a template you wish to use.</span> 
+                <lightning-combobox value={value} placeholder="Select a template" options={templates} onchange={handleChange} if:true={showTemplateCondition}></lightning-combobox>
+                <span if:true={showFileNameCondition}>
+                    <div class="slds-m-top_small">
+                    </br>
+                        <h6>Document will be saved as '{fileName}.pdf'</h6>
+                    </br>
+                        <lightning-input type="checkbox" label="Do you want to specify a different file name for the generated document.?" onchange={handleChecked} > </lightning-input>
+                            <div if:true={isChangeFileName} class="slds-p-around_medium lgc-bg">
+                                <lightning-input type="text" value ={fileName} label="Enter the File Name" onchange={handleFileNameChange} placeholder="Enter file name..." required></lightning-input>
+                            </div>
+                    </div>
+                </span>
+                <!-- <lightning-button label="Submit" class="slds-align_absolute-center slds-p-top_small" onclick={submitTemplate} disabled={disableSubmitButton} if:true={showTemplateCondition}></lightning-button> -->
+                <span if:true={showGetFileCondition}>The PDF is still being generated, please click the 'Get File' button when its available.</span>
+                <lightning-button label="Get File" class="slds-align_absolute-center slds-p-top_small" onclick={getFlie} disabled={disableGetFileButton} if:true={showGetFileCondition}></lightning-button>
+                <span if:true={fileRetrieved} class="slds-align_absolute-center"> File retrieved and saved to 'Files' section under Related tab.!                
+                </span>
+            </div>
+        </div>
+        <div slot="footer">
+            <lightning-button variant="success" label="Submit" class="slds-m-left_x-small" onclick={submitTemplate} disabled={disableSubmitButton} if:true={showTemplateCondition}></lightning-button>
+          
+            <lightning-button
+                label="Cancel"
+                class="slds-m-left_x-small"
+                onclick={handleCancel}
+            ></lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+</template>

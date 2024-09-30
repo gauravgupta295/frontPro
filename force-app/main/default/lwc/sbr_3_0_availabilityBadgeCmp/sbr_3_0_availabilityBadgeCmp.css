@@ -1,0 +1,51 @@
+.pending-badge1 {
+  --sds-c-badge-color-background: #268545;
+  color: white;
+  --sds-c-icon-color-foreground-default: white;
+}
+.pending-badge2 {
+  --sds-c-badge-color-background: #fad205;
+  color: black;
+  --sds-c-icon-color-foreground-default: black;
+}
+.pending-badge3 {
+  --sds-c-badge-color-background: #a62229;
+  color: white;
+  --sds-c-icon-color-foreground-default: white;
+}
+
+.slds-col {
+  font-size: 12px;
+}
+.chronos-header {
+  font-weight: 700;
+}
+.branch-link {
+  color: #25683e;
+  font-weight: 700;
+}
+.branch-link:hover {
+  text-decoration: underline;
+}
+/*
+.white-utility-icon{
+    --sds-c-icon-color-foreground-default: white;
+}
+
+.black-utility-icon{
+    --sds-c-icon-color-foreground-default: black;
+}
+*/
+@media (max-width: 480px) {
+  .branch-link {
+    font-size: 12px;
+    text-align: left;
+    text-decoration: underline;
+  }
+  .slds-col:not(:first-child):not(:last-child) {
+    text-align: center;
+  }
+  .slds-col:last-child :not(.branch-link) {
+    text-align: right;
+  }
+}

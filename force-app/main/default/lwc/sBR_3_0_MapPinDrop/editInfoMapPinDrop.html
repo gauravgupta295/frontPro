@@ -1,0 +1,78 @@
+<template>
+  <template if:true={statesLoaded}>
+    <lightning-layout vertical-align="stretch" multiple-rows="true">
+      <template if:true={showAddressFields}>
+        <lightning-layout-item
+          size="12"
+          small-device-size="6"
+          class="customSpacingColum1"
+        >
+          <lightning-input-address
+            class="slds-p-bottom_xx-small"
+            address-label="Address"
+            street-label="Street"
+            city-label="City"
+            country-label="Country"
+            province-label="State/Province"
+            postal-code-label="Zip/Postal Code"
+            country-options={countries}
+            province-options={states}
+            onchange={handleAddressChange}
+            street={pinDropStreet}
+            city={pinDropCity}
+            country={pinDropCountry}
+            province={pinDropState}
+            postal-code={pinDropZip}
+          >
+          </lightning-input-address>
+
+          <lightning-input
+            id="latInput"
+            value={pinDropLat}
+            label="Latitude"
+            onchange={handleCoordinateChange}
+          ></lightning-input>
+
+          <lightning-input
+            id="lngInput"
+            value={pinDropLng}
+            label="Longitude"
+            onchange={handleCoordinateChange}
+          ></lightning-input>
+
+          <div class="slds-p-top_small"></div>
+
+          <div class="slds-grid slds-grid_align-spread">
+            <div class="actionsLeft slds-grid slds-m-right_xx-small"></div>
+            <div class="actionsRight slds-grid">
+              <div class="lgc-bg">
+                <lightning-helptext
+                  content="Fill in latitude and longitude to go to on map."
+                ></lightning-helptext>
+              </div>
+              <lightning-button
+                onclick={goToCoordinates}
+                label="Go To"
+                variant="brand"
+                disabled={isLatLngNotPopulated}
+              ></lightning-button>
+            </div>
+          </div>
+        </lightning-layout-item>
+      </template>
+
+      <lightning-layout-item
+        size="12"
+        small-device-size="6"
+        class="mobile-map customSpacingColum2"
+      >
+        <iframe
+          height="100%"
+          width="100%"
+          src={iFrameURL}
+          allow="geolocation"
+        ></iframe>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+</template>

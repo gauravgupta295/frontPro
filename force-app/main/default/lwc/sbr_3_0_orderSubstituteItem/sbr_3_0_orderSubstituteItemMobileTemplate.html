@@ -1,0 +1,44 @@
+<template>
+    <section role="dialog"
+      aria-labelledby="modal-heading-02"
+      aria-modal="true"
+      aria-describedby="modal-content-id-2"
+      class="slds-modal slds-fade-in-open">
+
+    <div class="slds-page-header__controls info-header slds-var-p-around_small">
+    <h2
+        id="modal-heading-01"
+        class="slds-text-heading_x-small slds-hyphenate"><!--FRONT-8793-->
+        Substitute {itemName}<!--FRONT-8793-->
+      </h2>
+    </div>
+ 
+    <div class="slds-modal__content slds-var-p-around_small">
+      <template if:true={isLoading}>
+        <lightning-spinner class="spins" size="large"></lightning-spinner>
+      </template>
+      <div>
+        <c-sbr_3_0_product-list-container-cmp
+          onviewcart={handleViewCart}
+          onrowsselected={handleSelectedRows}
+          record-id={recordId}
+          object-api-name={objectApiName}
+          show-radio-buttons={showRadioButtons}><!--FRONT-8793-->
+        >
+        </c-sbr_3_0_product-list-container-cmp>
+      </div>
+    </div>
+    <!-- Modal/Popup Box LWC footer starts here -->
+     <!-- FRONT-10304 start -->
+    <footer class="slds-modal__footer slds-grid slds-grid_align-spread">
+        <!-- FRONT-10304 end -->
+      <lightning-button
+        label="Cancel"
+        class="slds-var-m-right_small neutral-button"
+        onclick={closeModal}
+      ></lightning-button>
+      <template if:true={isMobile}><lightning-button label="Confirm" variant="brand" class="brand-button" onclick={substituteRows}></lightning-button></template>
+    </footer>
+</section>
+<div class="slds-backdrop slds-backdrop_open"></div>
+</template>

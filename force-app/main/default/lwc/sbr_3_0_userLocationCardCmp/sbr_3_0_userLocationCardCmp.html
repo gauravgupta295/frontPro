@@ -1,0 +1,83 @@
+<template>
+  <div class="parent-container">
+    <div class="slds-form-element">
+      <div
+        class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+      >
+        <lightning-icon
+          size="x-small"
+          class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+          icon-name="utility:search"
+        ></lightning-icon>
+        <lightning-input
+          type="text"
+          onchange={handleKeyChange}
+          value={searchKey}
+          variant="label-hidden"
+          placeholder="Search in this list..."
+          disabled={isDisabled}
+        ></lightning-input>
+      </div>
+    </div>
+    <div if:true={filteredSalesRepsList.length} class="sbr-list-item">
+      <template
+        for:each={filteredSalesRepsList}
+        for:item="elem"
+        for:index="index"
+      >
+        <div key={elem.Id} class="user-div">
+          <div class="slds-grid slds-wrap">
+            <input
+              class="sbr-radio-button"
+              type="radio"
+              name="Radiobutton"
+              value={elem}
+              data-user={elem.User__c}
+              data-rep={elem.RepId__c}
+              onchange={handleChange}
+            />
+            <b>{elem.Sales_Rep_Name__c}</b>
+          </div>
+          <br />
+          <div class="slds-grid slds-wrap sbr-details">
+            <div class="slds-col slds-size_12-of-12">
+              <div class="slds-grid slds-wrap sbr-details">
+                <div class="slds-col slds-size_5-of-12">
+                  <p class="slds-p-left_small"><b>Rep Type: </b></p>
+                </div>
+                <div class="slds-col slds-size_7-of-12">
+                  <p class="slds-p-horizontal_xx-small">
+                    &nbsp;{elem.Rep_Type__c}
+                  </p>
+                </div>
+              </div>
+
+              <div class="slds-grid slds-m-top_small slds-wrap sbr-details">
+                <div class="slds-col slds-size_5-of-12">
+                  <p class="slds-p-left_small"><b>Rep ID: </b></p>
+                </div>
+                <div class="slds-col slds-size_7-of-12">
+                  <p class="slds-p-horizontal_xx-small">
+                    &nbsp;{elem.RepId__c}
+                  </p>
+                </div>
+              </div>
+
+              <div class="slds-grid slds-m-top_small slds-wrap sbr-details">
+                <div class="slds-col slds-size_5-of-12">
+                  <p class="slds-p-left_small"><b>Line of Business: </b></p>
+                </div>
+                <div class="slds-col slds-size_7-of-12">
+                  <p class="slds-p-horizontal_xx-small">
+                    &nbsp;{elem.Analysis_Region_Name__c}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </div>
+    <div if:false={filteredSalesRepsList.length}>No records were found</div>
+  </div>
+</template>

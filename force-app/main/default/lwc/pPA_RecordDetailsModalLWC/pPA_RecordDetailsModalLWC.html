@@ -1,0 +1,16 @@
+<template>
+    <lightning-modal-header label="View Details"></lightning-modal-header>
+    <lightning-modal-body>
+        <lightning-record-form
+            object-api-name={objectName}
+            record-id={recordId}
+            layout-type={layout}
+            mode="readonly"
+            columns="3"
+        >
+        </lightning-record-form>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Close" onclick={handleClose}></lightning-button>
+    </lightning-modal-footer>
+</template>

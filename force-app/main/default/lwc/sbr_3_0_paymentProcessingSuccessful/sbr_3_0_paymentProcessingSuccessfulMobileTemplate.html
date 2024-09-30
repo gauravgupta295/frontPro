@@ -1,0 +1,45 @@
+<template>
+    <c-sbr_3_0_mobile-screen title={header}>
+        <template if:false={refunddeposit}>
+            <template if:false={generatePdfProcessing}>
+                <div class="slds-modal__container">
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <br />
+                        <p class="breakline">{successMessage}</p>
+                        <br />
+                        <p class="breakline">{remindMessage}</p><br /><br />
+                    </div>
+                    <footer class="slds-modal__footer slds-text-align_right slds-p-bottom_medium">
+                        <template if:false={refundadditionaldeposit}>
+                            <lightning-button label="Skip For Now" variant="brand" onclick={handleSkipForNow}
+                                class="cancel-button slds-float_left"></lightning-button>&nbsp;&nbsp;
+                        </template>
+                        <template if:false={cancelRefund}>
+                        <template if:true={refundadditionaldeposit}>
+                            <lightning-button label="Additional Refund" variant="brand"
+                                onclick={handleprocessAdditionalDeposit}
+                                class="cancel-button slds-float_left"></lightning-button>&nbsp;&nbsp;
+                        </template>
+                        </template>
+                        <template if:true={cancelRefund}>
+                            <lightning-button type="cancel" label="Cancel" variant="brand" onclick={closeModal}
+                            class="cancel-button slds-float_left"></lightning-button>&nbsp;&nbsp;
+                            <lightning-button label="Additional Refund" variant="brand"
+                            class="success-button slds-float_right" onclick={handleprocessAdditionalDeposit}></lightning-button>&nbsp;&nbsp;
+                        </template>
+                        <template if:false={cancelRefund}>
+                        <lightning-button label="Generate PDF" variant="brand" onclick={handleGeneratePdf}
+                            class="success-button slds-float_right"></lightning-button>
+                        </template>
+                    </footer>
+                </div>
+            </template>
+        </template>
+    </c-sbr_3_0_mobile-screen>
+    <template if:true={refunddeposit}>
+        <c-sbr_3_0_refund-deposit record-id={recidN} isfromcancel={isfromcancelprocessing} additionaldeposit={isfromcancelprocessing}></c-sbr_3_0_refund-deposit>
+    </template>
+<div if:true={generatePdfProcessing}>
+    <c-sbr_3_0_pdf-processing recid={recidN}></c-sbr_3_0_pdf-processing>
+</div>
+</template>

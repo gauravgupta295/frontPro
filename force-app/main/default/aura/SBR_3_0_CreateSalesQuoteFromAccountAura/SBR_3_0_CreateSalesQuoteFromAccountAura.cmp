@@ -1,0 +1,31 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:actionOverride,force:hasSObjectName">
+    <aura:html tag="style">     
+        .slds-modal__content{  
+          backkground-color: white !important;
+          height:fit-content !important;
+        } 
+        @media only screen and (min-width: 768px){
+         .slds-p-around--medium{
+            padding:0px !important;
+           }
+           .cuf-content{
+            padding : 0px !important;
+          }    
+        }
+    </aura:html>
+    <!--c:testMobilePopup1
+        recordId="{!v.recordId}"
+        objectApiName="{!v.sObjectName}"
+        oncloseauraaction="{!c.handleCloseAction}"
+    ></c:testMobilePopup1-->
+    <!--c:testMobPopup
+        recordId="{!v.recordId}"
+        objectApiName="{!v.sObjectName}"
+        oncloseauraaction="{!c.handleCloseAction}"
+    ></c:testMobPopup-->
+    <c:sbr_3_0_createSalesQuoteFromAccount
+        recordId="{!v.recordId}"
+        objectApiName="{!v.sObjectName}"
+        oncloseauraaction="{!c.handleCloseAction}"
+        />
+</aura:component>

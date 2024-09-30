@@ -1,0 +1,76 @@
+<template lwc:render-mode="light">
+    <div class="slds-tabs-mobile__container">
+        <ul class="slds-tabs-mobile tab-list">
+          <template for:each={page.childrenPages} for:item="page">
+            <li class="slds-tabs-mobile__item" key={page.externalId}>
+              <button
+                type="button"
+                class="slds-button slds-button_full-width"
+                onclick={handleTogglePanelOnClick}
+                data-target-panel-id={page.externalId}
+              >
+                <span
+                  class="slds-truncate"
+                  title={page.label}
+                  onclick={handleTogglePanelOnClick}
+                  >{page.label}</span
+                >
+                <lightning-icon
+                  icon-name="utility:chevronright"
+                  size="x-small"
+                ></lightning-icon>
+              </button>
+            </li>
+          </template>
+        </ul>
+        <template for:each={page.childrenPages} for:item="page">
+          <div
+            class="
+              slds-panel slds-panel_docked slds-panel_animated
+              panel-content
+              slds-hide
+            "
+            hidden
+            data-panel-id={page.externalId}
+            key={page.externalId}
+          >
+            <c-sbr_3_0_mobile-screen
+              props={mobileProps}
+              data-panel-id={page.externalId}
+            >
+              <div
+                class="slds-panel__header slds-p-around_none"
+                slot="title"
+              >
+                <lightning-button-icon
+                  class="slds-panel__back"
+                  icon-name="utility:chevronleft"
+                  variant="bare"
+                  onclick={handleTogglePanelOnClick}
+                  data-target-panel-id={page.externalId}
+                >
+                </lightning-button-icon>
+                <h2
+                  class="
+                    slds-panel__header-title
+                    slds-text-heading_small
+                    slds-truncate
+                    panel-title
+                  "
+                  title={page.label}
+                >
+                 {page.label}
+                </h2>
+              </div>
+              <div>
+                <c-sbr_3_0_dynamic-record-form-page
+                  page={page}
+                  record-id={recordId}
+                  object-api-name={objectApiName}
+                ></c-sbr_3_0_dynamic-record-form-page>
+              </div>
+            </c-sbr_3_0_mobile-screen>
+          </div>
+        </template>
+      </div>
+</template>

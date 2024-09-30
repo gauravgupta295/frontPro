@@ -1,0 +1,954 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-26-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+    <div class="slds-var-p-around_medium scrolling">
+        <p class="slds-text-heading_small">Filters</p>
+        <br />
+        <lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_1-of-1">
+                    <lightning-accordion-section name="Users" label="Users">
+                        <c-s-b-r_3_0_custom-lookup-cmp label="" s-object-api-name="User" placeholder="Search Users..."
+                            icon-name="custom:custom106" onlookupupdate={handleUserFilter}
+                            fields-to-include="RepID__c, Department, Rep_Type__c" default-record-id={userTerritories}
+                            multi-select="true" where-clause={userWhereClause} ></c-s-b-r_3_0_custom-lookup-cmp>
+                    </lightning-accordion-section>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Global Search" label="Global Search">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="text" label="Search All Objects" value={globalSearch}
+                                    placeholder="Search..." onchange={handleValueChange} data-obj="All"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show All" class="slds-p-top_medium slds-text-body_small" checked={showAll}
+                    onchange={toggleCheckbox} data-obj="All" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Appointments" label="Appointments">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={appointmentSearch} variant="label-hidden"
+                                    placeholder="Search Appointments..." onchange={handleValueChange} data-obj="Appointment"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="relatedApptParent" label="Related Record Type" value={apptParentType}
+                                    options={relatedOptions} onchange={handlePicklistChange} data-obj="Appointment"
+                                    class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Open" checked={openAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="open"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Today" checked={todaysAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="today"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="This Week" checked={thisWeekAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="thisWeek"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next Week" checked={nextWeekAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="nextWeek"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next 7 Days" checked={next7DaysAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="next7Days"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="nextXDays"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={nextXDaysAppointments}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysAppointmentsValue}
+                                        onchange={handleValueChange} data-obj="Appointment" data-scope="nextXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Date Range" checked={dateRangeAppointments}
+                                    onchange={toggleCheckbox} data-obj="Appointment" data-scope="dateRange"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={dateRangeAppointments}>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeAppointmentsStart} onchange={handleValueChange}
+                                        data-obj="Appointment" data-scope="dateRangeStart"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                    to
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeAppointmentsEnd} onchange={handleValueChange}
+                                        data-obj="Appointment" data-scope="dateRangeEnd"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showAppointments}
+                        onchange={toggleCheckbox} data-obj="Appointment" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Tasks" label="Tasks">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={taskSearch} variant="label-hidden"
+                                    placeholder="Search Tasks..." onchange={handleValueChange} data-obj="Task"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="relatedTaskParent" label="Related Record Type" value={taskParentType}
+                                    options={relatedOptions} onchange={handlePicklistChange} data-obj="Task"
+                                    class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Open" checked={openTasks} onchange={toggleCheckbox}
+                                    data-obj="Task" data-scope="open" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Today" checked={todaysTasks} onchange={toggleCheckbox}
+                                    data-obj="Task" data-scope="today" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="This Week" checked={thisWeekTasks}
+                                    onchange={toggleCheckbox} data-obj="Task" data-scope="thisWeek"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next Week" checked={nextWeekTasks}
+                                    onchange={toggleCheckbox} data-obj="Task" data-scope="nextWeek"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next 7 Days" checked={next7DaysTasks}
+                                    onchange={toggleCheckbox} data-obj="Task" data-scope="next7Days"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysTasks}
+                                    onchange={toggleCheckbox} data-obj="Task" data-scope="nextXDays"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={nextXDaysTasks}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysTasksValue}
+                                        onchange={handleValueChange} data-obj="Task" data-scope="nextXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Date Range" checked={dateRangeTasks}
+                                    onchange={toggleCheckbox} data-obj="Task" data-scope="dateRange"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={dateRangeTasks}>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeTasksStart} onchange={handleValueChange}
+                                        data-obj="Task" data-scope="dateRangeStart" variant="label-hidden"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                    to
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeTasksEnd} onchange={handleValueChange}
+                                        data-obj="Task" data-scope="dateRangeEnd" variant="label-hidden"></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showTasks}
+                    onchange={toggleCheckbox} data-obj="Task" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Accounts" label="Accounts">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={accountSearch} variant="label-hidden"
+                                    placeholder="Search Accounts..." onchange={handleValueChange} data-obj="Account"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <template if:true={showSearchAllAccounts}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Search All Accounts" checked={searchAccounts}
+                                        onchange={toggleCheckbox} data-obj="Account" data-scope="searchAccounts"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Top 25" checked={top25Accounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="top25"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Top 50" checked={top50Accounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="top50"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Top 'X' Accounts" checked={topXAccounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="topX"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={topXAccounts}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={topXAccountsValue}
+                                        onchange={handleValueChange} data-obj="Account" data-scope="topX"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Rank Range" checked={rankRangeAccounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="rankRange"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={rankRangeAccounts}>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="number" data-type="number" value={rankRangeAccountsStart} onchange={handleValueChange}
+                                        data-obj="Account" data-scope="rankStart" variant="label-hidden"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                    to
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="number" data-type="number" value={rankRangeAccountsEnd} onchange={handleValueChange}
+                                        data-obj="Account" data-scope="rankEnd" variant="label-hidden"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Watchlist" checked={watchlistAccounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="watchlist"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Dormant" checked={dormantAccounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="dormant"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <!-- <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Show Office Accounts" checked={showOfficeAccounts}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="showOffices"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div> -->
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Only Assigned Accounts" checked={assignedAccountsOnly}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="assignedAccountsOnly"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Include Tracked Accounts" checked={includeTracked}
+                                    onchange={toggleCheckbox} data-obj="Account" data-scope="includeTracked"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+
+            
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-dual-listbox name="accountRecordType" label="Record Type" value={accountRecordType}
+                                    source-label="Available" selected-label="Selected" options={accountRecordTypeOptions}
+                                    onchange={handlePicklistChange} data-obj="Account" data-scope="recordType"
+                                    class="slds-p-top_xx-small stopoverflow">
+                                </lightning-dual-listbox>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showAccounts}
+                    onchange={toggleCheckbox} data-obj="Account" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Leads" label="Open Leads">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Lead Share Leads" checked={leadShareLeads}
+                                    onchange={toggleCheckbox} data-obj="Lead" data-scope="leadShare"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Campaign Leads" checked={campaignLeads}
+                                    onchange={toggleCheckbox} data-obj="Lead" data-scope="campaignLeads"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="leadCampaignType" label="Campaign Type" value={campaignType}
+                                    options={leadCampaignTypeOptions} onchange={handlePicklistChange} data-obj="Lead"
+                                    class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showLeads}
+                    onchange={toggleCheckbox} data-obj="Lead" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Job Sites" label="Job Sites">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={jobSiteSearch} variant="label-hidden"
+                                    placeholder="Search Job Sites..." onchange={handleValueChange} data-obj="Job Site"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Today" checked={todayJobSites} onchange={toggleCheckbox}
+                                    data-obj="Job Site" data-scope="today" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Yesterday" checked={yesterdayJobSites}
+                                    onchange={toggleCheckbox} data-obj="Job Site" data-scope="yesterday"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Last 'X' Days" checked={nextXDaysJobSites}
+                                    onchange={toggleCheckbox} data-obj="Job Site" data-scope="nextXDays"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={nextXDaysJobSites}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysJobSitesValue}
+                                        onchange={handleValueChange} data-obj="Job Site" data-scope="nextXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showJobSites}
+                    onchange={toggleCheckbox} data-obj="Job Site" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Projects" label="Projects" onclick={increaseSizePanel} data-id="projectId" >
+                        <div class="slds-grid slds-wrap" onclick={stopProp}>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={projectSearch} variant="label-hidden"
+                                    placeholder="Search Projects..." onchange={handleValueChange} data-obj="Project"
+                                    data-scope="search"></lightning-input>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-dual-listbox name="projectOrigin" label="Origin" value={projectOrigin}
+                                    source-label="Available" selected-label="Selected" options={projectOriginOptions}
+                                    onchange={handlePicklistChange} data-obj="Project" data-scope="origin"
+                                    class="slds-p-top_xx-small stopoverflow">
+                                </lightning-dual-listbox>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="City" checked={cityProject} onchange={toggleCheckbox}
+                                    data-obj="Project" data-scope="city" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={cityProject}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="text" variant="label-hidden" value={cityProjectValue}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="cityValue"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="projectStatus" label="Status" value={projectStatus}
+                                    options={projectStatusOptions} onchange={handlePicklistChange} data-obj="Project"
+                                    data-scope="status" class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="projectStage" label="Stage" value={projectStage}
+                                    options={projectStageOptions} onchange={handlePicklistChange} data-obj="Project"
+                                    data-scope="stage" class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+
+                            <template if:true={projectPrimaryType}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-dual-listbox name="projectType" label="Type" value={projectPrimaryType}
+                                        source-label="Available" selected-label="Selected" options={projectPrimaryTypeOptions}
+                                        onchange={handlePicklistChange} data-obj="Project" data-scope="primaryType"
+                                        class="slds-p-top_xx-small stopoverflow">
+                                    </lightning-dual-listbox>
+                                </div>
+                            </template>
+
+                            <!-- <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Valuation" checked={valuationProject}
+                                    onchange={toggleCheckbox} data-obj="Project" data-scope="valuation"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={valuationProject}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="text" variant="label-hidden" value={valuationProjectValue}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="valuationValue"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template> -->
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Valuation Range" checked={valuationRangeProjects}
+                                    onchange={toggleCheckbox} data-obj="Project" data-scope="valuationRange"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={valuationRangeProjects}>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="number" data-type="number" value={valuationRangeProjectsStart}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="valuationRangeStart"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                    to
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="number" data-type="number" value={valuationRangeProjectsEnd}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="valuationRangeEnd"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                            </template>
+
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="projectCreated" label="Created On" value={projectCreatedDate}
+                                    options={projectCreatedDateOptions} onchange={handlePicklistChange} data-obj="Project"
+                                    data-scope="created" class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+
+                            <template if:true={showProjectCreatedRange}>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeCreatedDateProjectsStart}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="dateRangeCreatedDateProjectsStart"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                    to
+                                </div>
+                                <div class="slds-col slds-size_5-of-12">
+                                    <lightning-input type="date" value={dateRangeCreatedDateProjectsEnd}
+                                        onchange={handleValueChange} data-obj="Project" data-scope="dateRangeCreatedDateProjectsEnd"
+                                        variant="label-hidden"></lightning-input>
+                                </div>
+                            </template>
+
+                            <template if:true={showDodgeFilters}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <p class="slds-text-heading_medium slds-p-top_x-small slds-text-title_bold text-underline">Dodge</p>
+                                </div>
+                                <template if:true={projectDodgePhase}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-dual-listbox name="projectDodgePhase" label="Dodge Stage"
+                                            value={projectDodgePhase} source-label="Available" selected-label="Selected"
+                                            options={projectDodgePhaseOptions} onchange={handlePicklistChange} data-obj="Project"
+                                            data-scope="dodgePhase" class="slds-p-top_xx-small">
+                                        </lightning-dual-listbox>
+                                    </div>
+                                </template>
+
+                                <p class="slds-text-heading_x-small slds-p-top_x-small slds-text-title_bold">Bid Date</p>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 30 Days" checked={next30DaysBidDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="next30DaysBidDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Last 'X' Days" checked={lastXDaysBidDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="lastXDaysBidDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={lastXDaysBidDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={lastXDaysBidDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="lastXDaysBidDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysBidDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="nextXDaysBidDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={nextXDaysBidDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysBidDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="nextXDaysBidDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Date Range" checked={dateRangeBidDateProjects}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="dateRangeBidDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={dateRangeBidDateProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeBidDateProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeBidDateStart"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeBidDateProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeBidDateEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Square Footage"
+                                        checked={squareFootageRangeProjects} onchange={toggleCheckbox} data-obj="Project"
+                                        data-scope="squareFootageRange" class="slds-p-top_x-small"></lightning-input>
+                                </div>
+                                <template if:true={squareFootageRangeProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="number" data-type="number" value={squareFootageRangeProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="squareFootageRangeStart"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="number" data-type="number" value={squareFootageRangeProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="squareFootageRangeEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <template if:true={isPEC}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <p class="slds-text-heading_medium slds-p-top_x-small slds-text-title_bold text-underline">PEC</p>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Plant Name" checked={plantNameProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="plantName"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={plantNameProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="text" variant="label-hidden" value={plantNameProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="plantNameValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Plant ID" checked={plantIdProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="plantId"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={plantIdProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="text" variant="label-hidden" value={plantIdProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="plantIdValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-combobox name="projectTiming" label="Project Timing" value={projectTiming}
+                                        options={projectTimingOptions} onchange={handlePicklistChange} data-obj="Project"
+                                        data-scope="timing" class="slds-p-top_xx-small">
+                                    </lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-combobox name="projectActivity" label="Project Activity" value={projectActivity}
+                                        options={projectActivityOptions} onchange={handlePicklistChange} data-obj="Project"
+                                        data-scope="activity" class="slds-p-top_xx-small">
+                                    </lightning-combobox>
+                                </div>
+                                <p class="slds-text-heading_x-small slds-p-top_x-small slds-text-title_bold">Project RQF Date</p>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 30 Days" checked={next30DaysRQFDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="next30DaysRQFDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Last 'X' Days" checked={lastXDaysRQFDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="lastXDaysRQFDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={lastXDaysRQFDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={lastXDaysRQFDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="lastXDaysRQFDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysRQFDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="nextXDaysRQFDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={nextXDaysRQFDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysRQFDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="nextXDaysRQFDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Date Range" checked={dateRangeRQFDateProjects}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="dateRangeRQFDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={dateRangeRQFDateProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeRQFDateProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeRQFDateStart"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeRQFDateProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeRQFDateEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+
+                                <p class="slds-text-heading_x-small slds-p-top_x-small slds-text-title_bold">Project Kickoff Date
+                                </p>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 30 Days" checked={next30DaysKickoffDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="next30DaysKickoffDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Last 'X' Days" checked={lastXDaysKickoffDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="lastXDaysKickoffDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={lastXDaysKickoffDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={lastXDaysKickoffDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="lastXDaysKickoffDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysKickoffDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="nextXDaysKickoffDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={nextXDaysKickoffDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysKickoffDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="nextXDaysKickoffDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Date Range" checked={dateRangeKickoffDateProjects}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="dateRangeKickoffDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={dateRangeKickoffDateProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeKickoffDateProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeKickoffDateStart"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeKickoffDateProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeKickoffDateEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+
+                                <p class="slds-text-heading_x-small slds-p-top_x-small slds-text-title_bold">Project AFE Date</p>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 30 Days" checked={next30DaysAFEDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="next30DaysAFEDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Last 'X' Days" checked={lastXDaysAFEDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="lastXDaysAFEDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={lastXDaysAFEDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={lastXDaysAFEDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="lastXDaysAFEDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysAFEDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="nextXDaysAFEDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={nextXDaysAFEDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden" value={nextXDaysAFEDateProjectValue}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="nextXDaysAFEDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Date Range" checked={dateRangeAFEDateProjects}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="dateRangeAFEDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={dateRangeAFEDateProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeAFEDateProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeAFEDateStart"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeAFEDateProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeAFEDateEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+
+                                <p class="slds-text-heading_x-small slds-p-top_x-small slds-text-title_bold">Project Completion Date</p>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 30 Days" checked={next30DaysCompletionDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="next30DaysCompletionDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Last 'X' Days" checked={lastXDaysCompletionDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="lastXDaysCompletionDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={lastXDaysCompletionDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden"
+                                            value={lastXDaysCompletionDateProjectValue} onchange={handleValueChange}
+                                            data-obj="Project" data-scope="lastXDaysCompletionDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Next 'X' Days" checked={nextXDaysCompletionDateProject}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="nextXDaysCompletionDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={nextXDaysCompletionDateProject}>
+                                    <div class="slds-col slds-size_1-of-1">
+                                        <lightning-input type="number" data-type="number" variant="label-hidden"
+                                            value={nextXDaysCompletionDateProjectValue} onchange={handleValueChange}
+                                            data-obj="Project" data-scope="nextXDaysCompletionDateValue"
+                                            class="slds-p-top_xx-small"></lightning-input>
+                                    </div>
+                                </template>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="checkbox" label="Date Range" checked={dateRangeCompletionDateProjects}
+                                        onchange={toggleCheckbox} data-obj="Project" data-scope="dateRangeCompletionDate"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                                <template if:true={dateRangeCompletionDateProjects}>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeCompletionDateProjectsStart}
+                                            onchange={handleValueChange} data-obj="Project"
+                                            data-scope="dateRangeCompletionDateStart" variant="label-hidden"></lightning-input>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-12" style="text-align: center;">
+                                        to
+                                    </div>
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <lightning-input type="date" value={dateRangeCompletionDateProjectsEnd}
+                                            onchange={handleValueChange} data-obj="Project" data-scope="dateRangeCompletionDateEnd"
+                                            variant="label-hidden"></lightning-input>
+                                    </div>
+                                </template>
+                            
+
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showProjects}
+                    onchange={toggleCheckbox} data-obj="Project" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Opportunities" label="Opportunities">
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={opportunitySearch} variant="label-hidden"
+                                    placeholder="Search Opportunities..." onchange={handleValueChange} data-obj="Opportunity"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-dual-listbox name="opportunityStage" label="Opportunity Stage" value={opportunityStage}
+                                    source-label="Available" selected-label="Selected" options={opportunityStageOptions}
+                                    onchange={handlePicklistChange} data-obj="Opportunity" data-scope="stage"
+                                    class="slds-p-top_xx-small stopoverflow">
+                                </lightning-dual-listbox>
+                            </div>
+                            <!-- <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Open Opportunities" checked={openOpportunity}
+                                    onchange={toggleCheckbox} data-obj="Opportunity" data-scope="open"
+                                    class="slds-p-top_xx-small"></lightning-input>
+                            </div> -->
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Close Date Next 30 Days"
+                                    checked={closeDateNext30DaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="closeDateNext30Days" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Close Date Last 'X' Days"
+                                    checked={closeDateLastXDaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="closeDateLastXDays" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={closeDateLastXDaysOpportunity}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden"
+                                        value={closeDateLastXDaysOpportunityValue} onchange={handleValueChange}
+                                        data-obj="Opportunity" data-scope="closeDateLastXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Close Date Next 'X' Days"
+                                    checked={closeDateNextXDaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="closeDateNextXDays" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={closeDateNextXDaysOpportunity}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden"
+                                        value={closeDateNextXDaysOpportunityValue} onchange={handleValueChange}
+                                        data-obj="Opportunity" data-scope="closeDateNextXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Est. Start Date Next 30 Days"
+                                    checked={estDateNext30DaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="estDateNext30Days" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Est. Start Date Last 'X' Days"
+                                    checked={estDateLastXDaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="estDateLastXDays" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={estDateLastXDaysOpportunity}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={estDateLastXDaysOpportunityValue}
+                                        onchange={handleValueChange} data-obj="Opportunity" data-scope="estDateLastXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="checkbox" label="Est. Start Date Next 'X' Days"
+                                    checked={estDateNextXDaysOpportunity} onchange={toggleCheckbox} data-obj="Opportunity"
+                                    data-scope="estDateNextXDays" class="slds-p-top_xx-small"></lightning-input>
+                            </div>
+                            <template if:true={estDateNextXDaysOpportunity}>
+                                <div class="slds-col slds-size_1-of-1">
+                                    <lightning-input type="number" data-type="number" variant="label-hidden" value={estDateNextXDaysOpportunityValue}
+                                        onchange={handleValueChange} data-obj="Opportunity" data-scope="estDateNextXDays"
+                                        class="slds-p-top_xx-small"></lightning-input>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showOpportunities}
+                    onchange={toggleCheckbox} data-obj="Opportunity" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+            <div class="slds-grid">
+                <div class="slds-col slds-size_2-of-3">
+                    <lightning-accordion-section name="Branches" label="Branches" onclick={increaseSizePanel} data-id="branchId" >
+                        <div class="slds-grid slds-wrap" onclick={stopProp}>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input type="search" value={branchSearch} variant="label-hidden"
+                                    placeholder="Search Branches..." onchange={handleValueChange} data-obj="Branch"
+                                    data-scope="search"></lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-combobox name="country" label="Country" value={country} options={countryOptions}
+                                    onchange={handlePicklistChange} data-obj="Branch" data-scope="country"
+                                    class="slds-p-top_xx-small">
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-dual-listbox name="lineOfBusiness" label="Line of Business" value={lineOfBusiness}
+                                    source-label="Available" selected-label="Selected" options={lineOfBusinessOptions}
+                                    onchange={handlePicklistChange} data-obj="Branch" data-scope="lob" disabled={isPicklistDisabled}
+                                    class="slds-p-top_xx-small stopoverflow">
+                                </lightning-dual-listbox>
+                            </div>
+                        </div>
+                    </lightning-accordion-section>
+                </div>
+                <div class="slds-col slds-size_1-of-3">
+                    <lightning-input type="checkbox" label="Show Me" class="slds-p-top_medium slds-text-body_small" checked={showBranches}
+                    onchange={toggleCheckbox} data-obj="Branch" data-scope="show"></lightning-input>
+                </div>
+            </div>
+
+        </lightning-accordion>
+
+        <br />
+        <lightning-button variant="brand" label="Apply Filters" onclick={applyFilters}>
+        </lightning-button>
+    </div>
+
+</template>

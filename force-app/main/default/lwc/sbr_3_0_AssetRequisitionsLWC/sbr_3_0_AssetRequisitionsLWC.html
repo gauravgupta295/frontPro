@@ -1,0 +1,31 @@
+<template>
+    <lightning-card>
+    <lightning-layout-item size="8" style="padding-right:10px">
+    <div class="slds-page-header" style="height:120px;padding:20px 20px;background-color:lightgrey">
+    <lightning-layout> 
+        <lightning-layout-item size="5">Requisition Search<b class="slds-page-header__title slds-truncate">All Items</b></lightning-layout-item><br>
+        <lightning-layout-item size="5" style="padding-right:5px;padding-top:10px;" >
+            <lightning-input variant="lebel-hidden" type="search" label="" placeholder="Search Requisition #, Item #" onchange={handleSearch}>
+                </lightning-input></lightning-layout-item>
+    </lightning-layout> 
+    <p style="padding-top:8px">{totalNoOfRecords}  Items . Filtered by Location{sortByLocation} . Filtered by Vendor{sortByVendor} . Filtered by Status{sortByStatus} </p>
+    </div>
+        <div style="height: 300px;">
+            <lightning-datatable
+            key-field="Id"
+            data-id="Id"
+            columns={columns}
+            data={data}  
+            hide-checkbox-column
+            default-sort-direction={defaultSortDirection}
+            sorted-direction={sortDirection}
+            sorted-by={sortBy}
+            onsort={doSorting}
+            onclick={handleClick}
+            onrowaction={handleRowAction}>
+            max-row-selection={enabledRowCount}>
+            </lightning-datatable>
+        </div>
+    </lightning-layout-item>
+    </lightning-card>
+</template>

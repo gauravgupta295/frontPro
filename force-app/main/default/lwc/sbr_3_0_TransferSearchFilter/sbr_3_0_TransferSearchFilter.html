@@ -1,0 +1,114 @@
+<template>
+	<div class="slds-form-element">
+		<div class={computedFilterCmpCSS}>
+			<div class="slds-combobox_container" style="width: 330px;">
+				<div class="slds-combobox" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+					<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right setdivWidth"
+						role="none">
+						<input type="text"
+              class="slds-input slds-combobox__input slds-combobox__input-value combobox-input-class"
+              id="select-sobject-id" autocomplete="off"
+              data-id="select-sobject-id" aria-autocomplete="list"
+              aria-controls="listbox-id-11" role="textbox"
+              placeholder={placeholder} title={filterLabel}
+              onclick={handleInputClick} value={filterLabel} readonly
+              disabled={disabled} />
+						<lightning-icon class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+							icon-name="utility:down" size="x-small"></lightning-icon>
+					</div>
+					<div id="listbox-id-11" class={computedDropDownClasses} style="overflow-y:auto;">
+
+						<lightning-layout multiple-rows="true">
+							<lightning-layout-item padding="around-small" size="12">
+
+								<!-- 1. Transfer Number  -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title" placeholder="Enter a Transfer Number"
+										type="text" label="Transfer Number" name="ContractId"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={transferNum} maxlength="255" onchange={handleFilterChange}
+										data-field-class="filterOption" data-id="Name" data-attribute="LIKE">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 2. Source Location  -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title" placeholder="Enter a Source Location"
+										type="text" label="Source Location" name="AccountId" pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={sLoc} maxlength="255" onchange={handleFilterChange}
+										data-field-class="filterOption" data-id="Number" data-attribute="LIKE">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 3. Destination Location-->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title" placeholder="Enter a Destination Location "
+										type="text" label="Destination Location" name="AccountNumber"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={dLoc} onchange={handleFilterChange} data-field-class="filterOption"
+										data-id="Accnumber" data-attribute="=">
+									</lightning-input>
+								</lightning-layout-item>
+
+
+								<!-- 5. Ordered by-->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title"
+										type="text" label="Ordered by" name="AccountNumber"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={ordBy} onchange={handleFilterChange} data-field-class="filterOption"
+										data-id="Accnumber" data-attribute="=">
+									</lightning-input>
+								</lightning-layout-item>
+								
+                				<!-- 4. Needed -->
+								<lightning-layout-item padding="around-small" size="10" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title" label="Needed" date-style="short" placeholder="Select a Date"
+										type="date" name="contractStartDate" value={ordDate}
+										onchange={handleFilterChange} data-field-class="filterOption1">
+									</lightning-input>
+								</lightning-layout-item>
+
+								
+
+								<!-- 6.  Status -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+                <lightning-combobox class="footer-title" label="Status" value={ordStatusValue}
+										options={orderStatuses} data-field-class="filterOption"
+										dropdown-alignment="top-right" name="ContractStatus" data-id="OrderStatus"
+										onchange={handleFilterChange} placeholder="Select a Status"
+										data-attribute="=">
+									</lightning-combobox>
+								</lightning-layout-item>
+
+								<!--7. Equipment# -->
+									<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.4rem;">
+									<lightning-input class="footer-title"
+										type="text" label="Equipment#" name="AccountNumber"
+										value={equipNo} onchange={handleFilterChange} data-field-class="filterOption"
+										data-id="Accnumber" data-attribute="=">
+									</lightning-input>
+								</lightning-layout-item></br>
+
+								<!-- Buttons "Apply" & "Reset All Filters"-->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 8px;">
+									<div class="slds-p-top_small slds-float_left">
+										<lightning-button label="Apply" variant="brand" onclick={handleApply}
+											class="slds-var-p-left_small brand-button"></lightning-button>
+										<lightning-button class="slds-p-left_medium" label="Reset All Filters"
+											variant="base" onclick={handleReset}></lightning-button>
+									</div>
+								</lightning-layout-item>
+
+							</lightning-layout-item>
+						</lightning-layout>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

@@ -1,0 +1,15 @@
+<template>
+    <template if:true={streetLatLongError}>
+        <lightning-card><h1 style="text-align: center; color: red">{streetLatLongError}</h1></lightning-card>
+    </template>
+    <template if:true={streetLatLongFetching}>
+        <lightning-card><h1 style="text-align: center; color: #0000ffa5">Fetching Street Address Latitude and Longitude...</h1></lightning-card>
+    </template>
+
+    <template if:true={overrideLatLongError}>
+        <lightning-card><h1 style="text-align: center; color: red">{overrideLatLongError}</h1></lightning-card>
+    </template>
+    <template if:true={overrideLatLongFetching}>
+        <lightning-card><h1 style="text-align: center; color: #0000ffa5">Fetching Override Address Latitude and Longitude...</h1></lightning-card>
+    </template>
+</template>

@@ -1,0 +1,5 @@
+<aura:component implements="lightning:actionOverride,force:lightningQuickActionWithoutHeader" access="global">
+<ui:message title="Error" severity="warning" closable="true">
+    Please navigate to an Order list view and click "Create Reservation Order"
+</ui:message>
+</aura:component>

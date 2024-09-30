@@ -1,0 +1,58 @@
+<template>
+  <div class={duplicateDivEditAction}>
+    <button class={closeButtonStyling} title="Close" onclick={handleCloseModal}>
+      <lightning-icon
+        icon-name="utility:close"
+        alternative-text="close"
+        size="small"
+        class="my-icon"
+      ></lightning-icon>
+      <span class="slds-assistive-text">Close</span>
+    </button>
+    <div class="slds-card">
+      <div class="slds-card__header">
+        <header class="slds-align_absolute-center">
+          <h4 class="slds-card__header-title headerFont">{header}</h4>
+        </header>
+      </div>
+      <hr class="hrTag" />
+      <div class="slds-card__body slds-card__body_inner bodyMargin">
+        <div lwc:if={isLoading} class="spinner">
+          <lightning-spinner
+            class="spins"
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+        <lightning-layout
+          horizontal-align="space"
+          class="slds-var-p-around_large"
+          multiple-rows
+        >
+          <lightning-layout-item size="12">
+            <h2 class="sub-heading"><b>{totalDuplicateSubHeading}</b></h2>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" class="slds-var-p-vertical_small">
+            {duplicateRecordMessage}
+          </lightning-layout-item>
+          <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+            <h2 class="attribute-label">{ProceedLabelAction}</h2>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <footer class="slds-card__footer slds-text-align_right">
+        <lightning-button
+          label="No"
+          onclick={handleCloseModal}
+          class="neutral-button footerMargin"
+        ></lightning-button>
+        <lightning-button
+          label="Yes"
+          onclick={handleYesClick}
+          variant="brand"
+          class="brand-button"
+        ></lightning-button>
+      </footer>
+    </div>
+  </div>
+</template>

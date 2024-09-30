@@ -1,0 +1,40 @@
+.headrer-bgc {
+    background-color: #F2F2F2 !important;
+    display: block;
+    border:0.5px solid#c0bfbf;
+}
+
+.align-right {
+    text-align: right;
+
+}
+
+.align-rightROA {
+    text-align: right;
+
+}
+
+.custom-datatable th:nth-child(3) {
+    text-align: right !important;
+}
+
+.text-container {
+    overflow: visible;
+    text-overflow: initial;
+    white-space: nowrap; /* Prevents text from wrapping to a new line */
+  }
+  .slds-table thead th[data-label="Amount"] .slds-cell-fixed {
+    justify-content: flex-end;
+}
+
+.totals{
+    width: 35% !important;
+}
+
+.creditTotals{
+    width: 35% !important;
+}
+
+.invoiceTotal{
+    width: 35% !important;
+}

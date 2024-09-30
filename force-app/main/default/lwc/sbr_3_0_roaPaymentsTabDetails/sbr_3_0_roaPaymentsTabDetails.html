@@ -1,0 +1,35 @@
+<template>
+    <div class="slds-box slds-box_xx-small payment-banner">
+        <div class="slds-grid slds-wrap slds-p-vertical_xx-small">
+            <div class="slds-col slds-size_7-of-12 card-bgc">
+                <lightning-card variant="narrow" icon-name="standard:partner_fund_claim">
+                    <h2 slot="title">ROA Payments</h2>
+                    <!-- <h2 slot="title">ROA Payments</h2> -->
+                </lightning-card>
+            </div>
+            <div class="slds-col slds-size_1-of-15 custom-small-input payment-banner">
+                <lightning-input placeholder="From" type="date" variant="label-hidden" value={fromDate} max={maxFromDate}
+                    onchange={handleFromDateChange}>
+                </lightning-input>
+            </div>
+
+            <div class="slds-col slds-size_1-of-15 custom-medium-input payment-banner">
+                <lightning-input placeholder="Until" type="date" variant="label-hidden" value={untilDate} min={minUntilDate}
+                    onchange={handleUntilDateChange}>
+                </lightning-input>
+            </div>
+            </div>
+
+            <template if:false={errorMessage}>
+                <lightning-datatable key-field="Id" data={roaPaymentData} show-row-number-column="true" columns={columns}
+                    hide-checkbox-column="true" sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}>
+                </lightning-datatable>
+                </template>
+            </div>
+
+            <template if:true={errorMessage}>
+                <b>
+                    <div class="slds-text-align_center">{label.NoRecordsAvailable}</div>
+                </b>
+            </template>
+</template>

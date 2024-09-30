@@ -1,0 +1,136 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-07-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <template if:false={isSpinner}>
+        <lightning-modal-header label={headerText}></lightning-modal-header>
+        <lightning-modal-body>
+            <div>
+                <c-sbr_3_0_sfs-generic-lookup 
+                    icon-name="standard:service_resource"
+                    s-object-api-name="ServiceResource"
+                    label="Mechanic Name:"
+                    onlookupupdate={handleMechanicNameChange}
+                    default-record-id={defaultServiceResourceId}
+                    placeholder="Search mechanic name"
+                    filter-query=" And ResourceType='T' And IsActive=trueAnd SF_PS_Mechanic_Id__c !=null and SF_PS_Company_Code__c !=null"> 
+                </c-sbr_3_0_sfs-generic-lookup >
+                <template if:true={errorMessageMechanicName}><span style="color:red">Complete this field.<br/></span></template>
+                <br/>
+                Mechanic ID:
+                <p><lightning-formatted-text value={mechanicId}></lightning-formatted-text></p>
+                <br/>
+                    <span style="color:red">* </span>Line Type:
+                <br/>
+                <lightning-input type="checkbox" label={lineTypeLabel}  value={lineTypeValue} onchange={handleLaborSelect} > </lightning-input>
+                <lightning-input type="checkbox" label="Mileage" value="MC" onchange={handleTravelSelect} > </lightning-input>
+                <template if:true={errorMessageLineType}><span style="color:red">Complete this field.<br/></span></template>
+                <template if:true={isLabor}>
+                    <br/>
+                        <p  class="slds-grid slds-grid_align-center" style="background:#FFEF00;margin:2px"><strong>Enter details for "Labor"</strong></p>
+                    <br/>
+                    <lightning-combobox
+                        name="LaborCodeLabor"
+                        label=" Labor Code"
+                        value={valueLaborCode}
+                        placeholder="Select Labor Code"
+                        options={laborCodeValues.data.values}
+                        onchange={handleChangeLaborCode}
+                        required="true" >
+                    </lightning-combobox>     
+                    <br/>
+                    Add hours as multiples of .25
+                    <br/><br/>
+                    <span style="color:red">* </span>Hours:
+                    <br/>
+                    <lightning-input 
+                        type="number" 
+                        min="0" 
+                        max="99.99" 
+                        message-when-range-underflow="Please enter hours between 0 and 99.99" 
+                        message-when-range-overflow="Please enter hours between 0 and 99.99"  
+                        step="0.01" message-when-bad-input="Numbers are only allowed." 
+                        lwc:ref="laborHourInputField" 
+                        variant="label-hidden" 
+                        onchange={handleLaborHoursChange} 
+                        max-length="5" required> 
+                    </lightning-input>
+                    <p class="moveRight">
+                        <span lwc:ref="charCountLabor">0</span> of 5 characters
+                    </p>
+                    <br/>
+                    Rate:
+                    <p>$<lightning-formatted-number value={mechanicRate}></lightning-formatted-number></p>
+                    <br/>
+                </template>
+                <template if:true={isTravel}>
+                    <br/>
+                    <p class="slds-grid slds-grid_align-center" style="background:#FFEF00;margin:2px"><strong>Enter details for "Mileage"</strong></p>
+                    <br/>
+                    <!--  <lightning-combobox disabled="true"
+                        name="LaborCodeLabor"
+                        label="Labor Code"
+                        value={valueTravelCode}
+                        placeholder="Select Labor Code"
+                        options={laborCodeValues.data.values}
+                        onchange={handleChangeTravelCode}
+                        required="true" >
+                    </lightning-combobox>        
+                    <br/>-->
+                    <span style="color:red">* </span>Miles: 
+                    <br/>
+                    <lightning-input type="number" message-when-bad-input="Numbers are only allowed."  message-when-step-mismatch="Decimals are not allowed." lwc:ref="travelHourInputField" variant="label-hidden" onchange={handleTravelHoursChange} max-length="5" required> </lightning-input>
+                    <p class="moveRight">
+                        <span lwc:ref="charCountTravel">0</span> of 5 characters
+                    </p>
+                    <br/>
+                    <template if:false={isServiceLeader}>
+                        Rate ($ per mile):
+                        <p>$<lightning-formatted-number value={mechanicRateTravel}></lightning-formatted-number></p>
+                    </template>
+                    <template if:true={isServiceLeader}>
+                        <span style="color:red">* </span>Rate($ per mile):
+                        <lightning-input 
+                            type="number"  
+                            value={mechanicRateTravel} 
+                            step="0.01" 
+                            message-when-bad-input="Numbers are only allowed." 
+                            lwc:ref="laborHourTravelInputField" 
+                            variant="label-hidden" 
+                            onchange={handleTravelRateChange} 
+                            max-length="5" 
+                            required> 
+                        </lightning-input>
+                        <p class="moveRight">
+                            <span lwc:ref="charCountTravelLabor">{charCountTravelRate}</span> of 5 characters
+                        </p>
+                    </template>
+                    <br/>
+                </template>
+            </div>
+        </lightning-modal-body>
+   
+        <lightning-modal-footer>
+            <template if:true={isAccessError}>
+                <div class="slds-grid slds-grid_align-center">
+                    <p style="color:red;margin-bottom:5px">Insufficient access to Work Order record.</p>
+                </div>
+            </template>
+            <template if:true={isMultipleTravelError}>
+                <div class="slds-grid slds-grid_align-center slds-text-align_center">
+                    <p style="color:red;margin-bottom:5px">Multiple Mileage/Travel items Cannot be added. Update the existing line instead of creating a new line.</p>
+                </div>
+            </template>
+            <div class="slds-grid slds-grid_align-center">
+                <button class="slds-button slds-button_success" title="Yes" onclick={handleSave}>Save</button>&nbsp;&nbsp;
+            </div>
+        </lightning-modal-footer>
+    </template>
+</template>

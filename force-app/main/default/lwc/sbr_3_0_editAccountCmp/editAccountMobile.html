@@ -1,0 +1,500 @@
+<template>
+  <c-sbr_3_0_mobile-screen title={headerLabel} props={mobileProps}>
+    <!-- <template if:true={showCustomToastMessage}>
+         <div class="toast-message">
+            <c-sbr_3_0_custom-toast-message
+              errtitle={errorTitle}
+              errmsg={errorMsg}
+              successmesg={successmesg}
+              successtitl={successtitl}
+              showsuccess={showsuccess}
+              onclosetoast={closeCustomToastMessage}
+            ></c-sbr_3_0_custom-toast-message>
+          </div> 
+        </template> -->
+    <div lwc:if={isLoading} class="slds-is-relative">
+      <lightning-spinner
+        variant="brand"
+        size="medium"
+        alternative-text="loading..."
+      ></lightning-spinner>
+    </div>
+    <div if:true={showProspectForm}>
+      <lightning-layout multiple-rows="">
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label={label.ACCOUNTNAME}
+            required
+            name="Name"
+            value={accountRecord.Name}
+            data-field
+            onblur={handleFieldFocusOut}
+            data-id="prospectAccount"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+      <h5 class="slds-var-p-top_x-small" style="font-size: 14px">
+        <abbr class="slds-required" title="required">*</abbr>
+        <b>{label.CONTACTINFO}</b>
+      </h5>
+      <lightning-layout multiple-rows="">
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label={label.PHONE}
+            name="Phone"
+            type="Tel"
+            class="prospectPhone"
+            value={accountRecord.Phone}
+            data-field="Phone"
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-input>
+          <lightning-input
+            label={label.ACC_EMAIL}
+            name="E_mail_Address__c"
+            class="prospectEmail"
+            value={accountRecord.E_mail_Address__c}
+            data-field
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+      <lightning-layout>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <div class="input-address addressFieldCss">
+            <!-- START FRONT-12393 -->
+            <div class="slds-grid slds-grid_vertical billingaddress-grid">
+              <div class="slds-col">
+                <legend
+                  class="slds-form-element__label slds-form-element__legend"
+                >
+                  {label.STREET_ADDRESS}
+                </legend>
+                <lightning-helptext
+                  class="helpText-address"
+                  content={label.SELECT_STREET_ADDRESS}
+                >
+                </lightning-helptext>
+              </div>
+              <lightning-input-address
+                variant="label-hidden"
+                address-lookup-placeholder={label.SEARCH_ADDRESS}
+                street-label={label.SHIP_STREET}
+                city-label={label.SHIP_CITY}
+                country-label={label.SHIP_COUNTRY}
+                province-label={label.SHIP_STATE}
+                postal-code-label={label.SHIP_ZIPCODE}
+                street={accountRecord.ShippingStreet}
+                city={accountRecord.ShippingCity}
+                country-options={countryOptions}
+                country={accountRecord.ShippingCountryCode}
+                province={accountRecord.ShippingStateCode}
+                province-options={stateOptions}
+                postal-code={accountRecord.ShippingPostalCode}
+                required
+                show-address-lookup
+                data-field
+                data-name="ShippingAddress"
+                onchange={handleFieldChange}
+                onblur={handleFieldFocusOut}
+              >
+              </lightning-input-address>
+            </div>
+          </div>
+          <!-- END FRONT-12393 -->
+          <lightning-textarea
+            name="Comments__c"
+            label={label.COMMENTS}
+            onblur={handleFieldFocusOut}
+            data-field
+            value={accountRecord.Comments__c}
+          ></lightning-textarea>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+    <div if:true={showNonCreditForm}>
+      <lightning-accordion
+        allow-multiple-sections-open
+        active-section-name={activeSections}
+      >
+        <lightning-accordion-section
+          name="General Info"
+          label="General Info"
+          class="accordion-section-border-bottom-class"
+        >
+          <lightning-layout multiple-rows="">
+            <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+              <lightning-input
+                type="text"
+                label={label.CONFIRSTNAME}
+                name="FirstName"
+                onchange={handleFieldChange}
+                max-length="255"
+                required
+                value={contactRecord.FirstName}
+                data-field
+                data-context="Contact"
+                onblur={handleFieldFocusOut}
+                data-id="contactFirstName"
+                class="required-label-padding-class"
+              ></lightning-input>
+              <lightning-input
+                label={label.CONLASTNAME}
+                name="LastName"
+                onchange={handleFieldChange}
+                max-length="255"
+                required
+                value={contactRecord.LastName}
+                data-field
+                data-context="Contact"
+                onblur={handleFieldFocusOut}
+                class="required-label-padding-class"
+              ></lightning-input>
+              <lightning-input
+                type="text"
+                label={label.ACCOUNTNAME}
+                name="AccountName"
+                placeholder="Last Name, First Name"
+                onchange={handleFieldChange}
+                max-length="255"
+                required
+                value={accountRecord.Name}
+                disabled
+                class="required-label-padding-class"
+              ></lightning-input>
+              <lightning-input
+                label={label.PHONE}
+                name="Phone"
+                type="Tel"
+                value={accountRecord.Phone}
+                data-field="Phone"
+                class="nonCreditPhone required-label-padding-class"
+                required
+                onblur={handleFieldFocusOut}
+              >
+              </lightning-input>
+              <lightning-input
+                label={label.ACC_EMAIL}
+                name="E_mail_Address__c"
+                value={accountRecord.E_mail_Address__c}
+                class="nonCreditEmail required-label-padding-class"
+                data-field
+                required
+                onblur={handleFieldFocusOut}
+              >
+              </lightning-input>
+
+              <lightning-combobox
+                label={label.DLSTATE}
+                name="Driver_s_License_State__c"
+                options={dlOptions}
+                value={accountRecord.Driver_s_License_State__c}
+                data-field
+                required
+                onblur={handleFieldFocusOut}
+                class="required-label-padding-class"
+              >
+              </lightning-combobox>
+              <lightning-input
+                label={label.DLNUMBER}
+                name="Drivers_License__c"
+                value={accountRecord.Drivers_License__c}
+                data-field
+                required
+                onblur={handleFieldFocusOut}
+                class="required-label-padding-class"
+              >
+              </lightning-input>
+              <lightning-input
+                type="date"
+                name="BirthDate__c"
+                label={label.DOB}
+                required
+                title="DOB"
+                onchange={handleFieldChange}
+                onblur={handleFieldFocusOut}
+                max={today}
+                value={accountRecord.BirthDate__c}
+                date-style="short"
+                data-bad-input-message={label.DOBERRMSG}
+                message-when-range-underflow="Date has to be from 1950s to current year."
+                message-when-range-overflow={dateOfBirthOverFlowMessage}
+                class="required-label-padding-class"
+              ></lightning-input>
+              <!-- Added for FRONT-20761 -->
+              <lightning-textarea
+                name="Comments__c"
+                label={label.COMMENTS}
+                data-field
+                onblur={handleFieldFocusOut}
+                value={accountRecord.Comments__c}
+              ></lightning-textarea>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-accordion-section>
+        <lightning-accordion-section
+          name="Billing Info"
+          label="Billing Info"
+          class="accordion-section-border-bottom-class"
+        >
+          <lightning-layout multiple-rows>
+            <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+              <div class="input-address addressFieldCss">
+                <!-- START FRONT-12393 -->
+                <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                  <div class="slds-col">
+                    <label class="slds-form-element__label">
+                      <abbr
+                        class="slds-required slds-var-p-right_xx-small"
+                        title="required"
+                        >*
+                      </abbr>
+                      {label.BILL_ADDRESS}
+                    </label>
+                    <lightning-helptext
+                      class=""
+                      content={label.SELECT_BILL_ADDRS}
+                    >
+                    </lightning-helptext>
+                  </div>
+                  <!-- FRONT-10323 : Fix to address search text box which gets hidden due to search results -->
+                  <lightning-input-address
+                    variant="label-hidden"
+                    address-lookup-placeholder={label.SEARCH_ADDRESS}
+                    street-label={label.BILL_STREET}
+                    city-label={label.BILL_CITY}
+                    country-label={label.BILL_COUNTRY}
+                    province-label={label.BILL_STATE}
+                    postal-code-label={label.BILL_POSTALCODE}
+                    street={accountRecord.BillingStreet}
+                    city={accountRecord.BillingCity}
+                    country-options={countryOptions}
+                    province-options={stateOptions}
+                    postal-code={accountRecord.BillingPostalCode}
+                    country={accountRecord.BillingCountryCode}
+                    province={accountRecord.BillingStateCode}
+                    required
+                    show-address-lookup
+                    data-field
+                    data-name="BillingAddress"
+                    onchange={handleFieldChange}
+                    onblur={handleFieldFocusOut}
+                    class="required-label-padding-class input-address-search-class"
+                  >
+                  </lightning-input-address>
+                </div>
+                <!-- END FRONT-12393 -->
+              </div>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-accordion-section>
+      </lightning-accordion>
+    </div>
+    <!--Start for Front-20282-->
+    <div if:true={showGuestForm}>
+      <lightning-layout multiple-rows="">
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            type="text"
+            label={label.CONFIRSTNAME}
+            name="FirstName"
+            onchange={handleFieldChange}
+            max-length="255"
+            required
+            value={contactRecord.FirstName}
+            data-field
+            data-context="Contact"
+            onblur={handleFieldFocusOut}
+            data-id="contactFirstName"
+          ></lightning-input>
+          <lightning-input
+            label={label.CONLASTNAME}
+            name="LastName"
+            onchange={handleFieldChange}
+            max-length="255"
+            required
+            value={contactRecord.LastName}
+            data-field
+            data-context="Contact"
+            onblur={handleFieldFocusOut}
+          ></lightning-input>
+          <lightning-input
+            type="text"
+            label={label.ACCOUNTNAME}
+            name="AccountName"
+            placeholder="Last Name, First Name"
+            onchange={handleFieldChange}
+            max-length="255"
+            required
+            value={accountRecord.Name}
+            disabled
+          ></lightning-input>
+          <lightning-input
+            label={label.PHONE}
+            name="Phone"
+            type="Tel"
+            value={accountRecord.Phone}
+            data-field="Phone"
+            class="nonCreditPhone"
+            required
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-input>
+          <lightning-input
+            label={label.ACC_EMAIL}
+            name="E_mail_Address__c"
+            value={accountRecord.E_mail_Address__c}
+            class="nonCreditEmail"
+            data-field
+            required
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-input>
+
+          <lightning-combobox
+            label={label.DLSTATE}
+            name="Driver_s_License_State__c"
+            options={dlOptions}
+            value={accountRecord.Driver_s_License_State__c}
+            data-field
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-combobox>
+          <lightning-input
+            label={label.DLNUMBER}
+            name="Drivers_License__c"
+            value={accountRecord.Drivers_License__c}
+            data-field
+            onblur={handleFieldFocusOut}
+          >
+          </lightning-input>
+          <lightning-input
+            type="date"
+            name="BirthDate__c"
+            label={label.DOB}
+            required
+            title="DOB"
+            onchange={handleFieldChange}
+            onblur={handleFieldFocusOut}
+            max={today}
+            value={accountRecord.BirthDate__c}
+            date-style="short"
+            data-bad-input-message={label.DOBERRMSG}
+            message-when-range-underflow="Date has to be from 1950s to current year."
+            message-when-range-overflow={dateOfBirthOverFlowMessage}
+          ></lightning-input>
+        </lightning-layout-item>
+      </lightning-layout>
+
+      <!--  <div class="general-header">
+              <h3 class="slds-section__title slds-var-p-left_small">
+                {label.BILLINGINFO}
+              </h3>
+            </div>-->
+      <lightning-layout multiple-rows>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <div class="input-address addressFieldCss">
+            <!-- START FRONT-12393 -->
+            <div class="slds-grid slds-grid_vertical billingaddress-grid">
+              <div class="slds-col">
+                <legend
+                  class="slds-form-element__label slds-form-element__legend asterickClass"
+                >
+                  {label.BILL_ADDRESS}
+                </legend>
+                <lightning-helptext
+                  class="helpText-address"
+                  content={label.SELECT_BILL_ADDRS}
+                >
+                </lightning-helptext>
+              </div>
+              <lightning-input-address
+                variant="label-hidden"
+                address-lookup-placeholder={label.SEARCH_ADDRESS}
+                street-label={label.BILL_STREET}
+                city-label={label.BILL_CITY}
+                country-label={label.BILL_COUNTRY}
+                province-label={label.BILL_STATE}
+                postal-code-label={label.BILL_POSTALCODE}
+                street={accountRecord.BillingStreet}
+                city={accountRecord.BillingCity}
+                country-options={countryOptions}
+                province-options={stateOptions}
+                postal-code={accountRecord.BillingPostalCode}
+                country={accountRecord.BillingCountryCode}
+                province={accountRecord.BillingStateCode}
+                required
+                show-address-lookup
+                data-field
+                data-name="BillingAddress"
+                onchange={handleFieldChange}
+                onblur={handleFieldFocusOut}
+              >
+              </lightning-input-address>
+            </div>
+            <!-- END FRONT-12393 -->
+          </div>
+          <lightning-textarea
+            name="Comments__c"
+            label={label.COMMENTS}
+            data-field
+            onblur={handleFieldFocusOut}
+            value={accountRecord.Comments__c}
+          ></lightning-textarea>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+    <!--End for Front-20282-->
+
+    <!-- <div class="slds-backdrop slds-backdrop_open" role="presentation"></div> -->
+    <!-- FRONT-3879, FRONT-4001 -->
+    <template lwc:if={duplicateResolverPayload}>
+      <c-sbr_3_0_duplicate-record-resolver
+        props={duplicateResolverPayload}
+        onresolveselection={handleDuplicateResolveClick}
+        onresolvecancel={handleDuplicateCancelClick}
+        onhardstopcancel={handleDuplicateHardStopCancel}
+        screenname={screenName}
+      ></c-sbr_3_0_duplicate-record-resolver>
+    </template>
+
+    <div slot="footer" class="slds-grid slds-grid_align-spread">
+      <lightning-button
+        label={label.CANCEL}
+        class="neutral-button"
+        onclick={handleCancelClick}
+      ></lightning-button>
+      <!-- START : FRONT-20761 -->
+      <template lwc:if={drfAccountWrapper}>
+        <lightning-button
+          label={label.SAVE}
+          class="brand-button slds-var-p-left_small"
+          onclick={handleSaveAndSelectClick}
+          variant="brand"
+        ></lightning-button>
+      </template>
+      <!-- END : FRONT-20761 -->
+      <template lwc:else>
+        <template lwc:if={fromRecordPage}>
+          <lightning-button
+            label={label.SAVE}
+            class={saveButtonStyle}
+            onclick={handleSaveClick}
+            variant={saveVariant}
+          ></lightning-button>
+        </template>
+        <!-- Added if check as part of FRONT-3225, FRONT-3227 -->
+        <template lwc:else>
+          <lightning-button
+            label={label.SAVE_AND_SELECT}
+            onclick={handleSaveAndSelectClick}
+            variant="brand"
+            class="brand-button slds-var-p-left_small"
+          ></lightning-button>
+        </template>
+      </template>
+    </div>
+  </c-sbr_3_0_mobile-screen>
+</template>

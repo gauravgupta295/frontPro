@@ -1,0 +1,44 @@
+<aura:component implements="lightning:homeTemplate" description="Custom Three-Column Layout">
+
+	<!-- Three Columns -->
+        <aura:attribute name="left_col" type= "Aura.Component[]" />
+        <aura:attribute name="mid_col" type= "Aura.Component[]" />
+        <aura:attribute name="right_col" type= "Aura.Component[]" />
+
+	<!-- Footer -->
+		<aura:attribute name="footer" type= "Aura.Component[]" />
+
+	<!-- layout -->
+
+	<div>
+
+		<!-- Row 1 --> 
+        <lightning:layout>
+
+            <lightning:layoutItem size="{! $Browser.isDesktop ? '4':'12'}" padding="horizontal-small">
+            {!v.left_col}
+            </lightning:layoutItem>
+                
+            <lightning:layoutItem size="{! $Browser.isDesktop ? '4':'12'}" padding="horizontal-small">
+            {!v.mid_col}
+            </lightning:layoutItem> 
+                
+            <lightning:layoutItem size="{! $Browser.isDesktop ? '4':'12'}" padding="horizontal-small">
+            {!v.right_col}
+            </lightning:layoutItem>
+
+		</lightning:layout>
+
+      <!-- Row 2 -->  
+        <lightning:layout>
+
+		<lightning:layoutItem size="12" class="slds-m-vertical_small">
+		{!v.footer}
+		</lightning:layoutItem>
+
+		</lightning:layout>
+        
+
+	</div>
+
+</aura:component>

@@ -1,0 +1,93 @@
+<template>
+    <template lwc:if={showSpinner}>
+        <c-loading-spinner loading-message="Loading..."></c-loading-spinner>
+    </template>
+    <template if:true={isBase}>
+        <div class="addon-tabset">
+            <div class="addon-tiles">
+                <ul class="slds-has-dividers_bottom-space">
+                    <template if:true={altItemsEmpty}>
+                        <p class="description-no-inventory slds-p-around_medium">There are no alternate inventory items at this time.</p>
+                    </template>
+                    <template if:false={altItemsEmpty}>
+                        <template if:true={isShowAltInventoryItems}>
+                            <template iterator:inventoryitem={inventoryItems}>
+                                <li class="slds-item" key={inventoryitem.value.catClass}>
+                                    <article class="slds-tile slds-tile_board">
+                                        <c-sbr_3_0_inventory-item-cmp item-type={itemType} item-data={inventoryitem} onitemselected={handleSelectedItem}
+                                        branch-id={branchId} branch-phone={branchPhone} item-qty={itemQty}></c-sbr_3_0_inventory-item-cmp>
+                                    </article>
+                                </li>
+                            </template>
+                        </template>
+                        <template if:false={isShowAltInventoryItems}>
+                            <template if:true={isShowDefaultValues}>
+                                <template iterator:inventoryitem={inventoryItems}>
+                                    <li class="slds-item" key={inventoryitem.value.catClass}>
+                                        <article class="slds-tile slds-tile_board">
+                                            <c-sbr_3_0_inventory-item-cmp item-type={itemType} item-data={inventoryitem} onitemselected={handleSelectedItem} 
+                                            branch-id={branchId} branch-phone={branchPhone} location-info={locationInfo} chronos-enabled={chronosEnabled}
+                                            item-qty={itemQty}></c-sbr_3_0_inventory-item-cmp>
+                                        </article>
+                                    </li>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </template>
+    
+    <template if:true={isCompact}>
+        <div class="addon-tiles">
+            <ul class="slds-has-dividers_bottom-space">
+                <template iterator:inventoryitem={inventoryItems}>
+                    <li class="slds-item" key={inventoryitem.value.catClass}>
+                        <article class="slds-tile slds-tile_board">
+                            <c-sbr_3_0_inventory-item-cmp item-type={itemType} item-data={inventoryitem}></c-sbr_3_0_inventory-item-cmp>
+                        </article>
+                    </li>
+                </template>
+            </ul>
+        </div>        
+    </template>
+
+    <template if:true={isChronos}>
+        <div class="addon-tabset">
+            <div class="addon-tiles">
+                <ul class="slds-has-dividers_bottom-space">
+                    <template if:true={altItemsEmpty}>
+                        <p class="description-no-inventory slds-p-around_medium">There are no alternate inventory items at this time.</p>
+                    </template>
+                    <template if:false={altItemsEmpty}>
+                        <template if:true={isShowAltInventoryItems}>
+                            <template iterator:inventoryitem={inventoryItems}>
+                                <li class="slds-item" key={inventoryitem.value.catClass}>
+                                    <article class="slds-tile slds-tile_board">
+                                        <c-sbr_3_0_inventory-item-cmp item-type={itemType} item-data={inventoryitem} onitemselected={handleSelectedItem} 
+                                        branch-id={branchId} branch-phone={branchPhone} location-info={locationInfo} chronos-enabled={chronosEnabled}
+                                        item-qty={itemQty}></c-sbr_3_0_inventory-item-cmp>
+                                    </article>
+                                </li>
+                            </template>
+                        </template>
+                        <template if:false={isShowAltInventoryItems}>
+                            <template if:true={isShowDefaultValues}>
+                                <template iterator:inventoryitem={inventoryItems}>
+                                    <li class="slds-item" key={inventoryitem.value.catClass}>
+                                        <article class="slds-tile slds-tile_board">
+                                            <c-sbr_3_0_inventory-item-cmp item-type={itemType} item-data={inventoryitem} onitemselected={handleSelectedItem} 
+                                            branch-id={branchId} branch-phone={branchPhone} location-info={locationInfo} chronos-enabled={chronosEnabled}
+                                            item-qty={itemQty}></c-sbr_3_0_inventory-item-cmp>
+                                        </article>
+                                    </li>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                </ul>
+            </div>
+        </div>
+    </template>
+</template>

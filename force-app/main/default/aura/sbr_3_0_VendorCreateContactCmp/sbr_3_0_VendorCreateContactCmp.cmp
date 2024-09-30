@@ -1,0 +1,49 @@
+<aura:component
+  implements="lightning:actionOverride,force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName,lightning:isUrlAddressable"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:attribute name="showModal" type="Boolean" default="false" />
+  <aura:attribute name="accId" type="String"/> 
+  <lightning:workspaceAPI aura:id="workspace" />
+  <lightning:navigation aura:id="navService" />
+  <aura:if isTrue="{!v.showModal}">
+    <section
+      role="dialog"
+      tabindex="-2"
+      aria-labelledby="create-new-record"
+      aria-modal="true"
+      class="slds-modal slds-fade-in-open slds-modal_large slds-is-relative slds-is-fixed"
+    >
+      <div class="slds-modal__container">
+        <lightning:buttonIcon
+          iconName="utility:close"
+          size="large"
+          variant="bare-inverse"
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          onclick="{!c.handleClose}"
+          alternativeText="Close this window"
+          title="Close this window"
+        />
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+            Contact is already exist ...!
+          </h1>
+        </div>
+        <div
+          class="slds-modal__content slds-p-around_medium cusomwidth"
+          id="modal-content-id-1"
+        >
+          Table of contact
+        </div>
+      </div>
+    </section>
+  </aura:if>  
+        <c:sbr_3_0_createContactRecordCmp
+          aura:id="createContactRecordCmp"
+          relatedRecordId="{!v.recordId}"
+          objectApiName="{!v.sObjectName}"
+          oncloseclicked="{!c.handleClose}"
+          oncreatesuccess="{!c.handleSuccess}"
+          onscroll="{!c.handleScroll}"
+        />
+</aura:component>

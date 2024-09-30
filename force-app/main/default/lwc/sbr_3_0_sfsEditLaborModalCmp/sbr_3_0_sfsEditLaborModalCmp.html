@@ -1,0 +1,75 @@
+<template>
+    
+        <lightning-modal-header label={headerText}></lightning-modal-header>
+        <lightning-modal-body>
+            <div>   
+                    <c-sbr_3_0_sfs-generic-lookup 
+                        icon-name="standard:service_resource"
+                        s-object-api-name="ServiceResource"
+                        label="&nbsp;Mechanic Name:"
+                        onlookupupdate={handleMechanicNameChange}
+                        default-record-id={serviceResourceId}
+                        placeholder="Search mechanic name"
+                        filter-query=" And ResourceType='T' And IsActive=true"> 
+                    </c-sbr_3_0_sfs-generic-lookup >
+                    <template if:true={errorMessageMechanicName}><span style="color:red">Complete this field.<br/></span></template>
+                    <br/>
+                    Mechanic ID:
+                    <p><lightning-formatted-text value={mechanicId}></lightning-formatted-text></p>
+                    <br/>
+                    <template if:false={isServiceLeader}>
+                        {labelRate}
+                        <p>$<lightning-formatted-number value={mechanicRate}></lightning-formatted-number></p>
+                        <br/>
+                    </template>
+                    <template if:true={isServiceLeader}>
+                        <span style="color:red">* </span>{labelRate}
+                        <lightning-input type="number"  value={mechanicRate} step="0.01" message-when-bad-input="Numbers are only allowed." lwc:ref="laborHourTravelInputField" variant="label-hidden" onchange={handleTravelRateChange} max-length="5" required> </lightning-input>
+                        <p class="moveRight">
+                            <span lwc:ref="charCountTravelLabor">{charCountTravelRate}</span> of 5 characters
+                        </p>
+                        <br/>
+                    </template>
+                    <span style="color:red">* </span>Line Type:
+                    <select class="slds-select"  onchange={handleChangeLineType} data-field="LineType"  required>
+                        <option value={lineTypeValue} selected="selected">{lineTypeLabel}</option>
+                        <template for:each={lineTypeArray} for:item="op">
+                            <option key={op.value} value={op.value}>{op.label}</option>
+                        </template>
+                    </select>
+                    <br/><br/>
+                    <span style="color:red">* </span>Labor Code:
+                    <select class="slds-select"  data-field="LaborCode" required>
+                        <option  value={laborCodeValue} selected="selected">{laborCodeLabel}</option>
+                        <template for:each={laborCodeArray} for:item="op">
+                            <option key={op.value} value={op.value}>{op.label}</option>
+                        </template>
+                    </select>
+                    <template if:true={hoursHelpText}>
+                    <br/><br/>
+                     Add hours as multiples of .25
+                    </template>
+                    <br/><br/>
+                    <span style="color:red">* </span>{labelHoursOrMiles}
+                    <br/>
+                    <lightning-input type="number" lwc:ref="inputField" variant="label-hidden" value={duration} onchange={handleLaborHoursChange} max-length="5" required message-when-bad-input="Numbers are only allowed."  message-when-step-mismatch="Decimals are not allowed."> </lightning-input>
+                    <p class="moveRight">
+                        <span lwc:ref="charCount">{charCountHours}</span> of 5 characters
+                    </p>
+                    <br/>
+           
+            </div>
+        </lightning-modal-body>
+       
+        <lightning-modal-footer>
+            <template if:true={isAccessError}>
+                <div class="slds-grid slds-grid_align-center">
+                 <p style="color:red;margin-bottom:5px">Insufficient access to Work Order record.</p>
+               </div>
+           </template>
+            <div class="slds-grid slds-grid_align-center">
+            <button class="slds-button slds-button_success" title="Yes" onclick={handleSave}>Save</button>&nbsp;&nbsp;
+            </div>
+        </lightning-modal-footer>
+        
+    </template>

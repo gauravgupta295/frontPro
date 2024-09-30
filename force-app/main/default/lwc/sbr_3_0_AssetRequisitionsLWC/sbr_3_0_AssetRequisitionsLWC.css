@@ -1,0 +1,16 @@
+/* .dummy{
+	color : black;;
+}
+.brand-button {
+   --slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-text-color-hover: #fff;
+} */
+.brand-button {
+    --slds-c-button-brand-color-background: #25683e;
+}
+.page{ 
+--slds-c-input-color-background:#D3D3D3 ;
+}

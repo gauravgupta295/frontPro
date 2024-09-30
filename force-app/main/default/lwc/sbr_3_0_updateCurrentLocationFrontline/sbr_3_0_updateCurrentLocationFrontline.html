@@ -1,0 +1,42 @@
+<template>
+	<div class="slds-m-vertical_large">
+		<p>Only Locations that you have access to will be available for selection.</p>
+	</div>
+
+	<lightning-layout multiple-rows>
+		<lightning-layout-item class="slds-size_1-of-2">
+			<div>
+				<p><b>Current Location</b></p>
+			</div>
+		</lightning-layout-item>
+		<lightning-layout-item class="slds-size_1-of-2">
+			<div class="slds-float_right">
+				<p><b>PC1234</b></p>
+			</div>
+		</lightning-layout-item>
+	</lightning-layout>
+	<br/>
+	<lightning-combobox name="companyCode" label="Company Code" value={value} placeholder=" " options={options}
+		onchange={handleChange}>
+	</lightning-combobox>
+    <div class="slds-m-vertical_large">
+    <c-s-b-r_3_0_custom-lookup-cmp  
+                                record-id="" 
+                                label="Update Current Location" 
+                                s-object-api-name="Location" 
+                                placeholder="Search for Location" 
+                                icon-name="standard:location"
+                                fields-to-include={userLocationFields}
+                                >
+    </c-s-b-r_3_0_custom-lookup-cmp>
+    </div>
+	<div class="slds-m-top_small" style="margin-left:-16px;margin-right:-16px;margin-bottom:-16px;">
+		<lightning-modal-footer>
+			<lightning-button class="slds-button" variant="neutral" label="Go Back" onclick={handleDismiss}>
+			</lightning-button>
+			<lightning-button class="slds-button slds-m-left_x-small" variant="brand" label="Update My Location">
+			</lightning-button>
+		</lightning-modal-footer>
+	</div>
+
+</template>

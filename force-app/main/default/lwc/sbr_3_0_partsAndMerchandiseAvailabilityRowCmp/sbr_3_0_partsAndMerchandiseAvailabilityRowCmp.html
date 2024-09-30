@@ -1,0 +1,9 @@
+<template>
+  <span if:false={branchLocation}>{rowItem}</span>
+  <div
+    if:true={branchLocation}
+    class="location slds-text-body_small slds-text-color_weak"
+  >
+    {labelDesc}
+  </div>
+</template>

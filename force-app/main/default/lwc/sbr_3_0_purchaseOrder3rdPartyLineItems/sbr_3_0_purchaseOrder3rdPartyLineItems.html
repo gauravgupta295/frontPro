@@ -1,0 +1,177 @@
+<template>
+	<template if:false={isMobileView}>
+		<template if:true={showSpinner}>
+			<lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+		</template>
+		<div class="slds-grid slds-wrap slds-m-top_small">
+			<div class="slds-col slds-size_9-of-12">
+				<lightning-icon class="slds-m-bottom_small" icon-name="standard:lead_list" size="medium"
+					alternative-text="Indicates approval">
+				</lightning-icon>
+				<span class="HeadlineCSS slds-p-bottom_small slds-p-left_small">3rd Party Hauler Items</span>
+			</div>
+			<div class="slds-col slds-size_3-of-12 slds-text-align_right">
+				<template if:true={showAddFreight}>
+					<lightning-button label="Add Freight Details" variant="brand" record-id={recordId}
+						title="Add Freight Details" onclick={handleAddFreight} class="slds-p-right_small">
+					</lightning-button>
+				</template>
+				<template if:true={showRemoveSalesButton}>
+					<span>
+                                <lightning-button label="Remove Item(s)" title="Non-primary action" variant="neutral" onclick={handleDeleteModal} disabled={Buttontrue}></lightning-button>
+                            </span>
+				</template>
+				<template if:true={showCancelSalesButton}>
+					<span>
+                                <lightning-button label="Cancel Item(s)" title="Non-primary action" variant="neutral" onclick={handleCancelModal2} disabled={Buttontrue}></lightning-button>
+                            </span>
+				</template>
+			</div>
+			<div class="slds-col slds-size_2-of-12 slds-text-align_right">
+				<div style="margin-right:40px;">
+					<template if:true={openCreateModal}>
+						<c-s-b-r_3_0_create-p-o-line-item record-id={recordId} onclose={modalCloseHandler}>
+						</c-s-b-r_3_0_create-p-o-line-item>
+					</template>
+					<template if:true={isModalOpen}>
+						<c-s-b-r_3_0_confirm-p-o-line-items-delete-modal onprogressvaluechange={handleModalState}
+							ondeletelineitem={handleYesButton}></c-s-b-r_3_0_confirm-p-o-line-items-delete-modal>
+					</template>
+					<!-- Abhishek Hiremath -->
+					<template if:true={isModalOpen2}>
+						<c-sbr_3_0_confirm-p-o-line-items-cancel-modal onprogressvaluechange={handleModalState2}
+							ondeletelineitem={handleYesButton2}></c-sbr_3_0_confirm-p-o-line-items-cancel-modal>
+					</template>
+					<template if:true={isModalOpen3}>
+						<c-sbr_3_0_confirm-singl-line-items-cancel-modal onprogressvaluechange={handleModalState3}
+							ondeletelineitem={handleYesButton3}></c-sbr_3_0_confirm-singl-line-items-cancel-modal>
+					</template>
+					<!-- Abhishek Hiremath -->
+				</div>
+			</div>
+		</div>
+		<!--Addline Item Starts -->
+		<template if:true={showAddLineItemButton}>
+			<c-sbr_3_0_purchase-order-add-line-item onaddlineitem={handleAddLineItem} record-id={recordId}
+				onrefreshpoldata={handleSaveOnAddPOL}></c-sbr_3_0_purchase-order-add-line-item>
+		</template>
+		<div class='rightAlignCols'>
+			<template if:false={isCancelledReceived}>
+				<lightning-datatable key-field="Id" data={saleslineItems} columns={columns} draft-values={draftValues}
+					onsave={saveHandleAction} onrowselection={handleSalesRowChange} onrowaction={handleRowLevelAct}
+					max-row-selection={enabledRowCount} selected-rows={selectedRowIds}>
+				</lightning-datatable>
+			</template>
+			<template if:true={isCancelledReceived}>
+				<lightning-datatable key-field="Id" data={saleslineItems} columns={columns2} draft-values={draftValues}
+					onsave={saveHandleAction} onrowselection={handleSalesRowChange} onrowaction={handleRowLevelAct}
+					max-row-selection={enabledRowCount} selected-rows={selectedRowIds}>
+				</lightning-datatable>
+			</template>
+		</div>
+		<div class="slds-grid slds-wrap totalCSS">
+			<div class="slds-col slds-size_4-of-6 slds-align_center">
+				<div style="margin-left:10px">
+					<p>Totals</p>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-6 slds-align_left">
+				<div style="margin-left:-200px">
+					<p>Qty: {totalSalesQty}</p>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-6 slds-align_right">
+				<div style="margin-left:20px">
+					<p>Total: {totalSalesCost}</p>
+				</div>
+			</div>
+		</div>
+	</template>
+
+	<!--Harshal for mobile starts-->
+	<template if:true={isMobileView}>
+		<lightning-card>
+			<div class="slds-border_bottom">
+				<div style="padding-top:20px; background color: white">
+					<div class="slds-page-header slds-page-header_record-home">
+						<div class="slds-page-header__row">
+							<div class="slds-page-header__col-title">
+								<div class="slds-media">
+									<div class="slds-media__figure">
+									</div>
+									<div class="slds-media__body" style="line-height: 13px;background color: white">
+										<span class="slds-page-header__title slds-truncate" title="3rd Party Hauler Items">3rd Party Hauler Items</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+
+				<div class="slds-p-top_x-small slds-p-bottom_xxx-small">
+					<template if:true={showAddLineItemButton}>
+						<c-sbr_3_0_purchase-order-add-line-item onaddlineitem={handleAddLineItem} record-id={recordId}
+							onrefreshpoldata={handleSaveOnAddPOL}>
+						</c-sbr_3_0_purchase-order-add-line-item>
+					</template>
+				</div>
+
+				<div class="slds-p-vertical_x-small">
+					<c-sbr_3_0_po-mobile-custom-wrapper data-id="salesCmp" title="" is-div="true" has-filter="false"
+						is-purchase-order-filter="false" is-vendor-filter="false" no-header-section="true"
+						record-list={salesRecordList} oncheckboxchange={handleSalesCheckboxChange}
+						onremove={handleSalesItemRemove} onedit={handleEditScreen}>
+					</c-sbr_3_0_po-mobile-custom-wrapper>
+				</div>
+
+				<div class="section">
+					<div class="slds-grid slds-wrap mobileCSS">
+						<div class="slds-col">
+							Totals
+						</div>
+						<div class="slds-col slds-col_bump-left">
+							QTY
+							<div>{totalSalesQty}</div>
+						</div>
+						<div class="slds-col slds-col_bump-left">
+							Total
+							<div>{totalSalesCost}</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="slds-grid slds-grid_vertical-align-center ">
+					<div class="slds-col slds-size_1-of-2"></div>
+					<div class="slds-col slds-size_1-of-2 slds-text-align_right">
+						<template if:true={showRemove}>
+							<lightning-button variant="brand" label="Remove Item(s)" class="brand-button "
+								title="Non-primary action" onclick={handleSalesItemRemove}></lightning-button>
+						</template>
+					</div>
+
+				</div>
+
+
+
+				<div class="slds-modal__footer">
+					<div class="slds-grid slds-align_absolute-center">
+						<div class="slds-col slds-size_1-of-1 slds-text-align_center">
+							<lightning-button variant="brand" label="Add Freight Details" class="brand-button"
+								title="Non-primary action" onclick={handleAddFreight}>
+							</lightning-button>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			
+		</lightning-card>
+	</template>
+
+	<template if:true={showRemoveModal}>
+		<c-sbr_3_0_rerent-remove-item-cmp data-id="removeItemCmp" records={removeItems} onclose={handleRemoveItemClose}
+			onremove={handleRemoveItem}></c-sbr_3_0_rerent-remove-item-cmp>
+	</template>
+</template>

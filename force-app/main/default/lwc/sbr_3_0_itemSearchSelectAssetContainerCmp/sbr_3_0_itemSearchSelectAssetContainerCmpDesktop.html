@@ -1,0 +1,40 @@
+<template>
+  <lightning-tabset variant="standard">
+    <lightning-tab label="Editor" value="Editor" onactive={tabChangeHandler}>
+      <div class="spinnerContainer" if:false={hasRatesLoaded}>
+        <lightning-spinner
+          alternative-text="Loading"
+          size="medium"
+        ></lightning-spinner>
+      </div>
+      <template lwc:if={hasRatesLoaded}>
+        <c-sbr_3_0_item-search-select-asset-editor-cmp
+          lwc:ref="assetOrderItemEditorComp"
+          rates-info={rates}
+          selected-asset={selectedAsset}
+          current-active-tab={currentActiveTab}
+          order-data={orderData}
+          date-value={orderData.fields.Start_Date__c.value}
+          origin={origin}
+          is-loading={isConfirm}
+        ></c-sbr_3_0_item-search-select-asset-editor-cmp>
+      </template>
+    </lightning-tab>
+    <!--Added as part of fFRONT-10855-->
+    <lightning-tab
+      label="Rate Matrix"
+      value="Rate Matrix"
+      onactive={tabChangeHandler}
+    >
+      <c-sbr_3_0_item-search-select-asset-rate-matrix-cmp
+        rates-info={rates}
+        selected-asset={selectedAsset}
+        order-data={orderData}
+        record-id={recordId}
+        object-api-name={objectApiName}
+        lwc:ref="assetOrderItemRateMatrixComp"
+        current-active-tab={currentActiveTab}
+      ></c-sbr_3_0_item-search-select-asset-rate-matrix-cmp>
+    </lightning-tab>
+  </lightning-tabset>
+</template>

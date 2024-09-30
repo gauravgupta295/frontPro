@@ -1,0 +1,264 @@
+<template>
+  <template if:true={isMobile}>
+    <c-sbr_3_0_mobile-screen title="Convert Line Item(s)">
+      <div class="slds-border_bottom">
+        <h2 class="headOne">{lineItemsLabel}</h2>
+        <p class="headTwo">
+          100 of 100 line item(s) currently selected for conversion
+        </p>
+      </div>
+      <lightning-accordion
+        allow-multiple-sections-open
+        onsectiontoggle={handleSectionToggle}
+        active-section-name={activeSections}
+      >
+        <lightning-accordion-section
+          name="rentalSection"
+          label={rentalItemsLabel}
+        >
+          <lightning-layout multiple-rows>
+            <lightning-layout-item size="10" flexibility="auto">
+              <lightning-input
+                type="search"
+                variant="label-hidden"
+                label="search"
+                placeholder="Search this list"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="2" flexibility="auto">
+              <lightning-icon
+                icon-name="utility:filterList"
+                alternative-text="filters"
+                onclick={onFilterClick}
+                class="iconClass"
+                size="small"
+              ></lightning-icon>
+            </lightning-layout-item>
+          </lightning-layout>
+
+          <template for:each={rentalData} for:item="lineItem">
+            <div key={lineItem.id} class="line-item slds-p-around_medium">
+              <lightning-layout multiple-rows="true" flexibility="grow">
+                <lightning-layout-item size="1">
+                  <lightning-input
+                    type="checkbox"
+                    id={lineItem.id}
+                    value={lineItem.isChecked}
+                    checked={lineItem.isChecked}
+                  ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item
+                  class="slds-p-top_x-small slds-p-around_small"
+                  size="9"
+                >
+                  Item Name
+                </lightning-layout-item>
+                <lightning-layout-item
+                  class="slds-p-top_x-small slds-p-around_small"
+                  size="2"
+                >
+                  <lightning-button-menu
+                    alternative-text="Show menu"
+                    menu-alignment="auto"
+                  >
+                    <lightning-menu-item
+                      value="ReAssign"
+                      label="Re-Assign Asset"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={showAssignAssetScreen}
+                    ></lightning-menu-item>
+                    <lightning-menu-item
+                      value="Remove Asset"
+                      label="Remove Asset"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={showRemoveAssetScreen}
+                    ></lightning-menu-item>
+                    <lightning-menu-item
+                      value="View"
+                      label="View Asset Details"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={handleViewAssetDetails}
+                    ></lightning-menu-item>
+                  </lightning-button-menu>
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Cat Class
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  <p>{lineItem.catClass}</p>
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Quantity
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.quantity}
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Asset #
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.assetNo}
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Status
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.status}
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Available Assets
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.availableAssets}
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+          </template>
+        </lightning-accordion-section>
+
+        <lightning-accordion-section
+          name="salesSection"
+          label={salesItemsLabel}
+        >
+          <div class="search-container">
+            <lightning-layout multiple-rows>
+              <lightning-layout-item
+                size="10"
+                flexibility="auto"
+                class="slds-p-vertical_small"
+              >
+                <lightning-input
+                  class="slds-input-has-icon_right borderBox"
+                  type="search"
+                  variant="label-hidden"
+                  placeholder="Search this list"
+                >
+                </lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item
+                size="2"
+                flexibility="auto"
+                class="slds-p-vertical_small"
+              >
+                <lightning-icon
+                  icon-name="utility:filterList"
+                  alternative-text="filters"
+                  onclick={onFilterClick}
+                  class="iconClass"
+                  size="small"
+                ></lightning-icon>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+
+          <template for:each={salesData} for:item="lineItem">
+            <div key={lineItem.id} class="line-item slds-p-around_medium">
+              <lightning-layout multiple-rows="true" flexibility="grow">
+                <lightning-layout-item size="1">
+                  <lightning-input
+                    type="checkbox"
+                    id={lineItem.id}
+                    value={lineItem.isChecked}
+                    checked={lineItem.isChecked}
+                  ></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item
+                  class="slds-p-top_x-small slds-p-around_small"
+                  size="9"
+                >
+                  Item Name
+                </lightning-layout-item>
+                <lightning-layout-item
+                  class="slds-p-top_x-small slds-p-around_small"
+                  size="2"
+                >
+                  <lightning-button-menu
+                    alternative-text="Show menu"
+                    menu-alignment="auto"
+                  >
+                    <!--lightning-menu-item
+                      value="ReAssign"
+                      label="Re-Assign Asset"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={showAssignAssetScreen}
+                    ></lightning-menu-item>
+                    <lightning-menu-item
+                      value="Remove Asset"
+                      label="Remove Asset"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={showRemoveAssetScreen}
+                    ></lightning-menu-item>
+                    <lightning-menu-item
+                      value="View"
+                      label="View Asset Details"
+                      class="menuItem"
+                      data-value={lineItem.id}
+                      onclick={handleViewAssetDetails}
+                    ></lightning-menu-item-->
+                    <!--FRONT-23754-Added product details option-->
+                    <lightning-menu-item
+                      value="Product Details"
+                      label="Product Details"
+                      class="menuItem"
+                      data-value={lineItem.Id}
+                      onclick={handleProductDetails}
+                    >
+                    </lightning-menu-item>
+                  </lightning-button-menu>
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Part/Item#
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  <p>{lineItem.partItem}</p>
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Stock Vendor
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.stockVendor}
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Quantity
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.quantity}
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-label" size="5">
+                  Available
+                </lightning-layout-item>
+                <lightning-layout-item class="asset-info" size="7">
+                  {lineItem.available}
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+          </template>
+        </lightning-accordion-section>
+      </lightning-accordion>
+
+      <div slot="footer">
+        <div>
+          <lightning-button
+            class="neutral-button slds-float_left"
+            label="Cancel"
+            onclick={closeMethod}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label="Confirm"
+            onclick={handleConfirm}
+            class="brand-button slds-float_right"
+            disabled={disableConfirm}
+          ></lightning-button>
+        </div>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+    >
+  </template>
+</template>

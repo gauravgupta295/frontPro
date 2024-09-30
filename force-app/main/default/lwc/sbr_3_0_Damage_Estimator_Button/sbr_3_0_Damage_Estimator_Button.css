@@ -1,0 +1,14 @@
+.primary-button {
+    background-color: #008545;
+    border-color: #008545;
+}
+
+.primary-button:hover {
+    background-color: #186638;
+}
+
+.secondary-button {
+    border-color: #186638;
+    color: #008545;
+    margin-left: 8px;
+}

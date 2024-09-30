@@ -1,0 +1,12 @@
+<!--FRONT-13993,FRONT-13995-->
+<template>
+  <template if:true={showUpdateTotals}>
+    <c-sbr_3_0_update-totals
+      record-id={recordId}
+      onclose={handleCloseOnError}
+      onupdatetotalsuccess={handleCloseOnSuccess}
+      calling-update-totals-from-update-review-tab="true"
+      is-changed={isChanged}
+    ></c-sbr_3_0_update-totals>
+  </template>
+</template>

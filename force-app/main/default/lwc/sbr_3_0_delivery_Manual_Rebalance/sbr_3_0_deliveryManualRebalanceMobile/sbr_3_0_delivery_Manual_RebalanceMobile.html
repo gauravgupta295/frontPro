@@ -1,0 +1,134 @@
+<template>
+  <!-- Modal/Popup Box LWC starts here -->
+  
+  <!-- Changes for FRONT-25613 -->
+  <!-- Fitting the modal to the entire mobile screen -->
+  <c-sbr_3_0_mobile-screen>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-labelledby="modal-heading-01"
+      aria-modal="true"
+      aria-describedby="modal-content-id-1"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <!-- Modal/Popup Box LWC header here -->
+        <div
+          class="slds-page-header__controls customer-info-header slds-p-vertical_small slds-align_absolute-center"
+        >
+          <p class="customer-info-title slds-align_absolute-center">
+            {label.SOURCEBRANCHSEARCH}
+          </p>
+        </div>
+        <!-- Modal/Popup Box LWC body starts here -->
+        <div class="slds-modal__content" id="modal-content-id-1">
+          <div class="slds-tabs_default tabList">
+            <lightning-layout>
+              <lightning-layout-item size="12">
+                <div class="mobile-main-panel">
+                  <div class="slds-button-group prod-inq-mob-group" role="group">
+                    <template for:each={mobiletabs} for:item="layer">
+                      <div
+                        class="prod-inq-mob-group slds-border_bottom"
+                        role="group"
+                        key={layer.Id}
+                      >
+                        <button
+                          class={layer.itemClass}
+                          value={layer.title}
+                          onclick={toggleProdInqMobile}
+                          id={layer.Id}
+                          data-link={layer.Id}
+                        >
+                          {layer.title}
+                        </button>
+                      </div>
+                    </template>
+                  </div>
+                </div>
+              </lightning-layout-item>
+            </lightning-layout>
+            <div class="tabs">
+              <template lwc:if={detailsCmpId}>
+                <c-sbr_3_0_fulfillment-details-cmp
+                  is-mobile={isMobile}
+                  fulfillment-id={detailsCmpId}
+                  fulfillment-percentage={fulfillmentPercentage}
+                  onopensourcebranch={openSourceBranchTable}
+                  location-number={locationNumber}
+                  cat-class-list={catClassList}
+                  cat-class-requested-qty-map={catClassRequestedQtyMap}
+                ></c-sbr_3_0_fulfillment-details-cmp>
+              </template>
+              <template lwc:else for:each={Tabs} for:item="layer">
+                <div
+                  id={layer.Id}
+                  class={layer.contentClass}
+                  data-id={layer.Id}
+                  role="tabpanel"
+                  aria-labelledby={layer.Id}
+                  key={layer.Id}
+                >
+                  <template if:true={layer.isDefaultLocationSelected}>
+                    <c-sbr_3_0_delivery_-default-source-branch
+                      oneventnotification={changeOnConfirm}
+                      onrowactionmobileevent={showDetailsComponent}
+                      delivery-method-value={orderRecordDetails.deliveryMethod}
+                      is-mobile={isMobile}
+                      sourcing-branch-value={orderRecordDetails.sourcingBranchName}
+                    ></c-sbr_3_0_delivery_-default-source-branch>
+                  </template>
+                  <template if:true={layer.isOtherLocationSelected}>
+                    <c-sbr_3_0_delivery_-other-source-branch
+                      oneventnotification={changeOnConfirm}
+                      sourcing-branch-value={orderRecordDetails.sourcingBranchName}
+                    ></c-sbr_3_0_delivery_-other-source-branch>
+                  </template>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+        <!-- Modal/Popup Box LWC footer starts here -->
+        <footer class="slds-modal__footer manual-rebalance__footer">
+          <template lwc:if={detailsCmpId}>
+            <lightning-button
+              label={label.BACK_BUTTON_LABEL}
+              onclick={openSourceBranchTable}
+              class="sbrSourcingBorder center-back-button"
+            ></lightning-button>
+          </template>
+          <template lwc:else>
+            <lightning-layout horizontal-align="spread" class="slds-m-bottom_medium slds-m-horizontal_small">
+              <lightning-layout-item>
+                <lightning-button
+                  label="Cancel"
+                  class="neutral-button"
+                  onclick={closeModal}
+                ></lightning-button>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <lightning-button
+                  label="Confirm"
+                  variant="brand"
+                  onclick={submitDetails}
+                  disabled={isDisabled}
+                  class="brand-button"
+                ></lightning-button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </template>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+    <!-- Story#FRONT-8094: Modified by Gopal Raj -->
+    <template if:true={isShowModal}>
+      <c-sbr_3_0_assets-warning-cmp-mobile
+        onpopupevent={handlepopupEvent}
+      ></c-sbr_3_0_assets-warning-cmp-mobile>
+    </template>
+    <!--End: Story#FRONT-8094: Modified by Gopal Raj -->
+  </c-sbr_3_0_mobile-screen>
+</template>

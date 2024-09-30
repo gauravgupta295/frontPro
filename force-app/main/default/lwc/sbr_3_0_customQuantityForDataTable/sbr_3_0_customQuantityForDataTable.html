@@ -1,0 +1,21 @@
+<template>
+    <template if:false={isEditable}>
+        <lightning-layout>
+        <lightning-layout-item size="6" class="slds-p-left_medium slds-p-vertical_small"></lightning-layout-item>
+        <lightning-layout-item size="6">
+            <p class="space"><lightning-formatted-number size="6"  class="slds-p-left_medium slds-p-vertical_medium" value={quantity}></lightning-formatted-number></p>
+        </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <template if:true={isEditable}>
+        <lightning-layout>
+            <lightning-layout-item size="6" class="slds-p-left_medium slds-p-vertical_small">
+               <lightning-input name="PickupQuantity" type="number" value={pickupQuantity} variant="label-hidden" max={createdQuantity} message-when-range-overflow="Pickup Quantity cannot be greater than Available Quantity" min=0 onchange={handleQuantityChange}></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" class="slds-p-left_medium slds-p-vertical_medium">
+              <p>of <lightning-formatted-number value={createdQuantity}></lightning-formatted-number></p>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+
+</template>

@@ -1,0 +1,20 @@
+:host{
+    --light-green-color: #C0E8CA;
+    --dark-green-color: #008545;
+}
+
+.slds-illustration__fill-primary{
+    fill: var(--dark-green-color);
+}
+
+.slds-illustration__fill-secondary{
+    fill: var(--light-green-color);
+}
+
+.slds-illustration__stroke-primary{
+    stroke: var(--dark-green-color)
+}
+
+.slds-illustration__stroke-secondary{
+    stroke: var(--light-green-color)
+}

@@ -1,0 +1,55 @@
+.white-color-bg {
+  background-color: #fafaf9;
+}
+
+.back-button {
+  border: #fafaf9;
+  background-color: #fafaf9;
+  font-weight: 400;
+}
+
+.active-state {
+  color: #25683e;
+  background: #edf6ef;
+  font-weight: 400;
+  border: none;
+}
+
+.selected-btn {
+  color: #25683e;
+  font-weight: 400;
+  border-bottom: #e5e5e5;
+}
+.custom-button {
+  color: black;
+}
+.separator {
+  border-bottom: 1px solid #dddddd;
+}
+
+.action-title-mobile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  color: currentcolor;
+  font-size: inherit;
+  padding: 0 var(--lwc-spacingXSmall, 0.5rem);
+}
+
+.add-user-icon {
+  right: 0px;
+  float: right;
+  padding-right: 16px;
+}
+
+.on-select {
+  --lwc-brandAccessibleActive: #25683e;
+}
+
+.panel-title {
+  padding-left: 0;
+  padding-right: 3rem;
+  text-align: center;
+}

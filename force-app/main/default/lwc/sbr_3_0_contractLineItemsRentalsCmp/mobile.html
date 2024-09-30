@@ -1,0 +1,395 @@
+<template>
+  <lightning-accordion-section
+    name={sectionName}
+    label={rentalItemsDynamicLabel}
+  >
+    <!--Added for 31380-->
+    <template lwc:if={showInputSearch}>
+      <lightning-input
+        type="search"
+        variant="label-hidden"
+        placeholder={assetSearchPlaceholderMobile}
+        onkeydown={handleQuickAddDesktop}
+        class="slds-p-bottom_medium bordorCls slds-p-horizontal_small"
+      ></lightning-input>
+    </template>
+    <div class="item-list-ctr">
+      <template lwc:if={isRecordListNotEmpty}>
+        <template
+          for:each={rentalLineItems}
+          for:item="lineItem"
+          for:index="index"
+        >
+          <div class="line-item slds-p-top_small" key={lineItem.Id}>
+            <div
+              class="line-item-header slds-grid slds-grid_align-spread textInput"
+            >
+              <lightning-input
+                type="checkbox"
+                label={lineItem.AssetHeader}
+                name={lineItem.AssetHeader}
+                id={lineItem.Id}
+                data-id={lineItem.Id}
+                onchange={handleCheckboxChange}
+                value={lineItem}
+                class="textInput isChecked"
+                checked={showRemoveScreen}
+              >
+              </lightning-input>
+              <lightning-button-menu
+                alternative-text="More actions"
+                icon-size="x-small"
+                menu-alignment="auto"
+                class="menu-item slds-p-top_x-small"
+              >
+                <lightning-menu-item
+                  value="Edit"
+                  label="Edit"
+                  class="menuItem"
+                  onclick={handleEditClick}
+                  data-index={index}
+                ></lightning-menu-item>
+              </lightning-button-menu>
+            </div>
+            <div class="slds-p-left_x-large">
+              <div class="slds-grid slds-gutters slds-wrap">
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold"
+                    >Cat Class Description</span
+                  >
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.Name}</span>
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Qty</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.Quantity}</span>
+                </div>
+                <template if:false={lineItem.isBulkAsset}>
+                  <template lwc:if={lineItem.Current_MiHr}>
+                    <div
+                      class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                    >
+                      <span class="slds-text-title textBold">Hr/Mi</span>
+                    </div>
+                    <div
+                      class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                    >
+                      <span class="slds-text-title"
+                        >{lineItem.Current_MiHr}</span
+                      >
+                    </div>
+                  </template>
+                </template>
+                <template lwc:if={lineItem.ViewMore}>
+                  <div
+                    class="toggle-text sbrGreenColor slds-p-left_small slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                    data-line-item-id={lineItem.Id}
+                    data-toggle-type="ViewMore"
+                    onclick={toggleViewContent}
+                  >
+                    {LABELS.VIEW_LESS}
+                  </div>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">Cat Class</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <span class="slds-text-title">{lineItem.CatClass}</span>
+                  </div>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">Min Rate</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <!-- <span class="slds-text-title">{lineItem.Min_Rate}</span> -->
+                    <lightning-formatted-number
+                      class="slds-text-title"
+                      format-style="currency"
+                      value={lineItem.Min_Rate}
+                    ></lightning-formatted-number>
+                  </div>
+
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">Day</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <!-- <span class="slds-text-title">{lineItem.Daily_Rate}</span> -->
+                    <lightning-formatted-number
+                      class="slds-text-title"
+                      format-style="currency"
+                      value={lineItem.Daily_Rate}
+                    ></lightning-formatted-number>
+                  </div>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">Week</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <!-- <span class="slds-text-title">{lineItem.Weekly_Rate}</span> -->
+                    <lightning-formatted-number
+                      class="slds-text-title"
+                      format-style="currency"
+                      value={lineItem.Weekly_Rate}
+                    ></lightning-formatted-number>
+                  </div>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">4 Week</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <lightning-formatted-number
+                      class="slds-text-title"
+                      format-style="currency"
+                      value={lineItem.Monthly_Rate}
+                    ></lightning-formatted-number>
+                    <!-- <span class="slds-text-title">{lineItem.Monthly_Rate}</span> -->
+                  </div>
+                </template>
+                <template lwc:else>
+                  <div
+                    class="toggle-text sbrGreenColor slds-p-left_small slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                    data-line-item-id={lineItem.Id}
+                    data-toggle-type="ViewMore"
+                    onclick={toggleViewContent}
+                  >
+                    {LABELS.VIEW_MORE}
+                  </div>
+                </template>
+                <template lwc:if={lineItem.Notes}>
+                  <template lwc:if={lineItem.hideNotes}>
+                    <div
+                      class="toggle-text sbrGreenColor slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                      data-line-item-id={lineItem.Id}
+                      data-toggle-type="Notes"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.HIDE_NOTES}
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-2 slds-p-bottom_x-small textStyle"
+                    >
+                      <span class="slds-text-title">{lineItem.Notes}</span>
+                    </div>
+                  </template>
+                  <template lwc:else>
+                    <div
+                      class="toggle-text sbrGreenColor slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                      data-line-item-id={lineItem.Id}
+                      data-toggle-type="Notes"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.VIEW_NOTES}
+                    </div>
+                  </template>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+      <template if:false={isRecordListNotEmpty}>
+        <lightning-card>
+          <div
+            class="slds-illustration slds-illustration_small backCl"
+            aria-hidden="true"
+          >
+            <img class="slds-illustration__svg" alt="" src={noItemUrl} />
+            <h3
+              class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+            >
+              {LABELS.NO_RENTAL_ITEM_MSG}
+            </h3>
+          </div>
+        </lightning-card>
+      </template>
+    </div>
+  </lightning-accordion-section>
+
+  <!-- Start - This modal is used for Quick Add item-->
+  <template lwc:if={isEditorRateShow}>
+    <c-sbr_3_0_mobile-screen
+      title={modalHeader}
+      onratematrixclicked={handleTabClicked}
+    >
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="orderItemObject"
+        selected-asset={selectedAssetRow}
+        order-data={parentRecord}
+        record-id={recordId}
+        origin="QuickAdd"
+        object-api-name={objectApiName}
+        onchangevalue={handleChange}
+        is-confirm={isConfirm}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+      <template lwc:if={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-center">
+          <div class="slds-m-bottom_large">
+            <lightning-button
+              label="Back"
+              onclick={handleBack}
+              class="small-button"
+            >
+            </lightning-button>
+          </div>
+        </div>
+      </template>
+      <template lwc:else>
+        <div slot="footer" class="slds-grid slds-grid_align-spread">
+          <div>
+            <lightning-button
+              label="Cancel"
+              onclick={handleCloseModal}
+              class="neutral-button"
+            >
+            </lightning-button>
+          </div>
+          <div>
+            <lightning-button
+              label="Confirm"
+              variant="brand"
+              class="brand-button"
+              onclick={handleConfirm}
+              disabled={isDisable}
+            ></lightning-button>
+            <!--FRONT - 19005-->
+          </div>
+        </div>
+      </template>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!-- End - This modal is used for Quick Add item-->
+
+  <!-- Start - This modal is used for Edit Line item-->
+  <template lwc:if={showEditScreen}>
+    <c-sbr_3_0_mobile-screen
+      title={modalHeader}
+      onratematrixclicked={handleTabClicked}
+    >
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="RentalorderItemObject"
+        selected-asset={selectedAssetRow}
+        order-data={parentRecord}
+        record-id={recordId}
+        origin="RentalEdit"
+        is-confirm={isConfirm}
+        object-api-name={objectApiName}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+      <template lwc:if={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-center">
+          <div class="slds-m-bottom_large">
+            <lightning-button
+              label="Back"
+              onclick={handleBack}
+              class="small-button"
+            >
+            </lightning-button>
+          </div>
+        </div>
+      </template>
+      <template lwc:else>
+        <div slot="footer" class="slds-grid slds-grid_align-spread">
+          <div>
+            <lightning-button
+              label="Cancel"
+              onclick={handleCloseModal}
+              class="neutral-button"
+            >
+            </lightning-button>
+          </div>
+          <div>
+            <lightning-button
+              label="Confirm"
+              variant="brand"
+              class="brand-button"
+              onclick={handleConfirm}
+              disabled={isDisable}
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!-- End - This modal is used for Edit Line item-->
+  <!--Start for FRONT-31380,FRONT-31385-->
+  <template lwc:if={assetNotFound}>
+    <c-sbr_3_0_mobile-screen title={LABELS.LINE_ITEM_FAILED}>
+      <div class="slds-p-around_medium">
+        <p>{LABELS.ASSET_NOT_FOUND}</p>
+      </div>
+
+      <lightning-button
+        label={LABELS.SEARCH_ITEM}
+        class="neutral-button slds-p-around_medium"
+      ></lightning-button>
+
+      <div slot="footer" class="slds-grid_align-center">
+        <div>
+          <lightning-button
+            label="Go Back"
+            class="neutral-button"
+            onclick={handleBack}
+          ></lightning-button>
+        </div>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!--End for FRONT-31380,FRONT-31385-->
+
+  <template lwc:if={showRemoveScreen}>
+    <c-sbr_3_0_mobile-screen title="Remove Item(s)">
+      <div class="slds-p-around_medium">{LABELS.REMOVE_ITEM_MSG}</div>
+      <div class="slds-border_bottom slds-var-p-around_x-small">
+        <c-sbr_3_0_contract-line-items-bulk-remove
+          line-items-to-remove={lineItemsListToRemove}
+          onfinalselected={finalRecordstoRemove}
+          is-rentals="true"
+        ></c-sbr_3_0_contract-line-items-bulk-remove>
+      </div>
+      <div slot="footer">
+        <lightning-layout
+          vertical-align="center"
+          horizontal-align="space"
+          pull-to-boundary="small"
+          size="12"
+          class="slds-p-bottom_small"
+        >
+          <lightning-layout-item size="3">
+            <lightning-button
+              class="neutral-button"
+              value="Cancel"
+              onclick={handleCancel}
+              label="Cancel"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="4"> </lightning-layout-item>
+          <lightning-layout-item size="5">
+            <lightning-button
+              class="brand-button"
+              value="removeItems"
+              onclick={handleRemove}
+              label="Remove Item(s)"
+              variant="brand"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+</template>

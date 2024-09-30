@@ -1,0 +1,42 @@
+.slds-panel {
+    height: auto;
+    overflow-y: visible;
+}
+
+.slds-panel__header {
+    background-color: #e5e5e5;
+    font-weight: 700;
+}
+
+.add-customer-panel {
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    overflow-x: hidden;
+    z-index: 5;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+}
+
+.add-customer-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    background-color: #FFFFFF;
+    font-weight: 400;
+}
+
+.add-customer-body {
+    height: 100vh;
+    background: #FFFFFF;
+}
+
+.search-add-txt {
+   color: #444444;
+   font-weight: 400;
+   font-size: 16px;
+}

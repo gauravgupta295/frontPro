@@ -1,0 +1,26 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasSObjectName,force:hasRecordId"
+>
+  <aura:attribute name="recordId" type="String" />
+  <aura:attribute name="props" type="Object" />
+  <aura:attribute name="initChild" type="Boolean" default="false" />
+
+  <aura:attribute name="record" type="Order" />
+  <force:recordData
+    layoutType="FULL"
+    recordId="{!v.recordId}"
+    targetFields="{!v.record}"
+    recordUpdated="{!c.fetchRecordData}"
+  />
+
+  <aura:if isTrue="{!v.initChild}">
+    <!--Modified for FRONT-4413-->
+    <c:sbr_3_0_convertToContract
+      props="{!v.props}"
+      objectApiName="{!v.sObjectName}"
+      recordId="{!v.recordId}"
+      onclosemodal="{!c.closemodal}"
+    >
+    </c:sbr_3_0_convertToContract>
+  </aura:if>
+</aura:component>

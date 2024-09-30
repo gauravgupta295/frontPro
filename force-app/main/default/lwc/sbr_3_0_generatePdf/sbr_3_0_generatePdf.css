@@ -1,0 +1,38 @@
+/* Styles for the download icon */
+.download-icon {
+    /* Position the icon absolutely */
+    position: absolute;
+    /* Set distance from the bottom edge of the parent */
+    bottom: 20px;
+    /* Adjust the top position as needed */
+    /* Center the icon horizontally */
+    right: 50%;
+    /* Adjust the left position if needed */
+    transform: translateX(-50%);
+    /* Center the icon horizontally */
+    /* Ensure the icon is above the iframe content */
+    z-index: 1;
+}
+
+/* Styles for the PDF details section */
+.pdf-details {
+    /* Set background color */
+    background-color: #F3F3F3;
+}
+
+/* Styles for error messages */
+.error-message {
+    /* Set text color to red */
+    color: red;
+}
+
+/* Styles for Salesforce Lightning Design System input fields */
+.slds-input {
+    /* Set width of input field */
+    width: 90%;
+}
+.slds-modal__container{
+  max-width: 40rem;
+  min-width: 40rem; 
+  min-height: 40rem; 
+}

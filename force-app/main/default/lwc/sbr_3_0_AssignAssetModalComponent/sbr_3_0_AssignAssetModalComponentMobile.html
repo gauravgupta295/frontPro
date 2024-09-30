@@ -1,0 +1,86 @@
+<!-- FRONT-2186, FRONT-6226, FRONT-6227, FRONT-6228  -->
+<template>
+  <!--Modified as part of FRONT-15703-->
+  <c-sbr_3_0_mobile-screen title="Assign Asset">
+    <div class="slds-tabs_default tabList">
+      <ul class="slds-tabs_default__nav" role="tablist">
+        <template for:each={Tabs} for:item="layer">
+          <li
+            class={layer.itemClass}
+            title="Item One"
+            role="presentation"
+            key={layer.Id}
+          >
+            <a
+              class="slds-tabs_default__link"
+              href="javascript:void(0);"
+              role="tab"
+              tabindex="0"
+              aria-selected="true"
+              aria-controls={layer}
+              id={layer.Id}
+              data-link={layer.Id}
+              onclick={handleClick}
+              >{layer.title}</a
+            >
+          </li>
+        </template>
+      </ul>
+      <div class="tabs">
+        <template for:each={Tabs} for:item="layer">
+          <div
+            id={layer.Id}
+            class={layer.contentClass}
+            data-id={layer.Id}
+            role="tabpanel"
+            aria-labelledby={layer.Id}
+            key={layer.Id}
+          >
+            <template if:true={layer.isDefaultLocationSelected}>
+              <c-sbr_3_0_-Assign-Asset-Table-Component
+                product-id={productId}
+                location-info={locationInfo}
+                parent-id={parentId}
+                order-item-id={orderItemId}
+                current-tab-name="defaultlocation"
+                onviewasset={handleViewAsset}
+              ></c-sbr_3_0_-Assign-Asset-Table-Component>
+            </template>
+            <template if:true={layer.isOtherLocationSelected}>
+              <c-sbr_3_0_-Assign-Asset-Table-Component
+                product-id={productId}
+                location-info={locationInfo}
+                asset-id={assetId}
+                order-item-id={orderItemId}
+                parent-id={parentId}
+                current-tab-name="otherlocation"
+                onviewasset={handleViewAsset}
+              >
+              </c-sbr_3_0_-Assign-Asset-Table-Component>
+            </template>
+            <template if:true={layer.isSourcingSelected}>
+              <c-sbr_3_0_-Assign-Asset-Source-Component></c-sbr_3_0_-Assign-Asset-Source-Component>
+            </template>
+          </div>
+        </template>
+      </div>
+    </div>
+    <div slot="footer">
+      <lightning-button
+        class="neutral-button"
+        label="Cancel"
+        title="Back"
+        onclick={closeModal}
+      >
+      </lightning-button>
+    </div>
+
+    <template lwc:if={showAssetDetails}>
+      <c-sbr_3_0_-view-asset-component
+        asset-id={selectedAssetId}
+        onreturnpage={hideViewAssetScreen}
+      >
+      </c-sbr_3_0_-view-asset-component>
+    </template>
+  </c-sbr_3_0_mobile-screen>
+</template>

@@ -1,0 +1,20 @@
+@media only screen and (max-width: 1000px) {
+    .THIS .paymentNumber{
+        color: rgb(13, 128, 61) !important; 
+    }
+    
+    input[type="date"] {
+        min-width:95.6%;
+        -webkit-appearance : none;
+    }
+    .paymentNumber{
+        color: rgb(13, 128, 61) !important; 
+    }
+    .HeaderLinkClass {  
+        font-size: 20px;    
+        color: rgb(13, 128, 61) !important;    
+        display: inline-flex;    
+        justify-content: center;    
+        align-items: center;    
+    }
+}

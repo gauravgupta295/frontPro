@@ -1,0 +1,59 @@
+<!-- sldsValidatorIgnore -->
+<template>
+
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="tablebg">
+      <div class="table-class">
+        <div class={innerContainerClass}>
+          <template if:false={isDataLoaded}>
+            <lightning-spinner
+              variant="brand"
+              size="medium"
+              alternative-text="loading..."
+            >
+            </lightning-spinner>
+          </template>
+        <!--15699,15677 start-->  
+    <template if:false={noData}>
+          <lightning-datatable
+            key-field="id"
+            class="dividerPart"
+            data={data}
+            columns={columns}
+            hide-checkbox-column="true"
+            wrap-text-max-lines="2"
+            column-widths-mode="auto"
+            onrowaction={callRowAction}   
+          >   <!--front-15702-->
+          </lightning-datatable>
+      </template>
+          <template if:true={noData}>
+            <lightning-datatable
+            key-field="id"
+            class="dividerPart"
+            columns={columns}
+            hide-checkbox-column="true"
+            wrap-text-max-lines="2"
+            column-widths-mode="auto"
+          >
+          </lightning-datatable>
+          </template>
+           <!--15699,15677 end--> 
+        <!--15677-->
+          <template if:true={showBlankMsg}>
+          <template if:true={noData}>
+            <div class="slds-illustration slds-illustration_small backCl" aria-hidden="true">
+            <img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+            <h2 class="slds-text-heading_medium noContImg">{noContentLabel}
+            </h2>
+            </div>
+           </template>
+        </template>
+        <!--15677 end-->
+        </div>
+      </div>
+    </div>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

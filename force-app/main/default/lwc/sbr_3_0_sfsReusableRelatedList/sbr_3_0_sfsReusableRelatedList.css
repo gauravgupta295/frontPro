@@ -1,0 +1,15 @@
+p{
+
+}
+.container{
+     /* min-width: 97%; */
+}
+.slds-scrollable_x
+{ overflow: visible;
+ }
+.slds-scrollable_y 
+{ overflow: visible; }
+.footterClass{
+     margin-top: 0%;
+     border-top: none;
+}

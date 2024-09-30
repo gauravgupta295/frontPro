@@ -1,0 +1,451 @@
+<template>
+  <template if:false={showFilters}>
+    <template if:true={isSearchAccount}>
+      <!-- Modal/Popup Box LWC starts here -->
+	  <!-- FRONT-12020: Removed aria labellyby and describedby to prevent the screenreader from reading the entire section-->
+      <section
+        role="dialog"
+
+        aria-modal="true"
+
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <!-- Modal/Popup Box LWC header here slds-align_absolute-center-->
+          <div
+            class="slds-page-header__controls customer-info-header slds-p-vertical_small slds-align_absolute-center"
+          >
+            <!--<button class="slds-button close-btn-class" value="Close" onclick={closeAccountSearchMobile}>Close</button>-->
+            <!--START::FRONT-13127-->
+            <template lwc:if={isAccountScreenParent}>
+              <p class="customer-info-title slds-align_absolute-center">
+                Account Search
+              </p>
+            </template>
+            <!--END::FRONT-13127-->
+            <template lwc:else>
+              <p class="customer-info-title slds-align_absolute-center">
+                Customer Information<lightning-helptext
+                  content="Search Account Name, Phone, Email, Account #"
+                ></lightning-helptext>
+              </p>
+            </template>
+          </div>
+          <!-- Modal/Popup Box LWC body starts here -->
+          <!-- <template if:true={isSearchAccount}> -->
+          <div
+            class="slds-modal__content slds-p-vertical_medium"
+            id="modal-content-id-1"
+          >
+            <div
+              class="lookupInputContainerMobile"
+            >
+              <!-- START::FRONT-2445,2443,2440,2442,2439,3125 -->
+              <div class="searchfilt slds-p-horizontal_medium">
+                <div class="searcfl">
+                  <!-- END::FRONT-2445,2443,2440,2442,2439,3125 -->
+                  <div
+                    class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+                    role="none"
+                  >
+                    <div class="searchBoxWrapper slds-show slds-p-bottom_small">
+                      <!--Lookup Input Field -->
+                      <!-- START::FRONT-2445,2443,2440,2442,2439,3125 -->
+                      <lightning-input
+                        class="slds-input-has-icon_right search-account-input focus-styling"
+                        type="search"
+                        onclick={toggleResult}
+                        onkeydown={handleKeyChange}
+                        onchange={handleCancleChange}
+                        value={searchKey}
+                        variant="label-hidden"
+                        placeholder={placeholder}
+                        disabled={isDisabled}
+                        data-source="searchInputField"
+                      ></lightning-input>
+                      <!-- END::FRONT-2445,2443,2440,2442,2439,3125 -->
+                    </div>
+                  </div>
+                </div>
+                <div>
+				  
+	  			  <!-- FRONT-12020: Added class, tabindex, role for filter icon button to programatically focus-->
+                  <span
+                    role="button"
+                    tabindex="0"
+                    class="slds-media__figure slds-listbox__option-icon filter-button-mobile"
+                    onclick={openFilters}
+                  >
+                    <span class="slds-icon_container slds-m-around_x-small">
+                      <lightning-icon
+                        icon-name={filterIcon}
+                        size="small"
+                        alternative-text="Filter Button"
+                      ></lightning-icon>
+                    </span>
+                  </span>
+                </div>
+              </div>
+	      <!--removed showFilterPills check for FRONT-11596-->
+              <div class="slds-p-bottom_x-small">
+                <lightning-pill-container
+                  variant="bare"
+                  items={comboboxFilters}
+                  onitemremove={handlePillRemoveClick}
+                ></lightning-pill-container>
+                <!-- ADDED a div FOR FRONT-11596 -->
+                <div aria-live="assertive" class="slds-assistive-text" id="filterRemoved" role="status">{filterRemoved}</div>
+              </div>
+              <div class="accounts-header slds-p-left_small slds-p-vertical_medium" role="option">
+                <span class="slds-icon_container slds-p-left_xxx-small">
+                  <lightning-icon
+                    icon-name={iconName}
+                    size="medium"
+                    alternative-text="icon"
+                  ></lightning-icon>
+                </span>
+                <span class="accounts-header-text">Accounts</span>
+              </div>
+              <div onclick={createNewAccount} class="new-account-bar" role="option">
+                <span style="pointer-events: none" class="slds-p-left_xxx-small">
+                  <span class="slds-icon_container">
+                    <lightning-icon
+                      icon-name={addIconName}
+                      size="xx-small"
+                      alternative-text="icon"
+                    ></lightning-icon>
+                  </span>
+                </span>
+                <span class="new-account-text">
+                  <span class="">New Account</span>
+                </span>
+              </div>
+              <!--My recent Accounts widget-->
+              <template if:false={showAllResultsButton}>
+                <div class="my-recent-accounts-bar" role="option">
+                  <span class="slds-p-left_x-small">
+                    <span class="">My Recent Accounts</span>
+                  </span>
+                </div>
+              </template>
+
+              <div if:false={isLoaded} class="slds-is-relative">
+                <lightning-spinner
+                  alternative-text="Loading..."
+                  variant="brand"
+                >
+                </lightning-spinner>
+              </div>
+
+              <template for:each={lstResult} for:item="obj">
+                <div key={obj.Id} role="option">
+                  <!-- START::FRONT-2445,2443,2440,2442,2439,3125 -->
+                  <div data-id="Quote">
+                    <!--FRONT-4002-->
+                    <c-sbr_3_0_custom-mobile-search-item-cmp
+                      record-item={obj}
+                      parentcmp={parentcmp}
+                      data-recid={obj.Id}
+                      onclick={handleRecordClick}
+                      oneditclick={openEditForm}
+                      oncovertclick={openConversionForm}
+                    >
+                    </c-sbr_3_0_custom-mobile-search-item-cmp>
+                  </div>
+
+                  <!-- END::FRONT-RONT-2445,2443,2440,2442,2439,3125 -->
+                </div>
+              </template>
+
+              <template if:false={hasRecords}>
+                <!-- <li class="slds-listbox__item" style="text-align: center; font-weight: bold;">No Records Found....</li> -->
+
+                <div
+                  class="slds-illustration slds-illustration_medium"
+                  aria-hidden="true"
+                >
+                  <img
+                    class="slds-illustration__svg"
+                    alt=""
+                    src={noContentimageUrl}
+                  />
+                  <div class="slds-text-color_weak">
+                    <h3 class="slds-text-heading_medium">No Results Found</h3>
+                  </div>
+                </div>
+
+                <!-- <div class="slds-illustration slds-illustration_large" aria-hidden="true">
+                            <img src="/img/chatter/noContent.svg" class="slds-illustration__svg" alt=""/>
+                            <div class="slds-text-color_weak">
+                                <h3 class="slds-text-heading_medium">No Results Found</h3>
+                            </div>
+                        </div> -->
+              </template>
+            </div>
+          </div>
+          <div class="slds-modal__footer cancelBut">
+            <lightning-button
+              class="neutral-button"
+              label="Cancel"
+              title="Back"
+              onclick={closeAccountSearchMobile}
+            ></lightning-button>
+          </div>
+        </div>
+        <!-- </template> -->
+        <!-- </div>-->
+      </section>
+      <!-- <div class="slds-backdrop slds-backdrop_open"></div>-->
+    </template>
+  </template>
+  <template if:true={showFilters}>
+  	<!-- FRONT-12020: Removed aria labellyby and describedby to prevent the screenreader from reading the entire section-->
+    <section
+      role="dialog"
+
+      aria-modal="true"
+
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <div class="slds-page-header__controls filters-info-header">
+          <p
+            class="customer-info-title"
+            style="text-align: left; padding: 16px"
+          >
+            Filters
+          </p>
+			
+          <!-- FRONT-12020: Added class for filter close button to programatically focus-->
+          <button
+          	style="height: fit-content; margin-top: 8px"
+            class="slds-button slds-modal__close filters-close-button"
+            title="Close"
+            onclick={handleFilterCancel}
+          >
+            <lightning-icon
+              icon-name="utility:close"
+              alternative-text="close"
+              size="x-small"
+              class="close-icn"
+            >
+            </lightning-icon>
+          </button>
+        </div>
+
+        <div
+          class="slds-modal__content slds-p-around_medium"
+          id="modal-content-id-2"
+        >
+          <div class="slds-form fiterForm">
+            <!-- START::FRONT-2445,2443,2440,2442,2439,3125 -->
+            <lightning-input
+              label="Account Name"
+              type="text"
+              maxlength="255"
+              placeholder={label.AccountSearchPlaceholder}
+              data-field-class="filterOption"
+              data-id="Name"
+              value={accName}
+              onchange={handleFilterChange}
+              data-attribute="LIKE"
+            ></lightning-input>
+            <lightning-combobox
+              name="accountTypeFilter"
+              label="Account Type"
+              value={accountTypeFilterValue}
+              options={accountTypeFilterOptions}
+              data-field-class="filterOption"
+              data-id="Record_Type_Text__c"
+              onchange={handleFilterChange}
+              data-attribute="="
+            >
+            </lightning-combobox>
+            <!--<lightning-combobox class="filters-state" name="State" label="State" placeholder="--None--" options={stateOptions} onchange={handleStateChange} ></lightning-combobox> -->
+            <lightning-input
+              class="filters-address"
+              type="text"
+              label="Billing Address"
+              placeholder={label.AddressPlaceholder}
+              value={streetAddressValue}
+              onchange={handleStreetAddressChange}
+              data-field-class="filterOption"
+              data-id="BillingStreet"
+              data-attribute="LIKE"
+            ></lightning-input>
+            <!-- Start - Story #13454 -->
+
+            <lightning-combobox
+              name="countryFilter"
+              label="Country"
+              value={strCountry}
+              options={countryOptions}
+              onchange={handleCountryChange}
+              placeholder={label.countryPlaceholder}
+              data-field-class="filterOption"
+              data-id="BillingCountryCode"
+              data-attribute="LIKE"
+            ></lightning-combobox>
+
+            <lightning-input
+              placeholder="Search City"
+
+              label="Billing City"
+              name="BillingCity"
+              value={billingCity}
+              onchange={handleFilterChange}
+              data-field-class="filterOption"
+              data-id="BillingCity"
+              data-attribute="="
+            ></lightning-input>
+            <lightning-combobox
+              name="dlBillingStateFilter"
+              label="Billing State"
+              options={stateOptions}
+              value={billingStateSelected}
+              onchange={handleBillingStateChange}
+              placeholder="Select State or Province"
+              data-field-class="filterOption"
+              data-id="BillingState"
+              data-attribute="LIKE"
+            ></lightning-combobox>
+            <lightning-input
+              placeholder="Search Zipcode"
+              label="Billing Zipcode"
+
+              name="BillingPostalCode"
+              value={billingZip}
+              onchange={handleFilterChange}
+              data-field-class="filterOption"
+              data-id="BillingPostalCode"
+              data-attribute="="
+            ></lightning-input>
+            <!-- End - Story #13454 -->
+            <lightning-input
+              class="filters-phone"
+              type="tel"
+              label="Phone"
+              pattern="[0-9]+"
+              name="phone"
+              maxlength="10"
+              placeholder={label.phonePlaceholder}
+              value={phoneValue}
+              onchange={handlePhoneChange}
+              onblur={handlePhone}
+              data-field-class="filterOption"
+              data-id="Phone"
+              data-attribute="LIKE"
+            ></lightning-input>
+
+            <lightning-combobox
+              name="dlStateFilter"
+              label="D/L State or Province"
+              options={stateOptions}
+              value={stateSelected}
+              onchange={handleStateChange}
+              placeholder={label.StatePlaceholder}
+              data-field-class="filterOption"
+              data-id="Driver_s_License_State__c"
+              data-attribute="LIKE"
+            >
+            </lightning-combobox>
+            <lightning-input
+              label="D/L Number"
+              value={driverLicenseNo}
+              type="text"
+              placeholder={label.DLPlaceholder}
+              data-field-class="filterOption"
+              data-id="Drivers_License__c"
+              onchange={handleFilterChange}
+              data-attribute="LIKE"
+            >
+            </lightning-input>
+            <lightning-input
+              label="Email Address"
+              value={email}
+              type="text"
+              placeholder={label.EmailPlaceholder}
+              data-field-class="filterOption"
+              data-id="E_mail_Address__c"
+              onchange={handleFilterChange}
+              data-attribute="LIKE"
+            >
+            </lightning-input>
+            <!-- END::FRONT-2445,2443,2440,2442,2439,3125 -->
+            <br /><br /><br />
+          </div>
+          <div
+            class="slds-m-top_medium slds-grid slds-grid_align-spread slds-docked-form-footer stickyFooter bottomfooter"
+          >
+            <div class="slds-col slds-size_3-of-4">
+              <span>&nbsp;&nbsp;&nbsp;</span>
+              <lightning-button
+                style="margin-left: 4px"
+                label="Cancel"
+                class="neutral-button"
+                onclick={handleFilterCancel}
+              ></lightning-button>
+              <span>&nbsp;&nbsp;</span>
+	      <!--added below aria-label attribute for FRONT-11596-->
+              <lightning-button
+                class="reset-button"
+                label="Reset All Filters"
+                aria-label="Reset All Filters"
+                variant="base"
+                onclick={resetFilters}
+              ></lightning-button>
+              <!-- ADDED FOR FRONT-11596 -->
+              <div aria-live="assertive" class="slds-assistive-text" id="resetBtn" role="status">{resetBtn}</div>
+            </div>
+            <div class="slds-col slds-size_1-of-4">
+	    <!--added below aria-label attribute for FRONT-11596-->
+              <lightning-button
+                label="Apply"
+                aria-label="Apply"
+                class="brand-button"
+                variant="brand"
+                onclick={applyFilters}
+              ></lightning-button>
+              <!-- ADDED FOR FRONT-11596 -->
+              <div aria-live="assertive" class="slds-assistive-text" id="applyBtn" role="status">{applyBtn}</div>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </template>
+
+  <template if:true={isModalOpen}>
+    <!-- FRONT-3450, FRONT-3451 Starts Duplicate Record Resolved -->
+    <c-sbr_3_0_custom-modal-cmp
+      is-modal-open={isModalOpen}
+      parentcmp={parentcmp}
+      onclosemodal={closeModal}
+      onhideresults={hideResults}
+    ></c-sbr_3_0_custom-modal-cmp>
+  </template>
+  <!--START: FRONT-3033, FRONT-2621, FRONT- 3115, FRONT-3125-->
+  <template if:true={editRecordForm}>
+    <c-sbr_3_0_edit-account-cmp
+      onclosemodal={closeEditModal}
+      onselectaccount={handleSaveAndSelectRecord}
+      props={props}
+      onrefreshcomponent={handleForceRefresh}
+      parentcmp={parentcmp}
+    ></c-sbr_3_0_edit-account-cmp>
+  </template>
+  <!--END: FRONT-3033, FRONT-2621, FRONT- 3115, FRONT-3125-->
+  <!--start for 4002-->
+
+  <template if:true={openConversionScreen}>
+    <c-sbr_3_0_convert-prospect-to-non-credit-account
+      onclose={closeConvertModal}
+      record-id={selectedRecId}
+      parentcmp={parentcmp}
+      callmobiletemplate={isMobile}
+      onselectaccount={handleSaveAndSelectRecord}
+      onhideresults={hideResults}
+    ></c-sbr_3_0_convert-prospect-to-non-credit-account>
+  </template>
+  <!--end for 4002-->
+</template>

@@ -1,0 +1,22 @@
+<template>
+    <section role="dialog"
+      aria-labelledby="modal-heading-02"
+      aria-modal="true"
+      aria-describedby="modal-content-id-2"
+      class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__content slds-p-around_large modalclass">
+           <h1 class="textColor" style="color:red !important;
+           margin-top:250px !important;">Reservation Order is currently being edited by other user, please
+            check back and refresh the Reservation Order.
+           </h1>
+        </div>
+        <footer class="slds-modal__footer bottomfooter">
+            <lightning-button class="neutral-button"
+            variant="neutral"
+            label="Back"
+            onclick ={closeErrorScreen}
+            ></lightning-button>
+           
+        </footer>
+    </section>
+</template>

@@ -1,0 +1,12 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:actionOverride,force:hasSObjectName"
+>
+  <c:sbr_3_0_dynamicRecordFormCollector
+    recordId="{!v.recordId}"
+    objectApiName="{!v.sObjectName}"
+    actionName="cancel"
+    isHeadless="true"
+    oncloseauraaction="{!c.handleCloseAction}"
+  >
+  </c:sbr_3_0_dynamicRecordFormCollector>
+</aura:component>

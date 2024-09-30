@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Required Custom Lookup Component</masterLabel>
+    <description>This is a component to mimic a SF lookup component</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" label="Record ID" type="String"/>
+            <property name="whereClause" label="WHERE CLAUSE" type="String" />
+            <property name="fieldsToInclude" label="Fields To Include" type="String" />
+            <property name="hasCustomNameField" label="Has Custom Name Field" description="True if name is in a custom field" type="Boolean" />
+            <property name="customNameField" label="Name Field API Name" type="String" />
+            <property name="fieldsToSet" label="DO NOT USE" description="DNU" type="String" />
+            <property name="label" label="Label" type="String" />
+            <property name="sObjectApiName" label="sObjectApiName" type="String" />
+            <property name="iconName" label="Icon Name" type="String" />
+            <property name="placeholder" label="Placeholder" type="String" />
+            
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

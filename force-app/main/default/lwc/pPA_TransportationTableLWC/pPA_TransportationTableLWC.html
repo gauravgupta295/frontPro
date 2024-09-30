@@ -1,0 +1,117 @@
+<template>
+    <!-- added this card div to make the container look more native to the whole page and have a background -->
+    <template if:true={showSpinner}>
+        <lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+    </template>
+    <!-- error will be displayed in red text here if something is wrong -->
+    <template if:true={error}>
+        <div class="slds-text-color_error">{error}</div>
+    </template>
+    <div
+        class="slds-p-vertical_x-small slds-grid slds-grid_vertical-align-center slds-card__header-title slds-media__body">
+        <lightning-icon icon-name="utility:transport_heavy_truck" size="small"> </lightning-icon>
+        <lightning-formatted-text class="slds-m-left--x-small" value={transType}></lightning-formatted-text>
+    </div>
+    <template if:true={readOnlyMode}>
+            <div class="hideFirstColTable">
+                <lightning-datatable key-field="Id" data={transportationData} columns={colDisplay} onsave={handleSave}
+                    draft-value={draftValues} show-row-number-column hide-checkbox-column onrowaction={handleRowAction}>
+                </lightning-datatable>
+            </div>
+    </template>
+    <template if:false={readOnlyMode}>
+        <div>
+            <table class="transportation-zoom slds-table slds-table_bordered slds-table_col-bordered slds-table_fixed-layout">
+                <thead>
+                    <tr class="headerClass">
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="Truck Type">Truck Type</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="0-10">0-10 {htmlHeader}</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="11-20">11-20 {htmlHeader}</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="21-30">21-30 {htmlHeader}</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="31-40">31-40 {htmlHeader}</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="40+">40+ {htmlHeader}</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col">
+                            <div class="" title="Transportation Rate Summary">Transportation Rate Summary</div>
+                        </th>
+                        <th class="slds-cell-wrap" scope="col" style="width: 50px !important"></th>
+                    </tr>
+                </thead>
+                <tbody class="custompopup">
+                    <template for:each={transportationData} for:item="item" for:index="index">
+
+                        <tr key={item.Id} data-index={index} data-value={item.Id}>
+                            <td class="slds-cell-wrap">
+                                <lightning-formatted-text value={item.PPA_Truck_Type__c} data-index={index} 
+                                data-value={item.PPA_Truck_Type__c} data-id="PPA_Truck_Type__c" 
+                                data-recordid={item.Id} format-style="currency" currency-code="USD"></lightning-formatted-text>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-input class="inptCls" label="" variant="label-hidden" type="number"
+                                    formatter="currency" step=".01" data-id="PPA_New_Band1__c" data-index={index} 
+                                    data-value={item.PPA_New_Band1__c} data-recordid={item.Id} value={item.PPA_New_Band1__c} 
+                                    onchange={handleChange} max="999999999.99"></lightning-input>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-input class="inptCls" label="" variant="label-hidden" type="number" 
+                                formatter="currency" step=".01" data-id="PPA_New_Band2__c" data-index={index} 
+                                data-value={item.PPA_New_Band2__c} data-recordid={item.Id} value={item.PPA_New_Band2__c}
+                                    onchange={handleChange} max="999999999.99"></lightning-input>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-input class="inptCls" label="" variant="label-hidden" type="number" 
+                                formatter="currency" step=".01" data-id="PPA_New_Band3__c" data-index={index} 
+                                data-value={item.PPA_New_Band3__c} data-recordid={item.Id} value={item.PPA_New_Band3__c}
+                                    onchange={handleChange} max="999999999.99"></lightning-input>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-input class="inptCls" label="" variant="label-hidden" type="number" 
+                                formatter="currency" step=".01" data-id="PPA_New_Band4__c" data-index={index} 
+                                data-value={item.PPA_New_Band4__c} data-recordid={item.Id} value={item.PPA_New_Band4__c}
+                                    onchange={handleChange} max="999999999.99"></lightning-input>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-input class="inptCls" label="" variant="label-hidden" type="number" 
+                                formatter="currency" step=".01" data-id="PPA_New_Excess__c" data-index={index} 
+                                data-value={item.PPA_New_Excess__c} data-recordid={item.Id} value={item.PPA_New_Excess__c}
+                                    onchange={handleChange} max="999999999.99"></lightning-input>
+                            </td>
+                            <td class="slds-cell-wrap">
+                                <lightning-formatted-text value={item.PPA_Transportation_Rate_Summary__c} data-index={index} 
+                                data-value={item.PPA_Transportation_Rate_Summary__c} data-id="PPA_Transportation_Rate_Summary__c" 
+                                data-recordid={item.Id} format-style="currency" currency-code="USD"></lightning-formatted-text>
+                            </td>
+                            <td>
+                                <div tabindex="-1">
+                                    <lightning-button-menu icon-size="small" alternative-text="Show menu"
+                                        data-id={item.Id} onselect={handleMenuSelect} menu-alignment="right">
+                                        <lightning-menu-item value="clear" label="Clear Rates"></lightning-menu-item>
+                                    </lightning-button-menu>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="slds-align_absolute-center slds-p-top_small">
+            <template if:true={showButtons}>
+                <lightning-button label="Cancel" onclick={handleCancelEdits} icon-name="utility:clear"></lightning-button>
+                <lightning-button label="Save" variant="brand" onclick={handleSaveTableRecords} icon-name="utility:save"
+                    class="slds-m-left--x-small"></lightning-button>
+            </template>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,142 @@
+<template>
+	<div class="slds-grid slds-gutters_xx-small slds-wrap item-box itemVal" lwc:ref="rowDiv"
+		data-id={recordItem.recordId}>
+		<template lwc:if={recordItem.hasCheckbox}>
+			<template lwc:if={recordItem.isCheckboxChecked}>
+				<div class="slds-col slds-size_1-of-12" style="margin-top: -11px !important;">
+					<div class="slds-checkbox">
+						<input type="checkbox" id="checkbox-unique-id-81" value="checkbox-unique-id-81" data-id={recordItem.recordId}
+							data-name="checkbox" onchange={handleCheckboxChange} checked={recordItem.isCheckboxChecked} />
+						<label class="slds-checkbox__label" for="checkbox-unique-id-81">
+							<span class="slds-checkbox_faux"></span>
+						</label>
+					</div>
+				</div>
+			</template>
+			<template lwc:else>
+				<div class="slds-col slds-size_1-of-12" style="margin-top: -11px !important;">
+					<div class="slds-checkbox">
+						<input type="checkbox" id="checkbox-unique-id-82" value="checkbox-unique-id-82" data-id={recordItem.recordId}
+							data-name="checkbox" onchange={handleCheckboxChange} checked={checked} />
+						<label class="slds-checkbox__label" for="checkbox-unique-id-82">
+							<span class="slds-checkbox_faux"></span>
+						</label>
+					</div>
+				</div>
+			</template>
+			<template if:true={recordItem.hasHeader}>
+				<template lwc:if={recordItem.isHeaderLink}>
+					<template lwc:if={recordItem.isEditEnabled}>
+						<template lwc:if={recordItem.hasStatus}>
+							<div class="slds-col slds-size_8-of-12">
+								<a class="headerLink" onclick={handleEditClick}>{recordItem.headerText}</a>
+							</div>
+						</template>
+						<template lwc:else>
+							<div class="slds-col slds-size_10-of-12">
+								<a class="headerLink" onclick={handleEditClick}>{recordItem.headerText}</a>
+							</div>
+						</template>
+					</template>
+					<template lwc:else>
+						<template lwc:if={recordItem.hasStatus}>
+							<div class="slds-col slds-size_8-of-12">
+								<a class="headerLink" href={recordItem.url.link} target={recordItem.url.target}>{recordItem.url.value}</a>
+							</div>
+						</template>
+						<template lwc:else>
+							<div class="slds-col slds-size_10-of-12">
+								<a class="headerLink" href={recordItem.url.link} target={recordItem.url.target}>{recordItem.url.value}</a>
+							</div>
+						</template>
+					</template>
+				</template>
+				<template lwc:else>
+					<div class="slds-col slds-size_10-of-12">
+						<span class="display-name">{recordItem.headerText}</span>
+					</div>
+				</template>
+			</template>
+		</template>
+		<template lwc:else>
+			<template if:true={recordItem.hasHeader}>
+				<template lwc:if={recordItem.isHeaderLink}>
+					<div class="slds-col slds-size_6-of-12">
+						<a class="headerLink" href={recordItem.url.link} target={recordItem.url.target}>{recordItem.url.value}</a>
+					</div>
+				</template>
+				<template lwc:else>
+					<div class="slds-col slds-size_6-of-12">
+						<span class="display-name">{recordItem.headerText}</span>
+					</div>
+				</template>
+			</template>
+		</template>
+
+		<template lwc:if={recordItem.hasStatus}>
+			<div class="slds-col slds-size_6-of-12">
+				<span class={statusButtonBackgroundColour}>{recordItem.statusText}</span>
+			</div>
+		</template>
+		<template lwc:else>
+			<div class="slds-col slds-size_1-of-12">
+				<template lwc:if={recordItem.hasButtonsMenu}>
+					<!-- <div class="slds-col slds-size_1-of-1 slds-p-around_medium lgc-bg"> -->
+					<lightning-button-menu alternative-text="More actions" icon-size='x-small' onclick={openMenu}
+						onselect={handleMenuClick} data-id={recordItem.recordId} menu-alignment="auto">
+						<template for:each={recordItem.menuItems} for:item="itemValue">
+							<lightning-menu-item label={itemValue.label} value={itemValue.value} key={itemValue.value}
+								class="menuItem">
+							</lightning-menu-item>
+						</template>
+					</lightning-button-menu>
+					<!-- </div> -->
+				</template>
+				<template lwc:else>
+					<span>&nbsp;</span>
+				</template>
+			</div>
+		</template>
+		<template lwc:if={recordItem.hasCheckbox}>
+			<div class="slds-col slds-size_1-of-12 recordDetails">
+				<span>&nbsp;</span>
+			</div>
+			<div class="slds-col slds-size_10-of-12 recordDetails">
+				<div>
+					<template for:each={recordItem.columns} for:item="column">
+						<c-sbr_3_0_po-mobile-custom-data-column key={column.key} column-obj={column}>
+						</c-sbr_3_0_po-mobile-custom-data-column>
+					</template>
+				</div>
+			</div>
+		</template>
+		<template lwc:else>
+			<div class="slds-col slds-size_11-of-12 recordDetails">
+				<div>
+					<template for:each={recordItem.columns} for:item="column">
+						<c-sbr_3_0_po-mobile-custom-data-column key={column.key} column-obj={column}>
+						</c-sbr_3_0_po-mobile-custom-data-column>
+					</template>
+				</div>
+			</div>
+		</template>
+
+		<template lwc:if={recordItem.hasStatus}>
+			<div class="slds-col slds-size_1-of-12">
+				<template if:true={recordItem.hasButtonsMenu}>
+					<lightning-button-menu alternative-text="More actions" icon-size='x-small' onclick={openMenu}
+						onselect={handleMenuClick} data-id={recordItem.recordId} menu-alignment="auto">
+						<template for:each={recordItem.menuItems} for:item="itemValue">
+							<lightning-menu-item label={itemValue.label} value={itemValue.value} key={itemValue.value}
+								class="menuItem">
+							</lightning-menu-item>
+						</template>
+					</lightning-button-menu>
+				</template>
+			</div>
+		</template>
+		<template lwc:else>
+
+		</template>
+	</div>
+</template>

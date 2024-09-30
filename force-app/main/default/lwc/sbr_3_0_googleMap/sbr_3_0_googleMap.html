@@ -1,0 +1,764 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-18-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={showWrongAppToast}>
+        <div class="slds-notify_container slds-is-relative slds-m-top_small">
+            <div class="slds-theme_error" role="status">
+            <div class="notify_content" >
+                <h2 class="slds-text-heading_small slds-p-around_medium"> <b>You are utilizing the incorrect application.</b> </br> </br>
+                    Please utilize the bottom navigation bar, select Menu > App Launcher and select RAE Sales Mobile.
+                </h2>
+            </div>
+            </div>
+        </div>
+    </template>
+
+    <div class="container-card">
+
+        <template if:true={showSpinner}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+        <c-sbr_3_0_modal-cmp class="warningModal" header="Error" cancel-btn-label="Close">
+            <span slot="modalContent">
+                {modalMessage}
+            </span>
+        </c-sbr_3_0_modal-cmp>
+
+        <template if:true={showCreateForm}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    
+                    <div class="slds-modal__header">
+                        <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Create New</h1>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        
+                        <c-sbr_3_0_record-form recordid={recordFormIdCreate} obj={recordFormObjectCreate}
+                                create="true" icon={recordFormIconCreate} title={recordFormTitleCreate}
+                                wrapper={recordFormWrapperCreate} onrecordformaction={hideCreateForm}
+                                lat={pinDropLat} lng={pinDropLng} street={pinDropStreet} city={pinDropCity} state={pinDropState} full-state={pinDropFullState} zip={pinDropZip}
+                                country={pinDropCountry} onsubmit={hideCreateForm} onsaved={addMarkerNewRecord} onerror={handleError} onshowspinner={handleShowSpinner}
+                                onhidespinner={handleHideSpinner} onenablenext={showNextRadioButton} show-selection-screen={showSelectionScreen} onhandleerror={handleSaveError}
+                                onhideleadform={hideCreateFormLead}></c-sbr_3_0_record-form>
+
+                    </div>
+
+                    <template if:true={showFooter}>
+                        <div class="slds-modal__footer">
+                            <lightning-button
+                                variant="brand"
+                                type="cancel"
+                                name="cancel"
+                                label="Cancel"
+                                onclick={hideCreateForm}
+                                class="slds-m-around_xx-small"
+                                data-info="cancel"
+                            >
+                            </lightning-button>
+
+                            <template if:true={showSelectionScreen}>
+                                <lightning-button
+                                    variant="brand"
+                                    type="submit"
+                                    name="next"
+                                    label="Next"
+                                    onclick={handleNextRadioButton}
+                                    disabled={isNextDisabled}
+                                    class="slds-m-around_xx-small"
+                                >
+                                </lightning-button>
+                            </template>
+
+                            <template if:true={showSaveButton}>
+                                <lightning-button
+                                    variant="brand"
+                                    type="submit"
+                                    name="save"
+                                    label="Save"
+                                    onclick={handleSaveRecord}
+                                    class="slds-m-around_xx-small"
+                                >
+                                </lightning-button>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+
+        <div data-my-id="sidebarPanel" class="sidebar">
+
+            <template if:true={showRecordForm}>
+                <div class="table-container-form">
+                    <table>
+                        <thead>
+                            <th class="slds-float_left go-back slds-border_bottom" style="min-width: 100%;">
+                                <lightning-button
+                                    variant="base"
+                                    title="Back To List"
+                                    class=""
+                                    label="Back To List"
+                                    icon-name="utility:back"
+                                    icon-position="left"
+                                    onclick={goBack}
+                                ></lightning-button>
+                            </th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <c-sbr_3_0_record-form recordid={recordFormIdShow} obj={recordFormObjectShow}
+                                    view="true" icon={recordFormIconShow} title={recordFormTitleShow}
+                                    wrapper={recordFormWrapperShow} onshowspinner={handleShowSpinner}
+                                    onhidespinner={handleHideSpinner} onback={goBack}></c-sbr_3_0_record-form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+
+            <template if:false={showRecordForm}>
+                
+                <template if:false={showFilters}>
+
+                    <div class="table-container">
+                        <table class="tile-table">
+                            <thead>
+                                <tr>
+                                    <td class="slds-grid slds-wrap">
+                                        <div class="slds-col slds-size_1-of-8 slds-var-p-around_medium">
+                                            <lightning-icon icon-name="action:map" alternative-text="Maps" title="Maps" size="small"></lightning-icon>
+                                        </div>
+                                        <div class="slds-col slds-size_5-of-8 slds-var-p-left_medium slds-var-p-top_x-large slds-text-heading_medium slds-text-title_bold">
+                                            Maps
+                                        </div>
+                                        <div class="slds-col slds-size_2-of-8 slds-var-p-around_medium slds-align_absolute-center">
+                                            <lightning-button-menu alternative-text="Show menu" menu-alignment="auto" variant="border-filled">
+                                                <lightning-menu-item label="Open New Map Tab" onclick={openMapNewTab}></lightning-menu-item>
+                                                <lightning-menu-item label="New Account - Prospect" data-obj="Prospect" onclick={handleMenuCreateNew}></lightning-menu-item>
+                                                <lightning-menu-item label="New Account - Office" data-obj="Office" onclick={handleMenuCreateNew}></lightning-menu-item>
+                                                <lightning-menu-item label="New Opportunity" data-obj="Opportunity" onclick={handleMenuCreateNew}></lightning-menu-item>
+                                                <lightning-menu-item label="New Project" data-obj="Project__c" onclick={handleMenuCreateNew}></lightning-menu-item>
+                                                <lightning-menu-item label="New Lead" data-obj="Lead" onclick={handleMenuCreateNew}></lightning-menu-item>
+                                            </lightning-button-menu>
+                                        </div>
+                                        <div class="slds-col slds-size_7-of-7 slds-var-p-left_medium slds-var-p-top_medium">
+                                            <label class="slds-form-element__label label-padding slds-text-title_bold">Lists</label>
+                                        </div>
+                                        <div class="slds-col slds-size_4-of-7 slds-var-p-around_small">
+                                            <lightning-combobox name="ListSelect" label="Lists" value={selectedListValue} placeholder="Appointments" 
+                                                options={listSelectOptions} onchange={handleListSelectChange} variant="label-hidden"></lightning-combobox>
+                                        </div>
+                                        <div class="slds-col slds-size_3-of-7 slds-var-p-around_small">
+                                                <lightning-button-icon icon-name="utility:refresh" alternative-text="Refresh"
+                                                title="Refresh" onclick={refreshList} variant="border-filled"></lightning-button-icon>
+                                                <lightning-button-icon icon-name="utility:filterList" alternative-text="Open"
+                                                title="Open" onclick={toggleFilters} class="slds-p-left_x-small" variant="border-filled"></lightning-button-icon>
+                                                <lightning-button-icon icon-name={orderByDisplay} alternative-text="Sort"
+                                                title="Sort" onclick={sortList} class="slds-p-left_x-small" variant="border-filled"></lightning-button-icon>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>
+
+                                        <template for:each={recordsToDisplay} for:item="item" for:index="indexVar">
+
+                                            <!-- Event Tile -->
+                                            <template if:true={item.isEvent}>
+
+                                                <lightning-layout key={item.event.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.event.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.event.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.event.Id} data-obj="Event" data-icon="standard:event" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Event Summary" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Related To">Related To</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <template if:true={item.hasRelatedToWhoAndWhat}>
+                                                                                <p class="slds-truncate" title="Related To">{item.whoName}</p>
+                                                                                <p class="slds-truncate" title="Related To">{item.parentName}</p>
+                                                                            </template>
+                                                                            <template if:false={item.hasRelatedToWhoAndWhat}>
+                                                                                <template if:true={item.whoName}>
+                                                                                    <p class="slds-truncate" title="Related To">{item.whoName}</p>
+                                                                                </template>
+                                                                                <template if:true={item.parentName}>
+                                                                                    <p class="slds-truncate" title="Related To">{item.parentName}</p>
+                                                                                </template>
+                                                                            </template>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Start Date">Start Date</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Start Date">
+                                                                                <lightning-formatted-date-time
+                                                                                    value={item.event.StartDateTime}
+                                                                                    year="numeric" month="numeric"
+                                                                                    day="numeric" hour="2-digit"
+                                                                                    minute="2-digit"
+                                                                                    time-zone={userTimeZone}
+                                                                                    time-zone-name="short"></lightning-formatted-date-time>
+                                                                            </p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge appointment">Appointment</div>
+                                                                        <template if:true={item.isTop25}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge top25">Top 25</div></template>
+                                                                        <template if:true={item.isTop50}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge top50">Top 50</div></template>
+                                                                        <template if:true={item.isDormant}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge dormant">Dormant</div></template>
+                                                                        <template if:true={item.isWatchlist}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge watchlist">Watchlist</div></template>
+                                                                        <template if:true={item.isProspect}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge prospect">Prospect</div></template>
+                                                                        <template if:true={item.isCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge credit">Credit</div></template>
+                                                                        <template if:true={item.isERPLink}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge erplink">ERP Link</div></template>
+                                                                        <template if:true={item.isNonCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge non-credit">Non-Credit</div></template>
+                                                                        <template if:true={item.isGlobal}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge global">Global</div></template>
+                                                                        <template if:true={item.isOffice}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge office">Office</div></template>
+                                                                        <template if:true={item.isVendor}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge vendor">Vendor</div></template>
+                                                                        <template if:true={item.isFingerprint}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge fingerprint">Fingerprint</div></template>
+                                                                        <template if:true={item.isCommissionable}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge commissionable">Commissionable</div></template>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Account Tile -->
+                                            <template if:true={item.isAccount}>
+                                                <lightning-layout key={item.account.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.account.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.account.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.account.Id} data-obj="Account" data-icon="standard:account" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Account Title" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+
+                                                                        <template if:true={item.account.ParentId}>
+                                                                            <dt class="tile-label">
+                                                                                <p title="Parent Account">Parent Account</p>
+                                                                            </dt>
+                                                                            <dd class="tile-detail">
+                                                                                <p class="slds-truncate" title="Parent Account">{item.account.Parent.Name}</p>
+                                                                            </dd>
+                                                                        </template>
+
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Account Number">Account Number</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Account Number">{item.account.RM_Account_Number_Display__c}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Credit Status">Credit Status</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Credit Status">{item.account.Status__c}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Rank">Rank</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Rank">{item.rank}</p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge account">Account</div>
+                                                                        <template if:true={item.isTop25}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge top25">Top 25</div></template>
+                                                                        <template if:true={item.isTop50}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge top50">Top 50</div></template>
+                                                                        <template if:true={item.isDormant}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge dormant">Dormant</div></template>
+                                                                        <template if:true={item.isWatchlist}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge watchlist">Watchlist</div></template>
+                                                                        <template if:true={item.isProspect}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge prospect">Prospect</div></template>
+                                                                        <template if:true={item.isCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge credit">Credit</div></template>
+                                                                        <template if:true={item.isERPLink}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge erplink">ERP Link</div></template>
+                                                                        <template if:true={item.isNonCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge non-credit">Non-Credit</div></template>
+                                                                        <template if:true={item.isGlobal}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge global">Global</div></template>
+                                                                        <template if:true={item.isOffice}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge office">Office</div></template>
+                                                                        <template if:true={item.isVendor}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge vendor">Vendor</div></template>
+                                                                        <template if:true={item.isFingerprint}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge fingerprint">Fingerprint</div></template>
+                                                                        <template if:true={item.isCommissionable}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge commissionable">Commissionable</div></template>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Jobsite Tiles -->
+                                            <template if:true={item.isJobsite}>
+                                                
+                                                <lightning-layout key={item.jobsite.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.jobsite.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.jobsite.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.jobsite.Id} data-obj="AssociatedLocation" data-icon="standard:location" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+                                                                    
+                                                                    <div id={indexVar} class="tooltipContainer">
+                                                                        <div class="toolTip slds-align--absolute-center slds-rise-from-ground slds-popover slds-popover_tooltip slds-nubbin_bottom-left" role="tooltip">
+                                                                            <div class="slds-popover__body">{item.summary}</div>
+                                                                        </div>
+                                                                        <h3 class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    </div>
+                                                                   
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Related To">Related To</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Related To">{item.parentName}</p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge jobsite">Job Site</div>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Project Tiles -->
+                                            <template if:true={item.isProject}>
+
+                                                <lightning-layout key={item.project.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.project.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.project.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.project.Id} data-obj="Project__c" data-icon="standard:crew_member" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Project Name" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Project Type">Project Type</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Project Type">{item.project.Primary_Project_Type__c}</p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge project">Project</div>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Opportunity Tiles -->
+                                            <template if:true={item.isOpportunity}>
+
+                                                <lightning-layout key={item.opportunity.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.opportunity.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.opportunity.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.opportunity.Id} data-obj="opportunity" data-icon="standard:opportunity" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Opportunity Name" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Stage">Stage</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Stage">{item.opportunity.StageName}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Est Start Date">Est Start Date</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Est Start Date">
+                                                                                <lightning-formatted-date-time value={item.opportunity.Est_Start_Date__c}
+                                                                                    year="numeric" month="numeric" day="numeric">
+                                                                                </lightning-formatted-date-time></p>
+                                                                            </p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge opportunity">Opportunity</div>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Lead Tiles -->
+                                            <template if:true={item.isLead}>
+
+                                                <lightning-layout key={item.lead.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.lead.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.lead.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.lead.Id} data-obj="lead" data-icon="standard:lead" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Lead Name" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Lead Source">Lead Source</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Lead Source">{item.lead.LeadSource}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Address">Address</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Address">{item.street}</p>
+                                                                            <p class="slds-truncate" title="CityStateZip">{item.city}, {item.state} {item.postal}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Company">Company</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Company">{item.lead.Company}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Phone">Phone</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Phone">{item.lead.Phone}</p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge lead">Lead</div>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                            <!-- Task Tiles -->
+                                            <template if:true={item.isTask}>
+
+                                                <lightning-layout key={item.task.Id} multiple-rows class="list-tile" >
+                                                    <div class="slds-grid slds-wrap tile-grid">
+                                                        <div class="slds-col slds-size_1-of-8">
+                                                            <div class="slds-p-around_medium">
+                                                                {item.index}
+                                                            </div>
+                                                        </div>
+                                                        <div class="slds-col slds-size_7-of-8">
+                                                            <lightning-layout-item key={item.task.Id} size="12" padding="around-small">
+                                                                <lightning-tile key={item.task.Id} type="media" href="#" data-lat={item.lat} data-lng={item.lng}
+                                                                                    onclick={moveToPin} data-id={item.task.Id} data-obj="task" data-icon="standard:task" 
+                                                                                    data-title={item.summary} data-street={item.street} data-city={item.city} data-state={item.state} 
+                                                                                    data-postal={item.postal} data-country={item.country} data-recordtype={item.recordType}>
+
+                                                                    <h3 title="Task Subject" class="slds-tile__title slds-truncate sbr-green">{item.summary}</h3>
+                                                                    <dl class="slds-dl_horizontal">
+                                                                        <dt class="tile-label">
+                                                                            <p title="Priority">Priority</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Priority">{item.task.Priority}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Due Date">Due Date</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Due Date">
+                                                                                <lightning-formatted-date-time value={item.task.ActivityDate}
+                                                                                    year="numeric" month="numeric" day="numeric" time-zone="UTC">
+                                                                                </lightning-formatted-date-time></p>
+                                                                            </p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Name">Name</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Name">{item.whoName}</p>
+                                                                        </dd>
+                                                                        <dt class="tile-label">
+                                                                            <p title="Related To">Related To</p>
+                                                                        </dt>
+                                                                        <dd class="tile-detail">
+                                                                            <p class="slds-truncate" title="Related To">{item.parentName}</p>
+                                                                        </dd>
+                                                                    </dl>
+                                                                    <div class="slds-grid slds-wrap slds-p-top_x-small">
+                                                                        <div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge task">Task</div>
+                                                                        <template if:true={item.isTop25}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge top25">Top 25</div></template>
+                                                                        <template if:true={item.isDormant}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge dormant">Dormant</div></template>
+                                                                        <template if:true={item.isWatchlist}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge watchlist">Watchlist</div></template>
+                                                                        <template if:true={item.isProspect}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge prospect">Prospect</div></template>
+                                                                        <template if:true={item.isCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge credit">Credit</div></template>
+                                                                        <template if:true={item.isERPLink}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge erplink">ERP Link</div></template>
+                                                                        <template if:true={item.isNonCredit}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge non-credit">Non-Credit</div></template>
+                                                                        <template if:true={item.isGlobal}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge global">Global</div></template>
+                                                                        <template if:true={item.isOffice}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge office">Office</div></template>
+                                                                        <template if:true={item.isVendor}><div class="slds-col slds-size_1-of-4 slds-p-around_xxx-small badge vendor">Vendor</div></template>
+                                                                        <template if:true={item.isFingerprint}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge fingerprint">Fingerprint</div></template>
+                                                                        <template if:true={item.isCommissionable}><div class="slds-col slds-size_1-of-3 slds-p-around_xxx-small badge commissionable">Commissionable</div></template>
+                                                                    </div>
+                                                                </lightning-tile>
+                                                            </lightning-layout-item>
+                                                        </div>
+                                                    </div>
+                                                </lightning-layout>
+                                            </template>
+
+                                        </template>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                    <div class="sidebar-footer slds-p-around_x-small">
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_3-of-4 slds-var-p-around_medium">
+                                Showing Results {pageIndexStart}-{pageIndexEnd} of {pageTotalRecords}
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <lightning-button-icon icon-name="utility:chevronleft"  alternative-text="Previous" title="Previous"
+                                                    onclick={handlePrevious} disabled={disablePrev} variant="container"></lightning-button-icon>
+                                <lightning-button-icon icon-name="utility:chevronright"  alternative-text="Next" title="Next"
+                                                    onclick={handleNext} disabled={disableNext} variant="container"></lightning-button-icon>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+
+
+                <template if:true={showFilters}>
+
+                    <div class="table-container-form">
+                        <table>
+                            <thead>
+                                <th class="slds-float_left go-back slds-border_bottom" style="min-width: 100%;">
+                                    <lightning-button
+                                        variant="base"
+                                        title="Back To List"
+                                        class=""
+                                        label="Back To List"
+                                        icon-name="utility:back"
+                                        icon-position="left"
+                                        onclick={goBack}
+                                    ></lightning-button>
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <c-sbr_3_0_google-map-filters 
+                                            filter-wrapper={filterWrapper}
+                                            onapplyfilters={applyFilters}
+                                            onuserfilterupdate={updateFilterWrapper}
+                                            onsizechange={panelSizeChange}
+                                        ></c-sbr_3_0_google-map-filters>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+            </template>
+
+            <div data-my-id="closeSideDiv" onclick={closeSidePanel} class="closeBtn">
+                &lt;
+            </div>
+        </div>
+
+
+        <div class="legend-controls">
+            <div class="slds-grid slds-wrap slds-var-p-around_xx-small">
+                <div class="slds-col slds-size_1-of-5" onclick={toggleTerritory}>
+                    <img alt="Territory Icon" src={legendPolygon}/>
+                </div>
+                <div class="slds-col slds-size_4-of-5 slds-var-p-around_xx-small" onclick={toggleTerritory}>
+                    Territories
+                </div>
+                <div class="slds-col slds-size_1-of-5 legend-border" onclick={toggleLegend}>
+                    <img alt="Map Type Icon" src={legendCheckIn}/>
+                </div>
+                <div class="slds-col slds-size_4-of-5 slds-var-p-around_xx-small legend-border" onclick={toggleLegend}>
+                    Legend
+                </div>
+            </div>
+        </div>
+
+        <template if:true={showLegend}>
+            <div class="legend">
+                <div class="slds-grid slds-wrap slds-var-p-around_x-small">
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Appointment Icon" src={appointmentIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Appointments
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Account Icon" src={accountIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Accounts
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Dormant Icon" src={dormantIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Accounts: Dormant
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Top 50 Icon" src={top50Icon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Accounts: Top 50
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Prospect Icon" src={prospectIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Accounts: Prospect
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Watchlist Icon" src={watchlistIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Accounts: Watchlist
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Opportunity Icon" src={opportunityIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Opportunities
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Job Site Icon" src={jobSiteIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Job Sites
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Project Icon" src={projectIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Projects
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Lead Icon" src={leadIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Leads
+                    </div>
+                    <div class="slds-col slds-size_1-of-5 slds-var-p-around_xxx-small">
+                        <img alt="Branch Icon" src={branchIcon}/>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5 slds-var-p-around_xxx-small">
+                        Branches
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <iframe class="main" height="100%" width="100%" src={iFrameURL} allow="geolocation"></iframe>
+
+    </div>
+    
+</template>

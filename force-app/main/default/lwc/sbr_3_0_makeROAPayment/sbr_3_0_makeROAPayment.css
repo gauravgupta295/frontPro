@@ -1,0 +1,191 @@
+.slds-modal__container{
+    max-width: 70rem;
+    min-width: 70rem;
+    position: absolute;
+    top: 50%;
+    right: -130%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   }
+  
+  .slds-col {
+      align-items: center;
+  }
+  /* CSS for styling the 'mild-bold' class */
+  .mild-bold {
+      font-weight: 500 !important;/* Sets font weight to 500, a medium boldness */
+    }
+  
+    .spinnermodal{
+      height:35rem;
+      position:relative
+    }
+  
+    .Error_Message{
+      background: #5C5C5C;
+      height: 80px;
+      color:#FFFFFF;
+      Font : SF Pro Text;
+      Size :12px;
+      padding-left: 12px;
+  }
+  .my-icon {
+      --sds-c-icon-color-foreground-default: white;
+  }
+  
+  .no-label .slds-button__label {
+      display: none;
+  }
+  
+  .seperatorClass{
+      margin-top: 27px;
+  }
+  .alignButtonLeft{
+      padding-left: 14px;
+  }
+  
+  .edited{
+      background-color: rgba(255, 255, 0, 0.436); /* Highlight in yellow when edited */
+  }
+  
+    .error {
+      border: 1px solid #ba0517; /* Add a red border to indicate error */
+  }
+  
+  .error::after {
+      content: attr(data-error-message); /* Display the error message as a pseudo-element */
+      display: block;
+      color: #ba0517; /* Set the color of the error message to red */
+      font-size: 0.75rem; /* Adjust font size as needed */
+      margin-top: 4px; /* Add some spacing between the input and the error message */
+  }
+  
+  /* 
+     Set width for custom-small-input lightning-input
+     to 140px.
+  */
+  .custom-small-input lightning-input {
+      width: 140px;
+      margin-left: 10px;
+  }
+  
+  /* 
+     Use flexbox to create a grid layout with equal 
+     space between elements.
+  */
+  .slds-grid {
+      display: flex;
+      justify-content: space-between;
+  }
+  
+  /* 
+     Set width for elements with class slds-border_bottom
+     to 45%.
+  */
+  .slds-border_bottom {
+      width: 100%;
+      padding-top: 13px;
+  }
+  
+  /* 
+     Set background color for elements with class payment-banner
+     to #f0f0f0.
+  */
+  .payment-banner {
+      background-color: #f0f0f0;
+      position: relative;
+  }
+  
+  /* 
+     Set background color for elements with class card-bgc
+     to #f0f0f0.
+  */
+  .card-bgc {
+      --slds-c-card-color-background: #f0f0f0;
+  }
+  
+  
+  .total-payment {
+      margin-bottom: 20px; /* Adjust as needed */
+  }
+  
+  .custom-medium-input{
+      display: flex;
+      padding-right: 5px;
+  }
+  
+  .searchInput{
+      margin-right: 5px;
+  }
+  
+  .editable-cell-container {
+      position: relative;
+  }
+  
+  .editable-cell-container .editable-cell {
+      display: inline-block;
+      padding-right: 10px; /* Adjust the padding to move the content slightly left */
+  }
+  
+  
+  .editable-cell:hover::after {
+      content: '\270E'; /* Edit symbol, you can customize this */
+      position: absolute;
+      top: 50%;
+      right: 5px;
+      transform: translateY(-50%) rotate(90deg); /* Rotate the symbol */
+      color: #888; /* Adjust the color as needed */
+      font-size: 12px; /* Adjust the font size as needed */
+      cursor: pointer;
+  }
+  
+  .error-checkbox {
+      border: 1px solid #ba0517; /* Red border */
+  }
+  
+  .error-cell {
+      border: 1px solid #ba0517; /* Red border */
+      background-color: rgba(255, 255, 0, 0.436);/* Light red background */
+  }
+  
+  .slds-table th td {
+      padding: 0 1rem; /* Adjust the padding as needed */
+  }
+  
+  .cardlabel{
+      padding-left: 40px;
+  }
+  
+  .profitlabel{
+      padding-left: 140px;
+  }
+
+  .filterPanel{
+    position: absolute;
+    z-index: 2;
+    right: 11px;
+    overflow-y: hidden;
+}
+
+.green_text{
+    color: #25683E;
+}
+
+.red-icon{
+    --slds-c-icon-color-foreground: #C23934;
+}
+ 
+    .THIS.addinvoice {
+        color: #4caf50;
+    }
+ 
+    .addinvoicetable {
+        width:50%;
+}
+.filterWithCount{
+    background-color : white;
+    /*padding-right : 10px;*/
+    display: flex;
+    border-radius : 0.25rem;
+    border : 1px solid #888
+}

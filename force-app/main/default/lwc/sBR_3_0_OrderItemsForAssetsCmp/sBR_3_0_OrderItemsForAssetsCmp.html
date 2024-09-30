@@ -1,0 +1,44 @@
+<!--
+  @description       : 
+  @author            : Hamza B
+  @group             : 
+  @last modified on  : 07-04-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template for:each={orderList} for:item="orderItem">
+        <div class="element" key={orderItem.Id}>
+            <div class="title" if:true={orderItem.Name}>
+                <h1 style="color: rgba(4, 194, 62, 1); font-size:x-large;" > { orderItem.Name } </h1>
+                <br>
+            </div>
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Order Number : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Order Record Type : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Total Estimated Revenue : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Contract Order Number : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Reservation Order Number : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Start Date : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Status : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Sales Rep : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Ordering Branch : </h4>
+                   <h4 style="color: rgba(33, 32, 33, 0.49)">Job Site Branch : </h4>
+                </div>
+                <div class="slds-col">
+                    <h4> { orderItem.OrderNumber } </h4>
+                    <h4> { orderItem.Record_Type_Name__c } </h4>
+                    <h4> { orderItem.Total_Estimated_Revenue__c } </h4>
+                    <h4> { orderItem.Contract_Order_Number__c } </h4>
+                    <h4> { orderItem.Reservation_Order_Number__c } </h4>
+                    <h4> { orderItem.Start_Date__c } </h4>
+                    <h4> { orderItem.Status } </h4>
+                    <h4> { orderItem.Sales_Rep__c } </h4>
+                    <h4> { orderItem.Branch__c } </h4>
+                    <h4> { orderItem.Job_Site_Branch__c } </h4>
+                </div>
+            </div>
+            <hr>   
+        </div>
+    </template>
+</template>

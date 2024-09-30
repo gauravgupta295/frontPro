@@ -1,0 +1,268 @@
+<template>
+  <lightning-accordion-section
+    name={sectionName}
+    label={salesMiscItemsDynamicLabel}
+  >
+    <div class="slds-border_top slds-p-bottom_medium borderLine"></div>
+    <div class="slds-grid">
+      <select id="menu">
+        <option value="SALES">Sales</option>
+        <option value="MISC">Misc</option>
+      </select>
+      <div class="inputclass">
+        <lightning-input
+          class="item-search-input inputBoxSize"
+          type="search"
+          variant="label-hidden"
+          placeholder={assetSearchPlaceholder}
+          style="width: 100%"
+        >
+        </lightning-input>
+      </div>
+    </div>
+    <div class="slds-p-bottom_medium"></div>
+    <div class="item-list-ctr">
+      <template if:true={isRecordListNotEmpty}>
+        <template
+          for:each={salesLineItems}
+          for:item="lineItem"
+          for:index="index"
+        >
+          <div class="line-item slds-p-top_small" key={lineItem.Id}>
+            <div
+              class="line-item-header slds-grid slds-grid_align-spread textInput"
+            >
+              <lightning-input
+                type="checkbox"
+                label={lineItem.Name}
+                name={lineItem.Name}
+                id={lineItem.Id}
+                data-id={lineItem.Id}
+                value={lineItem.Id}
+                class="textInput isChecked"
+                onchange={handleCheckboxChange}
+                checked={showRemoveScreenSales}
+              >
+              </lightning-input>
+
+              <lightning-button-menu
+                alternative-text="More actions"
+                icon-size="small"
+                menu-alignment="auto"
+                class="menu-item slds-p-top_x-small"
+              >
+                <lightning-menu-item
+                  value="Edit"
+                  label="Edit"
+                  class="menuItem"
+                  onclick={handleEditClick}
+                  data-index={index}
+                ></lightning-menu-item>
+                <!--start for 4002-->
+                <lightning-menu-item
+                  value="Remove"
+                  label="Remove Item"
+                  class="menuItem"
+                  data-id={lineItem.Id}
+                  onclick={handleRemoveAction}
+                ></lightning-menu-item>
+              </lightning-button-menu>
+            </div>
+            <div class="slds-p-left_x-large slds-p-right_xx-large">
+              <div class="slds-grid slds-gutters slds-wrap">
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Part/Item #</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.itemNumber}</span>
+                </div>
+
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Qty</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.Quantity}</span>
+                </div>
+                <template lwc:if={lineItem.isSalesItem}>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold"
+                      >Unit of Measure</span
+                    >
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <span class="slds-text-title"
+                      >{lineItem.unitOfMeasure}</span
+                    >
+                  </div>
+                </template>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Price</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <!-- <span class="slds-text-title">{lineItem.salesMiscPrice}</span>-->
+                  <lightning-formatted-number
+                    class="slds-text-title"
+                    format-style="currency"
+                    value={lineItem.salesMiscPrice}
+                  ></lightning-formatted-number>
+                </div>
+                <template lwc:if={lineItem.Notes}>
+                  <template lwc:if={lineItem.hideNotes}>
+                    <div
+                      class="toggle-text sbrGreenColor slds-col slds-size_2-of-2 slds-p-bottom_xx-small"
+                      data-line-item-id={lineItem.Id}
+                      data-toggle-type="Notes"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.HIDE_NOTES}
+                    </div>
+                    <div
+                      class="slds-col slds-size_2-of-2 slds-p-bottom_small textStyle"
+                    >
+                      <span class="slds-text-title">{lineItem.Notes}</span>
+                    </div>
+                  </template>
+                  <template lwc:else>
+                    <div
+                      class="toggle-text sbrGreenColor slds-col slds-size_2-of-2 slds-p-bottom_small"
+                      data-line-item-id={lineItem.Id}
+                      data-toggle-type="Notes"
+                      onclick={toggleViewContent}
+                    >
+                      {LABELS.VIEW_NOTES}
+                    </div>
+                  </template>
+                </template>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+      <template if:false={isRecordListNotEmpty}>
+        <lightning-card>
+          <div
+            class="slds-illustration slds-illustration_small backCl"
+            aria-hidden="true"
+          >
+            <img class="slds-illustration__svg" alt="" src={noItemUrl} />
+            <h3
+              class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+            >
+              {LABELS.NO_SALES_ITEM_MSG}
+            </h3>
+          </div>
+        </lightning-card>
+      </template>
+    </div>
+  </lightning-accordion-section>
+  <!--Front-15728 Start-->
+  <template lwc:if={isShowRemove}>
+    <c-sbr_3_0_mobile-screen title={LABELS.REMOVE_TITLE}>
+      <template if:true={isLoading}>
+        <lightning-spinner size="medium"></lightning-spinner>
+      </template>
+      <p class="removeScreen">{LABELS.REMOVE_LINE_ITEM}</p>
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <div>
+          <lightning-button
+            label="No"
+            onclick={handleNo}
+            class="neutral-button"
+          >
+          </lightning-button>
+        </div>
+        <div>
+          <lightning-button
+            label={LABELS.REMOVE_TITLE}
+            variant="brand"
+            onclick={removeItem}
+            class="brand-button"
+          ></lightning-button>
+        </div>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!--Front-15728 End-->
+
+  <!--Front-15261 START-->
+  <template lwc:if={showEditor}>
+    <c-sbr_3_0_mobile-screen title={selectedItemName}>
+      <c-sbr_3_0_contract-line-item-editor-cmp
+        lwc:ref="contractItemEditorCmp"
+        selected-item={selectedItem}
+        onclosemodal={handleCloseEditor}
+        ondisableconfirm={disableConfirmButton}
+      ></c-sbr_3_0_contract-line-item-editor-cmp>
+      <div slot="footer" class="slds-grid slds-grid_align-spread">
+        <div>
+          <lightning-button
+            label="Cancel"
+            class="neutral-button"
+            onclick={handleCancel}
+          >
+          </lightning-button>
+        </div>
+        <div>
+          <lightning-button
+            label="Confirm"
+            variant="brand"
+            class="brand-button"
+            onclick={handleConfirm}
+            disabled={disableConfirm}
+          ></lightning-button>
+        </div>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!--Front-15261 END-->
+  <template lwc:if={showRemoveScreenSales}>
+    <c-sbr_3_0_mobile-screen title="Remove Item(s)">
+      <div class="slds-p-around_medium">{LABELS.REMOVE_ITEM_MSG}</div>
+      <div class="slds-border_bottom slds-var-p-around_x-small">
+        <c-sbr_3_0_contract-line-items-bulk-remove
+          line-items-to-remove={lineItemsListToRemove}
+          onfinalselected={finalRecordstoRemove}
+          is-sales="true"
+        ></c-sbr_3_0_contract-line-items-bulk-remove>
+      </div>
+      <div slot="footer">
+        <lightning-layout
+          vertical-align="center"
+          horizontal-align="space"
+          pull-to-boundary="small"
+          size="12"
+          class="slds-p-bottom_small"
+        >
+          <lightning-layout-item size="3">
+            <lightning-button
+              class="neutral-button"
+              value={LABELS.CANCEL}
+              onclick={handleRemoveCancel}
+              label="Cancel"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="4"> </lightning-layout-item>
+          <lightning-layout-item size="5">
+            <lightning-button
+              class="brand-button"
+              value="removeItems"
+              onclick={handleRemove}
+              label={LABELS.REMOVE_ITEMS_TITLE}
+              variant="brand"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+</template>

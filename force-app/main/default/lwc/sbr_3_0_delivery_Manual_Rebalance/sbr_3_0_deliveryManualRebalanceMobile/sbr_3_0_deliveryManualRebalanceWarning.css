@@ -1,0 +1,37 @@
+:host {
+  --slds-c-tabs-item-color: green;
+}
+.slds-modal__content {
+  flex: auto;
+  flex-direction: column;
+  width: 100%;
+}
+.slds-modal__container {
+  margin: unset;
+  padding: unset;
+}
+.customer-info-header {
+  background-color: #ffffff;
+  display: flex;
+  /*flex-direction: row;*/
+  justify-content: space-evenly;
+  align-items: center;
+  border-width: 1px;
+  border-color: #adabab;
+  border-style: solid;
+  width: 100vw;
+}
+.neutral-buttons {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #aeaeae !important;
+  --slds-c-button-neutral-color-border-hover: #aeaeae !important;
+}
+button.slds-button.slds-button_neutral {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #aeaeae !important;
+  --slds-c-button-neutral-color-border-hover: #aeaeae !important;
+}
+
+.selected-tab {
+  background-color: #f0f4f1;
+}

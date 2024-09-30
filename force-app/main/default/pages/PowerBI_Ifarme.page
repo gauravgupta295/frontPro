@@ -1,0 +1,3 @@
+<apex:page standardController="Account_Relationship__c">
+ <apex:iframe src="https://app.powerbi.com/reportEmbed?reportId=1cca240d-b18c-4482-bdde-92b3369fe614&autoAuth=true&ctid=83554dd6-5e5b-4f18-bfeb-28ac380c6519&config=eyJjbHVzdGVyVXJsIjoiaHR0cHM6Ly93YWJpLXVzLWVhc3QyLXJlZGlyZWN0LmFuYWx5c2lzLndpbmRvd3MubmV0LyJ9&filter=dw_x0020_vw_DimCustomer/CustomerKey%20eq%20%27232677%27" scrolling="true" id="theIframe"/>
+</apex:page>

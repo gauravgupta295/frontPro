@@ -1,0 +1,185 @@
+<template>
+	<template if:false={isMobileView}>
+	<div class={sectionClass}>
+		<h3 class="slds-section__title">
+			<button class="slds-button slds-section__title-action buttonClass" onclick={handleClick} >
+                <lightning-icon
+                    icon-name="utility:switch"
+                    class="slds-button__icon slds-button__icon_left slds-section__title-action-icon"
+                    size="x-small" 
+					style="padding-left: 2px;"
+                ></lightning-icon>
+                <span class="slds-truncate" title="Internal PO Comments">Internal PO Comments</span>
+            </button>
+		</h3>
+		<div class="slds-section__content" style="padding: 12px;">
+			<lightning-card icon-name="standard:lead_list" variant="Narrow" alternative-text="Indicates approval">
+				<p slot="title">Internal PO Comments<lightning-helptext
+					content="Comments will not appear on the Purchase Order and are for internal SBR use only" style="padding-bottom:50px;"></lightning-helptext></p>
+				<template if:true={showNewButton}>
+				<lightning-button variant="brand-outline" label="New" title="New" onclick={handleAddNew}
+					alternative-text="New" slot="actions">
+				</lightning-button>
+				</template>
+				<div class="slds-m-top_small slds-text-align_right">
+					<div style="margin-right:40px;">
+						<template if:true={openmodal}>
+							<c-sbr_3_0_edit-p-o-internal-comments row-id={currentRowId} comments={str}
+								onprogressvaluechange={handleModalState} onaddcomments={handleSaveButton}>
+							</c-sbr_3_0_edit-p-o-internal-comments>
+						</template>
+					</div>
+				</div>
+				<div style="height:150px;overflow:auto;">
+					<table class="slds-table slds-table_bordered slds-table_col-bordered slds-table_fixed-layout">
+						<thead>
+							<tr class="slds-text-title_caps">
+								<th scope="col">
+									<div class="slds-truncate" title="Date">Date</div>
+								</th>
+								<th scope="col">
+									<div class="slds-truncate" title="User">User</div>
+								</th>
+								<th scope="col" style="width: 50%;">
+									<div class="slds-truncate" title="Comments">Comments</div>
+								</th>
+								<template if:true={showEditButton}>
+									<th scope="col" style="width: 3%;"></th>
+								</template>
+							</tr>
+						</thead>
+						<tbody>
+							<template if:true={commentsObj}>
+								<template for:each={commentsObj} for:item="com" for:index="index">
+									<tr key={com.Id} data-index={index} data-value={com.Id}>
+										<td>
+											<lightning-formatted-date-time value={com.Date} year="numeric"
+												month="numeric" day="numeric" time-zone="UTC"></lightning-formatted-date-time>
+										</td>
+										<td>
+											<span>{com.User}</span>
+										</td>
+										<td>
+											<span>{com.Comments}</span>
+										</td>
+										<template if:true={showEditButton}>
+											<td>
+												<lightning-button-menu icon-size="small" alternative-text="Show menu"
+													data-id={com.Id} onselect={handleMenuSelect} menu-alignment="right">
+													<lightning-menu-item value="edit" label="Edit">
+													</lightning-menu-item>
+												</lightning-button-menu>
+											</td>
+										</template>
+									</tr>
+								</template>
+							</template>
+						</tbody>
+					</table>
+				</div>
+			</lightning-card>
+		</div>
+	</div>
+	</template>
+	<template if:true={isMobileView}>
+		<div class={sectionClass}>
+		<div class="slds-section__content">
+			<lightning-helptext
+					content="Comments will not appear on the Purchase Order and are for internal SBR use only" style="padding-left:280px;"></lightning-helptext>
+			<lightning-card icon-name="standard:lead_list" variant="Narrow" alternative-text="Indicates approval" >
+				<p slot="title">{sectionTitle}</p>
+				<template if:true={showNewButton}>
+				<lightning-button variant="neutral" label="New" title="New" onclick={handleAddNew}
+					alternative-text="New" slot="actions" class="neutral-button">
+				</lightning-button>
+				</template>
+				<div class="slds-m-top_small slds-text-align_right">
+					<div style="margin-right:40px;">
+						<template if:true={openmodal}>
+							<c-sbr_3_0_edit-p-o-internal-comments row-id={currentRowId} comments={str}
+								onprogressvaluechange={handleModalState} onaddcomments={handleSaveButton} onhandlemodalclose={handleFailedModal}> 
+							</c-sbr_3_0_edit-p-o-internal-comments>
+						</template>
+					</div>
+				</div>
+				<div>
+					<table class="slds-table slds-table_bordered" style="width:375px;">
+						<tbody>
+							<template if:true={commentsObj}>
+								<template for:each={commentsObj} for:item="com" for:index="index">
+									<tr key={com.Id} data-index={index} data-value={com.Id}>
+										<!--&emsp;Date:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;<lightning-formatted-date-time value={com.Date} year="numeric"
+																			month="numeric" day="numeric" time-zone="UTC" key={com.Id}></lightning-formatted-date-time>&emsp;&emsp;&emsp;&emsp;&emsp;<template if:true={showEditButton}><lightning-button-menu icon-size="small" button-size="xx-small" alternative-text="Show menu"
+													data-id={com.Id} onselect={handleMenuSelect} menu-alignment="right" key={com.Id}>
+													<lightning-menu-item value="edit" label="Edit">
+													</lightning-menu-item>
+										</lightning-button-menu></template><br key={com.Id}>
+										&emsp;User:&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;{com.User}<br key={com.Id}>
+										&emsp;Comment:&emsp;&emsp;&emsp;&emsp;&ensp;<div class="slds-cell-wrap" key={com.Id}>{com.Comments}</div><br key={com.Id}>-->
+										<!--<tr key={com.Id} data-index={index} data-value={com.Id}>
+											<td style="width:25%;">
+												Date:
+											</td>
+											<td>
+												<lightning-formatted-date-time value={com.Date} year="numeric"
+												month="numeric" day="numeric" time-zone="UTC" key={com.Id}></lightning-formatted-date-time>
+											</td>
+											<template if:true={showEditButton}>
+											<td style="width: 11%;">
+												<lightning-button-menu icon-size="small" alternative-text="Show menu"
+													data-id={com.Id} onselect={handleMenuSelect} menu-alignment="right">
+													<lightning-menu-item value="edit" label="Edit" variant="neutral" class="neutral-button">
+													</lightning-menu-item>
+												</lightning-button-menu>
+											</td>
+											</template>
+										</tr>
+										<tr key={com.Id} data-index={index} data-value={com.Id}>
+											<td style="width:25%;">
+												User:
+											</td>
+											<td>
+												{com.User}
+											</td>
+											<td></td>
+										</tr>
+										<tr key={com.Id} data-index={index} data-value={com.Id}>
+											<td style="width:25%;vertical-align:top;">
+												Comment:
+											</td>
+											<td class="slds-cell-wrap">
+												{com.Comments}
+											</td>
+											<td></td>
+										</tr>-->
+										<td style="width:21%;vertical-align:top;">
+											Date:<br>
+											User:<br>
+											Comment:<br>
+										</td>
+										<td style="width:60%;" class="slds-cell-wrap">
+											<lightning-formatted-date-time value={com.Date} year="numeric"
+																			month="numeric" day="numeric" time-zone="UTC" key={com.Id}></lightning-formatted-date-time><br>
+											{com.User}<br>
+											{com.Comments}<br>
+										</td >
+										<template if:true={showEditButton}>
+											<td style="width: 11%;">
+												<lightning-button-menu icon-size="small" alternative-text="Show menu"
+													data-id={com.Id} onselect={handleMenuSelect} menu-alignment="right">
+													<lightning-menu-item value="edit" label="Edit" variant="neutral" class="neutral-button">
+													</lightning-menu-item>
+												</lightning-button-menu>
+											</td>
+										</template>
+									</tr>
+								</template>
+							</template>
+						</tbody>
+					</table>
+				</div>
+			</lightning-card>
+		</div>
+		</div>
+	</template>
+</template>

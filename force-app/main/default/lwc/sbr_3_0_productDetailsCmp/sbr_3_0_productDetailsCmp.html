@@ -1,0 +1,217 @@
+<template>
+  <template if:false={isMobile}>
+    <template if:true={hasDetailsLoaded}>
+      <template if:true={isBase}>
+        <div class="details-container">
+          <lightning-carousel>
+            <template for:each={productImages} for:item="image">
+              <lightning-carousel-image
+                key={image}
+                src={image}
+                header={productName}
+                description={productImageDescription}
+                alternative-text={productName}
+                href="javascript:void(0);"
+              >
+              </lightning-carousel-image>
+            </template>
+          </lightning-carousel>
+          <div class="slds-section slds-is-open">
+            <h3 class="slds-section__title slds-theme_shade">
+              <span
+                class="slds-truncate slds-p-horizontal_small"
+                title="Description"
+                >Description</span
+              >
+            </h3>
+            <div
+              aria-hidden="false"
+              class="slds-section__content slds-p-left_x-small slds-p-right_x-small"
+            >
+              <template if:true={hasProductDescription}>
+                <lightning-formatted-rich-text
+                  value={productDescription}
+                ></lightning-formatted-rich-text>
+              </template>
+              <template if:false={hasProductDescription}>
+                <template if:false={isKit}>
+                  <p class="details-description slds-p-around_medium">
+                    There is no product description at this time.
+                  </p>
+                </template>
+                <template if:true={isKit}>
+                  <p class="details-description slds-p-around_medium">
+                    Kit Description Not Available.
+                  </p>
+                </template>
+              </template>
+            </div>
+            <div
+              aria-hidden="false"
+              class="slds-section__content slds-p-left_x-small slds-p-right_x-small"
+            >
+              <lightning-button
+                variant="base"
+                label="More Information"
+                title="clear-info"
+                onclick={navigateToRecord}
+                class="clear-info-button"
+              >
+              </lightning-button>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template if:true={isCompact}>
+        <div class="compact-container">
+          <div class="details">
+            <p class="name slds-text-title_bold">{productName}</p>
+            <p class="cat-class slds-text-title slds-text-color_weak">
+              {productCatClass}
+            </p>
+          </div>
+        </div>
+      </template>
+      <template if:true={isDesktopSalesTabDetailPanel}>
+        <template lwc:if={isContractSalesTab}>
+          <div class="item-description-class">
+            <div class="slds-p-top_medium slds-p-left_x-small"><b>Part/Item#:</b> {productItemNumber}</div>
+            <div class="slds-p-left_x-small"><b>Stock/Vendor:</b> {productStockClass}</div>
+            <div class="slds-p-left_x-small"><b>Unit Of Measure:</b> {productUnitOfMeasure}</div>
+          </div>
+        </template>
+      </template>
+    </template>
+  </template>
+
+  <template if:true={isMobile}>
+    <template if:true={hasDetailsLoaded}>
+      <template if:true={isBase}>
+        <div class="details-container">
+          <lightning-carousel>
+            <template for:each={productImages} for:item="image">
+              <lightning-carousel-image
+                key={image}
+                src={image}
+                header={productName}
+                description={productImageDescription}
+                alternative-text={productName}
+                href="javascript:void(0);"
+              >
+              </lightning-carousel-image>
+            </template>
+          </lightning-carousel>
+          <div class="slds-section slds-is-open">
+            <h3 class="slds-section__title slds-theme_shade">
+              <span
+                class="slds-truncate slds-p-horizontal_small"
+                title="Description"
+                >Description</span
+              >
+            </h3>
+            <div aria-hidden="false" class="slds-section__content">
+              <div class="addon-tabset">
+                <div class="addon-tiles">
+                  <template if:true={hasProductDescription}
+                    >1
+                    <lightning-formatted-rich-text
+                      value={productDescription}
+                    ></lightning-formatted-rich-text>
+                  </template>
+                  <template if:false={hasProductDescription}>
+                    <template if:false={isKit}>
+                      <p class="details-description slds-p-around_medium">
+                        There is no product description at this time.
+                      </p>
+                    </template>
+                    <template if:true={isKit}>
+                      <p class="details-description slds-p-around_medium">
+                        Kit Description Not Available.
+                      </p>
+                    </template>
+                  </template>
+                </div>
+              </div>
+            </div>
+            <div aria-hidden="false" class="slds-section__content">
+              <lightning-button
+                variant="base"
+                label="More Information"
+                title="clear-info"
+                onclick={navigateToRecord}
+                class="clear-info-button"
+              >
+              </lightning-button>
+            </div>
+          </div>
+        </div>
+      </template>
+      <template if:true={isImageCarousel}>
+        <div class="slds-card__body slds-card__body_inner mobile-container">
+          <template if:true={isImageCarouselRendered}>
+            <lightning-carousel class="mobile-container slds-size_12-of-12">
+              <template for:each={productImages} for:item="image">
+                <lightning-carousel-image
+                  key={image}
+                  src={image}
+                  href="javascript:void(0);"
+                >
+                </lightning-carousel-image>
+              </template>
+            </lightning-carousel>
+          </template>
+        </div>
+      </template>
+      <template if:true={isCompact}>
+        <div class="compact-container">
+          <div>
+            <p class="mobile-name slds-text-title_bold slds-p-bottom_x-small">
+              {productName}
+            </p>
+            <p class="mobile-cat-class slds-text-title slds-text-color_weak">
+              {productCatClass}
+            </p>
+          </div>
+        </div>
+      </template>
+      <!-- FRONT-11395 -->
+      <template if:true={isMobileSalesTabDetailPanel}>
+        <template lwc:if={isContractSalesTab}>
+          <div class="product-item-header-detail">
+            <div class="product-item-detail-class">
+              <b>Part/Item#:</b> {productItemNumber}
+            </div>
+            <div class="product-item-detail-class">
+              <b>Stock/Vendor:</b> {productStockClass}
+            </div>
+            <div><b>Unit Of Measure:</b> {productUnitOfMeasure}</div>
+          </div>
+        </template>
+        <template lwc:else>
+          <div class="compact-container">
+            <div>
+              <p class="mobile-name slds-text-title_bold slds-p-bottom_x-small">
+                {productName}
+              </p>
+            </div>
+          </div>
+        </template>
+      </template>
+      <!-- FRONT-11395 -->
+      <template if:false={isMobileSalesTabDetailPanel}>
+        <div class="slds-p-around_medium">
+          <template if:true={isMobileProductDescription}>
+            <template if:true={hasProductDescription}>
+              <p class="details-description">{productDescription}</p>
+            </template>
+            <template if:false={hasProductDescription}>
+              <p class="details-description">
+                There is no product description at this time.
+              </p>
+            </template>
+          </template>
+        </div>
+      </template>
+    </template>
+  </template>
+</template>

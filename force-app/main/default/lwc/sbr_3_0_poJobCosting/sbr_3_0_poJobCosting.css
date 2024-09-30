@@ -1,0 +1,21 @@
+:host {
+    --slds-c-accordion-summary-color-background: rgb(243, 243, 243);
+    --slds-c-accordion-heading-font-size: 0.85rem;
+}
+
+@media only screen and (max-width: 1000px) {
+    :host {
+        --slds-c-accordion-summary-color-background: white !important;
+        --slds-c-accordion-heading-font-size: 0.85rem;
+    }
+}
+
+button:focus {
+    text-decoration: none !important;
+    color: none !important;
+}
+
+button:hover {
+    text-decoration: none !important;
+    color: none !important;
+}

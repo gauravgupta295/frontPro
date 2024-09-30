@@ -1,0 +1,266 @@
+<template>
+  <div
+    class="slds-section slds-is-open slds-m-bottom_none"
+    data-id="Availability"
+  >
+    <div if:false={isMobile}>
+      <div if:false={isInModal}>
+        <c-sbr_3_0_availability-badge-cmp
+          if:true={branchLoaded}
+          onbranchdisplayupdate={handleBranchDisplayUpdate}
+          chronos-enabled={chronosEnabled}
+          branch={branchNumber}
+          product-cat={productCat}
+          object-api-name={objectApiName}
+          record-id={recordId}
+          location-information={locationInfo}
+          util={utilization}
+        ></c-sbr_3_0_availability-badge-cmp>
+      </div>
+      <h3 class="slds-section__title slds-theme_shade" if:false={isInModal}>
+        <button
+          type="button"
+          class="slds-button slds-section__title-action"
+          data-buttonid="Availability"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span
+            class="slds-truncate slds-p-horizontal_small"
+            title="Availability"
+            >Availability</span
+          >
+        </button>
+      </h3>
+    </div>
+
+    <!-- insert error message here -->
+    <div if:false={isInModal} class={illustrationDisplayClass}>
+      <div class="slds-align_absolute-center slds-p-top_xx-small">
+        <c-sbr_3_0_illustration-cmp
+          message="Availability Error"
+        ></c-sbr_3_0_illustration-cmp>
+      </div>
+      <div class="slds-align_absolute-center">
+        <template if:false={isMobile}>
+          <lightning-button
+            variant="base"
+            label="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}
+            icon-name="utility:refresh"
+            icon-position="right"
+            class="refresh-button"
+          >
+          </lightning-button>
+        </template>
+        <template if:true={isMobile}>
+          <lightning-button
+            variant="base"
+            label="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}
+            icon-name="utility:refresh"
+            icon-position="right"
+            class="refresh-button-mobile"
+          >
+          </lightning-button>
+        </template>
+      </div>
+    </div>
+    <div class={availabilityDisplayClass}>
+      <div
+        class="slds-grid slds-wrap slds-form_horizontal"
+        if:true={showModalSearch}
+      >
+        <div
+          class="title slds-col slds-size_1-of-2 slds-var-m-top_small slds-var-m-bottom_small slds-var-p-right_medium"
+          data-id="title"
+        >
+          {title}
+        </div>
+        <lightning-input
+          placeholder="Search Branches"
+          class="slds-col slds-size_1-of-2 search-branches"
+          onchange={handleChange}
+        ></lightning-input>
+      </div>
+      <lightning-layout if:true={isMobileAssets} multiple-rows="true">
+        <lightning-layout-item size="12" class="title slds-m-bottom_x-small"
+          >{title}</lightning-layout-item
+        >
+        <lightning-layout-item size="12" class="slds-m-vertical_x-small">
+          <div class="slds-form-element">
+            <div
+              class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+            >
+              <lightning-icon
+                size="x-small"
+                class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                icon-name="utility:search"
+              ></lightning-icon>
+              <input
+                type="text"
+                placeholder="Search Branches..."
+                class="slds-input search-branch-mobile"
+                onchange={handleChange}
+              /><!--Class added as part of FRONT-8722-->
+            </div>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+      <div aria-hidden="false" class="slds-section__content">
+        <div class={header}>
+          <template for:each={columns} for:item="cols">
+            <div key={cols.label} class="columns slds-text-color_weak">
+              {cols.label}
+            </div>
+          </template>
+        </div>
+
+        <div class="row-container" if:false={isFiltered}>
+          <template for:each={rows} for:item="row">
+            <div
+              key={row.label}
+              class="row"
+              onclick={showModalBox}
+              data-id={row.label}
+            >
+              <template for:each={columns} for:item="cols">
+                <div key={cols.fieldName} class={columnStyle}>
+                  <c-sbr_3_0_availability-row-cmp
+                    row-data={row}
+                    is-in-modal={isInModal}
+                    is-in-mobile-assets={isMobileAssets}
+                    row-key={cols.fieldName}
+                    location={locationInfo}
+                    branch-number={branchNumber}
+                  >
+                  </c-sbr_3_0_availability-row-cmp>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+        <div class="row-container" if:true={isFiltered}>
+          <template for:each={updatedRows} for:item="row">
+            <div
+              key={row.label}
+              class="row"
+              onclick={showModalBox}
+              data-id={row.label}
+            >
+              <template for:each={columns} for:item="cols">
+                <div key={cols.fieldName} class={columnStyle}>
+                  <c-sbr_3_0_availability-row-cmp
+                    row-data={row}
+                    is-in-modal={isInModal}
+                    is-in-mobile-assets={isMobileAssets}
+                    row-key={cols.fieldName}
+                    location={locationInfo}
+                    branch-number={branchNumber}
+                  >
+                  </c-sbr_3_0_availability-row-cmp>
+                </div>
+              </template>
+            </div>
+          </template>
+        </div>
+      </div>
+    </div>
+  </div>
+  <c-sbr_3_0_modal-cmp
+    header={headerText}
+    cancel-btn-label={cancelButtonLabel}
+    onreturnpage={handlePageBack}
+  >
+    <span slot="modalContent">
+      <div if:true={isModalOpen}>
+        <lightning-tabset active-tab-value={activetabContent} if:true={tabs}>
+          <lightning-tab
+            label={branchName}
+            value="Branch"
+            title={branchName}
+            onactive={tabChangeHandler}
+          >
+            <div if:true={isBranchOpen}>
+              <!--FRONT-8722 & 8721 Branch moved from modal to tabs-->
+              <c-sbr_3_0_availability-modal-info-cmp
+                onreturnpage={handleReturnPage}
+                onnewheadertext={handleUpdateHeader}
+                product-cat={productCat}
+                branch-num={branchNumber}
+              ></c-sbr_3_0_availability-modal-info-cmp>
+            </div>
+          </lightning-tab>
+          <lightning-tab
+            label="District"
+            value="District"
+            title="District"
+            onactive={tabChangeHandler}
+          >
+            <c-sbr_3_0_availability-cmp
+              is-in-modal={isModalOpen}
+              product-cat={productCat}
+              type="District"
+              location-info={locationInfo}
+              ongotobranch={openBranch}
+              ontitleupdate={titleUpdate}
+              title={title}
+            ></c-sbr_3_0_availability-cmp>
+          </lightning-tab>
+          <lightning-tab
+            label="Region"
+            value="Region"
+            title="Region"
+            onactive={tabChangeHandler}
+          >
+            <c-sbr_3_0_availability-cmp
+              is-in-modal={isModalOpen}
+              product-cat={productCat}
+              type="Region"
+              location-info={locationInfo}
+              ongotobranch={openBranch}
+              title={title}
+            ></c-sbr_3_0_availability-cmp>
+          </lightning-tab>
+          <lightning-tab
+            label="Territory"
+            value="Territory"
+            title="Territory"
+            onactive={tabChangeHandler}
+          >
+            <c-sbr_3_0_availability-cmp
+              is-in-modal={isModalOpen}
+              product-cat={productCat}
+              type="Territory"
+              location-info={locationInfo}
+              ongotobranch={openBranch}
+              title={title}
+            ></c-sbr_3_0_availability-cmp>
+          </lightning-tab>
+          <lightning-tab
+            label="Company"
+            value="Company"
+            title="Company"
+            onactive={tabChangeHandler}
+          >
+            <c-sbr_3_0_availability-cmp
+              is-in-modal={isModalOpen}
+              product-cat={productCat}
+              type="Company"
+              location-info={locationInfo}
+              ongotobranch={openBranch}
+              title={title}
+            ></c-sbr_3_0_availability-cmp>
+          </lightning-tab>
+        </lightning-tabset>
+      </div>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+</template>

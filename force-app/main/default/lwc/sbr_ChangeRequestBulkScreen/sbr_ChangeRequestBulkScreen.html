@@ -1,0 +1,43 @@
+<template>
+    <!-- lightning button for open modal window -->
+    
+    <!--Use template if:true to display/hide popup based on isModalOpen value--> 
+        <!-- Modal/Popup Box LWC starts here -->
+
+                <!-- Modal/Popup Box LWC header here -->
+                <lightning-card variant="narrow" >
+                <!-- Modal/Popup Box LWC body starts here -->
+                <div class="slds-p-horizontal_small">
+                    <lightning-layout style="background-color: #E5E5E5;">
+                        <lightning-layout-item size="10" padding="around-small">
+                            <b>{objectScreenLabel}</b>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" padding="around-small" >
+                                <template if:true={isEditable}>
+                                    <lightning-button class="slds-float_right" name="Remove" disabled ={getSelectedRec} onclick={removeRecords} label="Remove" ></lightning-button>
+                                </template>
+                            </lightning-layout-item>
+                        <!-- <lightning-button class="slds-float_right" label="Remove" ></lightning-button> -->
+                    
+                </lightning-layout>
+                <template if:true={isTableColumnSet}>
+                    <div style=" height: 250px;"> <!--min-height: 75px; max-height: 150px; height: 100%;-->
+                       
+                            <lightning-datatable
+                                    key-field="key"
+                                    data={amcrList}
+                                    hide-checkbox-column={hideCheckbox}
+                                    onrowselection={getSelectedRecord}
+                                    columns={columns}>
+                            </lightning-datatable> 
+                        </div>
+                </template>
+                </div>
+                <div slot="footer">
+                    <!-- <button class="slds-button slds-button_neutral" onclick={handleFlowPrevious} title="Previous">Previous</button>
+                    <button class="slds-button slds-button_brand" onclick={handleFlowFinish} title="Submit">Submit</button> -->
+                </div>
+                <!-- Modal/Popup Box LWC footer starts here -->
+                    
+                </lightning-card>
+ </template>

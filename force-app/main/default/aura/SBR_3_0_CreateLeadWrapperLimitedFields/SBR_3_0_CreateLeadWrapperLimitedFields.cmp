@@ -1,0 +1,26 @@
+<aura:component implements="lightning:actionOverride,force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName">
+
+    <aura:if isTrue="{!empty(v.recordId)}">
+        <section role="dialog" tabindex="-1" aria-labelledby="create-new-record" aria-modal="true"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <lightning:buttonIcon iconName="utility:close" size="large" variant="bare-inverse"
+                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    onclick="{! c.handleClose }" alternativeText="Close this window" title="Close this window" />
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">New Lead</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <c:sbr_3_0_createLeadRecordCmp recordId="{!v.recordId}" />
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        <aura:set attribute="else">
+            <div class="slds-card__header slds-grid header slds-modal__header">
+                <h2 class="title slds-text-heading_medium slds-media_center slds-has-flexi-truncate">Share Lead</h2>
+            </div>
+            <c:sbr_3_0_createLeadRecordCmp relatedRecordId="{!v.recordId}" objectApiName="{!v.sObjectName}"/>
+        </aura:set>
+    </aura:if>
+</aura:component>

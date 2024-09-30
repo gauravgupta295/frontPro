@@ -1,0 +1,94 @@
+ul:not(.browser-default) li {
+    list-style-type: disc;
+}
+
+.alert-margin{
+    margin-top: 11%;
+}
+
+
+.my-card {
+    display: block;
+}
+
+.sbr-radio-button {
+    margin-left: 2%;
+    margin-right: 1%;
+}
+
+.sbr-details {
+    margin-left: 2%;
+}
+
+.sbr-list-item{
+    overflow-y: auto;
+    width: 100%;
+  /*  position: fixed; */
+    z-index: 999;
+    left: 0;
+    right: 0;
+    height: 55vh;
+}
+
+.user-div{
+   /* border-bottom: 1px solid #C2BCBC; */
+    margin-top:4%;
+    padding-bottom:4%;
+    font-size: 13px;
+    max-width: 80vw !important;
+    
+}
+
+.parent-container {
+   /* position: relative; */
+    height: 61vh;
+  /* margin-left: -10vw !important;
+   MARGIN-RIGHT: -10VW !important;*/
+  }
+
+  hr {
+    display: block;
+    height: 1px;
+    border: 0;
+    border-top: 1px solid #C2BCBC;
+    margin: 1em 0;
+    padding: 0 !important;
+    min-width: 100vw !important;
+
+    
+    
+
+}
+
+
+.zero-padding{
+    padding-left: 0px !important;
+}
+
+
+.searchwidth{
+    max-width: 90vw !important;
+    margin-left: 20px !important;
+    margin-top: 8px !important;
+    
+
+}
+.par{
+min-width: 100vw !important;
+margin-left: -4vw !important;
+}
+
+.hrr{
+    margin-left: -4vw !important;
+}
+
+.par2{
+min-width: 100vw !important;
+margin-left: -8vw !important;
+overflow-x: hidden !important;
+}
+
+
+.hrr2{
+    margin-left: -8vw !important;
+}

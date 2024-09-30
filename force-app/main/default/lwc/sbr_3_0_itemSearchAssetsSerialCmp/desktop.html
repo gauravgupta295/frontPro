@@ -1,0 +1,47 @@
+<template>
+  <template lwc:if={showSpinner}>
+    <lightning-spinner
+      variant="brand"
+      size="medium"
+      alternative-text="loading..."
+    >
+    </lightning-spinner>
+  </template>
+  <c-sbr_3_0_item-search-assets-header
+    lwc:ref="assetSerial"
+    onfiltercriteriachange={handleSearchCriteriaChange}
+    active-tab="Serial"
+    record-id={recordId}
+    inventory={inventorySize}
+  ></c-sbr_3_0_item-search-assets-header>
+  <!-- selected-cat-class-val={selectedCatClassVal}
+  onswitchtodescription={handleSwitchToDescription}
+  product-rows-offset={productRowsOffset}
+  onlocationchange={handleLocationChange} -->
+  <div class="tablebg bordercl wrapped-header-datatable">
+    <!-- default-sort-direction={defaultSortDirection}
+      sorted-direction={sortDirection}
+      sorted-by={sortedBy}
+            onsort={handleOnSort} -->
+    <c-sbr_3_0_custom-data-table-cmp
+      key-field="Id"
+      columns={columns}
+      data={result}
+      wrap-text-max-lines="2"
+      enable-infinite-loading
+      resize-column-disabled
+      hide-checkbox-column="true"
+      onrowaction={callRowAction}
+    ></c-sbr_3_0_custom-data-table-cmp>
+    <div
+      class="slds-illustration slds-illustration_small backCl"
+      aria-hidden="true"
+      if:false={isDataAvailable}
+    >
+      <img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+      <h2 class="slds-text-heading_medium noContImg">
+        {labelTextForSerialSearchField}
+      </h2>
+    </div>
+  </div>
+</template>

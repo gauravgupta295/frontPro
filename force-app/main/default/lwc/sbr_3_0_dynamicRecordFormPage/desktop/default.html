@@ -1,0 +1,15 @@
+<template lwc:render-mode="light">
+    <lightning-accordion
+      active-section-name={activeSection}
+      allow-multiple-sections-open
+    >
+      <template for:each={page.sections} for:item="section">
+        <c-sbr_3_0_dynamic-record-form-section
+          section={section}
+          key={section.externalId}
+          record-id={recordId}
+          object-api-name={objectApiName}
+        ></c-sbr_3_0_dynamic-record-form-section>
+      </template>
+    </lightning-accordion>
+  </template>

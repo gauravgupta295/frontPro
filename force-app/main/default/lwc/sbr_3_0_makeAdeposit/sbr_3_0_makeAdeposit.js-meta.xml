@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<apiVersion>57.0</apiVersion>
+	<isExposed>true</isExposed>
+	<masterLabel>SBR 3.0 - Make a Deposit</masterLabel>
+	<description>This is a component to make a deposit.</description>
+	<targets>
+		<target>lightning__RecordPage</target>
+		<target>lightning__AppPage</target>
+		<target>lightning__HomePage</target>
+		<target>lightning__RecordAction</target>
+		<target>lightning__FlowScreen</target>
+	</targets>
+	<targetConfigs>
+		<targetConfig targets="lightning__FlowScreen">
+			<property name="recordId" type="String" label="Record Id" description="Record Id" />
+			<property name="message" type="String" role="outputOnly" />
+			<property name="source" type="String" label="Flow Source" />
+		</targetConfig>
+		<targetConfig targets="lightning__RecordAction">
+			<actionType>ScreenAction</actionType>
+		</targetConfig>
+	</targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,108 @@
+<!--
+  @description       : Work Order Priority - Asset Attribute Filter Component
+  @author            : Chhavi Singhal, Ritesh Mohapatra
+  @createdDate       : 26-Dec-2023 
+-->
+<template>
+    <div class="slds-panel 
+                slds-size_medium
+                slds-panel_docked
+                slds-panel_docked-right 
+                asset-attribute-filter-panel" 
+                aria-hidden="false">
+        <div class="slds-panel__header 
+                    asset-attribute-filter-header">
+            <h2 class="slds-panel__header-title 
+                       slds-text-heading_small 
+                       slds-truncate" 
+                title="Asset Attribute Filter">
+                Asset Attribute Filter</h2>
+            <div class="slds-panel__header-actions">
+                <lightning-button-icon  icon-name="utility:close"
+                                        onclick={handleToggleAssetAttributeFilterPanelEvent} 
+                                        variant="bare" 
+                                        size="large"
+                                        alternative-text="Close Filter" 
+                                        title="Close Filter" 
+                                        class="on-select">
+                </lightning-button-icon>
+            </div>
+        </div>
+        <div class="slds-panel__body">
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Status" 
+                                                label="Status" 
+                                                options={statusFieldOptions}
+                                                value={selectedStatusValues}
+                                                onchange={handleStatusPicklistChange}
+                                                disabled={disableButton}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Equipment Type" 
+                                                label="Equipment Type" 
+                                                options={equipmentTypeFieldOptions}
+                                                value={selectedEquipmentTypeValues}
+                                                onchange={handleEquipmentTypePicklistChange}
+                                                disabled={disableButton}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-vertical_small">
+                <lightning-radio-group name="OriginalCost"
+                                            label="Original Cost"
+                                            options={originalCostFieldOptions}
+                                            value={selectedOriginalCostValues}
+                                            onchange={handleOriginalCostOptionChange}
+                                            type="radio">
+                                        </lightning-radio-group>
+            </lightning-layout-item>
+            <template if:true={displayRangeInputs}>
+                <lightning-input type="number" 
+                                 name="startCost" 
+                                 value={startOriginalCost} 
+                                 onchange={handleStartOriginalCostChange} 
+                                 placeholder="Enter Starting Range of Original Cost" 
+                                 label="Start of Original Cost Range"
+                                 required={requiredValueInput}>
+                </lightning-input>
+                <lightning-input type="number" 
+                                 name="endCost" 
+                                 value={endOriginalCost} 
+                                 onchange={handleEndOriginalCostChange} 
+                                 placeholder="Enter End Range of Original Cost" 
+                                 label="End of Original Cost Range"
+                                 required={requiredValueInput}>
+                </lightning-input>
+            </template>
+        </div>
+        <div class="asset-attribute-filter-footer">
+            <template if:false={isMobile}>
+                <lightning-layout vertical-align="center" 
+                                  horizontal-align="space" 
+                                  pull-to-boundary="small">
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button label="Cancel" 
+                                          variant="brand"  
+                                          title="Cancel" 
+                                          onclick={handleToggleAssetAttributeFilterPanelEvent}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Clear All" 
+                                          title="Clear All"
+                                          onclick={resetAssetAttributeFilterPanel}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Apply" 
+                                          title="Apply" 
+                                          onclick={applyAssetAttributeFilter}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+     </div>
+</template>

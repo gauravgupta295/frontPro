@@ -1,0 +1,19 @@
+/* Added for 13084*/
+@media only screen and (max-width: 1000px) {
+  .input-container {
+    position: relative;
+  }
+  .input-placeholder {
+    position: absolute;
+    top: 55%;
+    left: 18px;
+    color: #aaa;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .helpTextClass
+  {
+    position: absolute !important;
+    top: -2px !important;
+  }
+}

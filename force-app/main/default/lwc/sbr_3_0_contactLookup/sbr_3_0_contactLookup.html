@@ -1,0 +1,42 @@
+<template>
+  <div class="slds-section slds-is-open extra-spacing">
+    <div aria-hidden="false" class="slds-section__content">
+      <lightning-layout-item
+        size="12"
+        medium-device-size="6"
+        large-device-size="6"
+        class=""
+      >
+        <div class="lookupContainer">
+          <c-s-b-r_3_0_required-custom-lookup-cmp
+            record-id={recordId}
+            label={label}
+            default-record={recordId}
+            fields-to-include="LastName, FirstName, Phone, MobilePhone"
+            s-object-api-name="Contact"
+            placeholder="Search Contacts..."
+            icon-name="standard:contact"
+            onlookupupdate={handleOrderedByChange}
+            where-clause={whereClause}
+            value={recordId}
+            is-contact-lookup
+            show-new-contact-button={showNewContactButton}
+            acc-id={accountId}
+            parent-cmp={parentCmp}
+          ></c-s-b-r_3_0_required-custom-lookup-cmp>
+        </div> </lightning-layout-item
+      ><!--FRONT:11400: Added ShownNewContactButton,accId and parentCmp attribute-->
+    </div>
+    <lightning-input
+      pattern="^[0-9]{10}$"
+      message-when-pattern-mismatch="Please enter valid phone number"
+      max-length="10"
+      data-id="phoneInput"
+      required
+      type="tel"
+      label={phoneLabel}
+      value={phoneVal}
+      onchange={handlePhoneChange}
+    ></lightning-input>
+  </div>
+</template>

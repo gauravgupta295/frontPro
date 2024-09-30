@@ -1,0 +1,184 @@
+:host {
+  --slds-c-card-header-spacing-block-start: none;
+  --slds-c-card-footer-spacing-block-start: none;
+  --slds-g-color-error-base-40: #ba0517 !important;
+}
+
+.slds-panel__header-title {
+  font-size: 14px;
+}
+
+.slds-panel__header-actions {
+  font-weight: 400;
+}
+
+.add-user-icon {
+  right: 0px;
+  float: right;
+  padding-right: 16px;
+}
+
+.active-icon-state {
+  --lwc-colorTextIconDefault: #25683e;
+}
+
+.selected-btn {
+  color: #25683e;
+  font-weight: 400;
+  border-bottom: #e5e5e5;
+}
+
+.back-item-ctr {
+  display: block;
+  border-width: 1px;
+  border-color: #e5e5e5;
+  border-style: solid;
+  background-color: #fafaf9;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.back-button-icon {
+  --lwc-colorTextIconDefault: #25683e;
+}
+
+.back-item-search-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+}
+
+.back-button {
+  border: #fafaf9;
+  background-color: #fafaf9;
+  font-weight: 400;
+}
+
+.active-state {
+  color: #25683e;
+  background: #edf6ef;
+  font-weight: 400;
+  border: none;
+}
+
+.header-mob {
+  background-color: #fafaf9;
+  width: 100vw;
+  border-width: 1px;
+  border-color: #e5e5e5;
+  border-style: solid;
+}
+
+.item-not-selected {
+  align-items: center;
+  display: none;
+}
+
+.item-selected {
+  display: none;
+}
+
+.item-selected.active {
+  display: block;
+}
+
+.item-not-selected.active {
+  display: flex;
+}
+
+.slds-panel__header {
+  background-color: #e5e5e5;
+  font-weight: 700;
+}
+
+.panel-title {
+  font-size: 16px;
+}
+
+.slds-panel {
+  overflow-y: auto;
+  position: relative;
+}
+
+.spotlight-card {
+  margin: 0;
+  padding: 0;
+}
+
+.rates-grid {
+  display: none;
+}
+
+.rates-grid.show {
+  display: block;
+}
+
+.accordion-top-bar {
+  border-top-width: 1px;
+  border-top-style: solid;
+  border-top-color: rgb(229, 229, 229);
+}
+
+.spotlight-content-scrollable {
+  display: block;
+}
+
+/*.branch-id{*/
+/*    font-weight: 700;*/
+/*    font-size: 12px;*/
+/*    color: #25683E;*/
+/*    text-decoration: underline;*/
+/*}*/
+.branch-container {
+  display: block;
+  /*max-height: 26px;*/
+}
+
+.spotlight-card {
+  flex: auto;
+}
+
+.image-carousel-container {
+  flex: auto;
+}
+
+.image-section {
+  display: none;
+}
+
+.image-section.active {
+  display: block;
+}
+
+.tab-section {
+  background-color: #ffffff;
+  font-size: 14px;
+  font-weight: 700;
+}
+.align-left {
+  justify-content: left;
+}
+.info {
+  --sds-c-icon-color-foreground-default: white;
+}
+
+.cust-added {
+  top: -10px;
+  right: -5px;
+  height: 5px;
+  width: 5px;
+  left: 118px;
+  border-radius: 50%;
+  display: inline-flex;
+  position: relative;
+  background: #25683e;
+}
+
+.on-select {
+  --lwc-brandAccessibleActive: #25683e;
+}

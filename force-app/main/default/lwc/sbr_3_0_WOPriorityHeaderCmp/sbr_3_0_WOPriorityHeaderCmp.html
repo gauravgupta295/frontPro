@@ -1,0 +1,221 @@
+<!--
+  @description       : Work Order Priority Header Component
+  @author            : Chhavi Singhal, Ritesh Mohapatra, Evan Kuminski
+  @createdDate       : 26-Dec-2023 
+-->
+
+<template>
+    <div class="slds-page-header" style="width: 100%;">
+        <div class="slds-page-header__row">
+        
+            <!-- SEARCH FILTER -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width: 250px;">
+                        <div>
+                            <h1>
+                                Search Filter <br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                            </h1>
+                        </div>
+                        <div>
+                            <lightning-combobox
+                                        class="selected-fields-combo"
+                                        name="Select Fields For Search"
+                                        label="Select Fields For Search" 
+                                        value={defaultFieldsToSearch} 
+                                        options={fieldsToSearchFieldOptions} 
+                                        onchange={handleSearchFieldComboPicklistChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div>
+                            <lightning-input
+                                        class="search-input"
+                                        type="search"
+                                        label="Search within Results"
+                                        placeholder="Search within Results"
+                                        onchange={handleSearchFilterChange}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SELECTED FIELDS FOR SEARCH -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width: 250px;">
+                        <div>
+                            <h1>
+                                Selected Fields For Search<br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                                </h1>
+                        </div>
+                        <div>
+                            <template for:each={selectedSearchFieldPillOptions} 
+                                        for:item="selectedField">
+                                <lightning-pill key={selectedField}
+                                                name={selectedField} 
+                                                label={selectedField} 
+                                                onremove={handleSearchFieldRemove}>
+                                </lightning-pill>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ASSET ATTRIBUTE FILTER -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width: 250px;" >
+                        <div>
+                            <h1>
+                                Asset Attribute Filter <br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                            </h1>
+                        </div>
+                        <div>
+                            <template if:false={isAssetAttributeFilterActive}>
+                                <!--lightning-button-icon icon-name="utility:filterList" 
+                                                            label={assetAttributeFilterCount}
+                                                            variant="border-filled" 
+                                                            onclick={handleAssetAttributeFilterButtonClick}
+                                                            alternative-text="Open Asset Attribute Filters"  
+                                                            title="Open Asset Attribute Filters" >
+                                </lightning-button-icon-->
+                                <lightning-button label={assetAttributeFilterCount} 
+                                        title="filter" 
+                                        icon-name="utility:filterList" 
+                                        onclick={handleAssetAttributeFilterButtonClick}>
+                                </lightning-button>
+                            </template>
+                            <template if:true={isAssetAttributeFilterActive}>
+                                <lightning-button label={assetAttributeFilterCount} 
+                                                    title="filter" 
+                                                    icon-name="utility:filterList" 
+                                                    onclick={handleAssetAttributeFilterButtonClick}>
+                                </lightning-button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WORK ORDER ATTRIBUTE FILTER -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width: 250px;">
+                        <div>
+                            <h1>
+                                Work Order Attribute Filter <br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                            </h1>
+                        </div>
+                        <div>
+                            <template if:false={isWOAttributeFilterActive}>
+                                    <!--lightning-button-icon icon-name="utility:filterList" 
+                                                            variant="border-filled" 
+                                                            onclick={handleWOAttributeFilterButtonClick}
+                                                            alternative-text="Open Work Order Attribute Filters"  
+                                                            title="Open Work Order Attribute Filters" >
+                                    </lightning-button-icon-->
+                                    <lightning-button label={woAttributeFilterCount} 
+                                                    title="filter" 
+                                                    icon-name="utility:filterList" 
+                                                    onclick={handleWOAttributeFilterButtonClick}>
+                                    </lightning-button>
+                            </template>
+                            <template if:true={isWOAttributeFilterActive}>
+                                <lightning-button label={woAttributeFilterCount} 
+                                                    title="filter" 
+                                                    icon-name="utility:filterList" 
+                                                    onclick={handleWOAttributeFilterButtonClick}>
+                                </lightning-button>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- STANDARD FILTERS -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width : 250px;">
+                        <div>
+                            <h1>
+                                Standard Filters <br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                            </h1>
+                        </div>
+                        <div>
+                            <lightning-combobox
+                                name="Standard"
+                                class="standardcombo"
+                                label="Select Standard Filter"
+                                value={defaultStandardFilterValue}
+                                placeholder="Select Standard Filter" 
+                                options={standardFilterOptions}
+                                onchange={handleStandardFilterChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- LEVEL FILTER -->
+            <div class="slds-page-header__col-title">
+                <div class="slds-page-header__name slds-is-relative">
+                    <div class="slds-page-header__name-title" style="width : 250px;">
+                        <div>
+                            <h1>
+                                Level Filter <br>
+                                ---------------------------------- <br>
+                                &nbsp;<br>
+                            </h1>
+                        </div>
+                        <div>
+                            <lightning-combobox
+                                name="Level"
+                                class="levelcombo"
+                                label="Select Level"
+                                value={defaultLevelValue}
+                                placeholder="Select Level "
+                                options={levelOptions}
+                                onchange={handleLevelChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class={isCustomLookupVisible}>
+                           <c-s-b-r_3_0_custom-lookup-cmp 
+                                label="Branch"
+                                placeholder="Search Branch" 
+                                icon-name="standard:Location" 
+                                s-object-api-name="Location" 
+                                selected-record-object={locationrecordinfo}
+                                default-record={locationrecordinfo.Id}
+                                onlookupupdate={handleBranchLookupChange}>
+                            </c-s-b-r_3_0_custom-lookup-cmp> 
+                        </div>
+                        <div if:true={levelComboOptions}  class={isLabelComboVisible}>
+                            <lightning-combobox
+                                name="LevelComboBox"
+                                label={levelComboLabel}
+                                value={defaultLevelComboBoxValue}
+                                placeholder={levelComboPlaceHolder}
+                                options={levelComboOptions}
+                                onchange={handleLevelComboPicklistChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <lightning-button variant="destructive-text" label="Reset" title="Reset" class="slds-m-left_x-small" onclick={handleResetClick}></lightning-button>
+        </div> 
+    </div>
+</template>

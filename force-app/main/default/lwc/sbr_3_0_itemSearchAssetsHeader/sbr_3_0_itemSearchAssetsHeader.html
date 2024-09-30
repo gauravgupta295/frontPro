@@ -1,0 +1,237 @@
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="slds-page-header bordercl">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media media-wrapper">
+              <div class="slds-media__body slds-p-top_xx-small">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h2>
+                      <span
+                        class="slds-page-header__title slds-truncate"
+                        title="Inventory"
+                      >
+                        {LABELS.INVENTORY} ({inventory})
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="slds-page-header__row slds-p-top_x-small">
+              <!--front-15702-->
+              <template if:true={showPill}>
+                <lightning-pill
+                  label={pillLabel}
+                  onremove={handlePillRemoveClick}
+                  class="filterPills slds-p-right_x-small"
+                ></lightning-pill>
+              </template>
+              <!--front-15702-->
+            </div>
+          </div>
+          <div class="slds-page-header__col-actions">
+            <div class="slds-page-header__controls">
+              <template lwc:if={isSearchTypeCriteriaOptionSelectedAsAsset}>
+                <!--Filters Combobox-->
+                <div class="slds-page-header__control">
+                  <lightning-combobox
+                    variant="label-hidden"
+                    value={selectedFilterComboboxValue}
+                    options={filterComboboxOptions}
+                    onchange={handleFilterComboBoxOptionChange}
+                    style="width: 200px"
+                  >
+                  </lightning-combobox>
+                </div>
+                <!--Status Combobox-->
+                <div class="slds-page-header__control">
+                  <lightning-combobox
+                    variant="label-hidden"
+                    value={selectedStatusComboboxValue}
+                    options={statusComboboxOptions}
+                    onchange={handleStatusComboBoxOptionChange}
+                    style="width: 200px"
+                  >
+                  </lightning-combobox>
+                </div>
+              </template>
+              <template lwc:else>
+                <div class="slds-page-header__control searchBoxWrapper">
+                  <!--front-14464, FRONT-15699-->
+                  <!-- FRONT-30493,30494 : applying item-search-input -->
+                  <lightning-input
+                    class="slds-input-has-icon_right borderBox item-search-input"
+                    type="search"
+                    variant="label-hidden"
+                    placeholder={assetSearchTypePlaceholderFunc}
+                    onkeypress={handleEnterClickDesktop}
+                    oncommit={handleAssetSearchListInputCommit}
+                    style="width: 260px"
+                    is-loading={isAssetSearchListInputLoading}
+                  >
+                  </lightning-input>
+                </div>
+                <!--front-15677-->
+                <template if:true={isCatClassDescrip}>
+                  <!--front-14464-->
+                  <div class="slds-page-header__control">
+                    <lightning-input
+                      data-id="itemListSearchInput"
+                      class="slds-input-has-icon_right borderBox"
+                      type="search"
+                      variant="label-hidden"
+                      placeholder={itemListSearchPlaceholder}
+                      onkeypress={handleItemListSearchPress}
+                      onchange={handleUpdateValue}
+                      style="width: 260px"
+                      read-only={isItemListSearchDisabled}
+                    >
+                    </lightning-input>
+                  </div>
+
+                  <div class="slds-page-header__control">
+                    <lightning-combobox
+                      variant="label-hidden"
+                      value={selectedLocationFilter}
+                      options={locationOptions}
+                      onchange={handleLocationCriteriaChange}
+                      style="width: 200px"
+                      class="combStyle"
+                    >
+                    </lightning-combobox>
+                  </div>
+                </template>
+                <!--Front-15681-->
+                <template if:true={filterdropdownOpen}>
+                  <div
+                    class="backdrop"
+                    onclick={toggleDropdowncatFilters}
+                  ></div>
+                </template>
+                <template if:true={showCatClassTabDDL}>
+                  <div class="slds-page-header__control">
+                    <div class="combobox-container">
+                      <button
+                        class="combobox-button"
+                        aria-haspopup="true"
+                        onclick={toggleDropdowncatFilters}
+                      >
+                        <span>Filters</span>
+                        <lightning-icon
+                          icon-name="utility:down"
+                          size="x-small"
+                        ></lightning-icon>
+                      </button>
+                      <template if:true={filterdropdownOpen}>
+                        <div class="dropdown-screen">
+                          <div class="slds-form-element">
+                            <label
+                              for="year"
+                              class="slds-form-element__label slds-no-flex"
+                            >
+                              Year
+                              <lightning-helptext
+                                class="tooltipstyle"
+                                icon-name="utility:info"
+                                content={LABELS.YRTOOLTIP}
+                              ></lightning-helptext>
+                            </label>
+                            <lightning-input
+                              class="yr"
+                              type="search"
+                              id="year"
+                              value={filterYear}
+                              name="year"
+                              maxlength="2"
+                              placeholder="YY"
+                              onchange={handleYearChange}
+                            ></lightning-input>
+                          </div>
+
+                          <template if:true={showEqpLoc}>
+                            <lightning-input
+                              type="search"
+                              label="Equipment Location"
+                              name="eqpLoc"
+                              value={eqpLocation}
+                              onchange={handleEquipmentLocChange}
+                              placeholder="Search for Current Location"
+                            ></lightning-input>
+                          </template>
+                          <div class="button-container">
+                            <lightning-button
+                              class="aplybutton"
+                              variant="brand"
+                              label="Apply"
+                              onclick={handlFilterApply}
+                            ></lightning-button>
+                            <lightning-button
+                              variant="base"
+                              label="Reset All Filters"
+                              onclick={handleFilterReset}
+                            ></lightning-button>
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </div>
+                  <template if:true={isstatusdropdownOpen}>
+                    <div
+                      class="backdrop"
+                      onclick={toggleDropdowncatStatus}
+                    ></div>
+                  </template>
+                  <div class="slds-page-header__control">
+                    <div class="combobox-container">
+                      <button
+                        class="combobox-button"
+                        aria-haspopup="true"
+                        onclick={toggleDropdowncatStatus}
+                      >
+                        <span>Any Status</span>
+                        <lightning-icon
+                          icon-name="utility:down"
+                          size="x-small"
+                        ></lightning-icon>
+                      </button>
+
+                      <template if:true={isstatusdropdownOpen}>
+                        <div class="dropdown-screen">
+                          <lightning-checkbox-group
+                            name="Checkbox Group"
+                            label="Check Any Filter"
+                            options={statusOptions}
+                            value={value}
+                            onchange={handleStatusFilterChange}
+                          ></lightning-checkbox-group>
+                          <div class="button-container">
+                            <lightning-button
+                              class="aplybutton"
+                              variant="brand"
+                              label="Apply"
+                              onclick={handleApplyStatusFilters}
+                            ></lightning-button>
+                            <lightning-button
+                              variant="base"
+                              label="Reset All Filters"
+                              onclick={hanlderesetStatusDropDown}
+                            ></lightning-button>
+                          </div>
+                        </div>
+                      </template>
+
+                    </div>
+                  </div>
+                </template>
+                <!--Front-15681 end-->
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

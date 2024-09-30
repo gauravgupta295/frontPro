@@ -1,0 +1,157 @@
+.custom-page-header {
+  background-color: white;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  position: absolute;
+  background-color: #fff;
+  z-index: 1;
+}
+
+/*li {
+  padding: 8px 12px;
+  cursor: pointer;
+  }
+  
+  li:hover {
+  background-color: #f2f2f2;
+  }*/
+
+.bordercl {
+  border-top: 1pt solid #c2bcbc;
+  border-left: 1pt solid #c2bcbc;
+  border-right: 1pt solid #c2bcbc;
+  border-bottom: 1pt solid #c2bcbc;
+  border-radius: 0px;
+}
+
+.combobox-container {
+  position: relative;
+  width: 160px;
+}
+
+.combobox-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  border: 1px solid #c8c8c8;
+  border-radius: 0.25rem;
+  background-color: #ffffff;
+  /*cursor: pointer;*/
+  width: 160px;
+}
+
+.dropdown-content {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 250px;
+  background-color: #ffffff;
+  border: 1px solid #c8c8c8;
+  border-top: none;
+  border-radius: 0 0 0.25rem 0.25rem;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 0.5rem 0;
+}
+
+.slds-listbox {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.slds-listbox__item {
+  padding: 0.5rem 1rem;
+}
+
+.slds-listbox__item:hover {
+  background-color: #f4f6f9;
+}
+
+.slds-button_neutral {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  /*cursor: pointer;*/
+  font-size: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+/*.slds-button_neutral:hover {
+  background-color: #f4f6f9;
+  }
+  
+  .slds-button_neutral:focus {
+  outline: none;
+  }*/
+
+.dropdown-screen {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  z-index: 999;
+  width: 250px;
+}
+
+.yr {
+  margin-top: -15px;
+}
+
+.button-container {
+  margin-top: 10px;
+}
+
+.aplybutton {
+  margin-right: 10px;
+}
+
+.tooltipstyle {
+  position: absolute;
+  margin-left: 10px;
+  top: 0px;
+  left: 20px;
+  padding-bottom: 10px;
+}
+
+.backdrop {
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.slds-input_counter {
+  display: none;
+}
+
+.filterPills {
+  cursor: pointer !important;
+  color: #25683e !important;
+}
+
+.destructive-input-variant-class {
+  /* --slds-c-input-color-border: red;
+  --slds-c-input-color-border-focus: red; */
+
+  --slds-c-input-color-border: var(--slds-g-color-error-base-40, #ea001e);
+  --slds-c-input-shadow: var(--slds-g-color-error-base-40, #ea001e) 0 0 0 1px inset;
+  --slds-c-input-color-background: var(--sds-c-input-color-background, var(--sds-c-input-color-background, var(--slds-g-color-neutral-base-100, #fff)));
+  --slds-c-input-text-color: var(--slds-c-input-text-color, var(--sds-c-input-text-color));
+  background-clip: padding-box;
+}

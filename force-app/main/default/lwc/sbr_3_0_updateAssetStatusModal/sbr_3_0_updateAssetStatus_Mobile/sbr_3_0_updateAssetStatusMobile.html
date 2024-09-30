@@ -1,0 +1,220 @@
+<template>
+  <c-sbr_3_0_mobile-screen title="Update Asset">
+      <div class="slds-modal__container">
+          <div class="slds-modal__content slds-p-around_small" >
+              <lightning-record-edit-form object-api-name="Asset">
+                  <lightning-layout multiple-rows="true">
+                    <lightning-layout-item size="12" small-device-size="12">
+                      <lightning-input disabled label="Equipment Number" value={equipNum} ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="12">
+                      <lightning-input disabled label="Equipment Description" value={equipDescription} ></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" small-device-size="12">
+                      <lightning-input disabled label="Cat Class" value={catClass} ></lightning-input>
+                  </lightning-layout-item>
+                  <lightning-layout-item size="12" small-device-size="12">
+                    <lightning-input disabled label="Assigned Location" value={assignedLocName} ></lightning-input>
+                  </lightning-layout-item>
+                  <lightning-layout-item size="12" small-device-size="12">
+                    <lightning-input disabled label="Current Location" value={currentLocName} ></lightning-input>
+                    </lightning-layout-item>
+                      <template lwc:if={hasERSPermission}>
+                     
+                          <template lwc:if={canERSEdit}>
+                            <lightning-layout-item size="12" small-device-size="12" > 
+                                <lightning-combobox
+                                  name="Status"
+                                  label="Status"
+                                  value={status}
+                                  options={ERSoptions}
+                                  onchange={handleStatusChange} 
+                                  >
+                                </lightning-combobox>
+                              </lightning-layout-item>
+                            </template>
+                           
+                            <template lwc:else>
+                              <lightning-layout-item size="12" small-device-size="12" > 
+                                  <lightning-combobox
+                                    name="Status"
+                                    label="Status"
+                                    value={status}
+                                    options={disabledOptions}
+                                    onchange={handleStatusChange} 
+                                    disabled
+                                    >
+                                  </lightning-combobox>
+                                </lightning-layout-item>
+                              </template>
+                          </template>
+        
+        
+        
+                        <template lwc:if={hasBMPermission}>
+                          
+                          <template lwc:if={canBMEdit}>
+                            <lightning-layout-item size="12"  small-device-size="12" > 
+                                <lightning-combobox
+                                  name="Status"
+                                  label="Status"
+                                  value={status}
+                                  options={BMoptions}
+                                  onchange={handleStatusChange} 
+                                  >
+                                </lightning-combobox>
+                              </lightning-layout-item>
+                          </template>
+                         
+                          <template lwc:else>
+                            <lightning-layout-item size="12"   small-device-size="12" > 
+                              <lightning-combobox
+                                name="Status"
+                                label="Status"
+                                value={status}
+                                options={disabledOptions}
+                                onchange={handleStatusChange} 
+                                disabled
+                                >
+                              </lightning-combobox>
+                            </lightning-layout-item>
+                          </template>
+                      </template>
+                  
+                    <lightning-layout-item size="12" small-device-size="12">
+                      <lightning-input label="Hours" type="number" value={hours} max="999999999" step="0.001" onchange={handleHoursChange}></lightning-input>
+                     
+                    </lightning-layout-item>
+                      <lightning-layout-item size="12" small-device-size="12">
+                        <lightning-input label="Field Employee Equipment Comment" value={fieldComment} onchange={handleCommentChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" small-device-size="12"> 
+                          <label  class="slds-form-element__label bottomMarginZero" style="margin-bottom: 0px">For Sale</label>
+                          <lightning-input type="checkbox"  class="slds-p-left_none slds-p-top_none slds-m-top_none" checked={forSale} onchange={handleForSaleChange} ></lightning-input>
+                          </lightning-layout-item>
+                  </lightning-layout>
+              </lightning-record-edit-form>
+          </div>
+          <footer class="slds-modal__footer">             
+                  <lightning-button type="cancel" label="Discard Changes" variant="neutral" onclick={closeModal}
+                  class="mobileButtonTextColor cancel-button slds-float_left"></lightning-button>
+              <lightning-button  type="submit" label="Save"
+                  variant="brand" class="button success-button slds-float_right" onclick={closeModal}>
+              </lightning-button>
+          </footer>
+      </div>
+  </c-sbr_3_0_mobile-screen>
+</template>
+<!--template>
+    <lightning-modal-header > 
+      <div style="display:flex;align-items:center">
+        <lightning-icon icon-name='utility:chevronleft' alternative-text='chevronleft' size='small' title='chevronleft' style="float:left">
+        </lightning-icon> <span style="margin:0 auto">Update Asset1</span>
+    </div>
+    </lightning-modal-header>
+    
+    <lightning-modal-body class="slds-modal__content" size="full">
+      <lightning-record-edit-form object-api-name="Asset">
+          <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12" small-device-size="12">
+              <lightning-input disabled label="Equipment Number" value={equipNum} ></lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" small-device-size="12">
+              <lightning-input disabled label="Cat Class" value={catClass} ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" small-device-size="12">
+            <lightning-input disabled label="Assigned Location" value={assignedLocName} ></lightning-input>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" small-device-size="12">
+            <lightning-input disabled label="Current Location" value={currentLocName} ></lightning-input>
+            </lightning-layout-item>
+              <template lwc:if={hasERSPermission}>
+             
+                  <template lwc:if={canERSEdit}>
+                    <lightning-layout-item size="12"  flexibility="auto"> 
+                        <lightning-combobox
+                          name="Status"
+                          label="Status"
+                          value={status}
+                          options={ERSoptions}
+                          onchange={handleStatusChange} 
+                          >
+                        </lightning-combobox>
+                      </lightning-layout-item>
+                    </template>
+                   
+                    <template lwc:else>
+                      <lightning-layout-item size="12"  flexibility="auto"> 
+                          <lightning-combobox
+                            name="Status"
+                            label="Status"
+                            value={status}
+                            options={disabledOptions}
+                            onchange={handleStatusChange} 
+                            disabled
+                            >
+                          </lightning-combobox>
+                        </lightning-layout-item>
+                      </template>
+                  </template>
+
+
+
+                <template lwc:if={hasBMPermission}>
+                  
+                  <template lwc:if={canBMEdit}>
+                    <lightning-layout-item size="12"   flexibility="auto"> 
+                        <lightning-combobox
+                          name="Status"
+                          label="Status"
+                          value={status}
+                          options={BMoptions}
+                          onchange={handleStatusChange} 
+                          >
+                        </lightning-combobox>
+                      </lightning-layout-item>
+                  </template>
+                 
+                  <template lwc:else>
+                    <lightning-layout-item size="12"    flexibility="auto"> 
+                      <lightning-combobox
+                        name="Status"
+                        label="Status"
+                        value={status}
+                        options={disabledOptions}
+                        onchange={handleStatusChange} 
+                        disabled
+                        >
+                      </lightning-combobox>
+                    </lightning-layout-item>
+                  </template>
+              </template>
+          
+            <lightning-layout-item size="12" small-device-size="12">
+              <lightning-input label="Hours" value={hours} onchange={handleHoursChange}></lightning-input>
+              </lightning-layout-item>
+              <lightning-layout-item size="12" small-device-size="12">
+                <lightning-input label="Field Employee Equipment Comment" value={fieldComment} onchange={handleCommentChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" small-device-size="12"> 
+                  <label  class="slds-form-element__label bottomMarginZero" style="margin-bottom: 0px">For Sale</label>
+                  
+                  <lightning-input type="checkbox" style="margin-top: 0px;" checked={forSale} onchange={handleForSaleChange} variant="label-hidden"></lightning-input>
+                  </lightning-layout-item>
+          </lightning-layout>
+      </lightning-record-edit-form>
+    </lightning-modal-body>
+  
+    <lightning-modal-footer>
+      <lightning-button type="cancel" label="Discard Changes" class="mobileButtonTextColor" variant="neutral" style="float:left"
+          onclick={closeModal}></lightning-button>
+      <lightning-button style="padding-left: 14px" type="submit" label="Save"
+          variant="brand" class="mobileButtonBackgroundColor" onclick={closeModal}></lightning-button>
+    </lightning-modal-footer>
+</template-->
+<!--div><input type="checkbox" name="genres" value={forSale} onchange={handleForSaleChange} id="adventure_id"></div-->
+<!--div style="display:flex;align-items:center">
+      <lightning-icon icon-name='utility:chevronleft' alternative-text='chevronleft' variant='success' size='medium' title='chevronleft' style="float:left;margin-left:4px"></lightning-icon>
+       <span style="color: #25683E;margin-left:1px;font-size: large">{assetNumber} | Asset</span>
+    </div>
+    <div style="height: 2px;background-color:#25683E;margin:6px 0;width:100%;flex-grow: 1"></div-->

@@ -1,0 +1,61 @@
+<template>
+    <template if:false={isMobileView}>
+        <div class="slds-grid slds-wrap" onclick={handleDivClick}>
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small" style="z-index: 2;" onclick={handleNoAction}>
+                <c-sbr_3_0_changevendorfilter ongetsearchvalue={getSearchValue}>
+                </c-sbr_3_0_changevendorfilter>
+            </div>
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-p-top_small">
+                <div class="slds-page-header" style="height:90px; padding:20px 20px; background-color:lightgrey;">
+                    <b class="slds-page-header__title slds-truncate">Vendors</b>
+                    <p style="padding-top:10px;">{totalNoOfRecords} Results</p>
+                </div>
+                <template lwc:if={isMobileView}>
+                    <div class="record-container slds-max-medium-table_stacked">
+                        <lightning-datatable hide-checkbox-column key-field="Id" data={allRecords} columns={columns}
+                            sorted-by={sortBy} sorted-direction={sortDirection} onsort={handleSorting}
+                            onrowaction={handleRowAction}>
+                        </lightning-datatable>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="record-container">
+                        <lightning-datatable hide-checkbox-column key-field="Id" data={allRecords} columns={columns}
+                            sorted-by={sortBy} sorted-direction={sortDirection} onsort={handleSorting}
+                            onrowaction={handleRowAction}>
+                        </lightning-datatable>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </template>
+    <template if:true={isMobileView}>
+        <div class="slds-grid slds-wrap" onclick={handleDivClick}>
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-p-top_small">
+                <c-sbr_3_0_po-mobile-custom-wrapper title="Vendor" is-div="true" has-filter="true"
+                    is-vendor-filter="true" record-list={recordList} onfilter={getSearchValue} onstartpo={handleStartPO}
+                    onreset={handleReset}>
+                </c-sbr_3_0_po-mobile-custom-wrapper>
+                </div>
+        </div>
+    </template>
+    <template if:true={bShowModalFlow}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <lightning-button-icon class="slds-modal__close" title="Close" icon-name="utility:close" size="large" variant="bare"
+                        icon-class="slds-button_icon-inverse" onclick={handleCloseModal}></lightning-button-icon>
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Start Purchase Order</h2>
+                </div>
+                <div class="slds-modal__content" id="modal-content-id-2">
+                    <div>
+                        <lightning-flow if:true={renderFlow} flow-api-name='SBR_3_0_Create_Purchase_Order' flow-input-variables={inputVariables} onstatuschange={handleStatusChange}>
+                        </lightning-flow>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

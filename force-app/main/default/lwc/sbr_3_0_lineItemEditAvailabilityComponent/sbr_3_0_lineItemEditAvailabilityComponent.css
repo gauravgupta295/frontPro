@@ -1,0 +1,24 @@
+.title {
+    font-weight: bold;
+    font-size: 0.8rem;
+    width:max-content !important;
+    margin-top:5px !important;
+}
+
+.item-box {
+    padding: 4% 2%; 
+    border-top: 1px solid #F2F2F2; 
+}
+
+.branch-title {
+    color: #25683E;
+    font-weight: bolder;
+}
+
+.branch-modal {
+    width: 100% !important;
+}
+
+.branch-content {
+    min-height: 450px !important;
+}

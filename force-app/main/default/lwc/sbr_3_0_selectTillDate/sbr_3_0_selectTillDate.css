@@ -1,0 +1,95 @@
+.slds-modal__container{
+    width: 35%;
+}
+.custom-modal-header {
+    /* Define a custom property for the modal header background color with a repeating linear gradient */
+    --slds-c-modal-header-color-background: repeating-linear-gradient(
+        45deg,
+        #ba2200,
+        #ba2200 5%,
+        #ab240c 5%,
+        #ab240c 10%
+    );
+    
+    /* Apply the background color using the custom property */
+    background: var(--slds-c-modal-header-color-background);
+    
+    /* Set the text color to white */
+    color: white;
+    
+    /* Set the font size to 18 pixels */
+    font-size: 18px;
+    
+    /* Remove default margins */
+    margin: 0;
+    
+    /* Set padding to 20 pixels on all sides */
+    padding: 20px;
+  }
+.tillDataRow{
+    font-size: 14px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 8px;
+    padding-top: 4px;
+}
+.datepick{
+    display: inline-flex;
+    width: 100%;
+}
+.datepick > lightning-input{
+    width: 100%;
+}
+.datepick > lightning-icon{
+    top: 26px;
+    position: relative;
+    right: 20px;
+
+}
+.datepick label{
+  font-size: 12px;
+}
+.warningbackground{
+    display: flex;
+    padding: 8px;
+    background: #FE9339;
+    font-family: Calibri (Body);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+   color: #181818;
+}
+
+.moreinfo{
+    text-decoration: underline;
+    border: 0px;
+    color: #000;
+    background-color: none;
+}
+.moreinfo:hover{
+    color: #000;
+}
+.slds-theme_warning button:focus {
+    outline:none !important;
+    border: none;
+    box-shadow: none;
+}
+.draftlist{
+    font-size: 16px;
+    overflow: scroll;
+    height: 300px;
+   
+}
+
+.black-icon {
+    fill: black !important;
+}
+.slds-form-element__label{
+    font-size: 12px !important;
+}
+.futuredate{
+    color: var(--slds-g-color-error-base-40, var(--lwc-colorTextError, rgb(234, 0, 30)));
+}
+.setHeight{
+    max-height: 280px;
+}

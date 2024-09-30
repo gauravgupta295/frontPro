@@ -1,0 +1,381 @@
+<template>
+  <div lwc:ref="myDiv"></div>
+  <section
+    role="dialog"
+    tabindex="-1"
+    aria-labelledby="modal-heading-02"
+    aria-modal="true"
+    aria-describedby="modal-content-id-2"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container">
+      <div
+        class="slds-page-header__controls info-header slds-p-vertical_small slds-align_absolute-center"
+      >
+        <p class="header-title slds-align_absolute-center">{headerLabel}</p>
+      </div>
+      <div
+        class="slds-modal__content slds-p-around_medium"
+        id="edit-modal-content"
+      >
+        <div lwc:if={isLoading} class="slds-is-relative">
+          <lightning-spinner
+            variant="brand"
+            size="medium"
+            alternative-text="loading..."
+          ></lightning-spinner>
+        </div>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            name="Salutation"
+            label="Salutation"
+            value={value}
+            options={salutationOptions}
+            onchange={handleFieldChange}
+            placeholder="--None--"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="First Name"
+            required
+            name="FirstName"
+            value=""
+            data-field
+            onblur={handleFieldFocusOut}
+            onchange={handleFieldChange}
+            class="validate"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="Middle Name"
+            name="MiddleName"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="Last Name"
+            name="LastName"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+            onblur={handleFieldFocusOut}
+            required
+            class="validate"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="Suffix"
+            name="LastName"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            required="true"
+            name="Status__c"
+            label="Status"
+            value="Active"
+            options={contactStatus}
+            onchange={handleFieldChange}
+            class="validate"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-record-edit-form object-api-name="Contact">
+            <lightning-input-field
+              field-name="AccountId"
+              data-type="input-field"
+              name="AccountId"
+              value={accountId}
+              onchange={handleFieldChange}
+              data-field
+              disabled
+              class="account-id-mobile"
+            ></lightning-input-field>
+          </lightning-record-edit-form>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            name="Drivers_License_State__c"
+            label="D/L State/Province"
+            options={dlOptions}
+            onchange={handleFieldChange}
+            placeholder="--None--"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="Phone"
+            name="Phone"
+            value=""
+            type="tel"
+            data-field
+            onblur={handleFieldFocusOut}
+            onchange={handleFieldChange}
+            required
+            class="validate"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="D/L Number"
+            name="Drivers_License__c"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            label="Email"
+            name="Email"
+            value=""
+            data-field
+            onblur={handleFieldFocusOut}
+            onchange={handleFieldChange}
+            required
+            class="validate"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input label="Title" name="Title" value="" data-field>
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            name="Preferred_Contact_Method__c"
+            label="Preferred Contact Method"
+            value={value}
+            options={preferredMethod}
+            onchange={handleFieldChange}
+            placeholder="--None--"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <!-- <lightning-input
+            type="tel"
+            label="Mobile"
+            name="MobilePhone"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+          >
+          </lightning-input> -->
+          <lightning-input
+            label="Mobile"
+            name="MobilePhone"
+            value=""
+            type="tel"
+            data-field
+            onblur={handleFieldFocusOut}
+            onchange={handleFieldChange}
+            class="validate"
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            name="Role__c"
+            label="Role"
+            value={value}
+            options={roles}
+            onchange={handleFieldChange}
+            placeholder="--None--"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input label="Fax" name="Fax" value="" data-field>
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-textarea
+            label="Description"
+            name="Description"
+            value=""
+            data-field
+            onchange={handleFieldChange}
+          >
+          </lightning-textarea>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-record-edit-form object-api-name="Contact">
+            <lightning-input-field
+              field-name="ReportsToId"
+              data-type="input-field"
+              name="ReportsToId"
+              value=""
+              data-field
+              onchange={handleFieldChange}
+            >
+            </lightning-input-field>
+          </lightning-record-edit-form>
+        </lightning-layout-item>
+        <div class="general-header slds-var-p-left_x-small">
+          <h3 class="slds-section__title">Address Information</h3>
+        </div>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <div class="input-address fullwidth">
+            <lightning-input-address
+              address-label="Mailing address"
+              address-lookup-placeholder="Search Address"
+              country-label="Mailing Country"
+              street-label="Mailing street"
+              city-label="Mailing City"
+              province-label="Mailing State/Province"
+              postal-code-label="Mailing Zip/Postal Code"
+              country-options={countryOptions}
+              province-options={stateOptions}
+              field-level-help=""
+              show-address-lookup="show-address-lookup"
+              data-name="MailingAddress"
+              onchange={addressInputChange}
+              class="validate"
+            >
+            </lightning-input-address>
+          </div>
+        </lightning-layout-item>
+        <div class="general-header slds-var-p-left_x-small">
+          <h3 class="slds-section__title">Additional Contact Info</h3>
+        </div>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            type="date"
+            label="Birthdate"
+            name="Birthdate"
+            date-style="short"
+            data-bad-input-message={label.DOBERRMSG}
+            max={today}
+            value=""
+            onchange={handleFieldChange}
+            message-when-range-underflow="Date has to be from 1950s to current year."
+            message-when-range-overflow={dateOfBirthOverFlowMessage}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-combobox
+            label="Lead Source"
+            name="LeadSource"
+            value=""
+            options={leadSource}
+            onchange={handleFieldChange}
+            placeholder="--None--"
+          >
+          </lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            type="text"
+            label="Assistant"
+            name="AssistantName"
+            value=""
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-var-p-around_x-small">
+          <lightning-input
+            type="text"
+            label="Asst. Phone"
+            name="AssistantPhone"
+            value=""
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item
+          size="12"
+          class="slds-var-p-left_x-small slds-var-p-right_x-small"
+        >
+          <label
+            class="slds-form-element__label"
+            for="horizontal-input-id-01"
+            style="margin: -14px"
+            >Do Not Call</label
+          >
+          <lightning-input
+            type="checkbox"
+            name="DoNotCall"
+            value=""
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item
+          size="12"
+          class="slds-var-p-left_x-small slds-var-p-right_x-small"
+        >
+          <label
+            class="slds-form-element__label"
+            for="horizontal-input-id-02"
+            style="margin: -14px"
+            >Email Opt Out</label
+          >
+          <lightning-input
+            type="checkbox"
+            name="HasOptedOutOfEmail"
+            value=""
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item
+          size="12"
+          class="slds-var-p-left_x-small slds-var-p-right_x-small fax-opt-out"
+        >
+          <label
+            class="slds-form-element__label"
+            for="horizontal-input-id-03"
+            style="margin: -14px"
+            >Fax Opt Out</label
+          >
+          <lightning-input
+            type="checkbox"
+            name="HasOptedOutOfFax"
+            value=""
+            onchange={handleFieldChange}
+          >
+          </lightning-input>
+        </lightning-layout-item>
+      </div>
+      <div
+        class="slds-docked-form-footer stickyFooter bottomfooter slds-var-p-left_medium slds-var-p-right_medium"
+      >
+        <div slot="footer" style="width: 100%;">
+          <lightning-button
+            label={label.CANCEL}
+            onclick={handleCancelClick}
+            class="neutral-button slds-float_left"
+          ></lightning-button>
+          <lightning-button
+            label={label.SAVE_AND_SELECT}
+            onclick={submitDetails}
+            variant="brand"
+            class="brand-button slds-float_right"
+          ></lightning-button>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

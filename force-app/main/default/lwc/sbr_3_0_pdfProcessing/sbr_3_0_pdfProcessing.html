@@ -1,0 +1,30 @@
+<template>
+	<div class="payment-processing-container">
+		<template if:true={processing}>
+			<section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<h2 class="slds-text-heading_medium">{label.GeneratingPDF}</h2>
+					</div>
+					<div class="custom-modal-content slds-modal__content">
+						<br />
+						<p>{label.PDFMessage}</p>
+						<br /><br />
+						<div style="height:5rem;position:relative">
+							<div class="slds-spinner_container">
+								<div role="status" class="slds-spinner slds-spinner_large">
+									<span class="slds-assistive-text">Loading</span>
+									<div class="slds-spinner__dot-a"></div>
+									<div class="slds-spinner__dot-b"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+		<template if:true={success}>
+			<c-sbr_3_0_generate-pdf recid={recid}></c-sbr_3_0_generate-pdf>
+		</template>
+	</div>
+</template>

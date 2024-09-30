@@ -1,0 +1,226 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-18-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="container">
+        <div>
+           <!--Service Terittory-->
+            <c-sbr_3_0_sfs-generic-lookup 
+                icon-name="standard:service_territory" 
+                s-object-api-name="ServiceTerritory" 
+                label=" Service Territory:"
+                onlookupupdate={handleServiceTerritoryChange} 
+                default-record-id={defaultServiceTerritoryId}
+                placeholder=""
+                is-disable=true
+                is-required-style={isRequiredStyle}>
+            </c-sbr_3_0_sfs-generic-lookup>
+            <!--Retro: -->
+            <template if:true={isErrorServiceTerittory}>
+                <span style="color:red">Please reach out admin for branch allocation.</span>
+                <br/>
+            </template>
+            <br/>
+            <!--Workorder Description-->
+            <lightning-combobox
+                name="workOrderDesc"
+                label="Work Order Description:"
+                value={woDescValue}
+                options={woDescoptions}
+                onchange={handleWorkOrderDescChange}
+                placeholder="Select a Work Order Description"
+                data-id="workOrderDesc"
+             >
+            </lightning-combobox>
+            <template if:false={isWorkOrderValid}>
+                <span style="color:red">Complete this field.</span>
+                <br/>
+            </template>
+            <template if:true={displayErrorForTechSchedulerTool}>
+                <span style="color:red">{msgForTechSchedulerTool}</span>
+                <br/>
+            </template>
+          
+            <br/>
+            <!--Asset-->
+            <template if:true={annualInspecAsset}>
+                <c-sbr_3_0_sfs-generic-lookup 
+                    tabindex="-1"
+                    icon-name="standard:asset_object" 
+                    s-object-api-name="Asset"
+                    label=" Equipment:"
+                    onlookupupdate={handleAssetNumberChange}
+                    otherfield="true"
+                    other-field-api-name="SM_PS_Serial_Number__c" 
+                    placeholder="Search Equipment Number"
+                    is-required-style={isRequiredStyle}
+                    filter-query={annualInspecfilter}
+                    has-display-assetmsg={displayAssetmsg}>
+                </c-sbr_3_0_sfs-generic-lookup>
+            </template>
+            <template if:false={annualInspecAsset}>
+                <c-sbr_3_0_sfs-generic-lookup 
+                    tabindex="-1"
+                    icon-name="standard:asset_object" 
+                    s-object-api-name="Asset"
+                    label=" Equipment:"
+                    otherfield="true"
+                    other-field-api-name="SM_PS_Serial_Number__c" 
+                    onlookupupdate={handleAssetNumberChange} 
+                    placeholder="Search Equipment Number"
+                    is-required-style={isRequiredStyle}>
+                </c-sbr_3_0_sfs-generic-lookup> 
+            </template>
+            <template if:true={isErrorAsset}>
+                <span style="color:red">Complete this field.</span>
+                <br/>
+            </template>
+            <br/>
+            <template if:true={showPutInShop}>
+                <lightning-combobox
+                    name="putinshop"
+                    label="Put into Shop:"
+                    value={putInShopMakeAvailableValue}
+                    options={options}
+                    onchange={handlePutInShopChange} >
+                </lightning-combobox>
+                <br/>
+            </template>
+           
+            <template if:true={showPriority}>
+                <lightning-combobox
+                    name="priority"
+                    label="Priority:"
+                    value={priorityValue}
+                    options={priorityOptions}
+                    onchange={handlePriorityChange} 
+                    disabled={PriorityDisabled}>
+                    
+                </lightning-combobox>
+                <br/>
+           
+        </template>
+        </div>
+        <div class="slds-card workorder-card">
+            <p class="slds-var-p-horizontal_small">
+                <strong>Equipment # </strong>
+                <lightning-formatted-text value={assetSfName}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                <strong>Equipment Status </strong>
+                <lightning-formatted-text value={status}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                <strong>Make </strong>
+                <lightning-formatted-text value={make}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                <strong>Model </strong>
+                <lightning-formatted-text value={model}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                 <strong>Serial # </strong>
+                <lightning-formatted-text value={serialNumber}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                 <strong>CAT/CLASS description </strong>
+                <lightning-formatted-text value={callClassDesc}></lightning-formatted-text>
+            </p>
+            <p class="slds-var-p-horizontal_small">
+                <strong>Current Mi/Hr </strong>
+               <lightning-formatted-number value={currentMiHr}></lightning-formatted-number>
+           </p>
+            <br/>
+            <template if:true={assetErrors}>
+            <div class="slds-align_absolute-center" lwc:ref="errorMSgDiv">
+              <span style="color:red;width:80%;text-align:center">{assetErrorMsg}</span>
+            </div>
+            </template>
+            <br/>
+            <div class="slds-align_absolute-center" >
+                <button  style="width: 80%;" class="slds-button slds-button_success slds-var-p-around_xx-small" title={addButtonLabel} onclick={generateInspection}><span class="slds-var-p-left_small slds-var-p-right_small">GENERATE INSPECTION</span></button>
+            </div>
+        </div>
+        <!--Asset Warranty Expiry Date-->
+        <template if:true={isAssetWarrantyExpiryDate}>
+            <br/>
+            <div class="expiry-card">
+                <div style="font-size:14px;">
+                    <table>
+                        <tr>
+                            <td style="text-align:right">
+                                <lightning-icon icon-name='utility:warning' alternative-text='warning' size='large' title='warning'></lightning-icon>
+                            </td>
+                            <td>
+                                <p style="text-align:center;font-weight:bold">
+                                    The Equipment is under Warranty<br/>
+                                    Expiration Date {warrantyExpiryDate} 
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                   <!--<p class="slds-align_absolute-center">
+                        <lightning-formatted-text class="circle-icon" value="!"></lightning-formatted-text>
+                        <lightning-icon icon-name='utility:warning' alternative-text='warning' size='large' title='warning'></lightning-icon>
+                        &nbsp;&nbsp;&nbsp;&nbsp;The Equipment is under Warranty<br/>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Expiration Date {warrantyExpiryDate}  
+                   </p> -->
+                </div>
+            </div>
+        </template>
+        <!--Asset Alert / Equipment Alert-->
+        <template if:true={isAssetAlert}>
+            <br/>
+            <strong>EQUIPMENT ALERTS:</strong>
+            <div class="slds-var-m-top_small">
+                <template for:each={equipmentAlerts} for:item="alert">
+                    <div class="slds-card alert-card" key={alert.id}>
+                        <div style="font-size:14px;">
+                            <div class="slds-grid alert-body slds-align_absolute-center">
+                            <div class="slds-col slds-size_1-of-12 slds-var-p-left_x-small slds-var-p-right_x-small"> 
+                                <lightning-icon icon-name='utility:warning' alternative-text='warning' size='Small' title='warning'></lightning-icon>
+                            </div>
+                            <div class="slds-col slds-size_11-of-12 slds-var-p-around_medium">  {alert.SM_PS_Step_Description__c} </div>
+                        </div> 
+                        </div>
+                        <!--<table>
+                            <tr>
+                                <td style="text-align:center">
+                                    <lightning-icon icon-name='utility:warning' alternative-text='warning' size='small' title='warning'></lightning-icon>
+                                </td>
+                                <td>
+                                    <p style="text-align:left;font-weight:bold">
+                                        {alert.SM_PS_Step_Description__c}
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>-->
+                    </div>
+                </template>
+            </div>
+        </template>
+        <!--Open work Order for Asset-->
+        <template if:true={isOpenWorkOrderForAsset}>
+            <br/>
+            <strong>OPEN WORK ORDERS:</strong>
+            <div class="slds-var-m-top_small" key={wofas.Id}>
+                <template for:each={openWorkOrderForAsset} for:item="wofas">
+                    <div class="slds-card workorder-card" key={wofas.Id}>
+                        <p class="slds-var-p-horizontal_small">
+                            <strong>RM W.O.# </strong>
+                            {wofas.SF_PS_RM_WO_Number__c}<br/> 
+                            <strong>SF W.O. No. </strong>
+                            {wofas.WorkOrderNumber}<br/> 
+                            <strong>W.O. Description </strong>
+                            {wofas.SF_PS_Work_Order_Des__c}
+                        </p>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

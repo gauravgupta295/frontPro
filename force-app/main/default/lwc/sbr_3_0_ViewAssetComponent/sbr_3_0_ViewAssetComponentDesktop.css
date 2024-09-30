@@ -1,0 +1,29 @@
+.slds-accordion__summary-content{
+    font-weight: bold !important;
+}
+
+.assetDetailView {
+    /* font-size: 12px;
+    font-weight: 700; */
+    font-weight: bold;
+}
+
+.modalContentClass{
+    overflow-y: scroll;
+    height: 300px;
+}
+
+.accordionSectionClass{
+    --sds-c-accordion-heading-font-weight: bold;
+}
+
+/*START: FRONT-15208*/
+.layoutItemcol1 {
+    padding-left: 1.7rem;
+    padding-top: 0.3rem;
+}
+
+.layoutItemcol2 {
+    padding-top: 0.3rem;
+}
+/*END: FRONT-15208*/

@@ -1,0 +1,186 @@
+<template>
+    <template if:true={showPaymentData}>
+        <div class="c-container headrer-bgc">
+            <lightning-layout multiple-rows="true" class="headrer-bgc slds-p-left_xx-small">
+                <lightning-layout-item padding="around-small" size="12">
+                    <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                        <div class="slds-col">
+                            <div class="slds-grid">
+                                <div class="slds-col">
+                                    <lightning-icon icon-name="custom:custom41" size="large" alternative-text="Filter"
+                                        title="Payment ID">
+                                    </lightning-icon>
+                                </div>
+                                <div class="slds-col slds-p-left_small">
+                                    <ul>
+                                        <li style="flex: none; white-space: nowrap;">Payment ID</li>
+                                        <li><b>{Name}</b></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_4-of-5"></div>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <template if:true={IsFromAccount}>
+            <div class="Details">
+                <div class="slds-text-heading_medium  slds-p-left_medium"><b>Details</b></div>
+                </br>
+                <ul class="slds-has-dividers_bottom-space">
+                    <li class="slds-item slds-border_bottom">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_medium"
+                                title="First Label">Account</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{account}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item slds-border_bottom">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_medium"
+                                title="First Label">Type</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large" 
+                                title="Description for first label">{type}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                title="First Label">Location</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{location}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                title="First Label">Amount</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{amount}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                title="First Label">User</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{user}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                title="First Label">Date</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{date}</dd>
+                        </dl>
+                    </li>
+                    <li class="slds-item" style="border-bottom: none;">
+                        <dl class="slds-list_horizontal slds-p-left_xx-small">
+                            <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                title="First Label">Time</dt>
+                            <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                title="Description for first label">{time}</dd>
+                        </dl>
+                    </li>
+                </ul>
+            </div>
+
+            <template for:each={roaDetailsArray} for:item="roaRec" for:index="index">
+                <div class="headrer-bgc" key={roaDetailsArray.InvoiceOrComment}>
+                    </br>
+                </div>
+            
+                <div class="Details" key={roaDetailsArray.InvoiceOrComment}>
+                    <ul class="slds-has-dividers_bottom-space">
+                        <li class="slds-item slds-p-left_small Details slds-border_bottom">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-p-right_small slds-text-body_small InvoiceComment"
+                                    title="First Label">Invoice # or Comment</dt>
+                                <dd class="slds-item_detail slds-truncate slds-m-left_xx-large" title="Description for first label">
+                                    {roaRec.InvoiceOrComment}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item Details" style="border-bottom: none;">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-p-right_medium slds-text-body_small InvoiceComment"
+                                    title="First Label">Amount</dt>
+                                <dd class="slds-item_detail slds-truncate amountValue" title="Description for first label">
+                                    {roaRec.amount}</dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={IsFromOrder}>
+            <lightning-card>
+                <div class="Details">
+                    <div class="slds-text-heading_medium  slds-p-left_medium"><b>Details</b></div>
+                    </br>
+                    <ul class="slds-has-dividers_bottom-space">
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_medium"
+                                    title="First Label">Payment Id</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{Name}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_medium"
+                                    title="First Label">Tran ID</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{TranId}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                    title="First Label">Date</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{date}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                    title="First Label">Type</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{type}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                    title="First Label">Amount</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{amount}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small"
+                                    title="First Label">Tran Type</dt>
+                                <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                    title="Description for first label">{TranType}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item" style="border-bottom: none;">
+                                <dl class="slds-list_horizontal slds-p-left_xx-small">
+                                    <dt class="slds-item_label slds-text-color_weak"
+                                        title="First Label" style="white-space: nowrap;">Authorization #</dt>
+                                    <dd class="slds-item_detail slds-truncate slds-p-left_xx-large"
+                                        title="Description for first label">{Authorization}</dd>
+                                </dl>
+                        </li>
+                    </ul>
+                </div>
+            </lightning-card>
+        </template>
+    </template>
+</template>

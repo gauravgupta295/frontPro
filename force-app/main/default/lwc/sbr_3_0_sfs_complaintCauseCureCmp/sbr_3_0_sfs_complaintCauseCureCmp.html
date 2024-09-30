@@ -1,0 +1,110 @@
+<template>
+    <div>
+    <c-toast-message if:true={shouldShowToast} message={toastMessage} type={toastType} onclose={hideToast}></c-toast-message>
+    </div>
+    <template if:true={isSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+   <template if:false={isSpinner}>
+        <div style="height:100%">
+            <div class="slds-box slds-theme_default" >
+                <span>
+                    Field Service Record
+                </span>
+                <div>
+                    <br/>
+                                <span style="color:red">* </span>Complaint:
+                                <br/>
+                    <lightning-input class="validate" type="Text" 
+                                    step="0.01" 
+                                    message-when-bad-input="More then 50 characters are not allowed." 
+                                    lwc:ref="complaintInputField" 
+                                    variant="label-hidden"
+                                    value={complaintValue}
+                                    onchange={handleComplaintChange} 
+                                    max-length="50" required>
+                    </lightning-input>
+                    <p class="moveRight">
+                        <span>{charCountComplaint}</span> of 50 characters
+                    </p>
+                    <br/>
+                    Cause:
+                    <lightning-input class="validate" type="Text" 
+                                    message-when-bad-input="More then 50 characters are not allowed." 
+                                    variant="label-hidden" 
+                                    value={causeValue}
+                                    onchange={handleCauseChange} 
+                                    max-length="50" 
+                                    >
+                    </lightning-input>
+                    <p class="moveRight">
+                        <span>{charCountCause}</span> of 50 characters
+                    </p>
+                    <br/>
+                    Cure:
+                    <lightning-input class="validate" type="Text" 
+                                    message-when-bad-input="More then 50 characters are not allowed." 
+                                    variant="label-hidden" 
+                                    value={cureValue}
+                                    onchange={handleCureChange} 
+                                    max-length="50" 
+                                    >
+                    </lightning-input>
+                    <p class="moveRight">
+                        <span>{charCountCure}</span> of 50 characters
+                    </p>
+                    <br/>
+                    <span></span>Work Order Description
+                    <br/>
+                    <span>{woDesc}</span>
+                    <br/>
+                    <br/>
+                    <span></span>Claim Type
+                    <br/>
+                    <span>{claimType} </span>
+                    <br/>
+                    <br/>
+                    <lightning-combobox
+                        class="validate"
+                        name="LaborCodeLabor"
+                        label=" Labor Code"
+                        value={valueLaborCode}
+                        placeholder="Select Labor Code"
+                        options={laborCodeValues}
+                        onchange={handleChangeLaborCode}
+                        required >
+                    </lightning-combobox> 
+                    <br/>
+                    <lightning-combobox
+                        class="validate"
+                        name="ExchangeRequired"
+                        label="Exchange Required?"
+                        value={exchangeValue}
+                        placeholder="Select Exchange Required?"
+                        options={exchangeReqOptions}
+                        onchange={handleExchange}
+                        required >
+                    </lightning-combobox> 
+                    <br/>
+                    <lightning-combobox
+                        class="validate"
+                        name="ServiceCall?"
+                        label="Service Call?"
+                        value={serviceCallValue}
+                        placeholder="Select Service Call?"
+                        options={serviceCallOptions}
+                        onchange={handleServiceCallChange}
+                        required >
+                    </lightning-combobox> 
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+            <div class="slds-box slds-theme_default  fixedFooter">
+                <button class="slds-button slds-button_success fixedbutton" title="Next" onclick={updateWO}><span >Next ></span></button>
+            </div>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,20 @@
+<template>
+    <div class={mobileMainDiv}>
+        <div>
+        <H1>{heading}</H1>
+        </div>
+        <div>
+            <H2>{message}</H2>
+        </div>
+        <div class="slds-grid slds-grid_align-spread customfooter">
+            <div class="slds-border_top customline" style={customLineStyle}></div>
+            <div class="actionsLeft slds-grid slds-m-right_xx-small"></div>
+            <div class="actionsRight slds-grid slds-p-top_small">
+                <lightning-button label="Cancel" variant="brand" onclick={handleCancel} ></lightning-button>
+            </div>
+            <div class="actionsRight slds-grid slds-p-top_small">
+                <lightning-button label="Confirm" variant="brand" onclick={handleConfirm} ></lightning-button>
+            </div>
+        </div>
+    </div>
+</template>

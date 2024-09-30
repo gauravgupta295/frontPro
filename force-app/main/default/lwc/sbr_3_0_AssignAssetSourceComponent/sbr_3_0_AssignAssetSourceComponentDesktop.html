@@ -1,0 +1,19 @@
+<template>
+	<div class="sourcingScroller sourcingBorder sourcingContainer">
+	<lightning-card>
+		<lightning-accordion allow-multiple-sections-open active-section-name={activeSectionsDesktop} style="background-color:lightgrey;">
+			<lightning-accordion-section name="X" label="Reservation Fulfillment Sourcing" class="slds-theme_shade" >
+				<lightning-datatable key-field="id" data={FulfillmentSourcingData} columns={reservationColumns}
+					hide-checkbox-column resize-column-disabled wrap-text-max-lines="2" class="wrapped-header-datatable">
+				</lightning-datatable>
+			</lightning-accordion-section>
+			<lightning-accordion-section name="Y" label="Cat-Class Fulfillment Sourcing" class="slds-theme_shade">
+				<lightning-datatable key-field="id" data={catClassData} columns={catClassColumns} hide-checkbox-column
+					resize-column-disabled wrap-text-max-lines="2" class="wrapped-header-datatable">
+				</lightning-datatable>
+			</lightning-accordion-section>
+		</lightning-accordion>
+
+	</lightning-card>
+	</div>
+</template>

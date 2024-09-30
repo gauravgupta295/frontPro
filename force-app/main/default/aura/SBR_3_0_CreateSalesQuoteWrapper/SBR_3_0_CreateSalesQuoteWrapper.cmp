@@ -1,0 +1,7 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader"> 
+  <aura:handler name="init" value="{!this}" action="{!c.init}" /> 
+  <!--Removed below height:27rem attribute style as part of the bug#FRONT_29557-->
+  <div class="slds-scrollable" >
+    <lightning:flow aura:id="flowData" /> 
+  </div>
+</aura:component>

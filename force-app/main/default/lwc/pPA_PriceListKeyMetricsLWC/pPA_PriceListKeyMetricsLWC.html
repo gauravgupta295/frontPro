@@ -1,0 +1,94 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+        <lightning-accordion-section name="Display Metrics" label="Display Metrics">
+            <table style="padding-right: 16px;width: 900px">
+                <tbody>
+                    <tr>
+                        <td>
+                            <table style="width: 175px">
+                                <tbody>
+                                    <tr>
+                                        <td>CorpLink TTM</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="display-text" >
+                                            <lightning-formatted-number format-style="currency" currency-display-as="symbol" value={corpLinkTTM}></lightning-formatted-number>
+                                        </td>        
+                                    </tr>    
+                                </tbody>
+                            </table>    
+                        </td>
+                        <td>
+                            <table style="width: 175px">
+                                <tbody>
+                                    <tr>
+                                        <td>Customer TTM</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="display-text">
+                                            <lightning-formatted-number format-style="currency" currency-display-as="symbol" value={customerTTM}></lightning-formatted-number>
+                                        </td>                
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table style="width: 250px">
+                                <tbody>
+                                    <tr>
+                                        <td>Market (Below/At/Above)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="display-text">
+                                            <lightning-layout>
+                                                <lightning-layout-item>
+                                                    <lightning-formatted-number format-style="percent" minimum-fraction-digits="2" value={belowMarket} class="below"></lightning-formatted-number>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <p class="padded">/</p>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <lightning-formatted-number format-style="percent" minimum-fraction-digits="2" value={atMarket} class="padded"></lightning-formatted-number>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <p class="padded">/</p>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <lightning-formatted-number format-style="percent" minimum-fraction-digits="2" value={aboveMarket} class="padded above"></lightning-formatted-number>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        <td>
+                            <table style="width: 250px">
+                                <tbody>
+                                    <tr>
+                                        <td>TTM RA % (Current/Previous)</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="display-text">
+                                            <lightning-layout>
+                                                <lightning-layout-item>
+                                                    <lightning-formatted-number format-style="percent" minimum-fraction-digits="2" value={currTTM_RA}></lightning-formatted-number>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <p class="padded">/</p>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item>
+                                                    <lightning-formatted-number format-style="percent" minimum-fraction-digits="2" value={prevTTM_RA} class="padded"></lightning-formatted-number>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

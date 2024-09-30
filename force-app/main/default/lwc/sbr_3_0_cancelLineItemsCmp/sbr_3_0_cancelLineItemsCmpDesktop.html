@@ -1,0 +1,339 @@
+<template>
+  <template if:true={showCancelItems}>
+    <template if:false={showCancelScreen}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-1"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="slds-modal__container">
+          <header class="slds-modal__header">
+            <button
+              class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+              title="Close"
+              onclick={closeModal}
+            >
+              <lightning-icon
+                icon-name="utility:close"
+                alternative-text="close"
+                variant="inverse"
+                size="small"
+              ></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2
+              id="modal-heading-04"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              {label.CANCEL_ITEMS}
+            </h2>
+          </header>
+          <!-- FRONT-7655 Start -->
+          <template if:false={allRecordsSelected}>
+            <div
+              class="slds-modal__content slds-p-around_medium msgAlignment"
+              id="modal-content-id-05"
+            >
+              <p>{label.CANCEL_PROMPT}</p>
+            </div>
+          </template>
+
+          <template if:true={allRecordsSelected}>
+            <div
+              class="slds-modal__content slds-p-around_medium msgAlignment bannerColor"
+              id="modal-content-id-06"
+            >
+              <div class="custom-container">
+                <div class="icon-container">
+                  <lightning-icon
+                    icon-name="utility:warning"
+                    size="small"
+                    class="iconClass"
+                  ></lightning-icon>
+                </div>
+                <div class="text-container">
+                  <h3 class="heading1">{label.CANCEL_ITEMS_WARNING_ONE}</h3>
+                  <h1 class="heading2">{label.CANCEL_ITEMS_WARNING_TWO}</h1>
+                </div>
+              </div>
+            </div>
+          </template>
+          <!-- FRONT-7655 End -->
+          <footer class="slds-modal__footer">
+            <lightning-button
+              label="No"
+              title="Cancel"
+              onclick={closeModal}
+              class="slds-m-left_x-small neutralbutton"
+            ></lightning-button>
+            <!-- FRONT-7655 Start -->
+            <template if:true={isRental}>
+              <template if:true={showCancelResButton}>
+                <lightning-button
+                  label="Cancel Reservation"
+                  title="Successful action"
+                  onclick={cancelReservation}
+                  class="slds-m-left_x-small neutralbutton"
+                  disabled={allnotCheckd}
+                ></lightning-button>
+              </template>
+            </template>
+            <!-- FRONT-7655 End -->
+            <lightning-button
+              variant="brand"
+              label={label.CANCEL_SELECTED_ITEMS}
+              title="Successful action"
+              onclick={handleCancelClick}
+              class="slds-m-left_x-small brand-button"
+              disabled={singleItemCancel}
+            ></lightning-button>
+          </footer>
+        </div>
+      </section>
+    </template>
+
+    <template if:true={showCancelScreen}>
+      <section
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-1"
+        class="slds-modal slds-fade-in-open"
+      >
+        <div class="cont">
+          <header class="slds-modal__header">
+            <button
+              class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+              title="Close"
+              onclick={closeModal}
+            >
+              <lightning-icon
+                icon-name="utility:close"
+                alternative-text="close"
+                variant="inverse"
+                size="small"
+              ></lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2
+              id="modal-heading-02"
+              class="slds-text-heading_medium slds-hyphenate"
+            >
+              {label.CANCEL_ITEMS}
+            </h2>
+          </header>
+
+          <template if:false={allRecordsSelected}>
+            <div
+              class="slds-modal__content slds-p-around_medium msgAlignment"
+              id="modal-content-id-02"
+            >
+              <p>{label.CANCEL_PROMPT}</p>
+            </div>
+          </template>
+
+          <template if:true={allRecordsSelected}>
+            <div
+              class="slds-modal__content slds-p-around_medium msgAlignment bannerColor"
+              id="modal-content-id-03"
+            >
+              <div class="custom-container">
+                <div class="icon-container">
+                  <lightning-icon
+                    icon-name="utility:warning"
+                    size="small"
+                    class="iconClass"
+                  ></lightning-icon>
+                </div>
+                <div class="text-container">
+                  <h3 class="heading1">{label.CANCEL_ITEMS_WARNING_ONE}</h3>
+                  <h1 class="heading2">{label.CANCEL_ITEMS_WARNING_TWO}</h1>
+                </div>
+              </div>
+            </div>
+          </template>
+          <lightning-card variant="Narrow">
+            <div class="slds-p-horizontal_small">
+              <div if:true={showSpinner}>
+                <lightning-spinner
+                  alternative-text="Loading..."
+                  variant="brand"
+                  class="slds-is-fixed"
+                >
+                </lightning-spinner>
+              </div>
+              <div class="tableFixHead">
+                <table
+                  class="slds-table slds-table_cell-buffer slds-table_bordered custom-table tableFixHead"
+                >
+                  <thead>
+                    <tr
+                      class="slds-table slds-table_cell-buffer slds-table_bordered custom-table tableFixHead"
+                    >
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="checkbox">
+                          <lightning-input
+                            onchange={handleAllSelected}
+                            type="checkbox"
+                            data-key="allCheckbox"
+                            checked
+                          >
+                          </lightning-input>
+                          <span class="containerMinus">
+                            <template if:true={showRemove}>
+                              <lightning-icon
+                                icon-name="utility:dash"
+                                class="slds-m-left_xx-small dashClass"
+                                onclick={handleAllSelected}
+                              ></lightning-icon>
+                            </template>
+                          </span>
+                        </div>
+                      </th>
+                      <th class="leftAlign" scope="col">
+                        <div class="leftAlign" title="Item Name">
+                          {label.ITEM_NAME}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="Item Name">
+                          {label.CAT_CLASS}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="Item Quantity">
+                          {label.ITEM_QUANTITY}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title=">Min Rate">
+                          {label.MIN_RATE}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="Daily Rate">
+                          {label.DAY_RATE}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="Weekly Rate">
+                          {label.WEEK_RATE}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="4-Week Rate">
+                          {label.FOUR_WEEK_RATE}
+                        </div>
+                      </th>
+                      <th
+                        class="slds-table slds-table_cell-buffer slds-table_bordered"
+                        scope="col"
+                      >
+                        <div class="rightAlign" title="Subtotal">
+                          {label.SUBTOTAL}
+                        </div>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    <template for:each={cancelRows} for:item="item">
+                      <tr key={item.Id}>
+                        <td>
+                          <div class="slds-truncate">
+                            <lightning-input
+                              type="checkbox"
+                              value={item.Id}
+                              data-id={item.Id}
+                              data-key="firstColumnCheckbox"
+                              onchange={handleCheckboxSelect}
+                              name={item.Id}
+                              checked
+                            >
+                            </lightning-input>
+                          </div>
+                        </td>
+                        <td class="fake-link">{item.Name}</td>
+                        <td class="rightAlign">{item.CatClass}</td>
+                        <td class="rightAlign">{item.Quantity}</td>
+                        <td class="rightAlign">{item.Min_Rate}</td>
+                        <td class="rightAlign">{item.Daily_Rate}</td>
+                        <td class="rightAlign">{item.Weekly_Rate}</td>
+                        <td class="rightAlign">{item.Monthly_Rate}</td>
+                        <td class="rightAlign">{item.Item_Subtotal}</td>
+                      </tr>
+                    </template>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <footer class="slds-modal__footer">
+              <lightning-button
+                label={label.GO_BACK}
+                title="Cancel"
+                class="slds-m-left_x-small neutralbutton"
+                onclick={closeModal}
+              ></lightning-button>
+              <template if:true={isRental}>
+                <template if:true={showCancelResButton}>
+                  <lightning-button
+                    label="Cancel Reservation"
+                    title="Successful action"
+                    onclick={cancelReservation}
+                    class="slds-m-left_x-small neutralbutton"
+                    disabled={allnotCheckd}
+                  ></lightning-button>
+                </template>
+              </template>
+              <lightning-button
+                variant="brand"
+                label={label.CANCEL_SELECTED_ITEMS}
+                title="Successful action"
+                onclick={getAllSelectedRecord}
+                class="slds-m-left_x-small"
+                disabled={allChecked}
+              ></lightning-button>
+            </footer>
+          </lightning-card>
+        </div>
+      </section>
+    </template>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+  <!-- //FRONT-7655 START-->
+  <template if:true={callCancelCmp}>
+    <div class="dexter">
+      <c-sbr_3_0_order-cancel-cmp
+        order-id={recordId}
+        onclosecancelmodal={handleCloseCancel}
+      >
+      </c-sbr_3_0_order-cancel-cmp>
+    </div>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+</template>

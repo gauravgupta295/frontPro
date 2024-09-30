@@ -1,0 +1,19 @@
+/* Styles for custom modal content */
+.custom-modal-content {
+  /* Make the modal content display as a flex container */
+  display: flex;
+  /* Arrange flex items vertically */
+  flex-direction: column;
+  /* Center flex items horizontally */
+  align-items: center;
+  /* Center flex items vertically */
+  justify-content: center;
+  /* Center the text within the content horizontally */
+  text-align: center;
+  /* Set the font size for the content */
+  font-size: 14px;
+}
+.slds-modal__container{
+  max-width: 35rem;
+  min-width: 35rem;
+}

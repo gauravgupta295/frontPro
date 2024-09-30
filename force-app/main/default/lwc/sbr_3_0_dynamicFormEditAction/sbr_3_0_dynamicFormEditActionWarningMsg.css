@@ -1,0 +1,26 @@
+.bottomfooter {
+    top: 85vh !important;
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    width: 100%;
+    margin: auto;
+    position: absolute !important;
+}
+.neutral-button {
+    --slds-c-button-text-color:  #25683E;
+    --slds-c-button-neutral-color-border: #AEAEAE;
+    --slds-c-button-neutral-color-border-hover: #AEAEAE;
+    
+}
+.textColor
+{
+    color:red !important;
+    margin-top:250px !important;
+}
+
+.modalclass
+{
+    min-height: 85vh !important;
+
+}

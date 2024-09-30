@@ -1,0 +1,13 @@
+.moveRight{
+    float:right;
+}
+.fixedbutton {
+    color:White;
+    background-color: green;
+    float: right;
+}
+.fixedFooter{
+    position: fixed;
+    bottom: 0%;
+    width: 100%;
+}

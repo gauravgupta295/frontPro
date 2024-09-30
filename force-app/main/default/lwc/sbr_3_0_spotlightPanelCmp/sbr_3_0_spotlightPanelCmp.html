@@ -1,0 +1,812 @@
+<template>
+  <div class="slds-hidden">{showSpinner}</div>
+  <template lwc:if={showSpinner}>
+    <c-loading-spinner loading-message="Loading..."></c-loading-spinner>
+  </template>
+  <template if:false={isMobile}>
+    <div
+      class="slds-panel slds-size_full slds-panel_docked slds-panel_docked-right slds-is-open"
+      aria-hidden="false"
+      style={spotlightHeightStyle}
+    >
+      <div class="slds-panel__header">
+        <h2
+          class="slds-panel__header-title slds-text-heading_small slds-truncate"
+          title={panelTitle}
+        >
+          {panelTitle}
+        </h2>
+        <div class="slds-panel__header-actions">
+          <template if:true={isBulkAddPanel}>
+            <a href="#" onclick={removeSpotlighData}>Remove All</a>&nbsp;
+          </template>
+        </div>
+      </div>
+      <div class="slds-panel__body">
+        <div class={unselectedStateClass}>
+          <div class="slds-col slds-illustration slds-illustration_small">
+            <!-- FRONT-10863 Start -->
+            <c-sbr_3_0_illustration-cmp variant="noevent">
+            </c-sbr_3_0_illustration-cmp>
+            <!-- FRONT-10863 End -->
+          </div>
+        </div>
+        <div class={selectedStateClass}>
+          <template if:true={isDetailsPanel}>
+            <template if:false={isKit}>
+              <lightning-tabset>
+                <lightning-tab
+                  label="Availability & Rates"
+                  value="AvailabilityRates"
+                  title="Availability & Rates"
+                >
+                  <div if:true={showCustomerPricingAlert}>
+                    <div class={alertClass} role="alert">
+                      <lightning-icon
+                        icon-name="utility:info"
+                        alternative-text="Utility info"
+                        size="x-small"
+                        class="slds-p-right_small info"
+                      ></lightning-icon>
+                      <h2 style="text-align: left">{customerPricingAlert}</h2>
+                    </div>
+                  </div>
+                  <div if:true={isShowBranchWarning}>
+                    <div class={alertClass} role="alert">
+                      <lightning-icon
+                        icon-name="utility:info"
+                        alternative-text="Utility info"
+                        size="x-small"
+                        class="slds-p-right_small info"
+                      ></lightning-icon>
+                      <h4 style="text-align: left; font-size: 0.8em">
+                        Error Calculating ATP. Profile Branch used below.
+                      </h4>
+                      <div class="slds-notify__close">
+                        <lightning-button-icon
+                          icon-name="utility:clear"
+                          variant="bare-inverse"
+                          alternative-text="close"
+                          onclick={clearAlert}
+                          class="slds-m-left_xx-small"
+                          title="Close"
+                        ></lightning-button-icon>
+                      </div>
+                    </div>
+                  </div>
+                  <c-sbr_3_0_product-details-cmp
+                    variant="compact"
+                    product-id={productId}
+                  >
+                  </c-sbr_3_0_product-details-cmp>
+                  <c-sbr_3_0_availability-cmp
+                    product-cat={productCatclass}
+                    onbranchdisplayupdate={handleBranchDisplayUpdate}
+                    object-api-name={objectApiName}
+                    record-id={recordId}
+                    type="summary"
+                  >
+                  </c-sbr_3_0_availability-cmp>
+                  <c-sbr_3_0_rates-cmp
+                    rates={rates}
+                    item-qty={parentItemQty}
+                  ></c-sbr_3_0_rates-cmp>
+                  <c-sbr_3_0_add-to-cart-cmp
+                    record-id={recordId}
+                    is-parent-add-to-cart={isParentAddToCart}
+                    object-api-name={objectApiName}
+                    company-code={companyCode}
+                    selected-item-panel={_selectedProducts}
+                    has-rates-loaded={hasRatesLoaded}
+                    onparentitemqtychange={handleParentItemQtyChange}
+                    onshowspinner={handleSpinner}
+                  ></c-sbr_3_0_add-to-cart-cmp>
+                </lightning-tab>
+                <lightning-tab label="Add-Ons" title="Add-Ons">
+                  <c-sbr_3_0_add-ons-cmp
+                    variant="base"
+                    product-id={productId}
+                    record-id={recordId}
+                    company-code={companyCode}
+                    object-api-name={objectApiName}
+                    chronos-enabled={chronosEnabled}
+                    parent-product-branch={parentBranch}
+                    location-info={locationInfo}
+                    parent-qty={parentItemQty}
+                  ></c-sbr_3_0_add-ons-cmp>
+                </lightning-tab>
+                <!--SF-7082, handleAltInvTabActive-->
+                <lightning-tab
+                  label="Alt. Inventory"
+                  title="Alt. Inventory"
+                  onactive={handleAltInvTabActive}
+                >
+                  <c-sbr_3_0_alt-inventory-cmp
+                    variant="base"
+                    product-id={productId}
+                    onitemselected={handleSelectedItem}
+                    company-code={companyCode}
+                    chronos-enabled={chronosEnabled}
+                    branch-id={branchNumber}
+                    branch-phone={branchPhone}
+                    location-info={locationInfo}
+                    item-qty={parentItemQty}
+                    sync-cart-info={syncCartInfo}
+                    product-catclass={productCatclass}
+                    record-id={recordId}
+                  ></c-sbr_3_0_alt-inventory-cmp>
+                </lightning-tab>
+                <lightning-tab label="Details" title="Details">
+                  <c-sbr_3_0_product-details-cmp
+                    variant="base"
+                    product-id={productId}
+                    is-product-kit={isProductKit}
+                  >
+                  </c-sbr_3_0_product-details-cmp>
+                  <c-sbr_3_0_add-to-cart-cmp
+                    selected-item-panel={_selectedProducts}
+                    record-id={recordId}
+                    company-code={companyCode}
+                    object-api-name={objectApiName}
+                    is-parent-add-to-cart={isParentAddToCart}
+                    customer-number={passedCustomerNumber}
+                    has-rates-loaded={hasRatesLoaded}
+                    onparentitemqtychange={handleParentItemQtyChange}
+                    onshowspinner={handleSpinner}
+                  ></c-sbr_3_0_add-to-cart-cmp>
+                </lightning-tab>
+              </lightning-tabset>
+            </template>
+            <template if:true={isKit}>
+              <lightning-tabset>
+                 <!-- SAL-27182 -->
+                 <div if:true={isKitUnPackaged}>
+                  <div class={alertClass} role="alert">
+                    <lightning-icon
+                      icon-name="utility:info"
+                      alternative-text="Utility info"
+                      size="x-small"
+                      class="slds-p-right_small info"
+                    ></lightning-icon>
+                    <h4 style="text-align: left; font-size: 0.8em">
+                      Rates will be available upon adding the Kit
+                    </h4>
+                    <div class="slds-notify__close">
+                      <lightning-button-icon
+                        icon-name="utility:clear"
+                        variant="bare-inverse"
+                        alternative-text="close"
+                        onclick={clearAlert}
+                        class="slds-m-left_xx-small"
+                        title="Close"
+                      ></lightning-button-icon>
+                    </div>
+                  </div>
+                </div>
+                <template if:false={isKitUnPackaged}>
+                  <lightning-tab label="Rates" title="Rates">
+                    <c-sbr_3_0_rates-cmp
+                      rates={rates}
+                      item-qty={parentItemQty}
+                    ></c-sbr_3_0_rates-cmp>
+                  </lightning-tab>
+                </template>
+                <lightning-tab label="Kit Components" title="Kit Components">
+                  <c-sbr_3_0_kit-components-cmp
+                    product-id={productId}
+                    is-kit-unpackaged={isKitUnPackaged}
+                    item-qty={parentItemQty}
+                  >
+                  </c-sbr_3_0_kit-components-cmp>
+                </lightning-tab>
+                <lightning-tab label="Details" title="Details">
+                  <c-sbr_3_0_product-details-cmp
+                    variant="base"
+                    product-id={productId}
+                    is-product-kit={isProductKit}
+                  >
+                  </c-sbr_3_0_product-details-cmp>
+                </lightning-tab>
+              </lightning-tabset>
+              <c-sbr_3_0_add-to-cart-cmp
+                record-id={recordId}
+                is-parent-add-to-cart={isParentAddToCart}
+                object-api-name={objectApiName}
+                selected-item-panel={_selectedProducts}
+                has-rates-loaded={hasRatesLoaded}
+                onparentitemqtychange={handleParentItemQtyChange}
+                company-code={companyCode}
+                customer-number={passedCustomerNumber}
+                onshowspinner={handleSpinner}
+              ></c-sbr_3_0_add-to-cart-cmp>
+            </template>
+          </template>
+          <template if:true={isBulkAddPanel}>
+            <c-sbr_3_0_bulk-add-cmp
+              variant="base"
+              product-id={productId}
+              bulk-product-ids={bulkProductIds}
+              onitemselected={handleSelectedItem}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              customer-number={passedCustomerNumber}
+              company-code={companyCode}
+              product-list={productRateList}
+              bulk-product-data={bulkProductData}
+              has-rates-loaded={hasRatesLoaded}
+              chronos-enabled={chronosEnabled}
+              onshowspinner={handleSpinner}
+            >
+            </c-sbr_3_0_bulk-add-cmp>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isMobile}>
+    <lightning-layout-item size="12">
+      <div class="back-item-ctr slds-align_absolute-left slds-p-left_medium">
+        <lightning-button-icon
+          icon-name="utility:back"
+          size="large"
+          variant="bare"
+          alternative-text="Add Customer"
+          class="back-button-icon"
+          onclick={backToItemSearch}
+          title="Back"
+        >
+        </lightning-button-icon>
+        <button
+          type="button"
+          class={itemSearchBackBtnClass}
+          value="Back to Item Search"
+          onclick={backToItemSearch}
+        >
+          Back to Item Search
+        </button>
+        <template if:true={isNotRecordPage}>
+          <lightning-button-icon
+            icon-name="utility:adduser"
+            size="large"
+            variant="bare"
+            onclick={toggleAddCustomerMob}
+            alternative-text="Add Customer"
+            class="add-user-icon on-select"
+            title="Add Customer"
+          >
+          </lightning-button-icon>
+          <template if:true={isCustomerAdded}>
+            <span class="cust-added"></span>
+          </template>
+        </template>
+      </div>
+    </lightning-layout-item>
+    <lightning-card class="spotlight-card slds-scrollable_y">
+      <div class="slds-m-bottom_none slds-card__header">
+        <c-sbr_3_0_product-details-cmp
+          variant="compact"
+          product-id={productId}
+          product-cat={productCatclass}
+        >
+        </c-sbr_3_0_product-details-cmp>
+      </div>
+      <div class="slds-align_absolute-center">
+        <c-sbr_3_0_product-details-cmp
+          variant="mobileImageCarousel"
+          product-id={productId}
+          product-cat={productCatclass}
+          class="image-carousel-container"
+        ></c-sbr_3_0_product-details-cmp>
+      </div>
+      <div if:true={showCustomerPricingAlert} class="slds-p-horizontal_small">
+        <div class={alertClass} role="alert">
+          <lightning-icon
+            icon-name="utility:info"
+            alternative-text="Utility info"
+            size="x-small"
+            class="slds-p-right_small info"
+          ></lightning-icon>
+          <h2 style="text-align: left">{customerPricingAlert}</h2>
+          <!-- <div class="slds-notify__close" if:false={hasCustomerPricing}>
+                        <lightning-button-icon icon-name="utility:close" alternative-text="Close"
+                            variant="bare-inverse" title="Close" onclick={hideCustomerPricingAlert}>
+                        </lightning-button-icon>
+                    </div> -->
+        </div>
+      </div>
+      <div class="branch-container slds-p-around_none slds-m-horizontal_medium">
+        <!--                <span onclick={handleBranchId}>-->
+        <!--                    <lightning-icon size="xx-small" icon-name="utility:checkin" alternative-text="checkin"-->
+        <!--                        title="checkin"></lightning-icon>-->
+        <!--                    <span class="branch-id slds-m-left_xx-small">{branchId}</span>-->
+        <!--                </span>-->
+        <c-sbr_3_0_availability-badge-cmp
+          chronos-enabled={chronosEnabled}
+          object-api-name={objectApiName}
+          record-id={recordId}
+          branch={branchNumber}
+          product-cat={productCatclass}
+          onbranchdisplayupdate={handleBranchDisplayUpdate}
+          location-information={locationInfo}
+          util={utilization}
+        ></c-sbr_3_0_availability-badge-cmp>
+      </div>
+      <template if:false={isKit}>
+        <div class="slds-p-horizontal_small">
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="Availability"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-availability"
+                class={sectionButtonClass}
+                data-buttonid="Availability"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="Availability"
+                  >Availability</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-availability"
+              >
+                <c-sbr_3_0_availability-cmp
+                  product-cat={productCatclass}
+                  type="summary"
+                  branch-display-from-spotlight={branchDisplayFromChild}
+                  object-api-name={objectApiName}
+                  record-id={recordId}
+                  onutilupdated={updateSpotlightUtil}
+                ></c-sbr_3_0_availability-cmp>
+              </div>
+            </template>
+          </div>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="Rates"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-rates"
+                class={sectionButtonClass}
+                data-buttonid="Rates"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="Rates"
+                  >Rates Qty: 1</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-rates"
+              >
+                <div
+                  class="slds-p-horizontal_small slds-p-top_none slds-p-bottom_x-small"
+                >
+                  <c-sbr_3_0_rates-cmp
+                    rates={rates}
+                    item-qty={parentItemQty}
+                  ></c-sbr_3_0_rates-cmp>
+                </div>
+              </div>
+            </template>
+          </div>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="AltInventory"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-alt-inventory"
+                class={sectionButtonClass}
+                data-buttonid="AltInventory"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="AltInventory"
+                  >Alt. Inventory</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-alt-inventory"
+              >
+                <c-sbr_3_0_alt-inventory-cmp
+                  variant="base"
+                  product-id={productId}
+                  onitemselected={handleSelectedItem}
+                  company-code={companyCode}
+                  chronos-enabled={chronosEnabled}
+                  branch-id={branchNumber}
+                  branch-phone={branchPhone}
+                  location-info={locationInfo}
+                  item-qty={parentItemQty}
+                  sync-cart-info={syncCartInfo}
+                  product-catclass={productCatclass}
+                  record-id={recordId}
+                ></c-sbr_3_0_alt-inventory-cmp>
+              </div>
+            </template>
+          </div>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="RentalAddOns"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-rentals-addons"
+                class={sectionButtonClass}
+                data-buttonid="RentalAddOns"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="RentalAddOns"
+                  >Rental Add-Ons</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-rentals-addons"
+              >
+                <c-sbr_3_0_add-ons-cmp
+                  variant="isMobileRental"
+                  product-id={productId}
+                  record-id={recordId}
+                  company-code={companyCode}
+                  chronos-enabled={chronosEnabled}
+                  object-api-name={objectApiName}
+                  parent-product-branch={parentBranch}
+                  location-info={locationInfo}
+                  parent-qty={parentItemQty}
+                ></c-sbr_3_0_add-ons-cmp>
+              </div>
+            </template>
+          </div>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="SalesAddOns"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-sales-addons"
+                class={sectionButtonClass}
+                data-buttonid="SalesAddOns"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="SalesAddOns"
+                  >Sales Add-Ons</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-sales-addons"
+              >
+                <c-sbr_3_0_add-ons-cmp
+                  variant="isMobileSales"
+                  product-id={productId}
+                  record-id={recordId}
+                  company-code={companyCode}
+                  chronos-enabled={chronosEnabled}
+                  object-api-name={objectApiName}
+                  parent-product-branch={parentBranch}
+                  location-info={locationInfo}
+                  parent-qty={parentItemQty}
+                ></c-sbr_3_0_add-ons-cmp>
+              </div>
+            </template>
+          </div>
+          <lightning-tab label="Kit Components" title="Kit Components">
+            <c-sbr_3_0_kit-components-cmp
+              product-id={productId}
+              is-kit-unpackaged={isKitUnPackaged}
+              item-qty={parentItemQty}
+            >
+            </c-sbr_3_0_kit-components-cmp>
+          </lightning-tab>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="Details"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-details"
+                class={sectionButtonClass}
+                data-buttonid="Details"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="Details"
+                  >Details</span
+                >
+              </button>
+            </h3>
+            <template if:true={hasProductsLoaded}>
+              <div
+                aria-hidden="false"
+                class={sectionContentDivClass}
+                id="expand-details"
+              >
+                <c-sbr_3_0_product-details-cmp
+                  variant="mobileProductDescription"
+                  product-id={productId}
+                >
+                </c-sbr_3_0_product-details-cmp>
+              </div>
+            </template>
+          </div>
+        </div>
+      </template>
+      <template if:true={isKit}>
+        <div class="slds-p-horizontal_small">
+          <template if:false={isKitUnPackaged}>
+            <!-- SAL-27182 -->
+            <div if:true={isKitUnPackaged}>
+              <div class={alertClass} role="alert">
+                <lightning-icon
+                  icon-name="utility:info"
+                  alternative-text="Utility info"
+                  size="x-small"
+                  class="slds-p-right_small info"
+                ></lightning-icon>
+                <h4 style="text-align: left; font-size: 0.8em">
+                  Rates will be available upon adding the Kit
+                </h4>
+                <div class="slds-notify__close">
+                  <lightning-button-icon
+                    icon-name="utility:clear"
+                    variant="bare-inverse"
+                    alternative-text="close"
+                    onclick={clearAlert}
+                    class="slds-m-left_xx-small"
+                    title="Close"
+                  ></lightning-button-icon>
+                </div>
+              </div>
+            </div>
+            <div
+              class="slds-section slds-is-close slds-border_top slds-m-around_none"
+              data-id="Rates"
+            >
+              <h3 class={sectionH3Class}>
+                <button
+                  type="button"
+                  aria-controls="expand-Rates"
+                  class={sectionButtonClass}
+                  data-buttonid="Rates"
+                  onclick={toggleSection}
+                >
+                  <lightning-icon
+                    icon-name="utility:switch"
+                    alternative-text="button icon"
+                    size="x-small"
+                    class={sectionIconClass}
+                  ></lightning-icon>
+                  <span class="tab-section slds-truncate" title="Rates"
+                    >Rates</span
+                  >
+                </button>
+              </h3>
+              <template if:true={hasProductsLoaded}>
+                <div aria-hidden="false" class={sectionContentDivClass}>
+                  <div
+                    class="slds-p-horizontal_small slds-p-top_none slds-p-bottom_x-small"
+                  >
+                    <c-sbr_3_0_rates-cmp
+                      rates={rates}
+                      item-qty={parentItemQty}
+                    ></c-sbr_3_0_rates-cmp>
+                  </div>
+                </div>
+              </template>
+            </div>
+          </template>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="KitComponents"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-KitComponents"
+                class={sectionButtonClass}
+                data-buttonid="KitComponents"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="Kit Components"
+                  >Kit Components
+                  <span>({kitComponents.length}) </span>
+                </span>
+              </button>
+            </h3>
+            <!-- <div
+              aria-hidden="false"
+              class={sectionContentDivClass}
+              if:false={isKitUnPackaged}
+            >
+              <div
+                class="slds-col slds-size_1-of-1 slds-p-bottom_x-small slds-p-left_small"
+              >
+                <span class="slds-text-title"
+                  >Kit Components not available</span
+                >
+              </div>
+            </div> -->
+            <div
+              aria-hidden="false"
+              class={sectionContentDivClass}
+            >
+              <div
+                if:false={kitComponents.length}
+                class="slds-col slds-size_1-of-1 slds-p-bottom_x-small slds-p-left_small"
+              >
+                <span class="slds-text-title"
+                  >There is no kit items at this time.</span
+                >
+              </div>
+              <template for:each={kitComponents} for:item="item">
+                <div
+                  key={item.Id}
+                  class="slds-col slds-size_1-of-1 slds-p-bottom_x-small slds-p-left_small"
+                >
+                  <span class="slds-text-title slds-text-title_bold"
+                    >{item.SBQQ__ProductName__c}</span
+                  >
+                </div>
+                <div
+                  key={item.Id}
+                  class="slds-col slds-size_1-of-1 slds-p-bottom_x-small slds-p-left_small"
+                >
+                  <span class="slds-text-title"
+                  >Cat-Class: {item.SBQQ__OptionalSKU__r.Product_SKU__c}</span
+                  >
+                </div>
+                <div
+                  key={item.Id}
+                  class="slds-col slds-size_1-of-2 slds-p-bottom_x-small slds-p-left_small"
+                >
+                  <span class="slds-text-title"
+                    >Qty:{item.SBQQ__Quantity__c}</span
+                  >
+                </div>
+                <div
+                  key={item.Id}
+                  class="slds-col slds-size_1-of-1 slds-border_bottom slds-p-left_small"
+                ></div>
+              </template>
+            </div>
+          </div>
+          <div
+            class="slds-section slds-is-close slds-border_top slds-m-around_none"
+            data-id="Details"
+          >
+            <h3 class={sectionH3Class}>
+              <button
+                type="button"
+                aria-controls="expand-rentals-addons"
+                class={sectionButtonClass}
+                data-buttonid="Details"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class={sectionIconClass}
+                ></lightning-icon>
+                <span class="tab-section slds-truncate" title="Details"
+                  >Details</span
+                >
+              </button>
+            </h3>
+            <div aria-hidden="false" class={sectionContentDivClass}>
+              <div
+                class="slds-col slds-size_1-of-1 slds-p-bottom_x-small slds-p-left_small"
+              >
+                <span if:true={productDescription} class="slds-text-title"
+                  >{productDescription}</span
+                >
+                <span if:false={productDescription} class="slds-text-title"
+                  >There is no product description at this time.</span
+                >
+                <template
+                  for:each={kitComponents}
+                  for:item="item"
+                  if:true={isKitUnPackaged}
+                >
+                  <div
+                    key={item.Id}
+                    class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                  >
+                    <ul>
+                      <li>
+                        <span class="slds-text-title">{item.Name}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </lightning-card>
+    <lightning-layout-item size="12">
+      <template if:true={hasProductsLoaded}>
+        <c-sbr_3_0_add-to-cart-cmp
+          record-id={recordId}
+          is-parent-add-to-cart={isParentAddToCart}
+          object-api-name={objectApiName}
+          selected-item-panel={_selectedProducts}
+          has-rates-loaded={hasRatesLoaded}
+          onparentitemqtychange={handleParentItemQtyChange}
+          customer-number={passedCustomerNumber}
+          company-code={companyCode}
+          onshowspinner={handleSpinner}
+        ></c-sbr_3_0_add-to-cart-cmp>
+      </template>
+    </lightning-layout-item>
+  </template>
+</template>

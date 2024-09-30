@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<StaticResource xmlns="http://soap.sforce.com/2006/04/metadata">
+    <cacheControl>Private</cacheControl>
+    <contentType>image/png</contentType>
+    <description>SBR 3.0 - R2: Uploaded image to capture background banner in Field service Lightning Mobile App</description>
+</StaticResource>

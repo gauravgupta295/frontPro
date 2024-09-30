@@ -1,0 +1,31 @@
+<template>
+    <lightning-card>
+        <div class="slds-button-group slds-border_bottom btnGroup" role="group">
+            <div class="slds-p-horizontal_small" lwc:ref="vendors" style="width: 50%;">
+                <button 
+                    class="slds-button slds-button_stretch btnStretch" 
+                    data-id="vendors" onclick={handleClick}>
+                Sales
+                </button>
+            </div>
+            <div class="slds-p-horizontal_small" lwc:ref="purchaseOrders" style="width: 50%;">
+                <button class="slds-button slds-button_stretch btnStretch" data-id="purchaseOrders" onclick={handleClick}>Asset Requisitions
+                </button>
+            </div>
+        </div>
+        <div>
+            <div class={vendorClass} lwc:ref="vendorDiv">
+                <div>
+                    <c-sbr_3_0_purchase-order-item-search-cmp record-id={recordId}></c-sbr_3_0_purchase-order-item-search-cmp>
+                </div>
+            </div>
+            <div class={purchaseOrderClass} lwc:ref="purchaseOrderDiv">
+                <div class="slds-col slds-size_1-of-1">
+                    <div>
+                        <c-sbr_3_0_-asset-requisitions-l-w-c record-id={recordId}></c-sbr_3_0_-asset-requisitions-l-w-c>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

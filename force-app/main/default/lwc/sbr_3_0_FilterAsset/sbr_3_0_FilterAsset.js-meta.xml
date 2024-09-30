@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property
+                name="userInputCategory"
+                label="User Input Asset Category"
+                type="String"
+                role="inputOnly"
+            />
+            <property
+                name="userInputCatClass"
+                label="User Input Asset Cat-Class"
+                type="String"
+                role="inputOnly"
+            />
+            <property
+                name="userInputSubClass"
+                label="User Input Asset SubClass"
+                type="Integer"
+                role="inputOnly"
+            />
+            <property
+                name="inputCompanyCodeWPT"
+                label="WPT Company Code"
+                type="String"
+                role="inputOnly"
+            />
+            <property
+                label="Asset Data"
+                name="recordsToDisplay"
+                type="@salesforce/schema/Asset[]"
+                role="outputOnly"
+            />
+            <property
+                label="Selected Asset Data"
+                name="selectedRowData"
+                type="@salesforce/schema/Asset[]"
+                role="outputOnly"
+            />
+            <property
+                label="Is Data Seelcted?"
+                name="isRowSelected"
+                type="Boolean"
+                role="outputOnly"
+            />
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

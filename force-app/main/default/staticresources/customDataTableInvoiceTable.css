@@ -1,0 +1,38 @@
+
+.customDataTable .slds-table_bordered tbody td,
+.customDataTable .slds-table--bordered tbody td,
+.customDataTable .slds-table--bordered tbody th {
+border-top: None!important;
+},
+
+
+.slds-max-medium-table_stacked th, .slds-max-medium-table--stacked th{
+font-weight:bold!important;
+},
+
+.slds-table th{
+font-weight:bold!important;
+},
+
+
+.customDataTable .slds-table th{
+font-weight:bold!important;
+}
+
+.slds-max-medium-table_stacked th{
+font-weight:bold!important;
+}
+
+
+.slds-max-medium-table--stacked th{
+font-weight:bold!important;
+}
+
+.adjusted-btn-size {
+    height: 15px;  /* Adjust this to match the height of your comboboxes */
+    padding: 0 12px;  /* 0 for top & bottom, 12px for left & right (adjust as needed) */
+    line-height: 34px;  /* Match the height */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}

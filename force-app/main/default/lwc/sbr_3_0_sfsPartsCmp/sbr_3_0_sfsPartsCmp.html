@@ -1,0 +1,32 @@
+<template>
+    <template if:false={showErrorForCheckInReturn}>
+        <template if:true={woLoaded}>
+            <c-sbr_3_0_sfs-generic-data-table
+                title={title}
+                message={message}
+                message-title={messageTitle}
+                table-recs={tableRecs}
+                columns={columns}
+                add-button-label={addButtonLabel}
+                view-button-label={viewButtonLabel}
+                edit-button-label={editButtonLabel}
+                delete-button-label={deleteButtonLabel}
+                refresh-button-label={refreshButtonLabel}
+                show-table={showTable}
+                onhandleaddclick={handleAddClick}
+                onhandleselectclick={handleSelectClick}
+                onhandleviewclick={handleViewClick}
+                onhandleeditclick={handleEditClick}
+                onhandledeleteclick={handleDeleteClick}
+                hide-last-column={hideLastColumn}
+                hide-all-buttons={isReadOnly}
+                button-hide-msg={msg}>
+            </c-sbr_3_0_sfs-generic-data-table>
+        </template>
+    </template>
+    <template if:true={showErrorForCheckInReturn}>
+        <div class="slds-box slds-theme_default" style="height:100%">
+            <p>{errorMsg}</p>
+         </div>
+    </template>
+</template>

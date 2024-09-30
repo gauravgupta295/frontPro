@@ -1,0 +1,50 @@
+<template>
+  <lightning-button
+    variant={variant}
+    label={title}
+    class="slds-p-left_xx-small quick-view-link"
+    onclick={navigateToDetailPage}
+    onmouseenter={openTooltip}
+    onmouseleave={closeTooltip}
+  ></lightning-button>
+  <template lwc:if={showTooltip}>
+    <div onmouseenter={openTooltip} onmouseleave={closeTooltip} tabindex="0">
+      <section
+        class="slds-popover slds-nubbin_left record-quick-view"
+        role="dialog"
+        tabindex="0"
+        style={hoverScreenStyles}
+      >
+        <lightning-layout
+          multiple-rows="true"
+          class="slds-p-around_x-small"
+          style="white-space: nowrap"
+        >
+          <lightning-layout-item class="slds-p-around_xx-small" size="12">
+            <lightning-icon
+              icon-name={iconName}
+              style="font-size: 26px"
+            ></lightning-icon>
+            &nbsp; &nbsp;
+            <span style="font-size: 20px">
+              <a onclick={navigateToDetailPage} style="color: black">{title}</a>
+              <lightning-button-icon
+                icon-name="utility:close"
+                class="slds-float_right"
+                variant="bare"
+                onclick={closeTooltip}
+                style="margin-top: -10px"
+              ></lightning-button-icon>
+            </span>
+          </lightning-layout-item>
+        </lightning-layout>
+        <c-sbr_3_0_dynamic-record-form
+          record-id={recordId}
+          object-api-name={objectApiName}
+          config={config}
+        >
+        </c-sbr_3_0_dynamic-record-form>
+      </section>
+    </div>
+  </template>
+</template>

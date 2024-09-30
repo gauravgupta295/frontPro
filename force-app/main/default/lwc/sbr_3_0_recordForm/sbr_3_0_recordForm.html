@@ -1,0 +1,646 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-26-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading"></lightning-spinner>
+    </template>
+
+    <template if:true={view}>
+
+        <template if:true={isViewSupported}>
+            <lightning-card title={title} icon-name={icon}>
+                <div slot="actions">
+                    <lightning-button-menu alternative-text="Show menu" menu-alignment="auto" variant="border-filled">
+                        <lightning-menu-item label="View Record" data-act="view" data-recid={recordid} data-obj={obj}
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                    </lightning-button-menu>
+                </div>
+
+                <div class="slds-m-around_medium">
+                    <!--forceRerender was implemented to fix LDS caching issue-->
+                    <template if:true={forceRerender}>
+                        <lightning-record-form record-id={recordid} object-api-name={obj} layout-type="Full" columns="2"
+                            mode="readonly"></lightning-record-form>
+                    </template>
+                </div>
+            </lightning-card>
+        </template>
+
+        <template if:true={isEvent}>
+            <lightning-card icon-name={icon}>
+
+                <h1 class="linebreak" slot="title">
+                    {title}
+                </h1>
+
+                <div slot="actions">
+                    <lightning-button-menu alternative-text="Show menu" menu-alignment="auto" variant="border-filled">
+                        <lightning-menu-item label="View Record" data-act="view" data-recid={recordid} data-obj={obj}
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="New Task" data-act="newTask"
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="New Appointment" data-act="newAppt"
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="Complete Appointment"
+                            onclick={displayCompleteForm}></lightning-menu-item>
+                    </lightning-button-menu>
+                </div>
+
+                <div class="slds-m-around_medium">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Subject</span><br />
+                            <p class="slds-truncate slds-border_bottom ellipse">{subject}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Assigned To</span><br />
+                            <div class="slds-border_bottom ellipse">{assignedTo}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">All-Day Appointment</span><br />
+                            <lightning-input type="checkbox" label="" variant="label-hidden" name="all-day-appointment"
+                                checked={allDayAppointment} disabled="true"></lightning-input>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Start</span><br />
+                            <lightning-formatted-date-time value={start} time-zone={userTimeZone} year="2-digit" month="numeric" day="numeric"
+                                hour="2-digit" class="slds-border_bottom" minute="2-digit" time-zone-name="short"
+                                hour12="true"></lightning-formatted-date-time>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Description</span><br />
+                            <p class="slds-truncate slds-border_bottom ellipse" title={description}>{description}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">End</span><br />
+                            <lightning-formatted-date-time value={end} year="2-digit" month="numeric" day="numeric"
+                                hour="2-digit" class="slds-border_bottom" minute="2-digit" time-zone={userTimeZone} time-zone-name="short"
+                                hour12="true"></lightning-formatted-date-time>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Street</span><br />
+                            <div class="slds-border_bottom ellipse">{street}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">City</span><br />
+                            <div class="slds-border_bottom ellipse">{city}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">State</span><br />
+                            <div class="slds-border_bottom ellipse">{state}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">ZIP Code</span><br />
+                            <div class="slds-border_bottom ellipse">{zip}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Latitude</span><br />
+                            <div class="slds-border_bottom ellipse">{lat}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Longitude</span><br />
+                            <div class="slds-border_bottom ellipse">{lng}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Reminder Set</span><br />
+                            <template if:false={reminderSet}>
+                                <lightning-input type="checkbox" label="" variant="label-hidden" name="reminder-set"
+                                    checked={reminderSet} disabled="true"></lightning-input>
+                            </template>
+                            <template if:true={reminderSet}>
+                                <lightning-formatted-date-time value={reminderDT} year="2-digit" month="numeric"
+                                    day="numeric" hour="2-digit" minute="2-digit" time-zone-name="short"
+                                    hour12="true"></lightning-formatted-date-time>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </lightning-card>
+
+            <template if:true={hasWhat}>
+                <div class="slds-m-top_medium">
+                    <lightning-card title="Related To" icon-name="standard:relationship">
+                        <div class="slds-m-around_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size_1-of-1">
+                                    <template if:true = {forceRerender}>
+                                        <lightning-record-form record-id={record.WhatId}
+                                        object-api-name={wrapper.parentType} layout-type="Compact" columns="2"
+                                        mode="readonly"></lightning-record-form>
+                                    </template>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+        </template>
+
+            <template if:true={hasWho}>
+                <div class="slds-m-top_medium">
+                    <lightning-card title={wrapper.whoType} icon-name="standard:person_name">
+                        <div class="slds-m-around_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size_1-of-1">
+                                    <template if:true = {forceRerender}>
+                                        <lightning-record-form record-id={record.WhoId} object-api-name={wrapper.whoType}
+                                            layout-type="Compact" columns="2" mode="readonly"></lightning-record-form> 
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+
+        </template>
+
+        <template if:true={isTask}>
+            <lightning-card icon-name={icon}>
+
+                <h1 class="linebreak" slot="title">{subject}</h1>
+
+                <div slot="actions">
+                    <lightning-button-menu alternative-text="Show menu" menu-alignment="auto" variant="border-filled">
+                        <lightning-menu-item label="View Record" data-act="view" data-recid={recordid} data-obj={obj}
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="New Task" data-act="newTask"
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="New Appointment" data-act="newAppt"
+                            onclick={handleMenuOnClick}></lightning-menu-item>
+                        <lightning-menu-item label="Complete Task" onclick={displayCompleteForm}></lightning-menu-item>
+                    </lightning-button-menu>
+                </div>
+
+                <div class="slds-m-around_medium">
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Subject</span><br />
+                            <p class="slds-truncate slds-border_bottom ellipse">{subject}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Assigned To</span><br />
+                            <div class="slds-border_bottom ellipse">{assignedTo}</div>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Priority</span><br />
+                            <p class="slds-truncate slds-border_bottom ellipse">{priority}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Status</span><br />
+                            <p class="slds-truncate slds-border_bottom">{status}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Comments</span><br />
+                            <p class="slds-truncate slds-border_bottom ellipse" title={comments}>{comments}</p>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Due Date</span><br />
+                            <lightning-formatted-date-time value={dueDate} year="2-digit" month="numeric" day="numeric"
+                                hour="2-digit" class="slds-border_bottom" minute="2-digit" time-zone="UTC"></lightning-formatted-date-time>
+                        </div>
+                        <div class="slds-size_1-of-2 slds-form-element_stacked">
+                            <span class="slds-form-element__label">Reminder Set</span><br />
+                            <template if:false={reminderSet}>
+                                <lightning-input type="checkbox" label="" variant="label-hidden" name="reminder-set"
+                                    checked={reminderSet} disabled="true"></lightning-input>
+                            </template>
+                            <template if:true={reminderSet}>
+                                <lightning-formatted-date-time value={reminderDT} year="2-digit" month="numeric"
+                                    day="numeric" hour="2-digit" minute="2-digit" time-zone-name="short"
+                                    hour12="true"></lightning-formatted-date-time>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+            </lightning-card>
+
+            <template if:true={hasWhat}>
+                <div class="slds-m-top_medium">
+                    <lightning-card title="Related To" icon-name="standard:relationship">
+                        <div class="slds-m-around_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size_1-of-1">
+                                    <lightning-record-form record-id={record.WhatId}
+                                        object-api-name={wrapper.parentType} layout-type="Compact" columns="2"
+                                        mode="readonly"></lightning-record-form>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+
+            <template if:true={hasWho}>
+                <div class="slds-m-top_medium">
+                    <lightning-card title={wrapper.whoType} icon-name="standard:person_name">
+                        <div class="slds-m-around_medium">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-size_1-of-1">
+                                    <lightning-record-form record-id={record.WhoId} object-api-name={wrapper.whoType}
+                                        layout-type="Compact" columns="2" mode="readonly"></lightning-record-form>
+                                </div>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+            </template>
+
+        </template>
+
+    </template>
+
+    <template if:true={create}>
+
+        <template if:true={showSelectionScreen}>
+            <lightning-card>
+                <lightning-radio-group name="createRadioSelction" label="Select a record to create"
+                    options={recordOptions} value={obj} onchange={radioValueChange} type="radio" variant="label-inline">
+                </lightning-radio-group>
+            </lightning-card>
+        </template>
+
+        <template if:false={showSelectionScreen}>
+
+            <template if:true={isOpportunity}>
+                <lightning-card>
+                    <lightning-record-edit-form object-api-name="Opportunity" onsubmit={handleSubmit}
+                        onsuccess={handleSuccess} onerror={handleError}>
+                        <div class="slds-grid slds-wrap slds-m-around_medium">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Name" value={name} required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Opportunity_Type__c"
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Project__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="StageName" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Probability"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Est_Start_Date__c" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="CloseDate" required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Amount"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Est_Duration_in_Weeks__c"
+                                    required></lightning-input-field>
+                            </div>
+                            <!-- <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Status_Reason__c"></lightning-input-field>
+                            </div> -->
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Description"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Street__c" value={street}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="SharedLocation__c"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="City__c" value={city}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="State__c" value={state}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ZIP_Code__c" value={zip}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Country__c" value={country}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Latitude__s"
+                                    value={lat}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Longitude__s"
+                                    value={lng}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="AccountId"></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Office_Account__c"></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+
+                </lightning-card>
+            </template>
+
+            <template if:true={isProject}>
+                <lightning-card>
+                    <lightning-record-edit-form object-api-name="Project__c" onsubmit={handleSubmit}
+                        onsuccess={handleSuccess} onerror={handleError}>
+                        <div class="slds-grid slds-wrap slds-m-around_medium">
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Project_Name__c" value={name}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Street__c" value={street}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Project_Status__c"
+                                    value={projectStatus}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="City__c" value={city}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Project_Stage__c"
+                                    value={projectStage}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="State__c" value={state}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Primary_Project_Type__c"
+                                    value={primProjectType}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ZIP_Code__c" value={zip}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Secondary_Project_Type__c"
+                                    value={secondProjectType}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Country__c" value={country}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Type_of_Work__c"
+                                    value={typeOfWork}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Latitude_Longitude__Latitude__s"
+                                    value={lat}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Project_Origin__c"
+                                    value={projectOrigin}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Latitude_Longitude__Longitude__s"
+                                    value={lng}></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-card>
+            </template>
+
+            <template if:true={isProspect}>
+                <lightning-card>
+                    <lightning-record-edit-form object-api-name="Account" onsubmit={handleSubmit}
+                        onsuccess={handleSuccess} onerror={handleError} record-type-id={accountProspectRTId}>
+                        <div class="slds-grid slds-wrap slds-m-around_medium">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name" value={name} required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ParentId" value={parentId}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Phone" value={phone}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="PersonOtherPhone__c"
+                                    value={otherPhone}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Email__c" value={email}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Fax" value={fax}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingStreet" value={street}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ShippingCity" value={city}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ShippingStateCode" value={state}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingPostalCode" value={zip}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingCountryCode" value={country}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Latitude__s"
+                                    value={lat}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Longitude__s"
+                                    value={lng}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Unique_Preferences_Hot_Buttons__c"
+                                    value={preferences}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Primary_Equipment_Used__c"
+                                    value={primaryEquipment}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Rental_Opportunity__c"
+                                    value={rentalOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Specialty_Opportunity__c"
+                                    value={specialtyOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Other_Opportunity__c"
+                                    value={otherOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Strategy_Last_Updated__c"
+                                    value={strategyLastUpdated}></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-card>
+            </template>
+
+            <template if:true={isOffice}>
+                <lightning-card>
+                    <lightning-record-edit-form object-api-name="Account" onsubmit={handleSubmit}
+                        onsuccess={handleSuccess} onerror={handleError} record-type-id={accountOfficeRTId} >
+                        <div class="slds-grid slds-wrap slds-m-around_medium">
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Name" value={name} required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ParentId" value={parentId}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Office_Type__c" value={officeType}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Phone" value={phone}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="PersonOtherPhone__c"
+                                    value={otherPhone}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Email__c" value={email}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Fax" value={fax}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingStreet" value={street}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ShippingCity" value={city}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="ShippingStateCode" value={state}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingPostalCode" value={zip}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="ShippingCountryCode" value={country}
+                                    required></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Latitude__s"
+                                    value={lat}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1">
+                                <lightning-input-field field-name="Latitude_Longitude__Longitude__s"
+                                    value={lng}></lightning-input-field>
+                            </div>
+
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Unique_Preferences_Hot_Buttons__c"
+                                    value={preferences}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Primary_Equipment_Used__c"
+                                    value={primaryEquipment}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Rental_Opportunity__c"
+                                    value={rentalOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Specialty_Opportunity__c"
+                                    value={specialtyOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Other_Opportunity__c"
+                                    value={otherOpp}></lightning-input-field>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2">
+                                <lightning-input-field field-name="Strategy_Last_Updated__c"
+                                    value={strategyLastUpdated}></lightning-input-field>
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </lightning-card>
+            </template>
+
+            <template if:true={isLead}>
+                <!--
+                    <lightning-card >
+                            <c-sbr_3_0_create-lead-record-cmp hide-related-section="true" hide-save-cancel="true"
+                            job-street-value-default={street} job-city-value-default={city} job-state-value-default={state}
+                            job-postal-value-default={zip} job-country-value-default={country} latitude-default={lat}
+                            longitude-default={lng} oncloseclicked={setLeadRecordId}></c-sbr_3_0_create-lead-record-cmp>
+                    </lightning-card>
+                    -->
+                <lightning-flow flow-api-name="SBR_3_0_Lead_Share_Assignment"
+                                flow-input-variables={leadAssignmentInputVariables}
+                                onstatuschange={handleLeadAssignFlowStatusChange}></lightning-flow>
+
+            </template>
+
+        </template>
+
+    </template>
+
+    <template if:true={showCompleteForm}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">{completeFormTitle}</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-1">
+                            <lightning-textarea name="inputOutcome" label={outcomeLabel} value={outcomeText}
+                                onchange={handleValueChange} class="slds-m-around_x-small"></lightning-textarea>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1">
+                            <lightning-input type="checkbox" label="Follow Up" checked={followUp}
+                                onchange={toggleFollowUp} class="slds-m-around_x-small"></lightning-input>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="slds-modal__footer">
+                    <lightning-button variant="neutral" type="cancel" name="cancel" label="Cancel"
+                        onclick={hideCompleteForm} class="slds-m-around_xx-small">
+                    </lightning-button>
+
+                    <lightning-button variant="brand" type="submit" name="Complete" label={completeFormCompleteBtn}
+                        onclick={submitCompleteForm} class="slds-m-around_xx-small">
+                    </lightning-button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+</template>

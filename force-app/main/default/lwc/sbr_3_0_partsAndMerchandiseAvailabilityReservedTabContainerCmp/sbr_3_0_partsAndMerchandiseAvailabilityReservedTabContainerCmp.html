@@ -1,0 +1,43 @@
+<template>
+  <template
+    if:true={reservationItems}
+    for:each={reservationItems}
+    for:item="itm"
+    for:index="idx"
+  >
+    <div key={itm.Id} class="outerItmSection">
+      <div class="reservationHeaderClass slds-var-p-top_x-small">
+        Reservation# : {itm.reservation_number}
+      </div>
+
+      <div class="rowItmClass slds-var-p-top_xxx-small">
+        Account Name : {itm.account_name}
+      </div>
+      <div class="rowItmClass slds-var-p-top_xxx-small">
+        Start Date :&nbsp;
+        <lightning-formatted-date-time
+          value={itm.start_date}
+          year="numeric"
+          month="numeric"
+          day="numeric"
+          hour="2-digit"
+          minute="2-digit"
+        >
+        </lightning-formatted-date-time>
+      </div>
+      <div class="rowItmClass slds-var-p-top_xxx-small">
+        Est. Return :&nbsp;
+        <lightning-formatted-date-time
+          value={itm.estimated_return}
+          year="numeric"
+          month="numeric"
+          day="numeric"
+        >
+        </lightning-formatted-date-time>
+      </div>
+      <div class="rowItmClass slds-var-p-top_xxx-small">
+        Quantity : {itm.quantity}
+      </div>
+    </div>
+  </template>
+</template>

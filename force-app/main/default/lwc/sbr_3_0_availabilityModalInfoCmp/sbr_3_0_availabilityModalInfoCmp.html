@@ -1,0 +1,613 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-20-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <template if:false={isMobile}>
+    <lightning-breadcrumbs>
+      <template for:each={myBreadcrumbs} for:item="crumbs">
+        <lightning-breadcrumb
+          key={crumbs.label}
+          label={crumbs.label}
+          name={crumbs.name}
+          onclick={handlePage}
+        >
+        </lightning-breadcrumb>
+      </template>
+    </lightning-breadcrumbs>
+    <lightning-tabset if:true={page1}>
+      <lightning-tab label="Assets">
+        <template if:true={showAvailableAssets}>
+        <div class="slds-section slds-is-open" data-id="Available">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="Available"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Available">Available</span>
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={availableAssets} for:item="asset">
+              <div key={asset.Id}>
+                <div
+                  onclick={changePage}
+                  value={asset.SM_PS_Asset_Id__c}
+                  class="asset"
+                  name={asset.SM_PS_Asset_Id__c}
+                >
+                  {asset.SM_PS_Make__c}
+                </div>
+                <span class="slds-text-color_weak slds-text-body_small"
+                  >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                >
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <template if:true={showReturnedAssets}>
+        <div class="slds-section slds-is-open" data-id="Returned">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="Returned"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Returned">Returned</span>
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={returnedAssets} for:item="asset">
+              <div key={asset.Id}>
+                <slot>
+                  <h3
+                    onclick={changePage}
+                    asset={asset.SM_PS_Asset_Id__c}
+                    class="asset"
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </h3>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <!--SF-5345 Changes Start-->
+        <template if:true={showPickupAssets}>
+          <div class="slds-section slds-is-open" data-id="Pickup">
+            <h3 class="slds-section__title" label="Units">
+              <button
+                type="button"
+                class="slds-button slds-section__title-action"
+                data-buttonid="Pickup"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class="slds-section__title-action-icon slds-button__icon_left"
+                ></lightning-icon>
+                <span class="slds-truncate" title="Pickup">Pickup</span>
+              </button>
+            </h3>
+            <div class="slds-section__content">
+              <template for:each={pickupAssets} for:item="asset">
+                <div key={asset.Id}>
+                  <slot>
+                    <h3
+                      onclick={changePage}
+                      asset={asset.SM_PS_Asset_Id__c}
+                      class="asset"
+                      name={asset.SM_PS_Asset_Id__c}
+                    >
+                      {asset.SM_PS_Make__c}
+                    </h3>
+                    <span class="slds-text-color_weak slds-text-body_small"
+                      >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                    >
+                  </slot>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+        <!--SF-5345 Changes End-->
+        <template if:true={showDownLessAssets}>
+        <div class="slds-section slds-is-open" data-id="DownShort">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="DownShort"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Down/Short Term"
+                >Down/Short Term</span
+              >
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={downLessAssets} for:item="asset">
+              <div key={asset.Id}>
+                <slot>
+                  <h3
+                    onclick={changePage}
+                    value={asset.SM_PS_Make__c}
+                    class="asset"
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </h3>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <template if:true={showDownMoreAssets}>
+        <div class="slds-section slds-is-open" data-id="DownLong">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="DownLong"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Down/Long Term"
+                >Down/Long Term</span
+              >
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={downMoreAssets} for:item="asset">
+              <div key={asset.Id}>
+                <slot>
+                  <h3
+                    onclick={changePage}
+                    value={asset.SM_PS_Make__c}
+                    class="asset"
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </h3>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+      </lightning-tab>
+      <lightning-tab label="Reserved">
+        <template for:each={reservedAssets} for:item="reservation">
+          <div class="slds-p-top_small slds-border_bottom" key={reservation.Id}>
+            <slot>
+              <template lwc:if={reservation.isOrderExist}>
+              <p class="order-link">
+                <strong> Order # </strong>
+                <lightning-formatted-url
+                  value={reservation.SM_PS_Line_Number__r.OrderId}
+                  label={reservation.SM_PS_Line_Number__r.Order.OrderNumber}
+                  target="_blank"
+                >
+                  {reservation.SM_PS_Line_Number__r.Order.OrderNumber}</lightning-formatted-url
+                >
+              </p>
+                <template lwc:if={reservation.isOrderContractExist}>
+              <p class="slds-text-color_weak slds-text-body_small">
+                WYNNE Reservation #
+                {reservation.SM_PS_Line_Number__r.Order.Contract_Order_Number__c}
+              </p>
+                </template>
+                <template lwc:if={reservation.isAccountName}>
+              <p class="slds-text-color_weak slds-text-body_small">
+                {reservation.SM_PS_Line_Number__r.Order.Account.Name}
+              </p>
+                </template>
+                <template lwc:if={reservation.isStartDate}>
+              <p class="slds-text-color_weak slds-text-body_small">
+                Start Date:
+                <lightning-formatted-date-time
+                  value={reservation.SM_PS_Line_Number__r.Order.Start_Date__c}
+                  year="numeric"
+                  month="numeric"
+                  day="numeric"
+                  hour="2-digit"
+                  minute="2-digit"
+                >
+                </lightning-formatted-date-time>
+              </p>
+                </template>
+                <template lwc:if={reservation.isEstimatedDate}>
+              <p class="slds-text-color_weak slds-text-body_small">
+                Est. End Date:
+                <lightning-formatted-date-time
+                  value={reservation.SM_PS_Line_Number__r.Order.Estimated_Return_Date__c}
+                  year="numeric"
+                  month="numeric"
+                  day="numeric"
+                >
+                </lightning-formatted-date-time>
+              </p>
+                </template>
+                <template lwc:if={reservation.isQuantity}>
+              <p
+                class="slds-text-color_weak slds-text-body_small slds-p-bottom_small"
+              >
+                Quantity: {reservation.SM_PS_Line_Number__r.Quantity__c}
+              </p>
+                </template>
+              </template>
+            </slot>
+          </div>
+        </template>
+      </lightning-tab>
+    </lightning-tabset>
+    <span if:true={page2}>
+      <c-sbr_3_0_availability-modal-asset-info-cmp
+        product-cat={productCat}
+        selected-asset-id={selectedAssetId}
+        branch-num={branchNum}
+      ></c-sbr_3_0_availability-modal-asset-info-cmp>
+    </span>
+  </template>
+  <template if:true={isMobile}>
+    <template if:true={page1}>
+      <!--Added for 23039-->
+      <div
+        class="tab-button-container slds-align_absolute-center slds-p-vertical_xx-small"
+      >
+        <button
+          class={availableTabClass}
+          value="available"
+          title="Assets"
+          onclick={tabChangeHandler}
+          type="button"
+        >
+          Assets
+        </button>
+        <!--Added for 23039-->
+        <button
+          class={reservedTabClass}
+          value="reserved"
+          title="Reserved"
+          onclick={tabChangeHandler}
+          type="button"
+        >
+          Reserved
+        </button>
+      </div>
+
+      <div class={availableContentClass}>
+        <template if:true={showAvailableAssets}>
+        <div class="slds-section slds-is-open" data-id="Available">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="Available"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Available">Available</span>
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={availableAssets} for:item="asset">
+              <div
+                key={asset.Id}
+                class="slds-m-vertical_x-small slds-m-horizontal_medium"
+              >
+                <div
+                  onclick={changePage}
+                  value={asset.SM_PS_Asset_Id__c}
+                  class="asset"
+                  name={asset.SM_PS_Asset_Id__c}
+                >
+                  {asset.SM_PS_Make__c}
+                </div>
+                <span class="slds-text-color_weak slds-text-body_small"
+                  >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                >
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <template if:true={showReturnedAssets}>
+        <div class="slds-section slds-is-open" data-id="Returned">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="Returned"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Returned">Returned</span>
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={returnedAssets} for:item="asset">
+              <div
+                key={asset.Id}
+                class="slds-m-vertical_x-small slds-m-horizontal_medium"
+              >
+                <slot>
+                  <div
+                    class="asset"
+                    onclick={changePage}
+                    asset={asset.SM_PS_Asset_Id__c}
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </div>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <!--SF-5345 Changes Start-->
+        <template if:true={showPickupAssets}>
+          <div class="slds-section slds-is-open" data-id="Pickup">
+            <h3 class="slds-section__title" label="Units">
+              <button
+                type="button"
+                class="slds-button slds-section__title-action"
+                data-buttonid="Pickup"
+                onclick={toggleSection}
+              >
+                <lightning-icon
+                  icon-name="utility:switch"
+                  alternative-text="button icon"
+                  size="x-small"
+                  class="slds-section__title-action-icon slds-button__icon_left"
+                ></lightning-icon>
+                <span class="slds-truncate" title="Pickup">Pickup</span>
+              </button>
+            </h3>
+            <div class="slds-section__content">
+              <template for:each={pickupAssets} for:item="asset">
+                <div
+                  key={asset.Id}
+                  class="slds-m-vertical_x-small slds-m-horizontal_medium"
+                >
+                  <slot>
+                    <div
+                      class="asset"
+                      onclick={changePage}
+                      asset={asset.SM_PS_Asset_Id__c}
+                      name={asset.SM_PS_Asset_Id__c}
+                    >
+                      {asset.SM_PS_Make__c}
+                    </div>
+                    <span class="slds-text-color_weak slds-text-body_small"
+                      >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                    >
+                  </slot>
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+        <!--SF-5345 Changes End-->
+        <template if:true={showDownLessAssets}>
+        <div class="slds-section slds-is-open" data-id="DownShort">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="DownShort"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Down/Short Term"
+                >Down/Short Term</span
+              >
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={downLessAssets} for:item="asset">
+              <div
+                key={asset.Id}
+                class="slds-m-vertical_x-small slds-m-horizontal_medium"
+              >
+                <slot>
+                  <div
+                    class="asset"
+                    onclick={changePage}
+                    value={asset.SM_PS_Make__c}
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </div>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+        <template if:true={showDownMoreAssets}>
+        <div class="slds-section slds-is-open" data-id="DownLong">
+          <h3 class="slds-section__title" label="Units">
+            <button
+              type="button"
+              class="slds-button slds-section__title-action"
+              data-buttonid="DownLong"
+              onclick={toggleSection}
+            >
+              <lightning-icon
+                icon-name="utility:switch"
+                alternative-text="button icon"
+                size="x-small"
+                class="slds-section__title-action-icon slds-button__icon_left"
+              ></lightning-icon>
+              <span class="slds-truncate" title="Down/Long Term"
+                >Down/Long Term</span
+              >
+            </button>
+          </h3>
+          <div class="slds-section__content">
+            <template for:each={downMoreAssets} for:item="asset">
+              <div
+                key={asset.Id}
+                class="slds-m-vertical_x-small slds-m-horizontal_medium"
+              >
+                <slot>
+                  <div
+                    class="asset"
+                    onclick={changePage}
+                    value={asset.SM_PS_Make__c}
+                    name={asset.SM_PS_Asset_Id__c}
+                  >
+                    {asset.SM_PS_Make__c}
+                  </div>
+                  <span class="slds-text-color_weak slds-text-body_small"
+                    >Asset #:{asset.SM_PS_Asset_Id__c}</span
+                  >
+                </slot>
+              </div>
+            </template>
+          </div>
+        </div>
+        </template>
+      </div>
+
+      <div class={reservedContentClass}>
+        <template for:each={reservedAssets} for:item="reservation">
+          <div key={reservation.Id} class="reservation-item">
+            <slot>
+              <template lwc:if={reservation.isOrderExist}>
+                <p class="order-link">
+                  <strong> Order # </strong>
+                  <lightning-formatted-url
+                    value={reservation.SM_PS_Line_Number__r.OrderId}
+                    label={reservation.SM_PS_Line_Number__r.Order.OrderNumber}
+                    target="_blank"
+                  >
+                    {reservation.SM_PS_Line_Number__r.Order.OrderNumber}</lightning-formatted-url
+              >
+              </p>
+                <template lwc:if={reservation.isOrderContractExist}>
+                  <p class="slds-text-color_weak slds-text-body_small">
+                WYNNE Reservation #
+                {reservation.SM_PS_Line_Number__r.Order.Contract_Order_Number__c}
+              </p>
+                </template>
+                <template lwc:if={reservation.isAccountName}>
+                  <p class="slds-text-color_weak slds-text-body_small">
+                {reservation.SM_PS_Line_Number__r.Order.Account.Name}
+              </p>
+                </template>
+                <template lwc:if={reservation.isStartDate}>
+                  <p class="slds-text-color_weak slds-text-body_small">
+                Start Date:
+                <lightning-formatted-date-time
+                  value={reservation.SM_PS_Line_Number__r.Order.Start_Date__c}
+                  year="numeric"
+                  month="numeric"
+                  day="numeric"
+                  hour="2-digit"
+                  minute="2-digit"
+                >
+                </lightning-formatted-date-time>
+              </p>
+                </template>
+                <template lwc:if={reservation.isEstimatedDate}>
+                  <p class="slds-text-color_weak slds-text-body_small">
+                Est. End Date:
+                <lightning-formatted-date-time
+                  value={reservation.SM_PS_Line_Number__r.Order.Estimated_Return_Date__c}
+                  year="numeric"
+                  month="numeric"
+                  day="numeric"
+                >
+                </lightning-formatted-date-time>
+              </p>
+                </template>
+                <template lwc:if={reservation.isQuantity}>
+                  <p
+                    class="slds-text-color_weak slds-text-body_small slds-p-bottom_small"
+                  >
+                    Quantity: {reservation.SM_PS_Line_Number__r.quantity__c}
+              </p>
+                </template>
+              </template>
+            </slot>
+          </div>
+        </template>
+      </div>
+    </template>
+    <span if:true={page2}>
+      <c-sbr_3_0_availability-modal-asset-info-cmp
+        product-cat={productCat}
+        selected-asset-id={selectedAssetId}
+        branch-num={branchNum}
+      ></c-sbr_3_0_availability-modal-asset-info-cmp>
+    </span>
+  </template>
+</template>

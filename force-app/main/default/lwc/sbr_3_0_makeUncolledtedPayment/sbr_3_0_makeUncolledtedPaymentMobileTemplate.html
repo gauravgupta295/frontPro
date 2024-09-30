@@ -1,0 +1,32 @@
+<template>
+    <c-sbr_3_0_mobile-screen title={label.header}>
+        <div class="slds-modal__container">
+
+            <div class="slds-modal__content slds-p-around_xxx-small">
+                <abbr title="required" class="slds-required"></abbr><label
+                    for="invoiceLabelCls"><b>{label.invoiceLabel}</b></label></br></br>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12 slds-m-around_xx-small">
+                                                    <abbr title="required" class="slds-required">*</abbr><label
+                                                    for="contractLabelCls">{label.contractLabel}</label>
+                            <lightning-input type="text" variant="label-hidden" name={label.invoiceLabel} value={invoiceNumberEntered}
+                                onchange={handleInvoiceChange} id="invoiceid" class="invoiceClass"></lightning-input>
+                    </div>
+                    <div class="seperatorClassMobile"> &nbsp; - &nbsp;</div>
+                    <div class="slds-col slds-size_4-of-12 slds-m-around_xx-small">
+                        <abbr title="required" class="slds-required">*</abbr><label for="contractLabelCls">{label.sequenceLabel}</label>
+                        <lightning-input type="text" variant="label-hidden" name={label.invoiceLabel} value={sequenceNumberEntered}
+                           onchange={handleSequenceChange} id="sequenceid" class="sequenceClass"></lightning-input>
+                    </div>
+                </div>
+            </div>
+
+            <div class="slds-modal__footer slds-p-bottom_medium">
+                <lightning-button type="cancel" label="Cancel" variant="brand" onclick={closeModal} class="cancel-button slds-float_left">
+                </lightning-button>
+                <lightning-button type="Next" label="Next" variant="brand"
+                    onclick={handleNext} class="success-button slds-float_right"></lightning-button>
+            </div>
+        </div>
+    </c-sbr_3_0_mobile-screen>
+</template>

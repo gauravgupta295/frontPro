@@ -1,0 +1,39 @@
+.required {
+    float: left;
+    padding-right: 2px;
+    padding-top: var(--lwc-spacingXxSmall,0.25rem);
+    color: var(--lwc-colorTextError,rgb(234, 0, 30));
+    font-weight: var(--lwc-fontWeightBold,700);
+}
+
+.title-header {
+    min-width: 100%;
+}
+
+.title-icon {
+    float: left;
+    padding-right: 6px;
+}
+
+.parent-label {
+    font-style: normal;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.card-footer {
+    text-align: center;
+}
+
+.linebreak {
+    overflow: hidden;
+    white-space: normal;
+}
+
+.ellipse {
+    max-width: 250px;
+}
+
+.maxsize {
+    max-width: 620px;
+}

@@ -1,0 +1,57 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-07-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-modal__footer">
+        <div class="slds-grid">
+            <div class="slds-col slds-size_2-of-8">
+
+            </div>
+            <div class="slds-col slds-size_4-of-8 slds-grid slds-grid_align-center">
+                <template if:true={showCancelButton}>
+                    <button class="slds-button" style="background-color:white;color:#008545;height:32px;width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableSaveButton} onclick={handleCancel}>{lableCancelButton}</button>  
+                </template> 
+                <template if:true={showPreviousButton}>
+                    <button class="slds-button"  style="background-color:white;color:#008545;height:32px;width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lablePreviousButton} onclick={handlePrevious}>{lablePreviousButton}</button>
+                    
+                </template>
+                <template if:true={showNextButton}>
+                    <template if:true={disableNextButton}>
+                        <button class="slds-button" style="background-color:#85918b;color:white;height:32px;min-width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableNextButton} onclick={handleNext} disabled>{lableNextButton}</button>
+                    
+                    </template> 
+                    <template if:false={disableNextButton}>
+                        <button class="slds-button" style="background-color:#008545;color:white;height:32px;min-width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableNextButton} onclick={handleNext} >{lableNextButton}</button>
+                    
+                    </template> 
+                </template> 
+                <template if:true={showSaveButton}>
+                    <template if:false={usedisable}>
+                        <button class="slds-button" style="background-color:#008545;color:white;height:32px;min-width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableSaveButton} onclick={handleSave} disabled={disableSaveButton}>{lableSaveButton}</button>
+                    </template>
+                    <template if:true={usedisable}>
+                        <lightning-button variant="brand" label={lableSaveButton} title={lableSaveButton} onclick={handleSave} class="slds-m-left_x-small header-button" disabled={disableSaveButton}></lightning-button>
+                    </template>
+                </template> 
+                <template if:true={showSkipButton}>
+                    <button class="slds-button" style="background-color:#008545;color:white;height:32px;min-width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableSkipButton} onclick={handleSkip}>{lableSkipButton}</button>
+                
+                </template> 
+                <template if:true={showSummary}>
+                    <button class="slds-button" style="background-color:#008545;color:white;height:32px;min-width:65px;justify-content: center;padding-left:8px;padding-right:8px" title={lableSummaryButton} onclick={handleSummary}>{lableSummaryButton}</button>
+                
+                </template> 
+            </div>
+            <div class="slds-col slds-size_2-of-8 slds-grid slds-grid_align-end">
+                <template if:true={displayNextScreenMessage}>
+                    <b>{nextScreenMessage}</b>
+                </template>
+            </div> 
+
+        </div>
+    </div>
+</template>

@@ -1,0 +1,13 @@
+<aura:component implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:hasSObjectName,force:lightningQuickAction" access="global" >
+    <aura:html tag="style">
+        .slds-modal__container{
+        width: 55%;
+        max-width: 50rem;
+        }
+        .modal-body{
+        height : 400px !important;
+        max-height: 550px !important;
+        }
+    </aura:html>
+	<c:sBR_3_0_ManageWebsiteUsersGlobal aura:id="GlobalAction" onmodalclose="{!c.handleClose}"></c:sBR_3_0_ManageWebsiteUsersGlobal> 
+</aura:component>

@@ -1,0 +1,6 @@
+<aura:component implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,force:lightningQuickActionWithoutHeader,force:appHostable" access="global">
+
+<lightning:messageChannel type="sbr_3_0_quickActionModalEvents__c" scope="APPLICATION" onMessage="{!c.handleModalClose}" />
+
+<c:sbr_3_0_selectTillDate oncancel="{!c.handleCancel}" onnext="{!c.handleNext}"/>
+</aura:component>

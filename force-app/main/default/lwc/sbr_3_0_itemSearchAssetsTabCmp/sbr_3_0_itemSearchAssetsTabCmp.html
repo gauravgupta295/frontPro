@@ -1,0 +1,54 @@
+<template>
+  <!--Front-15677 start-->
+  <!--Modified for Front-15699-->
+  <lightning-tabset variant="scoped" active-tab-value={activeTab}>
+    <lightning-tab
+      label={catClassDescTab}
+      value="Cat Class Description"
+      onactive={tabChangeHandler}
+    >
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        onswitchtocatclass={handleViewAsset}
+        onlocationfilterevent={handleFilterChange}
+        class="container-wrapper"
+        view-name="Cat Class Description"
+      >
+        <!--front-15702-->
+      </c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+    <lightning-tab
+      label={catClasstab}
+      value="CatClass"
+      onactive={tabChangeHandler}
+    >
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        data-id="CatClassContainer"
+        onswitchtodescription={handleSwitchToDescription}
+        class="container-wrapper"
+        view-name="CatClass"
+      ></c-sbr_3_0_item-search-assets-container>
+      <!--front-15702-->
+    </lightning-tab>
+    <lightning-tab label="Asset #" value="Asset" onactive={tabChangeHandler}>
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        view-name="Asset"
+      >
+      </c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+    <lightning-tab label="Serial #" value="Serial" onactive={tabChangeHandler}>
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        view-name="Serial"
+      >
+      </c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+  </lightning-tabset>
+  <!--Front-1567 end-->
+</template>

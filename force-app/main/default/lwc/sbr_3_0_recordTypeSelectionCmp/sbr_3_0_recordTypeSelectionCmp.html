@@ -1,0 +1,77 @@
+<!-- sldsValidatorIgnore -->
+<template>
+  <div lwc:if={isLoading}>
+    <lightning-spinner
+      class="spins"
+      variant="brand"
+      alternative-text="Loading"
+    ></lightning-spinner>
+  </div>
+  <template lwc:if={accountTypeOptions}>
+    <div class="record-type-section full-height">
+      <article class="slds-card full-height">
+        <div class="slds-card__header slds-grid">
+          <header class="slds-media slds-media_center slds-has-flexi-truncate">
+            <div class="header-section">
+              <h2
+                class="inlineTitle slds-p-top--large slds-p-horizontal--medium slds-p-bottom--medium slds-text-heading--medium"
+              >
+                {recordTypeHeader}
+              </h2>
+            </div>
+          </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner record-section-body">
+          <fieldset class="slds-form-element option-container">
+            <div class="slds-form-element__control">
+              <template for:each={accountTypeOptions} for:item="option">
+                <span class="slds-radio" key={option.id}>
+                  <input
+                    type="radio"
+                    class="option"
+                    id={option.id}
+                    title={option.label}
+                    value={option.id}
+                    name="option"
+                    checked={option.selected}
+                    onchange={handleRadioChange}
+                  />
+                  <label class="slds-radio__label" for={option.id}>
+                    <span class="slds-radio_faux"></span>
+                    <span class="slds-form-element__label">{option.label}</span>
+                  </label>
+                  <div class="slds-form-element__description radio-description">
+                    <span>{option.description}</span>
+                  </div>
+                </span>
+              </template>
+            </div>
+          </fieldset>
+        </div>
+        <div class="record-type-footer">
+          <div class="inline-footer-inner">
+            <button
+              aria-live="off"
+              type="button"
+              class="slds-button slds-button--neutral neutral-button"
+              onclick={handleCancelClick}
+            >
+              <span dir="ltr" class="label bBody" data-aura-rendered-by="849:0"
+                >Cancel</span
+              ></button
+            ><button
+              aria-live="off"
+              type="button"
+              class="slds-button slds-button_brand brand-button"
+              onclick={handleNextClick}
+            >
+              <span dir="ltr" class="label bBody" data-aura-rendered-by="857:0"
+                >Next</span
+              >
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </template>
+</template>

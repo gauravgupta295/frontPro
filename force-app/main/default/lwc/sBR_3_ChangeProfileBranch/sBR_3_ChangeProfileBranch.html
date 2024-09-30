@@ -1,0 +1,25 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 07-13-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <div class="slds-m-bottom_x-large hsize">
+    <c-s-b-r_3_0_required-custom-lookup-cmp 
+      label="New Profile Branch"
+      placeholder="Search ..."
+      s-object-api-name="Location"
+      selected-record={selectedRecord}
+      icon-name="custom:custom78"
+      fields-to-include="Branch_Location_Number__c, Analysis_Region_Name__c, City__c"
+      field-to-search-with="Name, City__c, Branch_Location_Number__c"
+      where-clause="RecordType.Name = 'Branch' AND Operational_Status__c IN ('A', 'B', 'C', 'D')"
+      is-location-lookup
+      onlookupupdate = {selecteProfileBranchHandler}
+    >
+    </c-s-b-r_3_0_required-custom-lookup-cmp>
+  </div>
+  
+</template>

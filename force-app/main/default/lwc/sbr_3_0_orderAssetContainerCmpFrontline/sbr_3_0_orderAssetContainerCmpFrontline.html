@@ -1,0 +1,1234 @@
+<template>
+  <template if:false={isMobile}>
+    <div class="max-width-ctr">
+      <lightning-layout multiple-rows="true">
+        <template if:true={hasReservation}>
+          <lightning-layout-item size="12" class="slds-p-bottom_medium">
+            <div class="slds-notify slds-notify_alert" role="alert">
+              <lightning-icon
+                icon-name="utility:lock"
+                size="x-small"
+                variant="inverse"
+                class="slds-m-right_x-small"
+              ></lightning-icon>
+              <h2>
+                Reservation has been created. No further changes can be made.
+              </h2>
+            </div>
+          </lightning-layout-item>
+        </template>
+        <lightning-layout-item size="12">
+          <div class="list-header-container">
+            <c-sbr_3_0_order-asset-list-header-cmp
+              onorderassetsearchupdate={handleSearch}
+              onassetstatusupdate={handleAssetStatusChange}
+              onrequestselected={handleRequestSelection}
+            >
+            </c-sbr_3_0_order-asset-list-header-cmp>
+          </div>
+        </lightning-layout-item>
+        <lightning-layout-item size="12">
+          <div
+            class="scrollable-list-container asset-list-container custom-datatable"
+          >
+            <template if:true={showTable}>
+              <div class="oal-inner-container">
+                <c-sbr_3_0_custom-data-table-cmp
+                  key-field="Id"
+                  columns={columns}
+                  data={data}
+                  hide-checkbox-column="true"
+                  default-sort-direction={defaultSortDirection}
+                  sorted-direction={sortDirection}
+                  sorted-by={sortedBy}
+                  onsort={onHandleSort}
+                  resize-column-disabled
+                  wrap-text-max-lines="2"
+                  enable-infinite-loading
+                  onloadmore={loadMoreItems}
+                  onrowaction={handleRowAction}
+                  class="custom-datatable"
+                  column-widths-mode="auto"
+                >
+                </c-sbr_3_0_custom-data-table-cmp>
+              </div>
+            </template>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+    </div>
+  </template>
+  <template if:true={isMobile}>
+    <template if:false={isRequestView}>
+      <template if:false={isMobileRequestView}>
+        <div class={assetHeaderDisplayClass}>
+          <div class="list-header-container">
+            <c-sbr_3_0_order-asset-list-header-cmp
+              onorderassetsearchupdate={handleSearch}
+              ontogglefilters={updateShowAssetList}
+              onfilterupdate={filterAssets}
+              onassetstatusupdate={handleAssetStatusChange}
+              onrequestselected={handleRequestSelection}
+              show-asset-status-filter={showHeader}
+            >
+            </c-sbr_3_0_order-asset-list-header-cmp>
+          </div>
+        </div>
+      </template>
+      <template if:true={isMobileRequestView}>
+        <div class="request-header slds-p-vertical_small slds-clearfix">
+          <div class="slds-float_left slds-p-left_small slds-p-around_small">
+            {requestHeader}
+          </div>
+          <lightning-button-icon
+            class="slds-p-left_xx-large slds-float_right"
+            icon-name="utility:close"
+            size="medium"
+            variant="bare"
+            alternative-text="Cancel and close"
+            onclick={handleRequestCancelButton}
+          >
+          </lightning-button-icon>
+        </div>
+        <template if:false={showRadioButton}>
+          <div
+            class="request-subheader slds-p-vertical_small slds-p-left_medium"
+          >
+            <div class="slds-form-element__control slds-p-right_small">
+              <div class="slds-checkbox">
+                <lightning-input
+                  type="checkbox"
+                  label="Select All Items"
+                  class="selectAll"
+                  name="selectAll"
+                  onchange={handleSelectAll}
+                ></lightning-input>
+              </div>
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <div class={assetListDisplayClass}>
+        <!--Commented as part of FRONT-6225-->
+        <!--Added as part of 6276-->
+        <template if:false={haverecords}>
+          <template if:false={hideNoRecordPage}>
+            <div
+              class="slds-illustration slds-illustration_large"
+              style="background-color: #f1f1f1"
+              aria-hidden="true"
+            >
+              <img
+                class="slds-illustration__svg"
+                alt=""
+                src={noContentimageUrl}
+              />
+              <div class="slds-text-color_weak">
+                <h3 class="slds-text-heading_medium">No Results Found</h3>
+              </div>
+            </div>
+          </template>
+        </template>
+        <!--if condition Added as part of 6276-->
+        <template if:true={haverecords}>
+          <div class="hide-card-header">
+            <lightning-card>
+              <article class="slds-card">
+                <div class="slds-card__body slds-card__body_inner">
+                  <div class={listClass} onscroll={loadMoreDataMobile}>
+                    <template if:false={isRequestService}>
+                      <template for:each={data} for:item="lineItem">
+                        <div class={lineItemClass} key={lineItem.Id}>
+                          <lightning-layout>
+                            <lightning-layout-item
+                              if:true={isMobileRequestView}
+                            >
+                              <template if:true={isMobileRequestView}>
+                                <div
+                                  class="slds-form-element__control slds-p-right_small"
+                                >
+                                  <div class="slds-checkbox">
+                                    <input
+                                      type="checkbox"
+                                      name={lineItem.Name}
+                                      id={lineItem.Id}
+                                      value={lineItem.Id}
+                                      onchange={handleRowSelection}
+                                      checked={lineItem._isChecked}
+                                    />
+                                    <label
+                                      class="slds-checkbox__label"
+                                      for={lineItem.Id}
+                                    >
+                                      <span class="slds-checkbox_faux"></span>
+                                      <span
+                                        class="slds-form-element__label is-bold"
+                                        >{lineItem.Name}</span
+                                      >
+                                    </label>
+                                  </div>
+                                </div>
+                              </template>
+                              <!--<template if:true={showRadioButton}>
+												<div class="slds-form-element__control slds-p-right_small">
+													<div class="slds-radio">
+														<input type="radio" name="RadioButtonService" id={lineItem.Id}
+															value={lineItem.Id} onchange={handleRowSelection}
+															checked={lineItem._isChecked} />
+														<label class="slds-radio__label" for={lineItem.Id}>
+															<span class="slds-radio_faux"></span>
+															<span
+																class="slds-form-element__label is-bold">{lineItem.Name}</span>
+														</label>
+													</div>
+												</div>
+											</template>-->
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="grow">
+                              <lightning-layout
+                                class="order-asset"
+                                multiple-rows="true"
+                              >
+                                <template if:false={isMobileRequestView}>
+                                  <lightning-layout-item
+                                    class="asset-header"
+                                    size="10"
+                                  >
+                                    <span
+                                      class="item-header"
+                                      onclick={handleMobileOIDClick}
+                                      data-value={lineItem.Id}
+                                    >
+                                      {lineItem.itemName}
+                                    </span>
+                                  </lightning-layout-item>
+                                  <!--FRONT-6274 Start-->
+                                  <lightning-layout-item size="2">
+                                    <lightning-button-menu
+                                      alternative-text="More actions"
+                                      icon-size="medium"
+                                      menu-alignment="auto"
+                                      class="custom-datatable"
+                                    >
+                                      <template if:true={lineItem.assetNumber}>
+                                        <!-- Start FRONT-1931: Added visibility check -->
+                                        <template if:true={displayMenuActions}
+                                          ><!--Modified as part of FRONT-15703-->
+                                          <template lwc:if={lineItem.assetName}>
+                                            <lightning-menu-item
+                                              value="ReAssign"
+                                              label="Re-Assign Asset"
+                                              class="menuItem"
+                                              data-value={lineItem.Id}
+                                              onclick={showAssignAssetScreen}
+                                            ></lightning-menu-item>
+                                            <lightning-menu-item
+                                              value="Remove Asset"
+                                              label="Remove Asset"
+                                              class="menuItem"
+                                              data-value={lineItem.Id}
+                                              onclick={showAssignAssetScreen}
+                                            ></lightning-menu-item>
+                                          </template>
+                                          <template lwc:else>
+                                            <lightning-menu-item
+                                              value="Assign"
+                                              label="Assign Asset"
+                                              class="menuItem green-menu-item"
+                                              data-value={lineItem.Id}
+                                              onclick={showAssignAssetScreen}
+                                            ></lightning-menu-item>
+                                          </template>
+                                        </template>
+
+                                        <!-- End FRONT-1931 -->
+                                        <template if:true={lineItem.assetName}
+                                          ><!--Added as part of FRONT-15703-->
+                                          <lightning-menu-item
+                                            value="View"
+                                            label="View Asset Details"
+                                            class="menuItem"
+                                            data-asset-id={lineItem.SBQQ__Asset__c}
+                                            onclick={handleViewAssetDetails}
+                                          ></lightning-menu-item> </template
+                                        ><!--Added as part of FRONT-15703-->
+                                      </template>
+                                      <template if:false={lineItem.assetNumber}>
+                                        <!-- Start FRONT-1931: Added visibility check -->
+                                        <template if:true={displayMenuActions}
+                                          ><!--Modified as part of FRONT-15703-->
+                                          <lightning-menu-item
+                                            value="Assign"
+                                            label="Assign Asset"
+                                            class="menuItem green-menu-item"
+                                            data-value={lineItem.Id}
+                                            onclick={showAssignAssetScreen}
+                                          ></lightning-menu-item>
+                                        </template>
+                                        <!-- End FRONT-1931 -->
+                                      </template>
+                                    </lightning-button-menu>
+                                  </lightning-layout-item>
+                                </template>
+                                <!--FRONT-6274 End-->
+                                <template if:true={isMobileRequestView}>
+                                  <lightning-layout-item
+                                    class="asset-header slds-p-top_x-small"
+                                    size="10"
+                                  >
+                                    <span
+                                      class="asset-label"
+                                      data-value={lineItem.Id}
+                                    >
+                                      {lineItem.itemName}
+                                    </span>
+                                  </lightning-layout-item>
+
+                                  <lightning-layout-item
+                                    class="asset-header"
+                                    size="2"
+                                  >
+                                    <!-- </lightning-button-menu> -->
+                                  </lightning-layout-item>
+                                </template>
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Cat Class
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  <p>{lineItem.catClass}</p>
+                                </lightning-layout-item>
+
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Quantity
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  <template if:false={isSchedulePickup}>
+                                    {lineItem.Quantity}
+                                  </template>
+                                  <template if:true={isSchedulePickup}>
+                                    <template
+                                      if:false={lineItem.isEditableFlag}
+                                    >
+                                      {lineItem.Quantity}
+                                    </template>
+                                    <template if:true={lineItem.isEditableFlag}>
+                                      <lightning-layout>
+                                        <lightning-layout-item
+                                          size="6"
+                                          class="slds-p-vertical_small"
+                                        >
+                                          <lightning-input
+                                            class="quantityCls"
+                                            data-id={lineItem.Id}
+                                            name="PickupQuantity"
+                                            type="number"
+                                            variant="label-hidden"
+                                            value={lineItem.pickupQuantity}
+                                            max={lineItem.createdQuantity}
+                                            onchange={handlePickupQuantityChange}
+                                            message-when-range-overflow="Pickup Quantity cannot be greater than Available Quantity"
+                                            min="0"
+                                          ></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item
+                                          size="6"
+                                          class="slds-p-left_xx-small slds-p-vertical_large"
+                                        >
+                                          <p>
+                                            of
+                                            <lightning-formatted-number
+                                              value={lineItem.createdQuantity}
+                                            ></lightning-formatted-number>
+                                          </p>
+                                        </lightning-layout-item>
+                                      </lightning-layout>
+
+                                      <!--<lightning-layout-item >
+														<lightning-button-icon icon-name="utility:dash" name={lineItem.assetNumber} value={lineItem.assetNumber}  size="x-small" class="slds-p-right_small"  alternative-text="decrement" title="decrement" onclick={decrement}  variant='border-filled'></lightning-button-icon>
+													</lightning-layout-item>	
+													<lightning-layout-item >
+														{lineItem.Quantity}
+													</lightning-layout-item>	
+													<lightning-layout-item >
+														<lightning-button-icon icon-name="utility:add" name={lineItem.assetNumber} value={lineItem.assetNumber}  size="x-small" class="slds-p-left_small"  alternative-text="increment" title="increment" onclick={increment} variant='border-filled'></lightning-button-icon>
+													</lightning-layout-item>-->
+                                    </template>
+                                  </template>
+                                </lightning-layout-item>
+
+                                <template if:true={lineItem.assetNumber}>
+                                  <lightning-layout-item
+                                    class="asset-label"
+                                    size="4"
+                                  >
+                                    Asset Number
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    <!-- Start FRONT-1931 -->
+                                    <template if:true={isLockedOrder}>
+                                      {lineItem.assetNumber}
+                                    </template>
+                                    <template if:false={isLockedOrder}>
+                                      <!-- End FRONT-1931 -->
+                                      <a
+                                        href={linkUrl}
+                                        onclick={showAssignAssetScreen}
+                                        data-value={lineItem.Id}
+                                      >
+                                        {lineItem.assetNumber}
+                                      </a>
+                                    </template>
+                                  </lightning-layout-item>
+                                </template>
+                                <template if:false={lineItem.assetNumber}>
+                                  <lightning-layout-item
+                                    class="asset-label"
+                                    size="4"
+                                  >
+                                    Asset Number
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    <!--<lightning-button variant="brand" label="Assign Asset" title="Assign Asset" onclick={handleClick} class="slds-m-left_x-small"></lightning-button>-->
+                                    <!-- Start FRONT-1931: Added visibility check -->
+                                    <template if:false={isLockedOrder}>
+                                      <span
+                                        class="custom-label"
+                                        onclick={showAssignAssetScreen}
+                                        data-value={lineItem.Id}
+                                        >Assign Asset
+                                      </span>
+                                    </template>
+                                  </lightning-layout-item>
+                                  <!-- End FRONT-1931 -->
+                                </template>
+                                <!--FRONT-6225 Start-->
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Job Site
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  {lineItem.jobsiteName}
+                                </lightning-layout-item>
+
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Contract
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  {lineItem.contract}
+                                </lightning-layout-item>
+                                <!--FRONT-6225 End-->
+
+                                <template if:false={isMobileRequestView}>
+                                  <lightning-layout-item
+                                    class="asset-label"
+                                    size="4"
+                                  >
+                                    Status
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    if:true={lineItem.hasOID}
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    {lineItem.status}
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    if:false={lineItem.hasOID}
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    {lineItem.status}
+                                  </lightning-layout-item>
+                                </template>
+                              </lightning-layout>
+                            </lightning-layout-item>
+                          </lightning-layout>
+                        </div>
+                      </template>
+                    </template>
+                    <template if:true={showRadioButton}>
+                      <template for:each={data} for:item="lineItem">
+                        <div class={lineItemClass} key={lineItem.Id}>
+                          <lightning-layout>
+                            <lightning-layout-item
+                              if:true={isMobileRequestView}
+                            >
+                              <template if:true={isMobileRequestView}>
+                                <div
+                                  class="slds-form-element__control slds-p-right_small"
+                                >
+                                  <div class="slds-radio">
+                                    <input
+                                      type="radio"
+                                      name="RadioButtonService"
+                                      id={lineItem.Id}
+                                      value={lineItem.Id}
+                                      onchange={handleRowSelection}
+                                      checked={lineItem._isChecked}
+                                    />
+                                    <label
+                                      class="slds-radio__label"
+                                      for={lineItem.Id}
+                                    >
+                                      <span class="slds-radio_faux"></span>
+                                      <span
+                                        class="slds-form-element__label is-bold"
+                                        >{lineItem.Name}</span
+                                      >
+                                    </label>
+                                  </div>
+                                </div>
+                              </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item flexibility="grow">
+                              <lightning-layout
+                                class="order-asset"
+                                multiple-rows="true"
+                              >
+                                <lightning-layout-item
+                                  class="asset-header"
+                                  size="12"
+                                >
+                                  <span
+                                    class="link"
+                                    onclick={handleMobileOIDClick}
+                                    data-value={lineItem.Id}
+                                  >
+                                    {lineItem.itemName}
+                                  </span>
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Quantity
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  {lineItem.Quantity}
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-label"
+                                  size="4"
+                                >
+                                  Asset Number
+                                </lightning-layout-item>
+                                <lightning-layout-item
+                                  class="asset-info"
+                                  size="8"
+                                >
+                                  {lineItem.assetNumber}
+                                </lightning-layout-item>
+                                <template if:false={isMobileRequestView}>
+                                  <lightning-layout-item
+                                    class="asset-label"
+                                    size="4"
+                                  >
+                                    Status
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    if:true={lineItem.hasOID}
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    {lineItem.status}
+                                  </lightning-layout-item>
+                                  <lightning-layout-item
+                                    if:false={lineItem.hasOID}
+                                    class="asset-info"
+                                    size="8"
+                                  >
+                                    {lineItem.status}
+                                  </lightning-layout-item>
+                                </template>
+                              </lightning-layout>
+                            </lightning-layout-item>
+                          </lightning-layout>
+                        </div>
+                      </template>
+                    </template>
+                  </div>
+
+                  <template if:true={mobileIsLoading}>
+                    <div class="spinner">
+                      <lightning-spinner
+                        alternative-text="Loading"
+                        variant="brand"
+                        size="medium"
+                      ></lightning-spinner>
+                    </div>
+                  </template>
+                </div>
+              </article>
+            </lightning-card>
+
+            <template if:true={isMobileRequestView}>
+              <div class="request-footer">
+                <lightning-layout
+                  vertical-align="center"
+                  pull-to-boundary="small"
+                  horizontal-align="spread"
+                  class="slds-p-horizontal_medium"
+                >
+                  <lightning-layout-item padding="around-small">
+                    <button
+                      class="slds-button slds-button_neutral brand-green footer-btn"
+                      value="Cancel"
+                      onclick={handleRequestCancelButton}
+                    >
+                      Cancel
+                    </button>
+                  </lightning-layout-item>
+                  <lightning-layout-item padding="around-small">
+                    <button
+                      class="slds-button slds-button_neutral footer-btn filled-btn"
+                      value="Next"
+                      onclick={scheduleRequest}
+                    >
+                      Next
+                    </button>
+                  </lightning-layout-item>
+                </lightning-layout>
+              </div>
+            </template>
+
+            <template if:true={showMobileOID}>
+              <div class="mobile-oid">
+                <div class="slds-panel__header filter-header">
+                  <h2
+                    class="slds-panel__header-title slds-text-heading_small slds-truncate slds-align_absolute-center"
+                    title="Order Item Details"
+                  >
+                    Order Item Details
+                  </h2>
+                  <div class="slds-panel__header-actions">
+                    <lightning-button-icon
+                      icon-name="utility:close"
+                      onclick={closeMobileOID}
+                      variant="bare"
+                      size="large"
+                      alternative-text="Close"
+                      title="Close"
+                      class="on-select"
+                    >
+                    </lightning-button-icon>
+                  </div>
+                </div>
+                <template if:true={selectedAssetHasOID}>
+                  <!-- SADAPUR,25468, START -->
+                  <span slot="modalContent">
+                    <template
+                      for:each={pickupTicketItems}
+                      for:item="row"
+                      for:index="index"
+                    >
+                      <div key={row.Id}>
+                        <ul class="slds-has-dividers_bottom-space">
+                          <li class="slds-item">
+                            <lightning-tile>
+                              Pickup Ticket #: {row.Pickup_Ticket__c} <br />
+                              Pickup Ticket Requested By:
+                              {row.Pickup_Ticket_Request_By__c}<br />
+                              Quantity: {row.Created_Qty__c} <br />
+                              Pickup Date:&nbsp;
+                              <lightning-formatted-date-time
+                                value={row.Pickup_Requested_Date__c}
+                                year="numeric"
+                                month="numeric"
+                                day="numeric"
+                              ></lightning-formatted-date-time
+                              ><br />
+                              Pickup Time:&nbsp;
+                              <lightning-formatted-date-time
+                                value={row.Pickup_Requested_Date__c}
+                                hour="2-digit"
+                                minute="2-digit"
+                              >
+                              </lightning-formatted-date-time>
+                              <br />
+                              Order Item Comments: {row.Order_Item_Comments__c}
+                            </lightning-tile>
+                          </li>
+                        </ul>
+                      </div>
+                    </template>
+                  </span>
+                  <!-- SADAPUR,25468, END-->
+                </template>
+                <template if:false={selectedAssetHasOID}>
+                  <p>This Asset has no pending Pickup tickets.</p>
+                </template>
+              </div>
+            </template>
+          </div>
+        </template>
+      </div>
+    </template>
+
+    <template if:true={isRequestView}>
+      <template if:true={isMobilePickup}>
+        <div class="request-header slds-p-vertical_small slds-clearfix">
+          <div class="slds-float_left slds-p-left_small slds-p-around_small">
+            {requestHeader}
+          </div>
+          <lightning-button-icon
+            class="slds-p-left_xx-large slds-float_right"
+            icon-name="utility:close"
+            size="medium"
+            variant="bare"
+            alternative-text="Cancel and close"
+            onclick={handleRequestCancelButton}
+          >
+          </lightning-button-icon>
+        </div>
+        <div class={assetHeaderDisplayClass}>
+          <lightning-card>
+            <div class={listClass}>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <lightning-textarea
+                  label="Comments"
+                  value={pickupComments}
+                  max-length="160"
+                  onchange={updateComments}
+                ></lightning-textarea>
+              </div>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <lightning-input
+                  type="date"
+                  required="true"
+                  name="pickupDate"
+                  label="Date"
+                  value={pickupDate}
+                  onchange={upadatepickupDate}
+                ></lightning-input>
+              </div>
+
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <c-s-b-r_3_0_required-custom-lookup-cmp
+                  icon-name="custom:custom78"
+                  label="Branch"
+                  record-id={pickupBranch}
+                  s-object-api-name="Location"
+                  where-clause={branchWhere}
+                  placeholder="Search Branches..."
+                  fields-to-include="State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                  onlookupupdate={handlePickupBranch}
+                  display-location-details
+                ></c-s-b-r_3_0_required-custom-lookup-cmp>
+              </div>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <lightning-input
+                  type="checkbox"
+                  name="pickupCovidRelated"
+                  label="Is pickup COIVD-19 related?"
+                  value={pickupCovidRelated}
+                ></lightning-input>
+              </div>
+            </div>
+          </lightning-card>
+
+          <div class="request-footer">
+            <lightning-layout
+              vertical-align="center"
+              pull-to-boundary="small"
+              horizontal-align="spread"
+              class="slds-p-horizontal_medium"
+            >
+              <lightning-layout-item padding="around-small">
+                <button
+                  class="slds-button slds-button_neutral brand-green"
+                  value="Cancel"
+                  onclick={handleRequestPreviousButtonMobile}
+                >
+                  Previous
+                </button>
+              </lightning-layout-item>
+              <lightning-layout-item padding="around-small">
+                <button
+                  class="slds-button slds-button_brand save-btn filled-btn"
+                  value={saveButtonLabel}
+                  onclick={scheduleRequest}
+                >
+                  {saveButtonLabel}
+                </button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </div>
+      </template>
+      <template if:true={isMobileService}>
+        <div class="request-header slds-p-vertical_small slds-clearfix">
+          <div class="slds-float_left slds-p-left_small slds-p-around_small">
+            {requestHeader}
+          </div>
+          <lightning-button-icon
+            class="slds-p-left_xx-large slds-float_right"
+            icon-name="utility:close"
+            size="medium"
+            variant="bare"
+            alternative-text="Cancel and close"
+            onclick={handleRequestCancelButton}
+          >
+          </lightning-button-icon>
+        </div>
+        <div class={assetHeaderDisplayClass}>
+          <lightning-card>
+            <div class={listClass}>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <c-s-b-r_3_0_required-custom-lookup-cmp
+                  icon-name="custom:custom78"
+                  label="Customer Contact"
+                  record-id={serviceTicketContact}
+                  s-object-api-name="Contact"
+                  placeholder="Search Contacts..."
+                  onlookupupdate={handleCustomerContact}
+                ></c-s-b-r_3_0_required-custom-lookup-cmp>
+              </div>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <lightning-textarea
+                  label="Comments"
+                  name="pickupComments"
+                  value={pickupComments}
+                  max-length="160"
+                  onchange={updateComments}
+                ></lightning-textarea>
+              </div>
+              <div
+                class="slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+              >
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_3-of-3">
+                    <p>{serviceProductName}</p>
+                  </div>
+                </div>
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Make</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceMake}</p>
+                  </div>
+                </div>
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Model</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceModel}</p>
+                  </div>
+                </div>
+
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Asset #</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceAssetNum}</p>
+                  </div>
+                </div>
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Serial #</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceSerialNum}</p>
+                  </div>
+                </div>
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Contract #</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceContractNum}</p>
+                  </div>
+                </div>
+                <div
+                  class="slds-grid slds-wrap slds-p-bottom_small slds-p-vertical_xxx-small slds-p-left_medium slds-p-right_medium"
+                >
+                  <div class="slds-size_1-of-3">
+                    <p>Year</p>
+                  </div>
+                  <div class="slds-size_2-of-3">
+                    <p>{serviceYear}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </lightning-card>
+          <div class="request-footer">
+            <lightning-layout
+              vertical-align="center"
+              pull-to-boundary="small"
+              horizontal-align="spread"
+              class="slds-p-horizontal_medium"
+            >
+              <lightning-layout-item padding="around-small">
+                <button
+                  class="slds-button slds-button_neutral brand-green"
+                  value="Cancel"
+                  onclick={handleRequestCancelButton}
+                >
+                  Previous
+                </button>
+              </lightning-layout-item>
+              <lightning-layout-item padding="around-small">
+                <button
+                  class="slds-button slds-button_brand save-btn filled-btn"
+                  value={saveButtonLabel}
+                  onclick={sendServiceTicket}
+                >
+                  {saveButtonLabel}
+                </button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </div>
+      </template>
+    </template>
+
+    <template if:true={showRequestScreen}>
+      <div class="request-screen">
+        <c-sbr_3_0_order-asset-container-cmp
+          is-mobile-request-view={showRequestScreen}
+          is-mobile-pickup={isMobilePickup}
+          mobile-request-type={requestType}
+          oncancelrequest={cancelRequest}
+          record-id={recordId}
+        >
+        </c-sbr_3_0_order-asset-container-cmp>
+      </div>
+    </template>
+  </template>
+
+  <c-sbr_3_0_modal-cmp header={modalHeader} cancel-btn-label="Close">
+    <template if:true={selectedAssetHasOID}>
+      <span slot="modalContent">
+        <template for:each={pickupTicketItems} for:item="row">
+          <div key={row.Id}>
+            <ul class="slds-has-dividers_bottom-space">
+              <li class="slds-item">
+                <lightning-tile>
+                  Pickup Ticket #: {row.Pickup_Ticket__c} <br />
+                  Pickup Ticket Requested By:
+                  {row.Pickup_Ticket_Request_By__c}<br />
+                  Quantity: {row.Created_Qty__c} <br />
+                  Pickup Date:&nbsp;
+                  <lightning-formatted-date-time
+                    value={row.Pickup_Requested_Date__c}
+                    year="numeric"
+                    month="numeric"
+                    day="numeric"
+                  ></lightning-formatted-date-time
+                  ><br />
+                  Pickup Time:&nbsp;
+                  <lightning-formatted-date-time
+                    value={row.Pickup_Requested_Date__c}
+                    hour="2-digit"
+                    minute="2-digit"
+                  >
+                  </lightning-formatted-date-time>
+                  <br />
+                  Order Item Comments: {row.Order_Item_Comments__c}<br />
+                </lightning-tile>
+              </li>
+            </ul>
+          </div>
+        </template>
+      </span>
+      <!-- <span slot="modalContent">
+				Pickup Ticket #: {pickupTicket} <br />
+				Pickup Ticket Requested By: {pickupTicketRequestedBy}<br />
+				Quantity:  {pickupTicketQuantity}<br />
+				Pickup Date:&nbsp;
+				<lightning-formatted-date-time value={pickupRequestedDate} year="numeric" month="numeric"
+					day="numeric"></lightning-formatted-date-time><br />
+				Pickup Time:&nbsp;
+				<lightning-formatted-date-time value={pickupRequestedDate} hour="2-digit" minute="2-digit">
+				</lightning-formatted-date-time> <br />
+				Order Item Comments: {orderItemComments}<br />
+				
+			</span> -->
+    </template>
+    <template if:false={selectedAssetHasOID}>
+      <span slot="modalContent">
+        This Asset has no pending Pickup tickets.
+      </span>
+    </template>
+  </c-sbr_3_0_modal-cmp>
+
+  <template if:true={showEntireModal}>
+    <c-sbr_3_0_modal-cmp
+      data-id="modal-table"
+      header={modalHeader}
+      variant="wide"
+      cancel-btn-label={cancelButtonLabel}
+      save-btn-label={saveButtonLabel}
+      save-handler={scheduleRequest}
+      onreturnpage={handlePickUpBack}
+      is-order="true"
+    >
+      <template if:false={showPickupForm}>
+        <span slot="modalContent" class="slds-is-relative">
+          <div class="slds-m-vertical_small">Select Item(s)</div>
+          <div class="modal-table-container">
+            <!--<lightning-datatable data-id="pickup-table" key-field="Id" columns={modalColumns}  onrowselection={onRowSelection}
+						data={modalData} enable-infinite-loading oncellchange={handleEdit} draft-values={draftValues} suppress-bottom-bar="true"
+						onloadmore={loadMoreModalItems} selected-rows={selectedRows}></lightning-datatable>-->
+            <!--</c-custom-data-table-for-quantity>-->
+            <c-sbr_3_0_custom-data-table-cmp
+              data-id="quantity-table"
+              key-field="Id"
+              columns={quantityTableColumns}
+              onrowselection={onRowSelection}
+              data={modalData}
+              oncellchange={handleEdit}
+              draft-values={draftValues}
+              suppress-bottom-bar="true"
+              onloadmore={loadMoreModalItems}
+              selected-rows={preSelectedRows}
+              min-column-width="180"
+              onquantitychange={handleQuantityEdit}
+            ></c-sbr_3_0_custom-data-table-cmp>
+          </div>
+        </span>
+      </template>
+      <template if:true={showPickupForm}>
+        <!-- <template if:false={showSpinner}> -->
+        <span slot="modalContent" class="slds-is-relative">
+          <div class="slds-p-bottom_small">
+            <lightning-textarea
+              label="Comments"
+              value={pickupComments}
+              max-length="160"
+              onchange={updateComments}
+            ></lightning-textarea>
+          </div>
+          <div class="slds-p-bottom_small">
+            <lightning-input
+              type="date"
+              name="pickupDate"
+              required="true"
+              label="Date"
+              value={pickupDate}
+              onchange={upadatepickupDate}
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small">
+            <c-s-b-r_3_0_required-custom-lookup-cmp
+              icon-name="custom:custom78"
+              label="Branch"
+              record-id={pickupBranch}
+              s-object-api-name="Location"
+              where-clause={branchWhere}
+              placeholder="Search Branches..."
+              fields-to-include="State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+              onlookupupdate={handlePickupBranch}
+              display-location-details
+            ></c-s-b-r_3_0_required-custom-lookup-cmp>
+          </div>
+          <div>
+            <lightning-input
+              type="checkbox"
+              name="pickupCovidRelated"
+              label="Is pickup COIVD-19 related?"
+              value={pickupCovidRelated}
+            ></lightning-input>
+          </div>
+        </span>
+        <!-- </template> -->
+        <!-- <template if:true={showSpinner}> -->
+        <!-- <div class="showSpinner"> -->
+
+        <!-- </div> -->
+        <!-- </template> -->
+      </template>
+    </c-sbr_3_0_modal-cmp>
+  </template>
+
+  <c-sbr_3_0_modal-cmp
+    data-id="service-ticket-modal"
+    header={modalHeader}
+    variant="wide"
+    cancel-btn-label={cancelButtonLabel}
+    save-btn-label={saveButtonLabel}
+    save-handler={sendServiceTicket}
+    onreturnpage={handleServiceTktBack}
+  >
+    <template if:true={showServiceTicketWindow}>
+      <span slot="modalContent" class="slds-is-relative">
+        <div class="slds-grid slds-wrap">
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-1">
+            <c-s-b-r_3_0_required-custom-lookup-cmp
+              icon-name="custom:custom78"
+              label="Customer Contact"
+              record-id={serviceTicketContact}
+              s-object-api-name="Contact"
+              placeholder="Search Contacts..."
+              onlookupupdate={handleCustomerContact}
+            ></c-s-b-r_3_0_required-custom-lookup-cmp>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-1">
+            <lightning-textarea
+              label="Comments"
+              name="pickupComments"
+              value={pickupComments}
+              max-length="160"
+              onchange={updateComments}
+            ></lightning-textarea>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceProductName"
+              label="Product Name"
+              value={serviceProductName}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceMake"
+              label="Make"
+              value={serviceMake}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceModel"
+              label="Model"
+              value={serviceModel}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceAssetNum"
+              label="Asset #"
+              value={serviceAssetNum}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceSerialNum"
+              label="Serial #"
+              value={serviceSerialNum}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceContractNum"
+              label="Contract #"
+              value={serviceContractNum}
+              read-only="true"
+            ></lightning-input>
+          </div>
+          <div class="slds-p-bottom_small slds-col slds-size_1-of-4">
+            <lightning-input
+              type="text"
+              name="serviceYear"
+              label="Year"
+              value={serviceYear}
+              read-only="true"
+            ></lightning-input>
+          </div>
+        </div>
+      </span>
+    </template>
+  </c-sbr_3_0_modal-cmp>
+
+  <c-sbr_3_0_modal-cmp
+    data-id="modal-error"
+    header={modalErrorHeader}
+    cancel-btn-label="Close"
+  >
+    <span slot="modalContent"> {modalErrorContent} </span>
+  </c-sbr_3_0_modal-cmp>
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+  <template if:true={openAssetModal}>
+    <c-sbr_3_0_-assign-asset-modal-component
+      product-id={productId}
+      parent-id={parentId}
+      order-item-id={orderItemId}
+      location-info={sourceLocation}
+      onclose={hideAssignAssetScreen}
+      onrefresh_oli_table={refreshOLITable}
+      ontoggle_assign_asset_screen={toggleToViewOrAssignAsset}
+    ></c-sbr_3_0_-assign-asset-modal-component>
+  </template>
+  <template lwc:if={showViewAssetDetails}>
+    <c-sbr_3_0_-view-asset-component
+      asset-id={selectedAssetId}
+      onreturnpage={hideViewAssetScreen}
+    >
+    </c-sbr_3_0_-view-asset-component>
+  </template>
+</template>

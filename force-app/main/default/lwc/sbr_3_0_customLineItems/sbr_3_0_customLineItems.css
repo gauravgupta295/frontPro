@@ -1,0 +1,15 @@
+:host {
+    --lwc-colorBackgroundRowSelected: #f0f8f2;
+  }
+
+.datatable-full-size {
+    width: 100% !important;
+    table-layout: auto !important;
+}
+
+.slds-table{
+    table-layout: auto !important;
+}
+.slds-table--fixed-layout {
+    table-layout: auto  !important;
+}

@@ -1,0 +1,32 @@
+.header-row{
+    border-bottom: 1px solid #E5E5E5;
+}
+.header-row, .row{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    font-size: 14px;
+}
+.columns{
+    padding: 5px;
+}
+.columns:first-child{
+    text-transform: capitalize;
+    padding-left: 20%;
+}
+.columns:nth-child(2){
+    font-weight: bold;
+    padding-left: 15%;
+}
+.columns:nth-child(3){
+    padding-left: 15%;
+}
+.row:first-child .columns{
+    padding-top: 1rem;
+}
+.row:last-child{
+    border-bottom: 1px solid #E5E5E5;
+}
+.row:last-child .columns{
+    padding-bottom: 1rem;
+}

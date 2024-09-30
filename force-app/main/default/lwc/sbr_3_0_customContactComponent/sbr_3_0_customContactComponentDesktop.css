@@ -1,0 +1,17 @@
+.dummy {
+  color: black;
+}
+.general-header {
+  background-color: #e5e5e5;
+}
+
+.scrollableDesk {
+  max-height: calc(100vh - 200px);
+}
+.textAlign {
+  text-align: left;
+}
+
+.slds-modal__container {
+  width: 90% !important;
+}

@@ -1,0 +1,19 @@
+.THIS .slds-modal__content{
+    overflow:initial;
+}
+
+.submit-button{
+    background-color: #24693e;
+    color: #fff;
+    border-color: #24693e;
+    font-weight: 400;
+}
+
+button.submit-button:hover{
+    background-color: #3c7c54;
+}
+
+.cancel-button{
+    color : #25683e;
+    font-weight: 400;
+}

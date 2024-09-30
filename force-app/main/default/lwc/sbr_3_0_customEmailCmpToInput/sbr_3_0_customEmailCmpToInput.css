@@ -1,0 +1,12 @@
+.input {
+    width: 100%;
+    border: 1px solid #c9c9c9;
+    border-top-style: hidden;
+    border-right-style: hidden;
+    border-left-style: hidden;
+    height: 1.875em;
+}
+
+.input:focus {
+    outline-width: 0;
+}

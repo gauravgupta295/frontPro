@@ -1,0 +1,31 @@
+.close-button {
+    color: #fff;
+    border: none;
+    --slds-c-button-color-border: transparent;
+    --slds-c-button-icon-color-border: transparent;
+}
+
+.atc-footer{
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #E5E5E5;
+}
+
+:host .slds-button_icon-border {
+    color: #fff;
+    border: none;
+}
+.titleClass {
+  font-size: 12px;
+}
+
+
+.alertCss{
+--slds-c-alert-image-background:none;
+--slds-c-alert-color-background:#FE9339;
+--slds-c-alert-text-color:#181818
+
+
+}

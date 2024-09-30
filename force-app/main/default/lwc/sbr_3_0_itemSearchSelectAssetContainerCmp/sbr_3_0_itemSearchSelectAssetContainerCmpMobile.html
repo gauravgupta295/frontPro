@@ -1,0 +1,62 @@
+<template>
+  <!--Started for Front-18999-->
+
+  <div class="slds-button-group prod-inq-mob-group border-class">
+    <button
+      class={editBtnClass}
+      value="Editor"
+      onclick={tabChangeHandler}
+      type="button"
+    >
+      Editor
+    </button>
+    <button
+      class={rateMatrixBtnClass}
+      value="Rate Matrix"
+      onclick={tabChangeHandler}
+      type="button"
+    >
+      Rate Matrix
+    </button>
+  </div>
+  <template lwc:if={hasRatesLoaded}>
+    <div class={editorDisplay}>
+      <lightning-layout>
+        <!--Front-30380,30385-->
+        <c-sbr_3_0_item-search-select-asset-editor-cmp
+          lwc:ref="assetOrderItemEditorComp"
+          rates-info={rates}
+          origin={origin}
+          selected-asset={selectedAsset}
+          current-active-tab={currentActiveTab}
+          order-data={orderData}
+          is-loading={isConfirm}
+        ></c-sbr_3_0_item-search-select-asset-editor-cmp>
+      </lightning-layout>
+    </div>
+    <!-- FRONT-19003-->
+
+    <div class={rateMatrixDisplay}>
+    
+      <c-sbr_3_0_item-search-select-asset-rate-matrix-cmp
+        rates-info={rates}
+        selected-asset={selectedAsset}
+        order-data={orderData}
+        record-id={recordId}
+        object-api-name={objectApiName}
+        lwc:ref="assetOrderItemRateMatrixComp"
+        current-active-tab={currentActiveTab}
+      ></c-sbr_3_0_item-search-select-asset-rate-matrix-cmp>
+ 
+    </div>
+  </template>
+  <!--Ended for Front-18999-->
+  <template lwc:else>
+    <div class="spinnerContainer" if:false={hasRatesLoaded}>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="medium"
+      ></lightning-spinner>
+    </div>
+  </template>
+</template>

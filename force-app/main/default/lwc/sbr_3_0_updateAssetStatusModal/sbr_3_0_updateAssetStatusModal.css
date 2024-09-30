@@ -1,0 +1,96 @@
+.footer-spacing{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.slds-form-element__icon {
+    position: absolute;
+    top: 2.2rem; /* Adjust this value to position the icon vertically */
+    left: 0.2rem; /* Adjust this value to position the icon horizontally */
+    pointer-events: none;
+}
+.equipDes {
+    padding-bottom: 82px;
+}
+
+/* CSS for styling the 'slds-border_top' class with the 'line' modifier */
+.slds-border_top.line{
+    color :#f0f0f0;/* Sets text color to a light grey */
+  }
+   
+  /* CSS for styling the 'mild-bold' class */
+  .mild-bold {
+    font-weight: 500;/* Sets font weight to 500, a medium boldness */
+  }
+  
+  /* CSS for styling the 'slds-border_bottom' class */
+  .slds-border_bottom{
+    color :grey; /* Sets text color to grey */
+    width: 100%;/* Sets width to 100% */
+  }
+   
+  .slds-modal__container{
+    max-width: 35rem;
+    min-width: 35rem;
+  }
+  .spinnermodal{
+    height:35rem;
+    position:relative
+  }
+
+  lightning-button.mobileButtonTextColor {	
+    --sds-c-button-text-color: #25683E;
+}
+
+lightning-button.mobileButtonBackgroundColor {
+	--sds-c-button-brand-color-background: #25683E; 
+}
+
+:host {
+  --slds-c-checkbox-color-background-checked: white;
+  --slds-c-checkbox-mark-color-foreground: green;
+}
+
+.bottomMarginZero{
+  margin-bottom: 0px;
+}
+
+/* Style the checkbox container */
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  background-color: white;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Style the checked state */
+input[type="checkbox"]:checked {
+  background-color: white;
+  border-color: green;
+}
+
+/* Style the checkmark */
+input[type="checkbox"]::before {
+  content: '\2713';
+  display: block;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  color: green;
+  font-size: 16px;
+  font-weight: bold;
+  visibility: hidden;
+}
+
+/* Show the checkmark when the checkbox is checked */
+input[type="checkbox"]:checked::before {
+  visibility: visible;
+}

@@ -1,0 +1,11 @@
+<template>
+    <div>
+        <template for:each={transTypes} for:item="rec" for:index="index">
+            <c-p-p-a_-transportation-table-l-w-c 
+                key={rec.label} 
+                trans-type={rec.label} 
+                record-id={priceListRecordId}>
+            </c-p-p-a_-transportation-table-l-w-c>                   
+        </template>
+    </div>
+</template>

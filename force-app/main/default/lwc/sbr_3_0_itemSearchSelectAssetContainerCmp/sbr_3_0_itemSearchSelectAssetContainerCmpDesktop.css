@@ -1,0 +1,6 @@
+.ratematrix-hide {
+  display: none;
+}
+.ratematrix.show {
+  display: block;
+}

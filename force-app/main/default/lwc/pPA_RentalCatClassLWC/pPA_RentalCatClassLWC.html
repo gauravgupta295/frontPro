@@ -1,0 +1,20 @@
+<template>
+    <lightning-card>
+        <div class="slds-m-around_medium">
+            <template if:true={error}>
+                <p>{error}</p>                
+            </template>
+               <lightning-datatable
+                key-field="Id"
+                data={catClassRecs}
+                columns={colDisplay}
+                onsave={handleSave}
+                draft-value={draftValues}
+                selected-rows={selectedRows}
+                onrowaction={handleRowAction}
+                class ="hide-row-number-column"
+                >
+            </lightning-datatable>
+        </div>
+    </lightning-card>
+</template>

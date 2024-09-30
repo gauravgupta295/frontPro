@@ -1,0 +1,90 @@
+.mobile-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 9002;
+}
+
+.mobile-container-inner {
+  padding: 0;
+  margin: 0;
+  position: relative;
+  transform: translate(0, 0);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  border-radius: 0.25rem;
+}
+
+.header-section {
+  width: 100%;
+  background-color: #ffffff;
+  
+}
+
+.header-section header{
+  width: 100%;
+  justify-content: center;
+  font-weight: normal;
+}
+
+
+.content-section {
+  background-color: rgb(255, 255, 255);
+  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.footer-section {
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
+  border-top-width: 2px;
+  border-top-style: solid;
+  border-top-color: rgb(229, 229, 229);
+  background-color: rgb(243, 243, 243);
+
+  flex-shrink: 0;
+  padding-top: 0.75rem;
+  padding-right: 1rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1rem;
+  text-align: center;
+  box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.16);
+}
+
+.brand-button {
+  --slds-c-button-brand-color-background: #25683e;
+  --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-color-border: #25683e;
+  --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-text-color-hover: #fff;
+  font-weight: normal;
+}
+
+.neutral-button {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #aeaeae;
+  --slds-c-button-neutral-color-border-hover: #aeaeae;
+  font-weight: normal;
+}
+
+lightning-spinner::after {
+  position: absolute;
+  content: "Loading...";
+  width: 100%;
+  text-align: center;
+  top: calc(50% + 3em);
+  font-weight: bold;
+}
+
+.asset-accordion-section {
+  background-color: white;
+}
+
+.attribute-label{
+  font-weight: bold;
+}

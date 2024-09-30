@@ -1,0 +1,87 @@
+<template>
+
+    <template if:true={isLoading}>
+        <div>
+        <lightning-spinner class="spins" 
+        size="small"></lightning-spinner>
+        </div>
+    </template> 
+    <!-- FRONT-15079 -->
+    <!--  Code will work if render fails -->
+    <template if:true={isRefundAvailable}>
+        <c-sbr_3_0_refund-deposit record-id={recordId} isfromcancel=true onrefunddetails={handleCallFromRefund}></c-sbr_3_0_refund-deposit>
+    </template>
+    <template if:true={isRefundNotAvailable}>
+        <template if:false={showCancelModal}>      
+            <section   role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open custom" >
+                <div class="slds-modal__container contClass " >
+                    <header class="slds-modal__header">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeMethod}>
+                            <lightning-icon icon-name="utility:close"
+                                alternative-text="close"
+                                variant="inverse"
+                                size="small" ></lightning-icon>
+                            <span class="slds-assistive-text clClass">Close</span>
+                        </button>
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">{header}</h2>
+                    </header>
+                    <template if:true={noRefund}>
+                        <div class="slds-scoped-notification slds-media slds-media_top slds-theme_success successbackground" role="status">
+                            <div class="slds-media__figure">
+                                <lightning-icon icon-name="utility:success" size="small" variant="inverse">
+                                </lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="exceptionfont">{label.DepositRefunded}</p>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={norefundgiven}>
+                        <div class="slds-scoped-notification slds-media slds-media_top slds-theme_success successbackground" role="status">
+                            <div class="slds-media__figure">
+                                <lightning-icon icon-name="utility:success" size="small" variant="inverse">
+                                </lightning-icon>
+                            </div>
+                            <div class="slds-media__body">
+                                <p class="exceptionfont">{label.NoRefundGiven}<lightning-formatted-url value="https://sunbeltrentals.service-now.com/esc?id=sc_cat_item&sys_id=3b51a6f687887514169499f73cbb3558" label="Submit a refund request." target="_blank"></lightning-formatted-url></p>
+                            </div>
+                        </div>
+                    </template>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <div class="reasonClass">
+                        <template if:true={reasonForCancel.data}>
+                            <lightning-combobox name="Reason" label={ReasonForCancel} value={value}
+                                options={reasonForCancel.data.values} required="true" class="reasonPicklist picklistMargin"
+                                placeholder="--None--" onchange={handleChange} >
+                            </lightning-combobox>
+                        </template>
+                        <template if:true={showReasonField}>
+                            <lightning-input type="text" label={Otherreason} value={otherReasonValue} onchange={handleOtherReasonChange}
+                            placeholder={OtherReasonPlaceholder}
+                            required="true"  class="otherReasonClass picklistMargin"></lightning-input>
+                        </template>
+                        <lightning-input type="text" label={CommentsField} onchange={handleComment}  class="commenClass marginCl"></lightning-input>                  
+                    </div>
+                </div>
+                
+                    <!-- Modal/Popup Box LWC footer starts here -->
+                    <footer class="slds-modal__footer">
+                        <lightning-button class="noButton"
+                        variant="neutral"
+                        label={CancelBtn}
+                        onclick={closeMethod}
+                    ></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label={ConfirmBtn}
+                        onclick={handleConfirm}
+                        class="slds-m-left_x-small yesButton"
+                        
+                        
+                    ></lightning-button>
+                    </footer>
+                </div>
+            </section>
+            </template>
+    </template>
+</template>

@@ -1,0 +1,23 @@
+.bulletstyle {
+  list-style-type: disc;
+  padding-left: 10px;
+  margin-left: 10px;
+}
+
+.contentstyle {
+  margin: 8px 8px 8px 0;
+}
+
+.content {
+  width: 532px;
+  height: 215px;
+}
+
+.footerHeader {
+  width: 532px;
+  height: 56px;
+}
+
+.container {
+  align-items: center;
+}

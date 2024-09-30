@@ -1,0 +1,4 @@
+<design:component label="A360 Spark - Navigate To Record">
+    <design:attribute name="sObject" label="Object" default="" />
+    <design:attribute name="recordId" label="Record Id" default="" />
+</design:component>

@@ -1,0 +1,40 @@
+.slds-border_right {
+    border-right: solid 1.5px #939290;
+}
+
+lightning-button.button {
+    --sds-c-button-text-color: #1d1d1d;
+    --sds-c-button-text-size: 15px;
+}
+.dummy{
+	color : blue;
+}
+
+input[type="radio"]:checked+div { background-color: #edf6ef; }
+
+input[type="radio"]{
+	position: absolute;
+    left: 8px;
+    top: 18px;
+}
+.slds-button_neutral, .slds-button--neutral
+ {
+	border: none !important;
+	padding: 0px !important;
+}
+.brand-button {
+    --slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-text-color-hover: #fff;
+  }
+   @media only screen and (max-width: 1000px) {
+  .reset-button {
+      --slds-c-button-text-color: #25683E;
+    }
+
+   }
+    .close-icn {
+      --sds-c-icon-color-foreground-default: grey;
+    }

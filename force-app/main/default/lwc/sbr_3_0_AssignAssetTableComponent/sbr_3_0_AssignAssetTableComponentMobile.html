@@ -1,0 +1,214 @@
+<!-- FRONT-2186, FRONT-6226, FRONT-6227, FRONT-6228 -->
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="list-header-container">
+        <c-sbr_3_0_-Assign-Asset-Header-Component
+          onassetsearchupdate={handleSearch}
+          inventory={inventoryCount}
+          current-tab-name={currentTabName}
+        >
+        </c-sbr_3_0_-Assign-Asset-Header-Component>
+      </div>
+    </lightning-layout-item>
+
+    <lightning-layout-item size="12">
+      <template if:false={isDataLoaded}>
+        <lightning-spinner
+          variant="brand"
+          size="medium"
+          alternative-text="loading..."
+        >
+        </lightning-spinner>
+      </template>
+      <template for:each={wiredAsset} for:item="asset">
+        <div key={asset.id}>
+          <!--Defect - 13052   onclick={handleItemSelection}  -->
+          <div
+            class={computedMainDivClass}
+            onclick={handleItemSelection}
+            data-id={asset.id}
+            data-key={asset.id}
+          >
+            <!--start Front-10330-->
+            <template lwc:if={isItemSearchAssetsTab}>
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <div class="slds-checkbox">
+                    <input
+                      type="checkbox"
+                      name="assetProdName"
+                      id={asset.id}
+                      value={asset.id}
+                      onchange={handleChange}
+                    />
+
+                    <label class="slds-checkbox__label" for={asset.id}>
+                      <span class="slds-checkbox_faux"></span>
+                      <span class="slds-form-element__label">
+                        <span class="asset-name-class"
+                          >{asset.Description}</span
+                        >
+                      </span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template lwc:else>
+              <!--End 10330-->
+              <div class="slds-col slds-size_6-of-6 slds-p-bottom_x-small">
+                <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+                  <div class="slds-size_2-of-3">
+                    <div
+                      class="display-name"
+                      data-asset-id={asset.id}
+                      onclick={handleMobileViewAssetDetails}
+                    >
+                      {asset.Description}
+                    </div>
+                  </div>
+                  <!-- <div class="slds-size_1-of-3">
+                  <div class="slds-float_right">
+                    <lightning-button-menu
+                      alternative-text="More actions"
+                      icon-size="medium"
+                      menu-alignment="auto"
+                      class="custom-datatable"
+                    >
+                      <lightning-menu-item
+                        value="Assign"
+                        label="Assign"
+                        class="menuItem"
+                      >
+                      </lightning-menu-item>
+                    </lightning-button-menu>
+                  </div>
+                </div> -->
+                </div>
+              </div>
+            </template>
+            <div class="slds-col slds-size_6-of-6 accountDetails">
+              <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class={fieldsTitleClass}><b>Current Location</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span class="data">{asset.Current_Location_Number__c}</span>
+                </div>
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class={fieldsTitleClass}><b>Asset Number</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span
+                    class={labelCss}
+                    data-asset-id={asset.id}
+                    onclick={handleMobileViewAssetDetails}
+                    >{asset.SM_PS_Equipment_Number__c}</span
+                  >
+                </div>
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class={fieldsTitleClass}><b>Status</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span class="data">{asset.Status}</span>
+                </div>
+                <!--Added as part of FRONT-10330-->
+                <template lwc:if={isItemSearchAssetsTab}>
+                  <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                    <span class={fieldsTitleClass}><b>Description</b></span>
+                  </div>
+                  <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                    <span class="data">{asset.assetDescription}</span>
+                  </div>
+                </template>
+                <!-- FRONT-10330 Ends here-->
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class={fieldsTitleClass}><b>Last Transaction</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span class="data">
+                    <lightning-formatted-date-time
+                      value={asset.SM_PS_Last_Transaction_Date__c}
+                      month="2-digit"
+                      day="2-digit"
+                      year="numeric"
+                    ></lightning-formatted-date-time>
+                  </span>
+                </div>
+              </div>
+
+              <template if:false={isItemSearchAssetsTab}
+                ><!-- Added as part of FRONT-10330-->
+                <!-- FRONT-7416 Started-->
+                <template if:true={asset.isAssetAttached}>
+                  <lightning-layout>
+                    <lightning-layout-item size="12">
+                      <!--<lightning-button class="remove-button rbutton" label="Remove" onclick={handleRemove} variant="brand-outline"  stretch></lightning-button>-->
+                      <lightning-button
+                        class="neutral-button"
+                        label="Remove"
+                        onclick={handleRemoveAsset}
+                        data-asset-id={asset.id}
+                        stretch
+                      ></lightning-button>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </template>
+
+                <template if:false={asset.isAssetAttached}>
+                  <lightning-layout>
+                    <lightning-layout-item size="12">
+                      <lightning-button
+                        class="brand-button"
+                        label="Assign"
+                        onclick={handleAssignAsset}
+                        variant="brand"
+                        data-asset-id={asset.id}
+                        stretch
+                      ></lightning-button>
+                    </lightning-layout-item>
+                  </lightning-layout>
+                </template>
+                <!-- FRONT-7416 Ended--> </template
+              ><!-- Added as part of FRONT-10330-->
+            </div>
+            <!-- </template> -->
+          </div>
+        </div>
+      </template>
+      <template if:false={inventoryCount}>
+        <div
+          class="slds-illustration slds-illustration_medium"
+          aria-hidden="true"
+        >
+          <template lwc:if={isOtherLocationTab}>
+            <c-sbr_3_0_-no-other-location-found-illustration-component
+              no-records-found-message={noOtherLocationsFoundErrorMessage}
+            ></c-sbr_3_0_-no-other-location-found-illustration-component>
+          </template>
+          <!-- FRONT-15209 : No Record found message changed to match desktop ui-->
+          <template lwc:if={isDefaultLocationTab}>
+            <c-sbr_3_0_-no-default-location-found-illustration-component
+              no-records-found-message={noDefaultLocationsFoundErrorMessage}
+            ></c-sbr_3_0_-no-default-location-found-illustration-component>
+          </template>
+        </div>
+      </template>
+    </lightning-layout-item>
+  </lightning-layout>
+  <template if:true={assetspotlightcmp}>
+    <c-sbr_3_0_asset-spotlight-cmp
+      onbackitemsearchevent={handleBackToItemSearchButton}
+      selectedprodvalue={selctedprodvalue}
+      product-id={selectedAssetId}
+      record-id={recordId}
+      object-api-name={objectApiName}
+      selected-products={selectedRowList}
+      data-comp-id="assetSpotLightPanel"
+      originrecordid={originrecordid}
+      location-info={locationInfo}
+      variant="Asset"
+    ></c-sbr_3_0_asset-spotlight-cmp>
+  </template>
+</template>

@@ -1,0 +1,51 @@
+.bodyMargin {
+    margin-top: -20px;
+}
+.footerMargin {
+    margin-right: 10px;
+}
+.headerFont {
+    font-size: 20px;
+}
+.hrTag {
+    margin-top: 13px;
+    margin-bottom: 25px;
+}
+.posClass{
+    position: absolute;
+    background: transparent;
+    display: flex;
+    justify-content: end;
+    border: 0;
+    right: -6px;
+    top: 200px; 
+    z-index: 99;
+    font-size: 5px;
+    font-weight: bold ;
+    
+}
+
+.close-button-edit-action {
+    top: -25px;
+    background: transparent;
+    border: 0;
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: end;    
+    left: 8px;
+    z-index: 99;
+    font-size: 5px;
+    font-weight: bold;
+}
+
+.duplicate-div-edit-action {
+    top: 200px;
+    position: absolute;
+}
+
+.my-icon {
+    position: relative;
+    --slds-c-icon-color-foreground-default: white;
+    --slds-c-icon-color-background: transparent;
+}

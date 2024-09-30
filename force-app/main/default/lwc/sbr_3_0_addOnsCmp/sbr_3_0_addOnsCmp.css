@@ -1,0 +1,10 @@
+.addon-tiles {
+    font-size: 12px;
+}
+.slds-tile__detail {
+    margin-bottom: 8px;
+}
+.description-no-inventory{
+    font-weight: 400;
+    font-size: 14px;
+}

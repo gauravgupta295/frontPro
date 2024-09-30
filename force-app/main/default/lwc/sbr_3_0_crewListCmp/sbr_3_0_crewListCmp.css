@@ -1,0 +1,11 @@
+.totals {
+    background-color: rgb(243, 243, 243);
+    font-weight: bold;
+    text-align: right;
+}
+.slds-page-header.page-header-padding{
+    padding: 0.5rem 0.75rem;
+    border: 1px solid rgb(201, 201, 201);
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}

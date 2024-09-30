@@ -1,0 +1,176 @@
+<template>
+	<template if:false={isMobileView}>
+		<template if:true={showSpinner}>
+			<lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+		</template>
+		<div class="slds-grid slds-wrap slds-m-top_small">
+			<div
+				class="slds-col slds-large-size_9-of-12 slds-medium-size_9-of-12 slds-small-size_12-of-12 slds-x-small-size_12-of-12">
+				<lightning-icon class="slds-m-bottom_small" icon-name="standard:lead_list" size="medium"
+					alternative-text="Indicates approval">
+				</lightning-icon>
+				<span class="HeadlineCSS slds-p-bottom_small slds-p-left_small">Rerent Items</span>
+			</div>
+			<div
+				class="slds-col slds-large-size_3-of-12 slds-medium-size_3-of-12 slds-small-size_12-of-12 slds-x-small-size_12-of-12 slds-text-align_right">
+				<template if:true={showRemoveSalesButton}>
+					<lightning-button label="Remove Item(s)" title="Non-primary action" variant="neutral"
+						onclick={handleDeleteModal} disabled={Buttontrue}></lightning-button>
+				</template>
+				<template if:true={showCancelSalesButton}>
+					<span>
+						<lightning-button label="Cancel Item(s)" title="Non-primary action" variant="neutral"
+							onclick={handleCancelModal2} disabled={Buttontrue}></lightning-button>
+					</span>
+				</template>
+			</div>
+			<template if:true={isModalOpen}>
+				<c-s-b-r_3_0_confirm-p-o-line-items-delete-modal onprogressvaluechange={handleModalState}
+					ondeletelineitem={handleYesButton}></c-s-b-r_3_0_confirm-p-o-line-items-delete-modal>
+			</template>
+			<!-- Abhishek Hiremath -->
+			<template if:true={isModalOpen2}>
+				<c-sbr_3_0_confirm-p-o-line-items-cancel-modal onprogressvaluechange={handleModalState2}
+					ondeletelineitem={handleYesButton2}></c-sbr_3_0_confirm-p-o-line-items-cancel-modal>
+			</template>
+			<template if:true={isModalOpen3}>
+				<c-sbr_3_0_confirm-singl-line-items-cancel-modal onprogressvaluechange={handleModalState3}
+					ondeletelineitem={handleYesButton3}></c-sbr_3_0_confirm-singl-line-items-cancel-modal>
+			</template>
+			<!-- Abhishek Hiremath -->
+		</div>
+		<template if:true={showAddLineItemButton}>
+			<c-sbr_3_0_purchase-order-add-line-item onaddlineitem={handleAddLineItem} record-id={recordId}
+				onrefreshpoldata={handleSaveOnAddPOL}></c-sbr_3_0_purchase-order-add-line-item>
+		</template>
+		<div class='rightAlignCols'>
+			<template if:true={isDraftStatus}>
+				<lightning-datatable key-field="Id" data={saleslineItems} columns={columns} draft-values={draftValues}
+					onsave={saveHandleAction} onrowselection={handleSalesRowChange} onrowaction={handleRowLevelAct}
+					max-row-selection={enabledRowCount}>
+				</lightning-datatable>
+			</template>
+		
+			<template if:false={isDraftStatus}>
+				<lightning-datatable key-field="Id" data={saleslineItems} columns={columns2} draft-values={draftValues}
+					onsave={saveHandleAction} onrowselection={handleSalesRowChange} onrowaction={handleRowLevelAct}
+					max-row-selection={enabledRowCount}>
+				</lightning-datatable>
+			</template>
+		
+			<div class="slds-grid slds-wrap totalCSS">
+				<div
+					class="slds-col slds-large-size_7-of-12 slds-medium-size_7-of-12 slds-small-size_2-of-12 slds-x-small-size_2-of-12 slds-align_center">
+					<div style="margin-left:10px">
+						<p>Totals</p>
+					</div>
+				</div>
+				<div
+					class="slds-col slds-large-size_3-of-12 slds-medium-size_2-of-12 slds-small-size_4-of-12 slds-x-small-size_4-of-12 slds-align_left">
+					<div class="slds-m-left_large">
+						<p>Qty: {totalSalesQty}</p>
+					</div>
+				</div>
+				<div
+					class="slds-col slds-large-size_2-of-12 slds-medium-size_3-of-12 slds-small-size_6-of-12 slds-x-small-size_6-of-12 slds-align_right">
+					<div style="margin-left:20px">
+						<p>Total: {totalSalesCost}</p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+	<template if:true={isMobileView}>
+		<section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+			class="slds-modal slds-fade-in-open slds-modal_full">
+			<div class="slds-modal__container">
+				<div class="slds-modal__header">
+					<h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" style="font-weight: lighter !important;">Line Items</h1>
+				</div>
+				<div class="slds-modal__content" id="modal-content-id-1">
+					<lightning-card variant="base">
+						<div class="slds-m-left_x-small" style="font-weight: bolder;font-size: large;">
+							Rerent Items
+						</div>
+					</lightning-card>
+					<div class="slds-p-top_x-small slds-p-bottom_x-small" style="background-color: #F2F2F2 !important;">
+						<template if:true={showAddLineItemButton}>
+							<c-sbr_3_0_purchase-order-add-line-item record-id={recordId} onrefreshpoldata={handleSaveOnAddPOL}>
+							</c-sbr_3_0_purchase-order-add-line-item>
+						</template>
+					</div>
+					<div class="slds-p-vertical_x-small">
+						<c-sbr_3_0_po-mobile-custom-wrapper data-id="salesCmp" title="" is-div="true" has-filter="false"
+							is-purchase-order-filter="false" is-vendor-filter="false" no-header-section="true"
+							record-list={reRentRecordList} oncheckboxchange={handleSalesCheckboxChange} onremove={handleSalesItemRemove}
+							onedit={handleEditScreen}>
+						</c-sbr_3_0_po-mobile-custom-wrapper>
+					</div>
+					<template if:true={showRemoveSalesMobile}>
+						<div class="removePanel" style="display: flex; align-items: center;">
+							<div style="flex: 1;">Items Selected: {selSalesItemsCount}</div>
+							<div style="margin-left: auto;">
+								<template lwc:if={showSalesSelectAll}>
+									<lightning-button variant="base" label="Select All" title="Select All" data-id="select"
+										onclick={handleSelectAllSales} class="slds-m-left_x-small" style="color: #327049;">
+									</lightning-button>
+								</template>
+								<template lwc:else>
+									<lightning-button variant="base" label="Unselect All" title="Unselect All" data-id="unselect"
+										onclick={handleSelectAllSales} class="slds-m-left_x-small"
+										style="color: #327049;"></lightning-button>
+								</template>
+								<lightning-button variant="brand" label="Remove Item(s)" class="brand-button" title="Non-primary action"
+									onclick={handleSalesItemRemove} style="margin-left: 8px;">
+								</lightning-button>
+							</div>
+						</div>
+					</template>
+					<div class="section">
+						<div class="slds-grid slds-wrap mobileCSS totalCSS">
+							<div class="slds-col">
+								Totals
+							</div>
+							<div class="slds-col slds-col_bump-left">
+								QTY
+								<div>{totalSalesQty}</div>
+							</div>
+							<div class="slds-col slds-col_bump-left">
+								Total
+								<div>{totalSalesCost}</div>
+							</div>
+						</div>
+					</div>
+					<div class="slds-modal__footer">
+						<div class="slds-grid slds-align_absolute-center">
+							<div class="slds-col slds-size_1-of-1">
+								<lightning-button variant="brand" label="Create New Item" class="brand-button"
+									title="Non-primary action" record-id={recordId} onclick={handleCreatePOButton}>
+								</lightning-button>
+							</div>
+						</div>
+					</div>
+					<template if:true={openCreateModal}>
+						<c-s-b-r_3_0_create-p-o-line-item record-id={recordId} onclose={modalCloseHandler}>
+						</c-s-b-r_3_0_create-p-o-line-item>
+					</template>
+				</div>
+			</div>
+		</section>
+		<template if:true={openEditScreen}>
+			<c-sbr_3_0_mobile-screen>
+				<c-sbr_3_0_po-mobile-rerent-line-item-edit record-id={lineItemRecId} onclose={handleEditClose}>
+				</c-sbr_3_0_po-mobile-rerent-line-item-edit>
+			</c-sbr_3_0_mobile-screen>
+		</template>
+		<template if:true={openEditScreenStandard}>
+			<c-sbr_3_0_mobile-screen>
+				<c-sbr_3_0_po-mobile-line-item-edit record-id={lineItemRecId} onclose={handleEditClose}>
+				</c-sbr_3_0_po-mobile-line-item-edit>
+			</c-sbr_3_0_mobile-screen>
+		</template>		
+	</template>
+	<template if:true={showRemoveModal}>
+		<c-sbr_3_0_rerent-remove-item-cmp records={removeItems} onclose={handleRemoveItemClose} onremove={handleRemoveItem}></c-sbr_3_0_rerent-remove-item-cmp>
+	</template>
+</template>

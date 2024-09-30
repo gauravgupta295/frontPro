@@ -1,0 +1,19 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName">
+    <div>
+        <!-- <div id="mobile-header">
+            <button class="slds-button mobile-button" onclick="{!c.handleClose}" title="Close this window">
+                Cancel
+            </button>
+            <h1 class="slds-hyphenate">Assign Lead</h1>
+            <button class="slds-button mobile-button" onclick="{!c.handleSave}" title="Assign the lead">
+                Save
+            </button>
+        </div> -->
+        <c:sbr_3_0_leadAssignmentCmp recordId="{!v.recordId}" />
+        <!-- <footer class="footer">
+            <div class="save-button-container">
+                <button class="save-button">Save</button>
+            </div>
+        </footer> -->
+    </div>
+</aura:component>

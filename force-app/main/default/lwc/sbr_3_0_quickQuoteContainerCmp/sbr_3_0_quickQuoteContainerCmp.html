@@ -1,0 +1,73 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-22-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-page-header page-header-padding">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media media-wrapper">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:forecasts" alternative-text="Product Inquiry"
+                                title="Product Inquiry" class="custom-forecasts"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="Product Inquiry">Product Inquiry</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <lightning-tabset class="tabs-container slds-m-top_x-small">
+            <lightning-tab label="Item Search" value="ItemSearch" >
+                <div class="item-search-tab max-width-ctr">
+                    <c-sbr_3_0_item-search-ctr-cmp tabs-panel-height={tabsPanelHeight} onviewcart={handleViewCart} oncustomerselection={syncCustomerInfo} sync-customer={selectedCustomer}></c-sbr_3_0_item-search-ctr-cmp>
+                </div>
+            </lightning-tab>
+            <lightning-tab label="Cart" value="Cart" onactive={handleCartActive}>                
+                <div class="max-width-ctr">
+                    <c-sbr_3_0_line-items-container-cmp oncustomerselection={syncCustomerInfo} sync-customer={selectedCustomer}></c-sbr_3_0_line-items-container-cmp>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </template>
+    <template if:true={isMobile}>
+        <lightning-layout>
+            <template if:true={showTabsPanel}>
+                <lightning-layout-item size="12">
+                    <div class="mobile-main-panel">
+                        <div class="slds-button-group prod-inq-mob-group" role="group">
+                            <button class={itemSearchBtnClass} value="Item Search" onclick={toggleProdInqMobile}>Item Search</button>
+                            <button class={cartBtnClass} value="Cart" onclick={toggleProdInqMobile}>Cart</button>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+        <div class={itemSearchDisplay}>
+            <lightning-layout>
+                <!-- Added event handler for oncustomerselection SAL-22527 -->
+                <lightning-layout-item size="12">
+                    <c-sbr_3_0_item-search-ctr-cmp  oncustomerselection={syncCustomerInfo} ontoggleprodinqmobilestate={handleToggleProdInqMobileState} sync-customer={selectedCustomer}></c-sbr_3_0_item-search-ctr-cmp>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+        <div class={lineItemsDisplay}>
+            <lightning-layout>
+                <c-sbr_3_0_line-items-container-cmp ontoggleprodinqmobilestate={handleToggleProdInqMobileState}
+                oncustomerselection={syncCustomerInfo} sync-customer={selectedCustomer}></c-sbr_3_0_line-items-container-cmp>
+            </lightning-layout>
+        </div>
+    </template>
+</template>

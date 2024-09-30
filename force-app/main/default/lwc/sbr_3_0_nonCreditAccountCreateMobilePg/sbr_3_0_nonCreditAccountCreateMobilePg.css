@@ -1,0 +1,46 @@
+.slds-modal__content{
+    flex: auto;
+    flex-direction: column;
+}
+.slds-modal__container{
+    margin: unset;
+    padding: unset;
+}
+
+/* .row1{
+    display:flex;
+    flex-direction:row;
+justify-content: space-around;
+}
+
+.column1{
+    display:flex;
+    flex-direction:column;
+   
+}
+
+.column2{
+    display:flex;
+    flex-direction:column;
+} */
+.left{
+    float:left;
+    
+    /* height: unset!important;
+    width: unset!important;;
+    padding: unset!important;;
+     */
+}
+
+.right{
+    
+    float:right;
+    /* height: unset!important;
+    width: unset!important;
+    padding: unset!important;
+     */
+}
+
+h3{
+    display: inline;
+}

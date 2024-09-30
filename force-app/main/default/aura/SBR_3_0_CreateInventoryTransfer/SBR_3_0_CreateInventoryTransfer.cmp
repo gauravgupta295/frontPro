@@ -1,0 +1,7 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader" >
+ <!--aura:handler name="init" value="{!this}" action="{!c.init}" /> 
+  <div class="slds-scrollable" style="height:27rem;">
+    <lightning:flow aura:id="flowData" /> 
+  </div-->
+  <c:sbr_3_0_Create_Inventory_Transfer></c:sbr_3_0_Create_Inventory_Transfer>
+</aura:component>

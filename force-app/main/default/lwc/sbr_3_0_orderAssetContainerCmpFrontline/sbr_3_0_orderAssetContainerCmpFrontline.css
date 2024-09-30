@@ -1,0 +1,215 @@
+/*Front 6225 start*/
+:host {
+    /* Removes SF Card Header padding/margin top/bottom only */
+    --slds-c-card-header-spacing-block-end: 0px;
+    --slds-c-card-header-spacing-block-start: 0px;
+
+    --slds-c-card-body-spacing-block-start: 0px;
+    --slds-c-card-body-spacing-block-end: 0px;
+}
+/*Front 6225 end*/
+
+
+.max-width-ctr {
+  /* max-width: 1745px; */
+  margin: 0 auto;
+}
+.c-container {
+  border: solid #ffffff;
+  margin: 10px 0 20px;
+}
+.custom-box {
+  text-align: center;
+  background-color: #ffffff;
+  padding: 1rem;
+  border: 1px solid #ffffff;
+}
+.list-header-container {
+  border: 1px solid #c9c9c9;
+  border-radius: 4px 4px 0px 0px;
+}
+.custom-label {
+  color: #25683e;
+}
+
+.asset-list-container {
+  width: 100%;
+}
+
+.order-asset-panel {
+  width: 100%;
+}
+
+.order-asset-list-hide {
+  display: none;
+}
+
+.order-asset-list-show {
+  display: block;
+}
+
+.slds-button_brand {
+  font-size: 16px;
+  padding: 10px 20px;
+  color: white; /* if you want to change text color */
+}
+
+.oal-inner-container {
+  border: 1px solid #c9c9c9;
+  min-height: 250px;
+  width: 100%;
+}
+
+.spinner {
+  --lwc-brandPrimary: #25683e;
+}
+
+.modal-table-container {
+  height: 250px;
+}
+
+.filled-btn {
+  background-color: #25683e;
+  color: #e5e5e5;
+}
+
+.brand-green {
+  color: #25683e;
+}
+
+.footer-btn {
+  width: 70px;
+}
+
+.link {
+  color: #25683e;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .asset-header {
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 0;
+  }
+
+  .asset-info {
+    font-size: 14px;
+    padding-top: 10px;
+    margin-top: 0;
+  }
+  .asset-label {
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 10px;
+  }
+  .line-item {
+    border-bottom: 1px solid #c9c9c9;
+  }
+
+  .request-header {
+    background-color: #f3f3f3;
+    font-size: 16px;
+  }
+
+  .request-subheader {
+    background-color: #fff;
+    border-bottom: 1px solid #c9c9c9;
+    color: #444;
+    font-size: 12px;
+  }
+  .hide-card-header .slds-card__header {
+    display: none;
+  }
+
+  .item-list-ctr.request-list {
+    height: 60vh;
+  }
+
+  .request-footer {
+    position: sticky;
+    bottom: 0;
+  }
+  .green-menu-item {
+    color: #25683e;
+  }
+
+  .mobile-oid {
+    position: absolute;
+    background-color: #fff;
+    top: 0;
+    height: 100vh;
+    width: 100vw;
+    z-index: 200;
+  }
+
+  .is-bold {
+    font-weight: 700;
+  }
+
+  .show {
+    display: block;
+  }
+
+  .hide {
+    display: none;
+  }
+}
+
+.item-list-ctr {
+  width: 100vw;
+  height: calc(100vh - 121px);
+}
+
+.order-asset {
+  display: flex;
+}
+
+lightning-menu-item {
+  color: #008545 !important;
+  background-color: white !important;
+}
+lightning-menu-item:hover {
+  color: #008545 !important;
+  background-color: white !important;
+}
+
+lightning-menu-item:focus {
+  color: #008545 !important;
+  background-color: white !important;
+}
+
+/*.menuItem , .menuItem :hover, .menuItem :focus{
+    color:#008545 !important;
+    background-color: white;
+    font-size: 50px;
+  }*/
+.slds-dropdown__item {
+  background-color: white;
+}
+
+.slds-card__header {
+  padding-top: 0px;
+}
+a {
+  color: #25683e;
+}
+.item-header {
+  color: #25683e;
+  font-size: large;
+  margin: top 0%;
+}
+
+.THIS header.slds-card__header.slds-grid {
+  padding-top: 0px;
+}
+.slds-dropdown__item {
+  color: #25683e;
+}
+.tooltip-container {
+  position: absolute;
+  top:0;
+  padding-top: 10px;
+  left:55%;
+
+}

@@ -1,0 +1,15 @@
+<aura:component implements="flexipage:availableForRecordHome,lightning:isUrlAddressable,force:hasRecordId,lightning:actionOverride,force:hasSObjectName">
+    <aura:attribute name="recordId" type="String" />
+    <aura:attribute name="woId" type="String" />
+    <aura:attribute name="sObjectName" type="String" default=
+                    "ProductConsumed"/>
+    <aura:attribute name="record" type="Object" />
+    <aura:attribute name="simpleRecord" type="Object" />
+
+    <aura:attribute name="props" type="Object"/>
+    <aura:handler  name="init" value="{!this}" action="{!c.init}"/>
+    <!-- {!v.pageReference.state.defaultFieldValues} -->
+  
+    <!-- <c:sbr_3_0_sfsDesktopEditPartsLwc objectApiName="{!v.sObjectName }" recordId="{!v.recordId}" props="{!v.props}" ></c:sbr_3_0_sfsDesktopEditPartsLwc> -->
+     <c:sbr_3_0_sfsDesktopAddPartsLwc workOrderId="{!v.woId}" objectApiName="ProductConsumed"  props="{!v.props}"></c:sbr_3_0_sfsDesktopAddPartsLwc>
+</aura:component>

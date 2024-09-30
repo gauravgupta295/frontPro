@@ -1,0 +1,45 @@
+/* Responsive styling for screens with a maximum width of 1000px */
+@media only screen and (max-width: 1000px) {
+    /* Set flex properties for modal content */
+    .slds-modal__content {
+        flex: auto;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* Reset margins and paddings for modal container */
+    .slds-modal__container {
+        margin: unset;
+        padding: unset;
+    }
+
+    /* Styling for success button */
+    .success-button {
+        --slds-c-button-brand-color-background: #25683E;
+        --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-color-border: #25683E;
+        --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+        --slds-c-button-brand-text-color-hover: #fff;
+    }
+
+    /* Styling for cancel button */
+    .cancel-button {
+        --slds-c-button-brand-text-color: #26683d;
+        --slds-c-button-brand-color-background: #fff;
+        --slds-c-button-brand-color-background-hover: #fff;
+        --slds-c-button-brand-color-border: #a2a3a3;
+        --slds-c-button-brand-color-border-hover: rgb(162, 163, 163);
+        --slds-c-button-brand-text-color-hover: #26683d;
+    }
+
+    /* Adjust margin for separator on mobile */
+    .seperatorClassMobile {
+        margin-top: 40px;
+    }
+
+    /* Adjust margin for sequence on mobile */
+    .sequeneceMobile {
+        margin-top: -16px;
+    }
+}

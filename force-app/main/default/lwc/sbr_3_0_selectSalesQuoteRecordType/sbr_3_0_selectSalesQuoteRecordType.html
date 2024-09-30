@@ -1,0 +1,15 @@
+<template>
+    <div class="slds-m-around_medium">
+        <div class="slds-form-element">
+    
+    <lightning-radio-group name="recordType"
+        required
+        label={label.RECORD_TYPE}
+        options={options}
+        value={defaultRecordType}
+        type="radio"
+        onchange={handleChange}>
+    </lightning-radio-group>
+    </div>
+    </div>
+</template>

@@ -1,0 +1,44 @@
+.lwcBackgroundColor {
+    padding-top: 12px;
+    background-color: #f3f2f2;
+    padding-bottom: 12px;
+}
+
+.padded {
+    padding-left: 15px;
+}
+
+.PPA_Rev_1 {
+    --slds-c-badge-color-background: #0076c3;
+    color: white;
+}
+
+.PPA_Renewal {
+    --slds-c-badge-color-background: #5da4a5;
+    color: white;
+}
+
+.PPA_Extension {
+    --slds-c-badge-color-background: #eb983e;
+    color: white;
+}
+
+.PPA_Expiration {
+    --slds-c-badge-color-background: #b3443b;
+    color: white;
+}
+
+.statusInitial {
+    --slds-c-badge-color-background: #2a6341;
+    color: white;
+}
+
+.statusCompleted {
+    --slds-c-badge-color-background: #008545;
+    color: white;
+}
+
+.statusDenied {
+    --slds-c-badge-color-background: #b3443b;
+    color: white;
+}

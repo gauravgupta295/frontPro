@@ -1,0 +1,66 @@
+<!-- sldsValidatorIgnore -->
+<template lwc:render-mode="light">
+  <div class="slds-tabs-mobile__container">
+    <ul class="slds-tabs-mobile tab-list" lwc:if={hasMultiplePanels}>
+      <template for:each={page.sections} for:item="section">
+        <li class="slds-tabs-mobile__item" key={section.externalId}>
+          <button
+            type="button"
+            class="slds-button slds-button_full-width"
+            onclick={handleTogglePanelOnClick}
+            data-target-panel-id={section.externalId}
+          >
+            <span
+              class="slds-truncate"
+              title={section.label}
+              onclick={handleTogglePanelOnClick}
+              >{section.label}</span
+            >
+            <lightning-icon
+              icon-name="utility:chevronright"
+              size="x-small"
+            ></lightning-icon>
+          </button>
+        </li>
+      </template>
+    </ul>
+    <template for:each={page.sections} for:item="section">
+      <div
+        class="slds-panel slds-panel_docked slds-panel_animated panel-content slds-hide"
+        hidden
+        key={section.externalId}
+        data-panel-id={section.externalId}
+      >
+        <c-sbr_3_0_mobile-screen
+          props={mobileProps}
+          data-panel-id={section.externalId}
+        >
+          <div class="slds-panel__header slds-p-around_none" slot="title">
+            <lightning-button-icon
+              class="slds-panel__back"
+              icon-name="utility:chevronleft"
+              variant="bare"
+              onclick={handleTogglePanelOnClick}
+              data-target-panel-id={section.externalId}
+            ></lightning-button-icon>
+
+            <h2
+              class="slds-panel__header-title slds-text-heading_small slds-truncate panel-title"
+              title={section.label}
+              onclick={handleTogglePanelOnClick}
+            >
+              {section.label}
+            </h2>
+          </div>
+          <div class="slds-var-p-horizontal_small">
+            <c-sbr_3_0_dynamic-record-form-section
+              section={section}
+              record-id={recordId}
+              object-api-name={objectApiName}
+            ></c-sbr_3_0_dynamic-record-form-section>
+          </div>
+        </c-sbr_3_0_mobile-screen>
+      </div>
+    </template>
+  </div>
+</template>

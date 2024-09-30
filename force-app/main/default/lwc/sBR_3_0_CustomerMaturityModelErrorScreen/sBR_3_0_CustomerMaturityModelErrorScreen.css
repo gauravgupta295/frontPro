@@ -1,0 +1,22 @@
+.custom-button {
+    display: flex;
+    height: 32px;
+    padding: 1px 16px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+
+.custom-button lightning-formatted-text {
+    color: #0176d3;
+}
+
+.custom-button lightning-icon {
+    fill: #0176d3;
+}

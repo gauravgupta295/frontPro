@@ -1,0 +1,10 @@
+<template>
+    <lightning-modal-header label="Confirm Override"></lightning-modal-header>
+    <lightning-modal-body>
+        <lightning-textarea label="Comments" value={comments} onchange={handleCommentsChange}></lightning-textarea>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>    
+        <lightning-button label="Confirm" variant="brand" onclick={handleConfirm} style="padding-left: 10px;"></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -1,0 +1,61 @@
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 0.2em 0;
+  padding: 0;
+}
+.fieldsTitleClass {
+  margin-left: 25px;
+  font-size: 12px;/*added for FRONT-28168*/;
+  font-weight: 700;
+}
+
+
+
+
+
+.fieldsTitleheader {
+  margin-left: 25px;
+  font-size: 16px;/*added for FRONT-28168*/
+  font-weight: 700;
+}
+.fieldsTitleClassGreen {
+  color: #25683e;
+}
+
+:host .small-button {
+  --slds-c-button-line-height: 1rem;
+}
+
+.buttoncolor {
+  /* background-color: #25683e;
+  color: #ffffff; */
+  margin-left: 25px;
+  margin-right: 25px;
+  width: 90%;
+
+  padding-top: 10px !important;
+}
+
+.customheight {
+  margin-top: 15px;
+}
+
+.brand-button {
+  --slds-c-button-brand-color-background: #25683e;
+  --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-color-border: #25683e;
+  --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-text-color-hover: #fff;
+  float: left !important;
+  width: 95%;
+  padding-left: 20px;
+}
+
+.brand-outline-button {
+  float: left !important;
+  width: 95%;
+  padding-left: 20px;
+}

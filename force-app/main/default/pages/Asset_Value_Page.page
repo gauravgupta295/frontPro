@@ -1,0 +1,49 @@
+<apex:page standardController="Asset" lightningStylesheets="true">
+  
+    <apex:pageBlock title="Remarketing Values">
+    
+        <apex:pageBlockSection columns="2">
+        
+            <apex:repeat value="{!asset}" var="a">
+            
+                <apex:outputField value="{!a.SM_PS_For_Sale__c}" />
+                <apex:outputField value="{!a.SM_PS_Currency_Code__c}" />
+                <apex:outputField value="{!a.SM_PS_Sell_Price__c}" />
+                <apex:outputField value="{!a.SM_PS_Sell_Price_Low__c}" />
+                <apex:outputField value="{!a.SM_PS_Sell_Price_High__c}" />
+                <apex:outputField value="{!a.SM_PS_Sell_Price_Special__c}" />
+                <apex:outputField value="{!a.SM_PS_Sold_Amount__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                
+            </apex:repeat>
+            
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    
+    <apex:pageBlock title="Rouse Values">
+    
+        <apex:pageBlockSection columns="2">
+        
+            <apex:repeat value="{!asset}" var="a">
+            
+                <apex:outputField value="{!a.SM_PS_Forced_Liquid_Value__c}" />
+                <apex:outputField value="{!a.SM_PS_Orderly_Liquid_Value__c}" />
+                <apex:outputField value="{!a.SM_PS_Fair_Market_Value__c}" />
+                <apex:outputField value="{!a.SM_PS_Period__c}" />
+                <apex:outputField value="{!a.SM_PS_Source__c}" />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                <apex:pageBlockSectionItem />
+                
+            </apex:repeat>
+            
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    
+</apex:page>

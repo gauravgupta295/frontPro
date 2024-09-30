@@ -1,0 +1,22 @@
+<template>
+  <template lwc:if={showRecordSelectionScreen}>
+    <div class="full-height">
+      <c-sbr_3_0_record-type-selection-cmp
+        object-api-name={objectApiName}
+        onrecordtypeclose={handleRecordTypeCancelClick}
+        onrecordtypesubmit={handleRecordTypeSelection}
+      >
+      </c-sbr_3_0_record-type-selection-cmp>
+    </div>
+  </template>
+  <div lwc:if={isActionOverrideViewAvailable}>
+    <c-sbr_3_0_custom-modal-cmp
+      recordtype={currentRecordType}
+      parentcmp={currentCmpName}
+      onclosemodal={handleCloseModal}
+    ></c-sbr_3_0_custom-modal-cmp>
+  </div>
+  <div class="slds-align_absolute-center full-height" lwc:if={message}>
+    {message}
+  </div>
+</template>

@@ -1,0 +1,12 @@
+:host {
+  --lwc-colorBackgroundRowSelected: #f0f8f2;
+}
+
+
+.datatable-full-size {
+  width: 100% !important;
+}
+
+.slds-dropdown__item > a {
+  --sds-text-color: green important;
+}

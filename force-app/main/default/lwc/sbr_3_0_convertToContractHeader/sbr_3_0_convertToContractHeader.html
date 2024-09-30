@@ -1,0 +1,64 @@
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="slds-page-header bordercl">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media media-wrapper">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name="standard:lead_list"
+                  alternative-text="Line Item(s)"
+                  size="medium"
+                  title="Line Item(s)"
+                  class="custom-forecasts"
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body slds-p-top_xx-small">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h2>
+                      <span
+                        class="slds-page-header__title slds-truncate header-title"
+                        title="Inventory"
+                      >
+                        {inventoryLabel} 
+                      </span>
+                    </h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="slds-page-header__col-actions">
+            <div class="slds-page-header__controls">
+              <div class="slds-page-header__control">
+                <lightning-input
+                  class="slds-input-has-icon_right item-search-input boxColor"
+                  type="search"
+                  variant="label-hidden"
+                  placeholder={assetSearchTypePlaceholderFunc}
+                  style="width: 260px"
+                >
+                </lightning-input>
+              </div>
+              <template if:true={isRental}>
+                <div class="slds-page-header__control boxColor">
+                  <lightning-combobox
+                    variant="label-hidden"
+                    value={selectedLocationFilter}
+                    options={locationOptions}
+                    placeholder="Any Status"
+                    style="width: 200px"
+                    class="combStyle"
+                  >
+                  </lightning-combobox>
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

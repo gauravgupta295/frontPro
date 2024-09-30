@@ -1,0 +1,23 @@
+.brand-button{
+    --slds-c-button-brand-color-background: #25683E !important;
+    --slds-c-button-brand-color-background-hover: rgb(25,78,45,1);
+    --slds-c-button-brand-color-border:#25683E;
+    --slds-c-button-brand-color-border-hover:rgb(25,78,45,1);
+    --slds-c-button-brand-text-color-hover: #fff;
+}
+
+.neutral-button {
+    --slds-c-button-text-color:  #25683E;
+    --slds-c-button-neutral-color-border: #AEAEAE;
+    --slds-c-button-neutral-color-border-hover: #AEAEAE;
+    
+}
+
+.qty {
+   
+    padding-top: 5px;
+}
+
+.buttons{
+    padding-left: 20px;
+}

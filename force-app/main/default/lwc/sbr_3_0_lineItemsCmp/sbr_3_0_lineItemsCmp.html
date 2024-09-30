@@ -1,0 +1,456 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-13-2024
+  @last modified by  : Kunal Patel
+-->
+<template>
+
+    <template if:true={isLoading}>
+        <lightning-spinner class="spins" size="large"></lightning-spinner>
+    </template>
+    <template if:false={isMobile}>
+        <template if:true={isQuoteOrOrder}>
+            <template if:true={isParentRecordLoaded}>
+                <template if:true={isCurrentUserRecordLoaded}>
+                    <!-- 23417 Start -->
+
+                    <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                        <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Rental Items"
+                            label={rentalItemsDynamicLabel} columns={rentalColumns} object-api-name={objectApiName}
+                            records={rentalLineItems} current-user-record={currentUserRecord}
+                            parent-record={parentRecord} draft-values={draftValues} draft-errors={draftErrors}
+                            onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                            onhandleitemaction={handleItemActionMethod} reload={isExpanded}></c-sbr_3_0_line-items-grid-section-cmp>                        
+                        <template if:false={isRateQuote}>
+                            <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Sales/Misc Items"
+                                label={salesMiscItemsDynamicLabel} columns={salesColumns}
+                                object-api-name={objectApiName} records={salesLineItems}
+                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                draft-values={draftValues} draft-errors={draftErrors}
+                                onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                                onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                            <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Delivery Items"
+                                label={deliveryItemsDynamicLabel} columns={deliveryColumns}
+                                object-api-name={objectApiName} records={deliveryLineItems}
+                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                draft-values={draftValues} draft-errors={draftErrors}
+                                onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                                onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                            <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Ancillary Items"
+                                label={ancillaryItemsDynamicLabel} columns={ancillaryColumns}
+                                object-api-name={objectApiName} records={ancillaryLineItems}
+                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                draft-values={draftValues} draft-errors={draftErrors}>
+                            </c-sbr_3_0_line-items-grid-section-cmp>
+                        </template>
+                    </lightning-accordion>
+                    <!-- 23417 End -->
+                </template>
+            </template>
+        </template>
+        <template if:false={isQuoteOrOrder}>
+            <div class="slds-text-heading_small">Items</div>
+            <br />
+            <!-- 23417 Start  -->
+
+            <template if:true={isCart}>
+                <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+                    <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Rental Items"
+                        label={rentalItemsDynamicLabel} columns={rentalColumns} object-api-name={objectApiName}
+                        records={rentalLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                        onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                        onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                    <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Sales/Misc Items"
+                        label={salesMiscItemsDynamicLabel} columns={salesColumns} object-api-name={objectApiName}
+                        records={salesLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                        onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                        onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                    <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Delivery Items"
+                        label={deliveryItemsDynamicLabel} columns={deliveryColumns} object-api-name={objectApiName}
+                        records={deliveryLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                        onhandlerowaction={handleRowActionMethod} onhandlerowsave={handleRowSaveMethod}
+                        onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                    <c-sbr_3_0_line-items-grid-section-cmp is-mobile={isMobile} accname="Ancillary Items"
+                        label={ancillaryItemsDynamicLabel} columns={ancillaryColumns} object-api-name={objectApiName}
+                        records={ancillaryLineItems} draft-values={draftValues} draft-errors={draftErrors}>
+                    </c-sbr_3_0_line-items-grid-section-cmp>
+                </lightning-accordion>
+            </template>
+
+            <template if:false={isCart}>
+                <div class="custom-table-alignment">
+                    <c-sbr_3_0_custom-line-items 
+                       key-field="Id" 
+                       columns={columns} 
+                       data={displayedLineItems}
+                       draft-values={draftValues} 
+                       errors={draftErrors} 
+                       hide-checkbox-column 
+                       resize-column-disabled
+                       max-column-width=4000
+                       onrowaction={handleRowAction} onsave={handleSave}>
+                    </c-sbr_3_0_custom-line-items>
+                </div>
+                    
+            </template>
+
+            <!-- 23417 End -->
+
+            <!--
+            <c-sbr_3_0_custom-data-table-cmp key-field="Id" columns={columns} data={lineItems} draft-values={draftValues} errors={draftErrors} hide-checkbox-column resize-column-disabled onrowaction={handleRowAction} onsave={handleSave}></c-sbr_3_0_custom-data-table-cmp>
+            -->
+        </template>
+        <template if:false={showLineItemsTable}>
+            <c-sbr_3_0_empty-state-image message={noItemsMsg}></c-sbr_3_0_empty-state-image>
+        </template>
+
+        <div class="totals">
+
+            <div class="c-container slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+                <!-- SF-5286 Changes -->
+                <template if:true={isPI}>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <div class="slds-p-around_medium slds-text-align_left">Totals</div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2" padding="around-small">
+                            <div class="slds-p-around_medium slds-text-align_right">Subtotal: {subtotal}</div>
+                        </lightning-layout-item>
+                        <!--<lightning-layout-item size="3" padding="around-small">
+                            <div class="slds-p-around_medium slds-text-align_right">Delivery/Pickup & Ancillary Charges:
+                                {charges}
+                            </div>
+                        </lightning-layout-item>-->
+                        <lightning-layout-item size="2" padding="around-small">
+                            <div class="slds-p-around_medium slds-text-align_right">Tax: {tax}</div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2" padding="around-small">
+                            <div class="slds-p-around_medium slds-text-align_right">Total: {total}</div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+
+
+                <template if:false={isPI}>
+                    <lightning-layout multiple-rows>    
+                        <lightning-layout-item size="10" >
+                     </lightning-layout-item>                    
+                        <lightning-layout-item size="2" >
+                                <div class="slds-p-top_large slds-p-bottom_large slds-p-right_xx-large slds-text-align_center">TOTAL:&nbsp;{total}</div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+
+
+                
+            </div>
+        </div>
+
+        <!--23417 -->
+        <template if:true={isQuoteOrOrder}>
+            <c-sbr_3_0_modal-cmp class="editModal" header={headerText} cancel-btn-label="Cancel" save-btn-label="Save"
+                save-handler={saveQuoteLine}>
+                <span slot="modalContent">
+                      <!--SF-5291,SF-5292-->
+                    <c-sbr_3_0_line-item-editor-cmp class="lineEditor" line-id={lineId} record-id={recordId} object-api-name={objectApiName} company-code={userCompanyCode}  
+                        grid-name={gridName} group-id={selectedItemGroup} ondisablesavebtn={disableSaveBtnHandler}
+                        onenablesavebtn={enableSaveBtnHandler}>
+                    </c-sbr_3_0_line-item-editor-cmp>
+                </span>
+            </c-sbr_3_0_modal-cmp>
+            <c-sbr_3_0_modal-cmp class="removeModal" header="Remove Line items" cancel-btn-label="Cancel"
+                save-btn-label="Remove" save-handler={removeItems}>
+                <span slot="modalContent">
+                    Are you sure you want to remove the selected items?
+                </span>
+            </c-sbr_3_0_modal-cmp>
+            <c-sbr_3_0_modal-cmp class="bulkEditModal" header="Bulk Edit Items" cancel-btn-label="Cancel"
+                save-btn-label="Save" save-handler={handleSaveEdit}>
+                <span slot="modalContent">
+                    <c-sbr_3_0_custom-data-table-edit-cmp key-field="Id" record-id={recordId} csp={CSP}
+                        cmpdata={bulkEditRows} is-quote={isQuote} is-order={isOrder} is-sales={isSales}
+                        hide-checkbox-column onsuccess={hideBulkEdit}>
+                    </c-sbr_3_0_custom-data-table-edit-cmp>
+                </span>
+            </c-sbr_3_0_modal-cmp>
+            <c-sbr_3_0_modal-cmp class="bulkEditModalWarning" header="Bulk Edit Items" cancel-btn-label="Cancel"
+                save-btn-label="Next" save-handler={showBulkEdit}>
+                <span slot="modalContent">
+                    {CSP_msg}
+                </span>
+            </c-sbr_3_0_modal-cmp>
+            <c-sbr_3_0_modal-cmp class="bulkEditModalError" header="Bulk Edit Items" cancel-btn-label="Cancel">
+                <span slot="modalContent">
+                    {CSP_msg}
+                </span>
+            </c-sbr_3_0_modal-cmp>
+        </template>
+    </template>
+
+    <template if:true={isMobile}>
+         
+        <template if:false={showCartInfo}>
+
+            <div class={itemListDisplayClass}>
+                <!-- <template if:true={itemListDisplay}> -->
+                <template if:false={isPI}>
+                    <template if:true={isQuoteOrOrder}>
+                        <template if:true={isParentRecordLoaded}>
+                            <template if:true={isCurrentUserRecordLoaded}>
+                                <!-- is Quote/Order -->
+                                <div style="height: 82vh; overflow: auto;">
+                                    <lightning-accordion class="accordionBorder" allow-multiple-sections-open
+                                        active-section-name={activeSectionsMobile}>
+                                        <div if:true={showRentalGrid}>
+                                            <!-- SF-6105 added existing-line-items-->
+                                            <div class="slds-border_bottom"> 
+                                                <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} company-code={userCompanyCode}
+                                                record-id={recordId} accname="Rental Items" is-mobile={isMobile}
+                                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                                label={rentalItemsDynamicLabel} columns={rentalColumns}
+                                                records={rentalLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                                                existing-line-items={lineItems}
+                                                onhandlequantitysave={mobileQuantity}
+                                                onhandleitemaction={handleItemActionMethod} onlineitemedit={hideExtraGridSections}
+                                                oncloselineedit={showGridSections} onshowkits={addKits}>
+                                                </c-sbr_3_0_line-items-grid-section-cmp>
+                                            </div>
+                                        </div>
+
+                                        <div if:true={showSalesGrid}>
+                                            <div class="slds-border_bottom"> 
+                                               <!-- SF-6105 added existing-line-items-->
+                                                <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName}
+                                                record-id={recordId} accname="Sales/Misc Items" is-mobile={isMobile}
+                                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                                label={salesMiscItemsDynamicLabel} columns={salesColumns}
+                                                records={salesLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                                                existing-line-items={lineItems}
+                                                onhandlequantitysave={mobileQuantity}
+                                                onhandleitemaction={handleItemActionMethod} onlineitemedit={hideExtraGridSections}
+                                                oncloselineedit={showGridSections}>
+                                                </c-sbr_3_0_line-items-grid-section-cmp>
+                                            </div>
+                                        </div>
+                                        <div if:true={showDeliveryGrid}>
+                                            <div class="slds-border_bottom"> 
+                                                <!-- SF-6105 added existing-line-items-->
+                                                <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName}
+                                                record-id={recordId} accname="Delivery Items" is-mobile={isMobile}
+                                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                                label={deliveryItemsDynamicLabel} columns={deliveryColumns}
+                                                records={deliveryLineItems} draft-values={draftValues} draft-errors={draftErrors}
+                                                existing-line-items={lineItems}
+                                                onhandlequantitysave={mobileQuantity}
+                                                onhandleitemaction={handleItemActionMethod} onlineitemedit={hideExtraGridSections}
+                                                oncloselineedit={showGridSections}>
+                                                </c-sbr_3_0_line-items-grid-section-cmp>
+                                            </div>
+                                        </div>
+                                        <div if:true={showAncillaryGrid}>
+                                            <div class="slds-border_bottom"> 
+                                                <!-- SF-6105 added existing-line-items-->
+                                                <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName}
+                                                record-id={recordId} accname="Ancillary Items" is-mobile={isMobile}
+                                                current-user-record={currentUserRecord} parent-record={parentRecord}
+                                                label={ancillaryItemsDynamicLabel} columns={ancillaryColumns}
+                                                records={ancillaryLineItems} draft-values={draftValues}
+                                                existing-line-items={lineItems}
+                                                draft-errors={draftErrors} onhandlequantitysave={mobileQuantity}
+                                                onhandleitemaction={handleItemActionMethod} onlineitemedit={hideExtraGridSections}
+                                                oncloselineedit={showGridSections}>
+                                                </c-sbr_3_0_line-items-grid-section-cmp>
+                                            </div>
+                                        </div>
+                                    </lightning-accordion>
+                                </div>
+                            </template>
+                        </template>
+                    </template>
+                    <template if:false={isQuoteOrOrder}>
+                        <!-- is Cart -->
+                        <div style="height: 82vh; overflow: auto;">
+                            <lightning-accordion class="accordionBorder" allow-multiple-sections-open
+                                active-section-name={activeSectionsMobile}>
+                                <div class="slds-border_bottom"> 
+                                    <!-- SF-6105 added existing-line-items-->
+                                    <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} record-id={recordId}
+                                    is-mobile={isMobile} accname="Rental Items" label={rentalItemsDynamicLabel} columns={rentalColumns}
+                                    records={rentalLineItems} draft-values={draftValues} draft-errors={draftErrors} existing-line-items={lineItems}
+                                    onhandlequantitysave={mobileQuantity} onhandleitemaction={handleItemActionMethod} onshowkits={addKits}></c-sbr_3_0_line-items-grid-section-cmp>
+                                </div>
+                                <div class="slds-border_bottom"> 
+                                    <!-- SF-6105 added existing-line-items-->
+                                    <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} record-id={recordId}
+                                    is-mobile={isMobile} accname="Sales/Misc Items" label={salesMiscItemsDynamicLabel} columns={salesColumns}
+                                    records={salesLineItems} draft-values={draftValues} draft-errors={draftErrors} existing-line-items={lineItems}
+                                    onhandlequantitysave={mobileQuantity} onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                                </div>
+                                <div class="slds-border_bottom"> 
+                                    <!-- SF-6105 added existing-line-items-->
+                                    <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} record-id={recordId}
+                                    is-mobile={isMobile} accname="Delivery Items" label={deliveryItemsDynamicLabel} columns={deliveryColumns}
+                                    records={deliveryLineItems} draft-values={draftValues} draft-errors={draftErrors} existing-line-items={lineItems}
+                                    onhandlequantitysave={mobileQuantity} onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                                </div>    
+                                <div class="slds-border_bottom"> 
+                                    <!-- SF-6105 added existing-line-items-->
+                                    <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} record-id={recordId}
+                                    is-mobile={isMobile} accname="Ancillary Items" label={ancillaryItemsDynamicLabel} columns={ancillaryColumns}
+                                    records={ancillaryLineItems} draft-values={draftValues} draft-errors={draftErrors} existing-line-items={lineItems}
+                                    onhandlequantitysave={mobileQuantity} onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                                </div>    
+                                </lightning-accordion>
+                        </div>
+                    </template>
+                    <template if:true={loadingItems}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </template>
+                </template>
+                <template if:true={isPI}> <!--This is for Product Inquiry screen -->
+                    <div style="height: 75vh; overflow: auto;">
+                        <!-- SAL-26014 // putting back 1 grid instead of 4 -->
+                         <!-- SF-6105 added existing-line-items-->
+                        <lightning-accordion class="accordionBorder" allow-multiple-sections-open
+                            active-section-name={activeSections}>
+                            <div class="slds-border_bottom">
+                                <c-sbr_3_0_line-items-grid-section-cmp object-api-name={objectApiName} record-id={recordId}
+                                is-mobile={isMobile} label={itemsDynamicLabel} columns={columns} records={displayedLineItems}
+                                draft-values={draftValues} draft-errors={draftErrors} existing-line-items={lineItems}
+                                onupdateitemdata={updateLineItemGridData} onhandlequantitysave={mobileQuantity}
+                                onhandleitemaction={handleItemActionMethod}></c-sbr_3_0_line-items-grid-section-cmp>
+                            </div>
+                        </lightning-accordion>
+                    </div>
+                </template>
+                <template if:false={hideFooterForEdit}>
+                    <div class="sticky-footer">
+                        <template if:true={itemSelected}>
+                            <lightning-layout horizontal-align="spread"
+                                class="selection-panel slds-p-horizontal_medium slds-p-vertical_small">
+                                <lightning-layout-item size="6">
+                                    <span class="slds-text-color_weak">Item Selected: {selectedRowsCount}</span>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="6">
+                                    <lightning-layout horizontal-align="spread">
+                                        <lightning-layout-item size="6">
+                                            <button class="slds-button is-bold" value="selectAll"
+                                                onclick={selectionPanelActions}>Select All</button>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <button class="slds-button slds-button_brand"
+                                                onclick={toggleRemoveModal}>Remove</button>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </template>
+                        <template if:true={displayFooterButtons}>
+                            <div class="flex-container estimates-panel slds-p-horizontal_medium slds-p-vertical_small">
+                                <div if:false={disableClearCart}>
+                                    <button class="slds-button slds-button_outline-brand" value="Clear Cart" onclick={toggleClearCart}>Clear Cart</button>
+                                </div>
+                                <div if:true={disableClearCart}>
+                                    <button class="disableBtnStyle" disabled={disableClearCart} value="Clear Cart" onclick={toggleClearCart}>Clear Cart</button>
+                                </div>
+                                <div>
+                                    <button class="slds-button slds-button_brand" value="Edit Details" onclick={displayCartInfo}>Edit Details</button>
+                                </div>
+                            </div>
+                        </template>
+                           
+                        <lightning-layout horizontal-align="space"
+                            class="estimates-panel slds-p-horizontal_medium slds-p-vertical_small">
+                            <!-- SF-5286 Changes -->
+                            <template if:true={isPI}>
+                                <lightning-layout-item size="2">
+                                    <div>SUBTOTAL</div>
+                                    {subtotal}
+                                </lightning-layout-item>
+                                <lightning-layout-item size="5">
+                                    <div>DELIVERY/PICKUP & ANCILLARY CHARGES</div>
+                                    {charges}
+                                </lightning-layout-item>
+                                <lightning-layout-item size="2">
+                                    <div>TAX</div>
+                                    {tax}
+                                </lightning-layout-item>
+                                <lightning-layout-item size="3" class="is-bold">
+                                    <div>TOTAL</div>
+                                    {total}
+                                </lightning-layout-item>
+                            </template>
+
+                            <template if:false={isPI}>
+                                <lightning-layout-item size="12" class="is-bold">
+                                    <div class="slds-p-left_large slds-text-align_left">TOTAL:&nbsp;{total}</div>
+                                </lightning-layout-item>                                
+                            </template>
+                            
+                        </lightning-layout>
+                    </div>
+
+                </template>
+                <!-- kah edit 10/6 -->
+                <template if:true={hideFooterForEdit}>
+                    <div class="sticky-footer">
+                        <lightning-layout class="estimates-panel slds-grid_align-spread slds-p-vertical_small">
+                            <lightning-layout-item size="12">
+                                <lightning-layout horizontal-align="spread">
+                                    <lightning-layout-item size="2" padding="horizontal-medium">
+                                        <button class="slds-button slds-button_outline-brand" value="cancel"
+                                        onclick={closeLineItemEditor}>Cancel</button>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="3" padding="horizontal-medium">
+                                        <button class="slds-button slds-button_brand" value="save"
+                                        onclick={mobileSaveQuoteLine}>Save</button>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+                <!-- kah edit 10/6 -->
+            </div>
+        </template>
+
+        <template if:true={showCartInfo}>
+            
+            <div class={cartInfoDisplay}>
+                 <c-sbr_3_0_edit-cart-info-cmp oncancelcartinfo={cancelCartInfos} _selected-customer={_customerInfo} record-id={recordId} 
+                                 object-api-name={objectApiName} cart-record-type-id-string={cartRecordTypeId} _temp-customer={tempCustomer}
+                                 start-date={startDate} start-time={startTime} return-date={returnDate} return-time={returnTime} 
+                                 delivery-cpu={deliveryCpu} jobsite-zip={jobsiteZip} customer-info={_selectedCustomer} rental-period={rentalPeriod}
+                                 saved-rental-period={savedRentalPeriod} saved-start-date={savedStartDate} saved-return-date={savedReturnDate}
+                                 saved-start-time={savedStartTime} saved-return-time={savedReturnTime} saved-delivery-cpu={savedDeliveryCpu}
+                                 saved-zip-code={savedZipCode} saved-notes={savedNotes} saved-customer={savedCustomer} onsavecartinfos={handleSaveCartInfos}>
+                 </c-sbr_3_0_edit-cart-info-cmp>
+            </div>
+           
+        </template>
+        
+        <!-- <div class={lineItemEditorDisplayClass}>
+            <div class="slds-size_12-of-12 slds-p-bottom_xx-large">
+                <lightning-layout-item flexibility="auto">
+                    <c-sbr_3_0_line-item-editor-cmp line-id={lineId} record-id={recordId} group-id={selectedItemGroup}
+                        grid-name={gridName}>
+                    </c-sbr_3_0_line-item-editor-cmp>
+                </lightning-layout-item>
+            </div>
+        </div> -->
+
+        <c-sbr_3_0_modal-cmp class="removeOneItemModal" header="Remove Line item" cancel-btn-label="Cancel"
+            save-btn-label="Remove" save-handler={removeOneItem}>
+            <span slot="modalContent">
+                Are you sure you want to remove this item?
+            </span>
+        </c-sbr_3_0_modal-cmp>
+    </template>
+
+    <template if:true={showSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+</template>

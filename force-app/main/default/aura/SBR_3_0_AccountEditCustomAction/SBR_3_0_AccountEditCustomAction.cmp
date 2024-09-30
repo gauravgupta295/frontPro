@@ -1,0 +1,24 @@
+<aura:component controller="SBR_3_0_CustomLookupController" implements="force:lightningQuickActionWithoutHeader,force:hasSObjectName,force:hasRecordId">
+<!-- FRONT-3225, FRONT-3227-->
+<aura:attribute name="recordId" type="String" />
+<aura:attribute name="props" type="Object" />
+<aura:attribute name="initChild" type="Boolean" default="false" />
+    
+<aura:attribute name="record" type="Account" />
+<force:recordData layoutType="FULL"
+                  fields="RecordType.Name"
+                  recordId="{!v.recordId}"
+                  targetFields="{!v.record}"
+                  recordUpdated="{!c.fetchRecordData}" />
+<aura:html tag="style">
+.slds-modal__content{ height:unset !important; max-height:unset !important;
+}.slds-modal__content.slds-p-around--medium { padding: 0rem !important;
+}.cuf-content { padding: 0 0rem !important; }
+.modal-container.slds-modal__container{ width: 45% !important; max-width:
+80rem !important; }
+</aura:html>
+<aura:if isTrue="{!v.initChild}">
+    <c:sbr_3_0_editAccountCmp props="{!v.props}" onclosemodal="{!c.closemodal}" recordId="{!v.recordId}" variant="plain"></c:sbr_3_0_editAccountCmp>
+</aura:if>
+    
+</aura:component>

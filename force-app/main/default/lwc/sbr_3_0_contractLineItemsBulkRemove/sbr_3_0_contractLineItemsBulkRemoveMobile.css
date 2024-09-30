@@ -1,0 +1,54 @@
+.textInput {
+    -webkit-text-fill-color: #25683e !important;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 19.2px;
+    padding-left: 7px;
+    --slds-c-checkbox-color-border: #c9c9c9;
+    --slds-c-checkbox-color-border-focus: #c9c9c9;
+    --slds-c-checkbox-shadow-focus: white;
+}
+
+.textBold {
+    font-weight: 700;
+    line-height: 18px;
+    padding-left: 15px;
+}
+
+.line-item {
+    border-top: 1px solid #c9c9c9;
+}
+
+.sbrGreenColor {
+    color: #25683e;
+}
+
+.toggle-text {
+    font-weight: 400;
+    color: #25683e;
+    font-size: small;
+    margin: top 0%;
+    padding-left: 27px;
+}
+
+.item-list-ctr {
+    border-top: 0.5px solid #c9c9c9;
+    margin-left: -12px;
+    margin-right: -12px;
+}
+
+.textStyle {
+    padding-left: 27px;
+    padding-right: 60px;
+}
+
+.bordorCls {
+    border-top: 1px solid #c9c9c9;
+    margin-left: -12px;
+    margin-right: -12px;
+    padding-top: 15px;
+}
+
+.menu-item {
+    padding-right: 12px;
+}

@@ -1,0 +1,14 @@
+<template>
+    <template for:each={records} for:item="record">
+        <div key={record.recordId}>
+            <c-sbr_3_0_po-mobile-custom-data-row
+                record-item={record}
+                record-id={record.recordId}
+                onselect={handleRecordSelect}
+                onmenuclick={handleMenuClick}
+                oncheckboxchange={handleCheckboxChange}
+                onedit={handleEdit}>
+            </c-sbr_3_0_po-mobile-custom-data-row>
+        </div>
+    </template>
+</template>

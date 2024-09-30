@@ -1,0 +1,22 @@
+/*css changes added as a prart of FRONT-29150*/
+/*.slds-page-header {
+  border-radius: 10px !important;
+}
+.slds-border_top {
+  border-radius: 10px !important;
+}
+.slds-border_left {
+  border-radius: 10px !important;
+}
+.slds-border_right {
+  border-radius: 10px !important;
+}*/
+
+.manual-override-section {
+  border-top: 1px solid lightgray;
+}
+.customBorderRadius {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  margin-top: -6px;
+}

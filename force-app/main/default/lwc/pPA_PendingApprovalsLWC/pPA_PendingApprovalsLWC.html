@@ -1,0 +1,27 @@
+<template>
+    <lightning-card icon-name="custom:custom42">
+        <div slot="title">
+            <p style="font-size: 10px;">Price Lists</p>
+            <h3>Pending Approval</h3>
+        </div>
+        <div slot="actions">
+            <lightning-button-icon label="Refresh" icon-name="utility:refresh" onclick={handleRefresh} tooltip="Refresh"></lightning-button-icon>
+        </div>
+    </lightning-card>
+    <template if:true={dataLoaded}>
+        <div style="zoom: 75%">
+            <lightning-datatable
+                key-field="Id"
+                data={allRecords}
+                columns={colDisplay}
+                onrowaction={handleRowAction}
+                hide-checkbox-column
+            >
+            </lightning-datatable>
+        </div>        
+    </template>
+    <template if:false={dataLoaded}>
+        <br>
+        <h1 style="font-size: 2rem; text-align: center;">No Pending Approvals</h1>
+    </template>
+</template>

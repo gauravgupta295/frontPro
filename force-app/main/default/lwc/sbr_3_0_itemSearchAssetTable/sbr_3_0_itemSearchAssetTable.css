@@ -1,0 +1,19 @@
+.table-class{
+  
+  min-height: 300px;
+/* background-color: #C0E8CA;*/
+}
+
+.tablebg{
+ border: 1pt solid #C2BCBC;
+}
+
+.noContImg {
+color:grey;
+margin-top:-46px;
+}
+
+.backCl{
+background-color: white;
+height:250px;
+}

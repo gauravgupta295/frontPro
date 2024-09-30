@@ -1,0 +1,15 @@
+<aura:component
+  implements="lightning:isUrlAddressable,force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName,lightning:actionOverride"
+>
+    <lightning:workspaceAPI aura:id="workspaceAPI"></lightning:workspaceAPI>
+      <lightning:card>
+<div style="overflow: hidden">
+  <c:sbr_3_0_accountSearch
+  onclosetab="{!c.handleCloseTab}"
+  aura:id="delegator"
+  onsettabname="{!c.handleSetTabName}"
+  >
+  </c:sbr_3_0_accountSearch>
+    </div>
+    </lightning:card>
+</aura:component>

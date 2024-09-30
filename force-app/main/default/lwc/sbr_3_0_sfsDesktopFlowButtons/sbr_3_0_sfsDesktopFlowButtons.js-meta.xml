@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+      <target>lightning__FlowScreen</target>
+  </targets>
+    <targetConfigs>
+       <targetConfig targets="lightning__FlowScreen">
+           <property name="showNextButton" label="Show Next Button" type="Boolean" role="inputOnly"/>
+           <property name="showPreviousButton" label="Show Previous Button" type="Boolean" role="inputOnly"/>
+           <property name="showCancelButton" label="Show Cancel Button" type="Boolean" role="inputOnly"/>
+           <property name="showSaveButton" label="Show Save Button" type="Boolean" role="inputOnly"/>
+           <property name="showSkipButton" label="Show Skip Button" type="Boolean" role="inputOnly"/>
+           <property name="lableNextButton" label="Label For Next Button" type="String" role="inputOnly"/>
+           <property name="lablePreviousButton" label="Label For Previous Button" type="String" role="inputOnly"/>
+           <property name="lableCancelButton" label="Label For Cancel Button" type="String" role="inputOnly"/>
+           <property name="lableSaveButton" label="Label For Save Button" type="String" role="inputOnly"/>
+           <property name="lableSkipButton" label="Label For Skip Button" type="String"  role="inputOnly"/>
+           <property name="lableSummaryButton" label="Label For Summary Button" type="String"  role="inputOnly"/>
+           <property name="recordId" label="RecordId to redirect" type="String"  role="inputOnly"/>
+           <property name="type" label="Redirect Type" type="String"  role="inputOnly"/>
+          <property name="hideCancelPopup" label="Hide Cancel Popup" type="Boolean"  role="inputOnly"/>
+          <property name="recordToBeDeleted" label="RecordId to Delete" type="String"  role="inputOnly"/>
+          
+          <property name="object" label="Object on which flow is configured" type="String" role="inputOnly"/>
+          <property name="disableSaveButton" label="Condition Disable Save Button" type="Boolean" role="inputOnly"/>
+          <property name="usedisable" label="Use Disable Save Button functionality" type="Boolean" role="inputOnly"/>
+           <!--<property name="account" label="Account Chosen" type="@salesforce/schema/Account"/>
+           <property name="annualRevenue" label="Annual Revenue" type="Integer" role="outputOnly"/>
+           <property name="name" label="Account Name" type="String" />-->
+       </targetConfig>
+</targetConfigs>
+</LightningComponentBundle>

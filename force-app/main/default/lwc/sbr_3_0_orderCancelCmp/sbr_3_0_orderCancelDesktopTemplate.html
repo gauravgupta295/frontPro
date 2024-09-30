@@ -1,0 +1,35 @@
+<template>
+    <template if:true={isLoading}>
+        <div>
+            <!--Added for FRONT-1946-->
+        <lightning-spinner style={spinStyle} class="spins"
+        size="small"></lightning-spinner>
+        </div>
+      </template>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <!--Added for FRONT-4412-->
+                        <template if:true={showQuoteMessage}>
+                            <p class="outerPara">{quoteCancelMessage}</p>
+                        </template>
+                        <template if:false={showQuoteMessage}>
+                    <p class="outerPara"> {cancelMessage}</p>
+                </template>
+                    <p class="InnerPara"> {cancelAlert}</p>
+                
+                    <!-- Modal/Popup Box LWC footer starts here -->
+                    <footer class="slds-modal__footer">
+                        <lightning-button class="noButton"
+                        variant="neutral"
+                        label={noButton}
+                        onclick={closeMethod}
+                    ></lightning-button>
+                    <lightning-button
+                        variant="brand"
+                        label={yesButton}
+                        class="slds-m-left_x-small yesButton"
+                        onclick={handleYes}
+                    ></lightning-button>
+                    </footer>
+                </div>
+        </template>  
+</template>

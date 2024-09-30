@@ -1,0 +1,6 @@
+<design:component >
+    <design:attribute name="damageEstimatorId" label="Enter Damage Estimator Id"/>
+    <design:attribute name="responseType" label="Response Type"/>
+    <design:attribute name="invoiceNumber" label="Invoice Number"/>
+    <design:attribute name="invoiceSequenceNumber" label="Invoice Sequence"/>
+</design:component>

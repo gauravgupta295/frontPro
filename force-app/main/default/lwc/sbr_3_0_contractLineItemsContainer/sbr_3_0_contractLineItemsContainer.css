@@ -1,0 +1,32 @@
+.topmargin{
+	padding-top: 3%;
+}
+.backgroundcolor{
+	background-color: #ECF6EF;
+	font-size: 13px;
+}
+
+.textInput {
+	-webkit-text-fill-color: #25683e !important;
+	font-size: 13px;
+	font-weight: 700;
+	
+	
+  }
+  /* FRONT-31386 */
+  .itemSelected{
+	color: #444444;
+	font-weight: 400;
+	font-size: 13px;
+  }
+  /* FRONT-31386 */
+  .save-button{
+	font-weight: 400;
+	color: #FFFFFF;
+	background-color: #25683E;
+	height: 34px;
+  }
+
+*, *:before, *:after{
+	box-sizing:content-box;
+}

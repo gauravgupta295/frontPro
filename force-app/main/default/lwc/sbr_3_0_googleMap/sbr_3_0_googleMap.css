@@ -1,0 +1,302 @@
+.notify_content {
+    display: inline-flex;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    justify-content: flex-start;
+}
+
+.container-card {
+    height: 38rem;
+    width: 102%;
+    margin: -0.75rem; /*removes left top space around map but leaves space on right and bottom*/
+}
+
+.slds-template_default {
+    padding: 0rem;
+}
+
+.table-container {
+    overflow-x: scroll;
+    height: 34rem;
+}
+
+.table-container-form {
+    overflow-x: scroll;
+    height: 38rem;
+}
+
+table {
+    border-collapse: collapse;
+    display: table;
+}
+
+td, th {
+    border-collapse: collapse;
+}
+
+td {
+    vertical-align: top;
+}
+
+thead {
+    position: sticky;
+    top: 0; /* required for the stickiness */
+    z-index: 1;
+    background-color: rgb(242, 242, 242);
+}
+
+/* Below is CSS for the sidepanel */
+.main {
+    position: relative;
+}
+
+.sidebar {
+    width: 0;
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    transition: 0.5s;
+    overflow: hidden;
+    left: -11px; /* SAL-26390 */
+    top: -11px; /* SAL-26390 */
+}
+
+.sidebar-footer {
+   background-color: rgb(242, 242, 242);
+   height: 4rem;
+}
+
+.legend-controls {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    overflow: hidden;
+    color: #747474;
+    margin-left: 94%;
+    margin-top: 31.9rem;
+    width: 7%;
+    cursor: pointer;
+    left: 0px; /* SAL-26390 */
+    top: 0px; /* SAL-26390 */
+}
+
+.legend-controls div {
+    user-select: none;
+    outline: 0;
+}
+
+.legend-controls img {
+    max-height: 25px;
+}
+
+.legend-border {
+    border-top: 1px solid #e5e5e5;
+}
+
+.legend {
+    position: absolute;
+    z-index: 1;
+    background-color: white;
+    overflow: hidden;
+    color: #747474;
+    margin-left: 80%;
+    margin-top: 15rem;
+    width: 13%;
+    left: 0px; /* SAL-26390 */
+    top: 0px; /* SAL-26390 */
+}
+
+.legend img {
+    max-height: 25px;
+}
+
+.closeBtn {
+    position: absolute;
+    margin-left: 350px;
+    bottom: 50%;
+    z-index: 1;
+    color: rgb(25,25,25);
+    font-family: Roboto,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 38px;
+    padding-left: 5px;
+    padding-right: 5px;
+    background-color: white;
+    width: fit-content;
+    cursor: pointer;
+    border: solid 1px #e4e0e0;
+    border-radius: 0px 10px 10px 0px;
+    transition: 0.5s;
+}
+
+.goBack {
+    float: left;
+}
+
+/* Tile Style */
+.tile-table {
+    min-height: 100%;
+}
+
+.list-tile {
+    border-bottom: 1px solid #dddbda;
+}
+
+.tile-grid {
+    width: 330px;
+}
+
+.tile-label {
+    width: 40%;
+    font-size: 12px;
+}
+
+.tile-detail {
+    width: 60%;
+    font-size: 12px;
+}
+
+/* Badge */
+
+.badge {
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 10px 10px 10px 10px;
+    text-align: center;
+}
+
+/* Account Badges */
+
+.account {
+    background-color: #C1C8F0;
+    color: #4559D3;
+}
+
+.top25 {
+    background-color: #BCF1F6;
+    color: #008E9C;
+}
+ 
+.top50 {
+    background-color: #ADEEF4;
+    color: #008E9C;
+}
+
+.dormant {
+    background-color: #D3D3D3;
+    color: #181818;
+}
+
+.watchlist {
+    background-color: #D1E1FF;
+    color: #0082D6;
+}
+
+.prospect {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.credit {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.erplink {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.non-credit {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.office {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.vendor {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.global {
+    background-color: #FFEEED;
+    color: #BA0517;
+}
+
+.commissionable {
+    background-color: #CDEFC4;
+    color: #22683E;
+}
+
+.fingerprint {
+    background-color: #D7BFF2;
+    color: #7526E3;
+}
+
+/* Other Badges */
+
+.appointment {
+    background-color: #FCE9EE;
+    color: #E01F54;
+}
+
+.task {
+    background-color: #DEF8E5;
+    color: #008545;
+}
+
+.opportunity {
+    background-color: #FCDDB2;
+    color: #A86403;
+}
+
+.project {
+    background-color: #CCE1F5;
+    color: #2671BA;
+}
+
+.branch {
+    background-color: #DEF8E5;
+    color: #25683E;
+}
+
+.jobsite {
+    background-color: #E1F4E8;
+    color: #349357;
+}
+
+.lead {
+    background-color: #FCC8B6;
+    color: #E2561D;
+}
+
+.go-back {
+    padding-left: 6px;
+}
+
+.slds-truncate {
+    white-space: nowrap;
+}
+
+.toolTip{
+    display: none;
+}
+.tooltipContainer:hover{
+    .toolTip{
+        display: block;
+        --slds-c-tooltip-color-background: white;
+        --slds-c-tooltip-text-color: black;
+    }
+}
+.sbr-green {
+    color: #25683E;
+}
+.sbr-green:hover {
+    text-decoration: underline;
+}

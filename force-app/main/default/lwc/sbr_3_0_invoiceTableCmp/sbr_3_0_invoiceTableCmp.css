@@ -1,0 +1,26 @@
+/*.customDataTable .slds-table_bordered tbody td, 
+.customDataTable .slds-table_bordered tbody th, 
+.customDataTable .slds-table--bordered tbody td, 
+.customDataTable .slds-table--bordered tbody th {
+    border-top: None!important;
+}
+
+@media (max-width: 48em) {
+    .slds-max-medium-table_stacked {
+        border-top: None!important;
+    }
+    .slds-max-medium-table_stacked:not(.slds-no-row-hover) tbody tr:hover td, .slds-max-medium-table_stacked:not(.slds-no-row-hover) tbody tr:hover th, .slds-max-medium-table--stacked:not(.slds-no-row-hover) tbody tr:hover td, .slds-max-medium-table--stacked:not(.slds-no-row-hover) tbody tr:hover th {
+        border-top: None!important;
+    }
+}*/
+
+.adjusted-btn-size {
+    height: 10px; /* or whatever height matches the comboboxes */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.slds-size_2-of-8, .slds-size--2-of-8{
+    padding-top: 45px!important;
+}

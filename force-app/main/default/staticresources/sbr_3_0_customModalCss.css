@@ -1,0 +1,114 @@
+.fullwidth .slds-form-element__row label::before
+{
+    content:"* ";
+    color: red;
+}
+
+ .fullwidth .slds-form-element legend::before
+{
+    content:"* ";
+    color: red;
+} 
+
+.fullwidth .slds-form-element__row lightning-lookup-address label::before
+{
+    content:" ";
+    color: red;
+} 
+
+.addressClass .slds-size_4-of-6, .fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+.addressClass .slds-form-element__row
+{
+    flex-flow:row wrap;
+    display: flex;
+}
+.addressClass .slds-size_2-of-6, .fullwidth .slds-size--2-of-6, .fullwidth .slds-form-element{
+    padding-left: 0px!important;
+    width: 100%;
+   margin-top: 5px !important;
+}
+
+.fullwidth .slds-size_4-of-6, .fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+
+.fullwidth .slds-form-element__row
+{
+    flex-flow:row wrap;
+    display: flex;
+}
+
+
+.fullwidth .slds-size_2-of-6, .fullwidth .slds-size--2-of-6, .fullwidth .slds-form-element{
+    padding-left: 0px!important;
+    width: 100%;
+} 
+.fullwidth .slds-form-element__row lightning-lookup-address
+{
+   margin-top: -10px !important;
+} 
+
+.addressFieldCss  .slds-form-element__row label::before
+{
+    content:"* ";
+    color: red;
+}
+
+.addressFieldCss  .slds-form-element legend::before
+{
+    content:"* ";
+    color: red;
+} 
+
+
+.addressFieldCss  .slds-size_2-of-6, .addressFieldCss  .slds-size--2-of-6, .addressFieldCss  .slds-form-element{
+    padding-left: 0px!important;
+    width: 100%;
+} 
+.addressFieldCss  .slds-form-element__row lightning-lookup-address
+{
+   margin-top: -28px !important;
+} 
+.addressFieldCss.slds-size_4-of-6, .fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+
+.addressFieldCss .slds-form-element__row
+{
+    flex-flow:row wrap;
+    display: flex;
+}
+.addressFieldCss lightning-lookup-address 
+{
+	margin-top: -28px !important;
+}
+.slds-input, .slds-combobox__input, .slds-textarea {
+    border-color: #c2bcbc;
+}
+/* Added for FRONT-3129 */
+.dateBir {
+    -webkit-appearance: none;
+       -moz-appearance: none;
+       min-width:95%;
+       text-align: left !important;
+}
+
+.addressClass lightning-input-address legend:first-of-type {
+    padding-top: 8px;
+}
+
+.noButton .slds-button{
+    border-color: #C9C9C9 !important;
+}
+
+.account-id-mobile > * {
+        width: 100% !important;
+    }
+
+    .dobwidth{
+        width: 100% !important;
+    }
+
+      

@@ -1,0 +1,12 @@
+div[part="help-text"] > lightning-button-icon > button {
+    margin-left: -0.25rem !important;
+    top: -0.1rem !important;
+}
+
+section.slds-modal.slds-fade-in-open.convert-account-quick-action-modal {
+    overflow: visible !important;
+}
+.customdisabledinput .slds-input[disabled],.slds-input.slds-is-disabled{
+    color:black !important;
+}
+

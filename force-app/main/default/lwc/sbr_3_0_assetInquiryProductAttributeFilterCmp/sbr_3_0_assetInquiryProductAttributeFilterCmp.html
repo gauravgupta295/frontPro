@@ -1,0 +1,147 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-25-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div>
+        <lightning-layout-item flexibility="auto" padding="around-small">
+            <div>
+                <h1>
+                    Select Product Super Category
+                    <br>
+                    --------------------------------
+                    <br>
+                </h1>
+            </div>
+            <div style="width: 350px;">
+                <lightning-combobox
+                    class="combobox"
+                    name="supercategorycomboBox"
+                    label=""
+                    value={value}
+                    placeholder="Select Super Category"
+                    options={superCategoryOptions}
+                    onchange={handleSuperCategoryChangeEvent}>
+                </lightning-combobox>
+            </div>
+            <div>
+                <br>
+            </div> 
+        </lightning-layout-item>
+        <lightning-layout-item>
+            <div>
+                <h1>
+                    Select Product Categories and Product Sub-Categories
+                    <br>
+                    --------------------------------------------------------
+                    <br>
+                </h1>
+                <div>
+                    <br>
+                </div>
+                <div>
+                    <div class="slds-p-bottom_small">
+                        <template iterator:option={selectedFilterOptions} 
+                                    for:index={option.index}>
+                            <lightning-pill key={option.value} 
+                                            label={option.value} 
+                                            class="slds-truncate category-pill"
+                                            data-label={option.value} 
+                                            onremove={handleRemovePill}>
+                            </lightning-pill>
+                        </template>
+                    </div>
+                    <div>
+                        <br>
+                    </div>
+                </div>
+                <div class="slds-scrollable--y" style="max-height : 320px;">
+                    <div >
+                        <template iterator:cat={filterOptions} 
+                                    for:index={cat.index}>
+                            <lightning-layout key={cat.value.Id} 
+                                                class="slds-border_top" 
+                                                vertical-align="top">
+                                    <lightning-layout-item 
+                                                size="1"
+                                                class="slds-p-vertical_small">
+                                        <lightning-input 
+                                            type="checkbox" 
+                                            label="" 
+                                            data-name={cat.value.attributeName}
+                                            data-type="cat" 
+                                            data-elementid={cat.index} 
+                                            onchange={handleCheckboxUpdate}
+                                            checked={cat.value.isSelected}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item 
+                                        size="10" 
+                                        class="slds-p-vertical_small">
+                                        <strong>{cat.value.Name}
+                                            <template if:true={cat.value.showCount}>
+                                                <span> ({cat.value.selectedSubcatCount})</span>
+                                            </template>
+                                        </strong>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="1">
+                                        <div class="slds-p-vertical_x-small 
+                                                    slds-grid slds-grid_vertical-align-center 
+                                                    slds-float_right">
+                                            <template if:true={cat.value.hasSubCategory}>
+                                                <template if:true={cat.value.isSubCatOpen}>
+                                                    <lightning-icon icon-name="utility:chevrondown"
+                                                        data-catname={cat.value.attributeName}
+                                                        onclick={handleToggleSubCatSection} size="xx-small"
+                                                        class="icon-class">
+                                                    </lightning-icon>
+                                                </template>
+                                                <template if:false={cat.value.isSubCatOpen}>
+                                                        <lightning-icon icon-name="utility:chevronright"
+                                                            data-catname={cat.value.attributeName}
+                                                            onclick={handleToggleSubCatSection} size="xx-small"
+                                                            class="icon-class">
+                                                        </lightning-icon>
+                                                    </template>
+                                            </template>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <template if:true={cat.value.hasSubCategory}>
+                                    <div key={cat.value.Id} 
+                                            data-subcatsection={cat.value.attributeName} 
+                                            class="slds-is-collapsed">
+                                        <template iterator:subcat={cat.value.subCategories}>
+                                            <lightning-layout key={subcat.value.attributeName} 
+                                                                vertical-align="top">
+                                                    <lightning-layout-item size="1" 
+                                                                            class="slds-p-bottom_small">
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="1" 
+                                                                            class="slds-p-bottom_small">
+                                                        <lightning-input type="checkbox" 
+                                                                            label=""
+                                                                            data-name={subcat.value.attributeName} 
+                                                                            data-type="subcat"
+                                                                            data-elementid={cat.index} 
+                                                                            onchange={handleCheckboxUpdate}>
+                                                        </lightning-input>
+                                                    </lightning-layout-item>
+                                                    <lightning-layout-item size="10" 
+                                                                            class="slds-p-bottom_small">
+                                                        {subcat.value.Name}
+                                                    </lightning-layout-item>
+                                            </lightning-layout>
+                                        </template>
+                                    </div>
+                                </template>
+                        </template>
+                    </div>
+                </div>
+            </div> 
+        </lightning-layout-item>
+    </div> 
+</template>

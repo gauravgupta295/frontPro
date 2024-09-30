@@ -1,0 +1,33 @@
+@media only screen and (max-device-width: 480px) {
+    .sticky-footer{
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+    }
+    .button-panel{
+        background-color: #F3F3F3;
+    }
+    .sticky-footer .slds-button{
+        font-size: 12px;
+        line-height: 18px;
+        color: #25683E;
+    }
+    .sticky-footer .slds-button.slds-button_brand{
+        padding: 4px 10px;
+        font-size: 13px;
+        line-height: 20px;
+        background-color: #25683E;
+        font-weight: 400;
+        color: #fff;
+    }
+    .sticky-footer .slds-text-color_weak{
+        font-size: 13px;
+        line-height: 20px;
+    }
+}
+
+.slds-alert_warning {
+    --slds-c-alert-color-background: var(--slds-g-color-warning-base-70);
+}

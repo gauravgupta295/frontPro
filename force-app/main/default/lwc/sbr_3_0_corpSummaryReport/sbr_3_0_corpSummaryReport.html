@@ -1,0 +1,32 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-18-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card title ={calledFrom} icon-name="utility:graph">
+      <div class="slds-m-around_medium">
+      <!--  <template if:true={report.data}>
+          <template if:true={report.data.error}>
+            <div>{report.data.error}</div>
+          </template>
+        </template>
+       <template if:true={report.data}>
+          <template if:true={report.data.embedUrl}>
+            <div data-id="embed-container" style="height: 600px"></div>
+         </template>
+        </template>-->
+        <template if:true={recordId}>
+            <lightning-flow
+                 flow-api-name='SBRPowerBIReport' flow-input-variables={inputVariables}>
+            </lightning-flow>
+        </template>
+        <template if:false={recordId}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+
+      </div>
+    </lightning-card>
+  </template>

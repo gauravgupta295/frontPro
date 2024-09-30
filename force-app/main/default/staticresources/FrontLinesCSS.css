@@ -1,0 +1,508 @@
+.applied-filters lightning-pill {
+  padding-left: 2px;
+}
+
+.applied-filters .slds-pill {
+  margin-top: 2px;
+}
+
+.menuItem a,
+.menuItem a:hover,
+.menuItem a:focus {
+  color: #2E844A !important;
+}
+
+.stickyFooter.bottomfooter .slds-button {
+  font-weight: normal;
+}
+
+
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox_faux::after,
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox--faux::after,
+.slds-checkbox [type="checkbox"]:checked~.slds-checkbox_faux::after,
+.slds-checkbox [type="checkbox"]:checked~.slds-checkbox--faux::after,
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox__label .slds-checkbox_faux::after,
+.slds-checkbox [type="checkbox"]:checked+.slds-checkbox__label .slds-checkbox--faux::after {
+  border-bottom: 2px solid rgb(37, 104, 62) !important;
+  border-left: 2px solid rgb(37, 104, 62) !important;
+}
+
+.asset-accordion-section .slds-accordion__summary {
+  border-bottom: 1px solid #E5E5E5 !important;
+}
+
+.asset-accordion-section .slds-accordion__summary-heading .slds-button:focus {
+  text-decoration: none !important;
+}
+
+.asset-accordion-section .slds-accordion__summary-action:hover,
+.slds-accordion__summary-action:focus {
+  color: black;
+}
+
+.neutral-button .slds-button,
+.brand-button .slds-button {
+  font-weight: normal !important;
+
+}
+
+.small-button .slds-button {
+  font-weight: normal !important;
+  height: 38px !important;
+  color: #25683E;
+}
+
+.accordionSectionClass .slds-accordion__summary-heading {
+  font-weight: bold;
+
+}
+
+.accordionSectionClass .slds-accordion__summary {
+  border-bottom: 1px solid #E5E5E5 !important;
+}
+
+.accordionSectionClass .slds-accordion__list-item {
+  border-top: 0;
+}
+
+/* FRONT-8351 start */
+.slds-popover_tooltip {
+  background-color: #747474;
+}
+
+.customHelpText .slds-form-element__icon {
+  padding-top: unset;
+}
+
+/* FRONT-8351 end */
+
+/*FRONT-8793 start */
+.no-availability .slds-checkbox_faux {
+  bottom: 35px;
+}
+
+.mobile-tooltip {
+  background-color: #BA0517 !important;
+}
+
+/*FRONT-8793 end*/
+/*START: FRONT-1950,1958*/
+.info-mobile-tooltip {
+  background-color: #5A5A5A !important;
+}
+
+/*END: FRONT-1950,1958*/
+
+/* START FRONT-10298 */
+.salesData .slds-scrollable_y,
+.salesData .slds-scrollable--y {
+  max-height: 500px !important;
+  width: 100% !important;
+}
+
+.salesData .slds-table_header-fixed,
+.salesData .slds-table--header-fixed {
+  max-height: 500px !important;
+  width: 100% !important;
+}
+
+/*Front-9257 start*/
+.drfJobSiteFlowContainer {
+  padding: 0 !important;
+}
+
+div.drfJobSiteFlowContainer div.flowruntimeBody {
+  margin-bottom: 0;
+}
+
+div.drfJobSiteFlowContainer flowruntime-base-section>div>flowruntime-screen-field:not(:last-child) {
+  display: block;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/*FRONT-11395*/
+.consumables-tab .slds-tabs_default__nav {
+  display: flex;
+  justify-content: space-between;
+  background-color: #fff;
+  border-bottom-style: none;
+  border-top: solid 1px #e5e5e5;
+}
+
+.consumables-tab .slds-tabs_default__item {
+  color: #25683e;
+  outline: 0 !important;
+  text-align: center;
+  margin: 2.5px;
+}
+
+.consumables-sub-tab .slds-tabs_default__nav {
+  justify-content: space-around;
+}
+
+.consumables-sub-tab .slds-tabs_default__item {
+  padding: 0 2.5rem;
+}
+
+.consumables-tab .consumables-tab-tab .slds-tabs_default__item[data-tab] {
+  width: 30%;
+}
+
+.consumables-tab .slds-tabs_default__item.slds-is-active,
+.consumables-tab .slds-tabs_default__item.slds-is-active:focus {
+  color: white;
+  /* background-color: #EDF6EF; */
+  background-color: #25683E;
+  border-radius: 8px;
+}
+
+.consumables-tab .slds-tabs_default__item:focus:after,
+.consumables-tab .slds-tabs_default__item.slds-has-focus:after,
+.consumables-tab .slds-tabs--default__item:focus:after,
+.consumables-tab .slds-tabs--default__item.slds-has-focus:after,
+.consumables-tab .slds-tabs_default__item:hover:after,
+.consumables-tab .slds-tabs--default__item:hover:after,
+.consumables-tab .slds-tabs_default__item.slds-active:after,
+.consumables-tab .slds-tabs_default__item.slds-is-active:after,
+.consumables-tab .slds-tabs--default__item.slds-active:after,
+.consumables-tab .slds-tabs--default__item.slds-is-active:after {
+  background-color: transparent;
+}
+
+.consumables-tab.consumables-sub-tab .slds-tabs_default__overflow-button {
+  display: none;
+}
+
+.consumables-tab .slds-tabs_default__overflow-button .slds-dropdown__item a {
+  color: #25683e;
+}
+
+.consumables-tab .slds-tabs_default__link[tabindex="0"]:focus,
+.consumables-tab .slds-tabs--default__link[tabindex="0"]:focus {
+  text-decoration: none;
+}
+
+.consumables-tab .slds-tabs_default__item.slds-active .slds-tabs_default__link,
+.consumables-tab .slds-tabs_default__item.slds-active .slds-tabs--default__link,
+.consumables-tab .slds-tabs_default__item.slds-is-active .slds-tabs_default__link,
+.consumables-tab .slds-tabs_default__item.slds-is-active .slds-tabs--default__link,
+.consumables-tab .slds-tabs--default__item.slds-active .slds-tabs_default__link,
+.consumables-tab .slds-tabs--default__item.slds-active .slds-tabs--default__link,
+.consumables-tab .slds-tabs--default__item.slds-is-active .slds-tabs_default__link,
+.consumables-tab .slds-tabs--default__item.slds-is-active .slds-tabs--default__link {
+  font-weight: normal;
+}
+
+.consumables-tab .slds-tabs_default__content {
+  padding-top: 0;
+}
+
+/*Front-9257 end*/
+/* END FRONT-10298 */
+
+/*FRONT-11315*/
+.pl-inner-container .slds-is-selected td,
+.pl-inner-container .slds-is-selected th {
+  background: #EDF6EF !important;
+}
+
+/*FRONT-11315*/
+
+.item-search-asset-container .slds-is-selected td,
+.item-search-asset-container .slds-is-selected th {
+  background: #EDF6EF !important;
+}
+
+/* FRONT-25764 */
+.salesData .slds-hint-parent.slds-is-selected td,
+.salesData .slds-hint-parent.slds-is-selected th {
+  background: #EDF6EF !important;
+}
+
+/*12597*/
+.has-custom-error {
+  border-color: #ba0517 !important;
+  border-width: 2px;
+}
+
+c-sbr_3_0_line-items-grid-section-cmp .slds-accordion__summary {
+  border-bottom: 1px solid #efefef;
+}
+
+/* Added as part of FRONT-13956*/
+c-sbr_3_0_sales-item-search-container-cmp .placeholder_font ::placeholder {
+  font-size: 0.8rem;
+}
+
+/*FRONT-13956 Ends*/
+/*FRONT-15982 : Unsetting padding top to remove padding from default tab class*/
+.topPaddingRemoverClass .slds-tabs_default__content {
+  padding-top: unset;
+}
+
+/*End : FRONT-15982*/
+/*Adding as part of FRONT-13991*/
+.fullwidth .slds-size_4-of-6,
+.fullwidth .slds-size--4-of-6 {
+  width: 100%;
+}
+
+.fullwidth .slds-form-element__row {
+  flex-flow: row wrap;
+  display: flex;
+}
+
+.bodycss .slds-panel__body {
+  padding: 0rem;
+}
+
+.fullwidth .slds-size_2-of-6,
+.fullwidth .slds-size--2-of-6,
+.fullwidth .slds-form-element {
+  padding-left: 0px !important;
+  width: 100%;
+}
+
+.fullwidth .slds-form-element__row lightning-lookup-address {
+  margin-top: -10px !important;
+}
+
+.birthdate input[type="date"] {
+  min-width: 95.6%;
+
+}
+
+/*End FRONT-13991
+/*FRONT-17141*/
+.help-text-icon-padding-top-remove-on-input .slds-form-element__icon :hover {
+  padding-top: unset;
+  color: gray !important;
+}
+
+.help-text-icon-padding-top-remove-on-input .slds-form-element__label {
+  padding-top: unset;
+}
+
+/*END FRONT-17141*/
+/*Added for Front-18999*/
+input[type="datetime-local"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  min-height: 1.2em;
+  min-width: 95%;
+  text-align: left !important;
+}
+
+input::-webkit-date-and-time-value {
+  text-align: left;
+}
+
+.brand-button {
+  --slds-c-button-brand-color-background: #25683E;
+  --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-color-border: #25683E;
+  --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-text-color-hover: #fff;
+}
+
+.remove-button button{
+  border-color: #25683e;
+  font-weight: normal !important;
+}
+
+.neutral-button {
+  --slds-c-button-text-color: #25683E;
+  --slds-c-button-neutral-color-border: #AEAEAE;
+  --slds-c-button-neutral-color-border-hover: #AEAEAE;
+
+
+}
+
+.bottomfooter {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 100%;
+  margin: auto;
+  margin-top: 10px;
+}
+
+.sticky {
+  Position: fixed;
+  top: 0;
+  left: -1px;
+  right: 0px;
+  width: 100%;
+  z-index: 9899999999999;
+}
+
+.disableClass .slds-input[disabled] {
+  background-color: #c9c9c9 !important;
+  color: black !important;
+  opacity: 1;
+  text-decoration-color: black;
+}
+
+/*Ended for Front-18999*/
+
+/* START : FRONT-28937 */
+.serialCard .slds-card__header {
+  padding-top: 0px !important;
+  margin: 0px;
+}
+
+.serialCard .slds-card__body {
+  margin-top: 0px;
+  margin-bottom: 0px;
+}
+
+/* END : FRONT-28937 */
+
+/*FRONT-30881*/
+.close-icon-color svg.slds-icon {
+  padding-bottom: 1.9px;
+}
+
+/*FRONT-31303*/
+.modalClass .slds-modal__header {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.modalClass .slds-modal__footer {
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+/*FRONT-28988*/
+.borderAlignment .slds-form-element__control.slds-grow.slds-input-has-icon.slds-input-has-icon_left-right input {
+  border-radius: 0px 4px 4px 0px;
+}
+
+.btn-icon-disabled-class .slds-button_brand[disabled], .slds-button_brand:disabled, .slds-button--brand[disabled], .slds-button--brand:disabled {
+  background-color: #A0A0A0;
+}
+
+/*Front-30685*/
+:root {
+  --_slds-g-shadow-inset-focus: none !important;
+  --_slds-g-shadow-outset-focus: none !important;
+  --_slds-g-shadow-inset-inverse-focus: none !important;
+  --_slds-g-shadow-outline-focus: none !important;
+}
+
+/*FRONT-29481*/
+@media (max-width: 768px) {
+  .greyBorderCon input[disabled] {
+    background-color: #C9C9C9;
+    color: black;
+    opacity: 1;
+    text-decoration-color: black;
+    box-shadow: none !important
+  }
+
+  .greyBorderCon lightning-icon {
+    margin-left: 0.38rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .greyBorderCon input[disabled] {
+    box-shadow: none !important
+  }
+}
+
+.item-search-input .slds-input {
+  border-radius: 0px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_DLNumber_NC"] {
+  padding-left: 0px;
+  padding-bottom: 16px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_DLState_NC"] {
+  padding-left: 0px;
+  padding-bottom: 16px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Number_NC"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Phone_NC"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_RecType_NC"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Status_NC"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Number_Credit"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Phone_Credit"] {
+  padding-left: 0px;
+  padding-bottom: 16px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_RecType_Credit"] {
+  padding-left: 0px;
+  padding-bottom: 8px;
+}
+
+lightning-layout-item[data-layout-item-id="Cont_Acc_Status_Credit"] {
+  padding-left: 0px;
+  padding-bottom: 16px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_DLNumber_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_DLState_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Number_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Phone_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_RecType_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Status_NC"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Number_Credit"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Phone_Credit"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_RecType_Credit"] .slds-form-element__label {
+  padding-bottom: 4px;
+}
+
+lightning-output-field[data-field-id="Cont_Acc_Status_Credit"] .slds-form-element__label {
+  padding-bottom: 4px;
+}

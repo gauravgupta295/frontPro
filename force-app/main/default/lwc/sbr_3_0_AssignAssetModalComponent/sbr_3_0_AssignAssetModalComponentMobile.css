@@ -1,0 +1,47 @@
+:host {
+  --slds-c-tabs-item-color:green;
+}
+.slds-modal__content {
+  flex: auto;
+  flex-direction: column;
+  width: 100%;
+}
+.slds-modal__container {
+  margin: unset;
+  padding: unset;
+}
+.customer-info-header {
+  background-color: #ffffff;
+  display: flex;
+  /*flex-direction: row;*/
+  justify-content: space-evenly;
+  align-items: center;
+  border-width: 1px;
+  border-color: #adabab;
+  border-style: solid;
+  width: 100vw;
+}
+.neutral-button {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #aeaeae;
+  --slds-c-button-neutral-color-border-hover: #aeaeae;
+}
+.cancelBut {
+  text-align: center !important;
+}
+
+a {
+  color: #25683e;
+}
+
+.selected-tab {
+  background-color: #f0f4f1;
+}
+
+.tab-active {
+/*  --slds-c-tabs-scoped-color-text:green;*/
+}
+
+/*.lightning-tab{
+  color: #25683e !important;
+}*/

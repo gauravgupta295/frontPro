@@ -1,0 +1,68 @@
+<template>
+  <!-- FRONT-15079 -->
+  <template if:true={isRefundAvailable}>
+    <c-sbr_3_0_refund-deposit record-id={recordId} isfromcancel=true onrefunddetails={handleCallFromRefund}></c-sbr_3_0_refund-deposit>
+  </template>
+  
+      <c-sbr_3_0_mobile-screen title={header}>
+        <template if:true={isLoading}>
+          <div>
+            <!--Added for FRONT-1946-->
+            <lightning-spinner
+              style={spinStyle}
+              class="spins"
+              size="small"
+            ></lightning-spinner>
+          </div>
+        </template>
+              <!-- FRONT-15079 -->
+              <template if:true={isRefundNotAvailable}>
+                <template if:false={showCancelModal}>
+                  <template if:true={noRefund}>
+                    <div class="slds-scoped-notification slds-media slds-media_top slds-theme_success successbackground" role="status">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="utility:success" size="small" variant="inverse">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="exceptionfont">{label.DepositRefunded}</p>
+                        </div>
+                    </div>
+                  </template>
+                  <template if:true={norefundgiven}>
+                    <div class="slds-scoped-notification slds-media slds-media_top slds-theme_success successbackground" role="status">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="utility:success" size="small" variant="inverse">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <p class="exceptionfont">{label.NoRefundGiven}<lightning-formatted-url value="https://sunbeltrentals.service-now.com/esc?id=sc_cat_item&sys_id=3b51a6f687887514169499f73cbb3558" label="Submit a refund request." target="_blank"></lightning-formatted-url></p>
+                        </div>
+                    </div>
+                  </template>
+                </template>
+              </template>
+        <template if:true={showQuoteMessage}>
+          <p class="outerPara">{quoteCancelMessage}</p>
+        </template>
+        <template if:false={showQuoteMessage}>
+          <p class="outerPara">{cancelMessage}</p>
+        </template>
+        <p class="InnerPara">{cancelAlert}</p>
+
+        <div slot="footer">
+          <lightning-button
+            class="noButton"
+            variant="neutral"
+            label={noButton}
+            onclick={closeMethod}
+          ></lightning-button>
+          <lightning-button
+            variant="brand"
+            label={yesButton}
+            class="slds-m-left_x-small yesButton"
+            onclick={handleYes}
+          ></lightning-button>
+        </div>
+      </c-sbr_3_0_mobile-screen>
+</template>

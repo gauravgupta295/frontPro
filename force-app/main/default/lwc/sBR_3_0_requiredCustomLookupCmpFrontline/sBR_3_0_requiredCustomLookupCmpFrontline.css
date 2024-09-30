@@ -1,0 +1,28 @@
+.label-padding {
+    padding-top: 0px;
+}
+
+.textCss {
+    padding-left: 25px !important;
+}
+
+.positionRight {
+    right: 12px;
+}
+
+/* FRONT-8351 start */
+.customHelpText div.slds-form-element__icon {
+    padding-top: unset !important;
+}
+
+/* FRONT-8351 end */
+
+/* FRONT-30881 : removing box shadow */
+.remove-box-shadow-class {
+    box-shadow: none !important;
+}
+.label-header-class {
+    font-size: 1rem;
+}
+
+/* END : FRONT-30881*/

@@ -1,0 +1,16 @@
+.spinner {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+}
+
+/* .spinner lightning-spinner::after {
+    position: absolute;
+    content: "Loading...";
+    width: 100%;
+    text-align: center;
+    top: calc(50% + 3em);
+    font-weight: bold;
+    left: -1rem;
+  } */

@@ -1,0 +1,6 @@
+/* Added as part of Front-8721 and Front-8722 */
+
+.search-branches .slds-input:focus{
+    border-color:#25683E !important;
+    box-shadow: 0px 0px 5px #25683E  !important;
+}

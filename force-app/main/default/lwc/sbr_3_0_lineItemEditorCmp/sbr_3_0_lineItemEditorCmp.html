@@ -1,0 +1,132 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 10-23-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isLoading}>
+            <div class="slds-spinner_container">
+            <lightning-spinner alternative-text="Loading" size="medium" class="spinnerClass"></lightning-spinner>
+        </div>
+    </template>
+    <!--11907-->
+    <template if:true={isRentalQuoteSubRecType}>
+        <div class="slds-text-color_destructive">{rentalQuoteSubMessage}</div>
+    </template>
+    <div if:true={showCustomerPricingAlert}>
+        <div class={alertClass} role="alert">
+            <lightning-icon icon-name="utility:warning" alternative-text="Utility info" size="x-small"
+                class="slds-p-right_small info"></lightning-icon>
+            <h2>{customerPricingAlert}</h2>
+        </div>
+    </div>
+    <lightning-layout multiple-rows="true" horizontal-align="spread" vertical-align="center" if:true={lineItem}>
+        <lightning-layout-item class="mobile-only-input line-name mobile-layout" size="12" small-device-size="12"
+            medium-device-size="6" large-device-size="6" flexibility="auto" padding="around-small">
+            <div class="slds-text-heading_medium">{lineItem.Name}</div>
+            <!-- <lightning-input class="override-disabled-input" type=text data-my-id="item-name" label="Name"
+            value={lineItem.Name} read-only=true></lightning-input> -->
+        </lightning-layout-item>
+        <lightning-layout-item class="mobile-layout" if:true={showSeasonalMultiplier} size="12" small-device-size="12"
+            medium-device-size="6" large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=number label="Seasonal Multiplier" data-my-id="seasonal-multiplier"
+                value={seasonalMultiplier} onchange={handleSeasonalMultiplierChange} step=".01"></lightning-input>
+        </lightning-layout-item>
+
+        <!-- SF-6397 -->
+        <!-- <lightning-layout-item class="mobile-layout" if:true={hasShifting} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-combobox label="Shift Duration" data-my-id="shift-duration"
+                placeholder={lineItem.Shift_Differential__c} options={shiftOptions} onchange={changeShiftDuration}
+                value={lineItem.Shift_Differential__c} field-level-help='Please enter the desired rate before applying Shift Rates. Single Shift = 8 hrs/day, 
+            40 hrs/week, 160 hrs/month, 1x Rate; Double Shift = 9-16 hrs/day, 41-80 hrs/week, 161-320 hrs+/month, 1.5x Rate; 
+            Triple Shift = 17+ hrs/day, 81+ hrs/week, 321+ hr/month; 2x Rate'></lightning-combobox>
+        </lightning-layout-item> -->
+
+        <lightning-layout-item class="mobile-layout" if:true={hasContingencyPlan} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=number step=.01 formatter=currency data-my-id="contingency-cost"
+                label="Contingency Cost" value={lineItem.Contingency_Cost__c} disabled={disableCC}></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item class="mobile-layout" if:false={isRental} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input class="override-disabled-input" type=number step=.01 formatter=currency
+                label="Sales/Misc Price" data-my-id="selling-price" value={lineItem.Selling_Price__c}
+                read-only={isSalesPriceEditable}></lightning-input>
+        </lightning-layout-item>
+        <!-- <div class="mobile-only-input"> -->
+        <!-- <lightning-layout-item class="mobile-only-input line-name mobile-layout" size="12" small-device-size="12"
+            medium-device-size="6" large-device-size="6" flexibility="auto" padding="around-small">
+            <div class="slds-text-heading_medium">{lineItem.Name}</div> -->
+            <!-- <lightning-input class="override-disabled-input" type=text data-my-id="item-name" label="Name"
+            value={lineItem.Name} read-only=true></lightning-input> -->
+        <!-- </lightning-layout-item> -->
+        <!-- </div> -->
+        <!-- 11909 Item Quantity -->
+        <lightning-layout-item class="mobile-layout" size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+            flexibility="auto" padding="horizontal-small">
+            <lightning-input class="override-disabled-input" type=number data-my-id="item-quantity" label="Quantity"
+                value={itemQuantity} read-only={isQuantityEditable}></lightning-input>
+                <p class="space">{space}</p>
+        </lightning-layout-item>
+
+        <lightning-layout-item class="mobile-layout" if:true={isRental} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=number step=.01 formatter=currency label="Day" data-my-id="daily-rate-id"
+                value={lineItem.Daily_Rate__c} disabled={isWeeklyRateDisabled} max={doNotExceedDailyRate}></lightning-input>
+            <span class="slds-text-title">Suggested : <lightning-formatted-number value={suggestedDailyRate} maximum-fraction-digits="2" format-style="currency" minimum-fraction-digits="2"></lightning-formatted-number></span>
+        </lightning-layout-item>
+
+        <lightning-layout-item class="mobile-layout" if:true={isRental} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=number step=.01 formatter=currency label="Week" data-my-id="weekly-rate-id"
+                value={lineItem.Weekly_Rate__c} disabled={isWeeklyRateDisabled}
+                max={doNotExceedWeeklyRate}></lightning-input>
+            <span class="slds-text-title">Suggested : <lightning-formatted-number value={suggestedWeeklyRate} maximum-fraction-digits="2" format-style="currency" minimum-fraction-digits="2"></lightning-formatted-number></span>
+        </lightning-layout-item>
+        <lightning-layout-item class="mobile-layout" if:true={isRental} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=number step=.01 formatter=currency label="4 Week" data-my-id="monthly-rate-id"
+                value={lineItem.Monthly_Rate__c} disabled={isMonthlyRateDisabled}
+                max={doNotExceedMonthlyRate}></lightning-input>
+            <span class="slds-text-title">Suggested : <lightning-formatted-number value={suggestedMonthlyRate} maximum-fraction-digits="2" format-style="currency" minimum-fraction-digits="2"></lightning-formatted-number></span>
+        </lightning-layout-item>
+        <lightning-layout-item class="mobile-layout" if:true={showSeasonalRate} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type="number" formatter="currency" label="Seasonal Rate" data-my-id="seasonal-rate"
+                value={seasonalRate} onchange={handleSeasonalRateChange}></lightning-input>
+        </lightning-layout-item>
+          <!--SF-5995-->
+          <lightning-layout-item class="mobile-layout" if:true={isRentalAndContainsFuelCharge} size="12" small-device-size="12" medium-device-size="6" large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <p class="space">{space}</p>
+            <div class="slds-grid slds-text-title">
+                <div class="slds-col">
+                    <span class="slds-text-title" style="display: flex; align-items: center;">
+                        <lightning-input type="checkbox" label={dynamicFuelPlanLabel} data-my-id="fuel-plan-id" name="fuelPlanCheckbox" checked={lineItem.Fuel_Plan__c} onchange={toggleFuelPlanAmount}></lightning-input>
+                    </span>
+                </div>
+                </div>
+            <p class="space">{space}</p>
+        </lightning-layout-item>
+        <!--SF-5291,SF-5292-->
+        <lightning-layout-item class="mobile-layout" if:true={isLayoutItemVisible} size="12" small-device-size="12" medium-device-size="12"
+            large-device-size="12" flexibility="auto" padding="horizontal-small">
+            <lightning-textarea class="override-disabled-input" label="Line Item Notes" data-my-id="line-item-notes"
+                onchange={changeLineItemNotes} value={lineItemNotes} read-only={isNotesEditable}></lightning-textarea>
+        </lightning-layout-item>
+        <lightning-layout-item class="mobile-layout" if:true={hasStandbyRates} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=checkbox data-my-id="apply-standby-rates" label="Apply Standby Rates"
+                onchange={changeApplyStandByRate} value={applyStandbyRates}></lightning-input>
+        </lightning-layout-item>
+        <!-- 11909 Override Discount onchange={changeOverrideDiscount} -->
+        <lightning-layout-item class="mobile-layout" if:true={displayOverrideDiscount} size="12" small-device-size="12" medium-device-size="6"
+            large-device-size="6" flexibility="auto" padding="horizontal-small">
+            <lightning-input type=checkbox data-my-id="override-discount" label="Override Discount"
+                onchange={changeOverrideDiscount} value="false"></lightning-input>
+            <!--value={isOverrideDiscount}-->
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

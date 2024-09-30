@@ -1,0 +1,231 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-07-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <template if:false={callingUpdateTotalsFromUpdateReviewTab}>
+    <template if:false={isAppFrontline}>
+      <div class="slds-p-around_xx-small slds-text-heading_small">
+        <h1 style="text-align: center">Update Totals</h1>
+      </div>
+      <template if:true={isMobile}>
+        <lightning-card>
+          <div style="height: 80vh">
+            <div
+              if:true={showSpinner}
+              style="height: 120px; position: relative"
+            >
+              <div class="slds-spinner_container">
+                <div
+                  class="slds-spinner--brand slds-spinner slds-spinner--large slds-is-relative"
+                >
+                  <span class="slds-assistive-text">Loading</span>
+                  <div class="slds-spinner__dot-a"></div>
+                  <div class="slds-spinner__dot-b"></div>
+
+                  <!-- additional element to show the text under the spinner -->
+                  <p class="slds-spinner-text">{message}</p>
+                </div>
+              </div>
+            </div>
+
+            <div if:true={isSuccess} style="height: 120px; position: relative">
+              <lightning-icon
+                icon-name="utility:success"
+                alternative-text="Success!"
+                variant="success"
+                title="error variant large"
+                size="large"
+                class="slds-align_absolute-center"
+              ></lightning-icon>
+              <p class="slds-align_absolute-center" style="height: 4rem">
+                {message}
+              </p>
+            </div>
+
+            <div if:true={isError} style="height: 120px; position: relative">
+              <lightning-icon
+                icon-name="utility:error"
+                alternative-text="Error!"
+                variant="error"
+                title="error variant large"
+                size="large"
+                class="slds-align_absolute-center"
+              ></lightning-icon>
+              <p class="slds-align_absolute-center" style="height: 4rem">
+                {errorMessage}
+              </p>
+            </div>
+          </div>
+        </lightning-card>
+        <div style="height: 10vh">
+          <div class="slds-float_right slds-p-around_x-small">
+            <lightning-button
+              label="Close"
+              onclick={handleCloseClick}
+              class="button-color-close slds-m-left_x-small"
+            ></lightning-button>
+            <lightning-button
+              disabled={isButtonDisabled}
+              variant="success"
+              label="Retry"
+              onclick={handleRetryClick}
+              class="button-color slds-m-left_x-small"
+            ></lightning-button>
+          </div>
+        </div>
+      </template>
+      <template if:false={isMobile}>
+        <lightning-card>
+          <div if:true={showSpinner} style="height: 120px; position: relative">
+            <div class="slds-spinner_container">
+              <div
+                class="slds-spinner--brand slds-spinner slds-spinner--large slds-is-relative"
+              >
+                <span class="slds-assistive-text">Loading</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+
+                <!-- additional element to show the text under the spinner -->
+                <p class="slds-spinner-text">{message}</p>
+              </div>
+            </div>
+          </div>
+
+          <div if:true={isSuccess} style="height: 120px; position: relative">
+            <lightning-icon
+              icon-name="utility:success"
+              alternative-text="Success!"
+              variant="success"
+              title="error variant large"
+              size="large"
+              class="slds-align_absolute-center"
+            ></lightning-icon>
+            <p class="slds-align_absolute-center" style="height: 4rem">
+              {message}
+            </p>
+          </div>
+
+          <div if:true={isError} style="height: 120px; position: relative">
+            <lightning-icon
+              icon-name="utility:error"
+              alternative-text="Error!"
+              variant="error"
+              title="error variant large"
+              size="large"
+              class="slds-align_absolute-center"
+            ></lightning-icon>
+            <p class="slds-align_absolute-center" style="height: 4rem">
+              {errorMessage}
+            </p>
+          </div>
+        </lightning-card>
+        <div class="slds-float_right slds-p-around_x-small">
+          <lightning-button
+            label="Close"
+            onclick={handleCloseClick}
+            class="button-color-close slds-m-left_x-small"
+          ></lightning-button>
+          <lightning-button
+            disabled={isButtonDisabled}
+            variant="success"
+            label="Retry"
+            onclick={handleRetryClick}
+            class="button-color slds-m-left_x-small"
+          ></lightning-button>
+        </div>
+      </template>
+    </template>
+  </template>
+  <!-- START : FRONT-13993,FRONT-13994,FRONT-13995 -->
+  <template if:true={isAppFrontline}>
+    <template if:false={isMobile}>
+      <template if:true={callingUpdateTotalsFromUpdateReviewTab}>
+        <div lwc:if={isError} style="height: 120px; position: relative">
+          <section
+            role="dialog"
+            tabindex="-1"
+            aria-modal="true"
+            aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_full"
+          >
+            <div class="slds-modal__container">
+              <div class="slds-modal__content">
+                <lightning-icon
+                  icon-name="utility:error"
+                  alternative-text="Error!"
+                  variant="error"
+                  title="error variant large"
+                  size="large"
+                  class="slds-align_absolute-center"
+                >
+                </lightning-icon>
+                <p class="slds-align_absolute-center" style="height: 4rem">
+                  {errorMessage}
+                </p>
+                <div class="slds-float_right slds-p-around_x-small">
+                  <lightning-button
+                    label="Close"
+                    onclick={handleCloseClick}
+                    class="button-color-close slds-m-left_x-small"
+                  ></lightning-button>
+                  <lightning-button
+                    variant="success"
+                    label="Retry"
+                    onclick={handleRetryClick}
+                    class="button-color slds-m-left_x-small"
+                  ></lightning-button>
+                </div>
+              </div>
+            </div>
+          </section>
+          <div
+            class="slds-backdrop slds-backdrop_open"
+            role="presentation"
+          ></div>
+        </div>
+      </template>
+    </template>
+    <template if:true={isMobile}>
+      <lightning-card>
+        <div style="height: 80vh">
+          <div if:true={isError} style="height: 120px; position: relative">
+            <lightning-icon
+              icon-name="utility:error"
+              alternative-text="Error!"
+              variant="error"
+              title="error variant large"
+              size="large"
+              class="slds-align_absolute-center"
+            >
+            </lightning-icon>
+            <p class="slds-align_absolute-center" style="height: 4rem">
+              {errorMessage}
+            </p>
+          </div>
+        </div>
+      </lightning-card>
+    </template>
+  </template>
+  <!-- END : FRONT-13993,FRONT-13994,FRONT-13995 -->
+
+  <!-- FRONT-31379 : Lightning loader modal-->
+  <c-sbr_3_0_modal-cmp
+    lwc:ref="loaderModalCmp"
+    header={modalHeader}
+    type="dynamic"
+  >
+    <span slot="modalContent">
+      <div class="spinner-block-class">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="large"
+          variant="base"
+        ></lightning-spinner>
+      </div>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+</template>

@@ -1,0 +1,9 @@
+<aura:component implements="lightning:availableForFlowActions" controller="SBR_3_0_API_CreateDamageEstimator" access="global">
+    <aura:attribute name="greeting" type="String" default="Hello" access="global" />
+    <aura:attribute name="subject" type="String" default="World" access="global" /> 
+    <aura:attribute name="damageEstimatorId" type="String"/>
+    <aura:attribute name="responseType" type="String"/>
+    <aura:attribute name="invoiceNumber" type="Integer"/>
+    <aura:attribute name="invoiceSequenceNumber" type="Integer"/>
+<!--<aura:handler name="init" value="{!this}" action="{!c.invoke}"/>-->
+</aura:component>

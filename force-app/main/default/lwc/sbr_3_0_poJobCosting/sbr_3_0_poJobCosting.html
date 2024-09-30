@@ -1,0 +1,95 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open active-section-name="job_costing">
+        <lightning-accordion-section label="Job Costing" name="job_costing">
+                <template if:true={isReadOnlyMode}>
+                    <div class="slds-form slds-p-top_medium" role="list">
+                        <div class="slds-form__row">
+                            <div class="slds-form__item" role="listitem" style="margin-left: 10px;">
+                                <div
+                                    class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal">
+                                    <span class="slds-form-element__label">Customer Number</span>
+                                    <div class="slds-form-element__control" style="padding-left: 23% !important;">
+                                        <div class="slds-form-element__static">
+                                            {customerNumber}
+                                        </div>
+                                        <template if:true={showEdit}>
+                                            <lightning-button-icon icon-name="utility:edit" variant="bare" alternative-text="Edit" title="Edit"
+                                                onclick={handleEditClick}>
+                                            </lightning-button-icon>
+                                        </template>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="slds-form__item" role="listitem">
+                                <div
+                                    class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                    <div>
+                                        <span class="slds-form-element__label">Job Number</span>
+                                        <lightning-helptext
+                                            content="Job Number requires a Customer Number to be selected first."></lightning-helptext>
+                                    </div>
+                                    <div class="slds-form-element__control" style="padding-left: 23% !important;">
+                                        <div class="slds-form-element__static">
+                                            {jobNumber}
+                                        </div>
+                
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <template if:false={isReadOnlyMode}>
+                    <div class={fieldsSectionClass}>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-6">
+                                    Customer Number
+                                </div>
+                                <div class="slds-col slds-size_5-of-6">
+                                    <c-s-b-r_3_0_custom-lookup-cmp label="" placeholder="" data-id="accountComp" record-id={selAccId} 
+                                        default-record={selAccId} icon-name="standard:account" s-object-api-name="Account" selected-record-object=""
+                                        where-clause={acctFilterClause} onlookupupdate={selectedCustChange}>
+                                    </c-s-b-r_3_0_custom-lookup-cmp>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-around_small">
+                            <div class="slds-grid">
+                                <div class="slds-col slds-size_1-of-6">
+                                    <span class="slds-form-element__label">Job Number</span>
+                                    <lightning-helptext
+                                        content="Job Number requires a Customer Number to be selected first."></lightning-helptext>
+                                </div>
+                                <div class="slds-col slds-size_5-of-6">
+                                    <template if:true={hasSelAccValue}>
+                                        <c-s-b-r_3_0_custom-lookup-cmp label="" placeholder="" icon-name="standard:location" record-id={selLocId} 
+                                            default-record={selLocId} s-object-api-name="AssociatedLocation" data-id="locationComp" selected-record-object=""
+                                            has-custom-name-field=true custom-name-field="JobsiteName__c"
+                                            fields-to-include="JobsiteName__c" onlookupupdate={selectedALocChange}>
+                                        </c-s-b-r_3_0_custom-lookup-cmp>
+                                    </template>
+                                    <template if:false={hasSelAccValue}>
+                                        <div class="slds-form-element">
+                                            <div class="slds-form-element__control" style="padding-left: none !important;">
+                                                <input type="text" id="text-input-id-46" placeholder="" value={disabledValue}
+                                                    disabled="" class="slds-input" />
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-p-vertical_small">
+                        <div class={buttonAlignClass}>
+                            <lightning-button label="Cancel" class="neutral-button" onclick={handleCancel}
+                                variant="nuetral"></lightning-button>
+                            <lightning-button label="Save" class="brand-button slds-p-left_medium" onclick={handleSave}
+                                variant="brand"></lightning-button>
+                        </div>
+                    </div>
+                </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

@@ -1,0 +1,184 @@
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="list-header-container slds-m-top_small">
+        <!--oncatdata={handlecatdata}
+        selected-cat-class-val={selectedCatClassVal}
+        onswitchtodescription={handleSwitchToDescription}
+        product-rows-offset={productRowsOffset} -->
+        <c-sbr_3_0_item-search-assets-header
+          onfiltercriteriachange={handleSearchCriteriaChange}
+          active-tab="Cat Class Description"
+          record-id={recordId}
+          inventory={inventorySize}
+        ></c-sbr_3_0_item-search-assets-header>
+      </div>
+      <!-- <hr /> -->
+    </lightning-layout-item>
+
+    <lightning-layout-item size="12">
+      <template lwc:if={catClassDescDataForMobile}>
+        <template
+          for:each={catClassDescDataForMobile}
+          for:item="item"
+          for:index="index"
+          ><!--FRONT - 19005--><!-- FRONT-29465 Removed lightning card-->
+          <div key={item.Id}>
+            <div class="slds-col slds-size_6-of-6">
+              <div class="customheight slds-border_top"></div>
+              <div class="slds-grid slds-wrap">
+                <div
+                  class="slds-col slds-size_5-of-5 slds-p-bottom_x-small slds-p-top_large fieldsTitleheader"
+                >
+                  <b>{item.ProductName}</b>
+                </div>
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class="fieldsTitleClass"><b>Cat Class #</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span>{item.Product2.PPA_CatClass__c}</span>
+                </div>
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class="fieldsTitleClass"><b>Available</b></span>
+                </div>
+                <div class="slds-col slds-size_2-of-5 slds-p-bottom_x-small">
+                  <span>{item.SM_PS_Quantity_Available__c}</span>
+                </div>
+                <div class="slds-col slds-size_3-of-5 slds-p-bottom_x-small">
+                  <span class="fieldsTitleClass"><b>Reservation</b></span>
+                </div>
+                <div
+                  class="slds-col slds-size_2-of-5 slds-p-bottom_x-small fieldsTitleClassGreen"
+                >
+                  <span>{item.SM_PS_Quantity_Reserved__c}</span>
+                </div>
+              </div>
+              <lightning-layout>
+                <lightning-layout-item size="12">
+                  <template lwc:if={item.Product2.Bulk_Item__c}>
+                    <!--FRONT-19005-->
+                    <template lwc:if={item.showRemoveButton}>
+                      <lightning-button
+                        class="neutral-button brand-outline-button"
+                        label="Remove"
+                        stretch
+                      ></lightning-button>
+                    </template>
+                    <template lwc:else>
+                      <!--Added for Front-18999-->
+                      <lightning-button
+                        class="brand-button"
+                        label="Select"
+                        onclick={callRowAction}
+                        variant="brand"
+                        value={item.Product2.Product_SKU__c}
+                        data-index={index}
+                        stretch
+                      ></lightning-button> </template
+                    ><!--FRONT - 19005-->
+                    <!--Ended for Front-18999-->
+                  </template>
+                  <template lwc:else>
+                    <!--button
+                        class="buttoncolor slds-p-bottom_x-small"
+                        value={item.Product2.PPA_CatClass__c}
+                        title="View Assets"
+                        type="button"
+                        onclick={handleViewAssetMobile}
+                      >
+                        View Assets
+                      </button>-->
+                    <lightning-layout>
+                      <lightning-layout-item size="12">
+                        <lightning-button
+                          class="brand-button"
+                          label="View Assets"
+                          onclick={callRowAction}
+                          variant="brand"
+                          value={item.Product2.Product_SKU__c}
+                          stretch
+                        ></lightning-button>
+                      </lightning-layout-item>
+                    </lightning-layout>
+                  </template>
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+          </div>
+        </template>
+      </template>
+      <template lwc:if={isDataAvailableMobile}>
+        <lightning-card>
+          <div
+            class="slds-illustration slds-illustration_small backCl"
+            aria-hidden="true"
+          >
+            <img
+              class="slds-illustration__svg"
+              alt=""
+              src={noContentimageUrl}
+            />
+            <h2
+              class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+            >
+              {noCatContentLabel}
+            </h2>
+          </div>
+        </lightning-card>
+      </template>
+    </lightning-layout-item>
+  </lightning-layout>
+  <!--Started for Front-19001-->
+  <template lwc:if={isEditorRateShow}>
+    <c-sbr_3_0_mobile-screen
+      title={modalHeader}
+      onratematrixclicked={handleTabClicked}
+    >
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="orderItemObject"
+        selected-asset={selectedAssetRow}
+        current-active-tab={activeTab}
+        order-data={orderData}
+        record-id={recordId}
+        object-api-name={objectApiName}
+        onchangevalue={handleChange}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+      <template if:true={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-center">
+          <div class="slds-m-bottom_large">
+            <lightning-button
+              label="Back"
+              onclick={handleBack}
+              class="small-button"
+            >
+            </lightning-button>
+          </div>
+        </div>
+      </template>
+      <template if:false={hideEditorFooter}>
+        <div slot="footer" class="slds-grid slds-grid_align-spread">
+          <div>
+            <lightning-button
+              label="Cancel"
+              onclick={handleCloseModal}
+              class="neutral-button"
+            >
+            </lightning-button>
+          </div>
+          <div>
+            <lightning-button
+              label="Confirm"
+              variant="brand"
+              class="brand-button"
+              onclick={handleConfirm}
+              disabled={isDisable}
+            ></lightning-button>
+            <!--FRONT - 19005-->
+          </div>
+        </div>
+      </template>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!--Ended for Fornt-19001-->
+</template>

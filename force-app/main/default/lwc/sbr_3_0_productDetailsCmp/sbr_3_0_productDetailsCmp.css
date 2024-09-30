@@ -1,0 +1,43 @@
+.compact-container .preview {
+  padding: 15px 20%;
+}
+.mobile-container {
+  display: block;
+  margin-top: none;
+  margin-bottom: none;
+  flex: auto;
+}
+.mobile-name {
+  font-size: 16px;
+  font-weight: 700;
+}
+.mobile-cat-class {
+  font-size: 12px;
+  font-weight: 700;
+}
+.details-description {
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.product-item-header-detail {
+  color: var(--text-weak, #444);
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.product-item-detail-class {
+  padding-bottom: 5px;
+}
+
+.item-description-class {
+  font-size: 13px;
+  font-style: "SF Pro Text";
+  font-weight: 400;
+  line-height: 22px;
+}

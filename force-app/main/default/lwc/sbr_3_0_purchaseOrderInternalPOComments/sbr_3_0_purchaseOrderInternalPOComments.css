@@ -1,0 +1,76 @@
+.buttonClass{
+	height: 42px;
+}
+
+a{
+	text-wrap: wrap;
+	word-wrap: break-word;
+}
+
+table {
+table-layout:fixed;
+word-wrap: break-word;
+}
+
+.container {
+   text-align: left;
+   margin-top: 10px;
+}
+.box {
+   display: inline-block;
+   width: 20%;
+   margin: 10px;
+}
+.item-number-box{
+   display: inline-block;
+   width: 20%;
+   margin: 10px;
+}
+.button-group {
+   margin-top: 10px;
+   text-align: center;
+}
+.button-group lightning-button {
+	margin-right: 10px;
+}
+.add-line-item-button {
+	text-align: left;
+}
+.input-with-icon lightning-icon {
+   position: absolute;
+   top: 50%;
+   transform: translateY(-50%);
+   left: 10px; 
+   color: #dbdddf; 
+}
+.input-with-icon{
+	position: relative;
+}
+.input-container {
+   display: flex;
+   flex-direction: row;
+   align-items: center;
+}
+.error-message {
+   color: red;
+   /* margin-top: 1px; */
+   margin-left: 10px; /* Adjust the margin as needed to separate the input and error message */
+}
+
+.icon-green-color {
+   --slds-c-icon-color-foreground-default: #25683E !important;
+}
+.text-green-color {
+   color: #25683E;
+}
+.modal-bgcolor {
+   background: #fff;
+}
+.add-button {
+   height: 40px; 
+   width: 100%; 
+   background-color: #fff; 
+   color: #fff;
+   border-radius: 0.25rem;
+   border: 1px solid #DDDBDA;
+}

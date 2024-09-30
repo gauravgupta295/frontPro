@@ -1,0 +1,33 @@
+.prod-inq-mob-group{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+.prod-inq-mob-group .slds-button{
+    width: 100%;
+    border: #EAEAEB;
+}
+.selected-btn{
+    color: #25683E;
+    font-weight: 400;
+    border-bottom: #E5E5E5;
+}
+.active-state{
+    color: #25683E;
+    background:#EDF6EF;
+    font-weight: 400;
+}
+.item-search{
+    display: none;
+}
+.item-search.show{
+    display: block;
+}
+.line-items{
+    display: none;
+}
+.line-items.show{
+    display: block;
+}

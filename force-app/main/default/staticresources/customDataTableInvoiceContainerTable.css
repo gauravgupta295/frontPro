@@ -1,0 +1,6 @@
+.customDataTable .slds-table_bordered tbody td,
+.customDataTable .slds-table_bordered tbody th,
+.customDataTable .slds-table--bordered tbody td,
+.customDataTable .slds-table--bordered tbody th {
+border-top: None!important;
+}

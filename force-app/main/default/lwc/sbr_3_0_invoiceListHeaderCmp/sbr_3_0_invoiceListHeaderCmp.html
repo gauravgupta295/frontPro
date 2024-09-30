@@ -1,0 +1,137 @@
+<template>
+    <template if:false={isMobile}>
+    <div style="position:relative">
+            <div class="slds-wrap">
+            <div class="slds-col slds-size_12-of-12">
+                <lightning-card variant="narrow" title="Invoices" icon-name="standard:partner_fund_claim">
+                    <div class="slds-grid slds-grid_reverse slds-border_bottom slds-p-bottom_x-small">
+
+                    <div class="slds-col slds-size_2-of-12 slds-p-right_large invoice-header">
+                        
+                            <lightning-combobox name="status" label="" variant="label-hidden" value={selectedStatus} placeholder="Select a Status"
+                                                options={allStatusOptions} onchange={handleStatusChange}></lightning-combobox>
+                             
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 slds-p-right_large invoice-header">
+                            <lightning-combobox name="age" label="" variant="label-hidden" value={selectedAge} placeholder="Select a Value"
+                                                options={ageOptions} onchange={handleAgeChange}></lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12 slds-p-right_large  invoice-header--date">
+                            <lightning-input type="date" label="Until" value={toDate} onchange={handleToDateChange} variant="label-inline"></lightning-input>
+                        </div>
+                        <div class = "slds-col slds-size_2-of-12 slds-p-right_large  invoice-header--date">
+                            <lightning-input type="date" label="From" value={fromDate} onchange={handleFromDateChange} variant="label-inline"></lightning-input>
+                        </div>
+
+                    
+                    </div>
+
+                
+                </lightning-card>
+            </div>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={isMobile}>
+		<div class={headerDisplay}>
+			<div class="slds-page-header__controls header-mob slds-p-horizontal_medium">
+             
+                    <div class="slds-grid_align-center slds-p-top_xx-small slds-size_3-of-8">
+						<lightning-input type="date" label="From" value={fromDate} onchange={handleFromDateChange} variant="label-inline"></lightning-input>
+					</div>
+
+                    <div class="slds-grid_align-center slds-p-top_xx-small slds-size_3-of-8">
+                        <lightning-input type="date" label="Until" value={toDate} onchange={handleToDateChange} variant="label-inline"></lightning-input>
+					</div>
+
+                    <div class="slds-grid_align-center slds-p-top_x-large slds-size_2-of-8">
+						<lightning-button-icon icon-name="utility:filterList" size="large" variant="border-filled" 
+						                       onclick={openFilterPanel} alternative-text="Open Filters" class="slds-icon on-select"
+						                       title="Open Filters">
+						</lightning-button-icon>
+					</div>
+                
+
+			</div>
+			
+		</div>
+
+        <div class={filterDisplay}>
+			<div class="slds-panel__header filter-header">
+				<h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Filter">Filter</h2>
+				<div class="slds-panel__header-actions">
+					<lightning-button-icon icon-name="utility:close" onclick={closeFilterPanel} variant="bare" size="large"
+					                       alternative-text="Close Filter" title="Close Filter" class="on-select"></lightning-button-icon>
+				</div>
+			</div>
+			<div class="slds-panel__body filter-panel">
+				<div>
+					<div class="light-grey slds-section slds-is-open slds-m-bottom_none" data-id="Status">
+						<button type="button" class="slds-button slds-section__title-action" data-buttonid="Status" onclick={toggleSection}>
+							<span class="slds-truncate slds-p-horizontal_small full-width" title="Status">Status</span>
+							<lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_right"></lightning-icon>
+						</button>
+						<div class="slds-section__content" data-id="Status">
+							<template iterator:status={allStatusOptions} for:index={status.index}>
+								<lightning-layout key={status.value.value} vertical-align="top">
+									<lightning-layout-item size="1" class="slds-p-left_medium slds-p-bottom_small">
+										<lightning-input type="checkbox" label=""  checked={status.value.isSelected}
+										                 data-name={status.value.value} data-type="subcat"
+										                 data-elementid={status.index} onchange={handleCheckboxUpdate}
+										                 class="cat-box"></lightning-input>
+									</lightning-layout-item>
+									<lightning-layout-item size="10" class="slds-p-left_small subcat-value-class">
+										{status.value.label}
+									</lightning-layout-item>
+								</lightning-layout>
+							</template>
+						</div>
+					</div>
+				</div>
+
+                <div>
+					<div class="light-grey slds-section slds-is-open slds-m-bottom_none" data-id="Age">
+						<button type="button" class="slds-button slds-section__title-action" data-buttonid="Age" onclick={toggleSection}>
+							<span class="slds-truncate slds-p-horizontal_small full-width" title="Status">Age</span>
+							<lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_right"></lightning-icon>
+						</button>
+						<div class="slds-section__content" data-id="Age">
+							<template iterator:age={ageOptions} for:index={age.index}>
+								<lightning-layout key={age.value.value} vertical-align="top">
+									<lightning-layout-item size="1" class="slds-p-left_medium slds-p-bottom_small">
+										<lightning-input type="checkbox" label="" checked={age.value.isSelected}
+										                 data-name={age.value.value} data-type="subcat" data-id="ageCB"
+										                 data-elementid={age.index} onchange={handleAgeCheckboxUpdate}
+										                 class="cat-box"></lightning-input>
+									</lightning-layout-item>
+									<lightning-layout-item size="10" class="slds-p-left_small subcat-value-class">
+										{age.value.label}
+									</lightning-layout-item>
+								</lightning-layout>
+							</template>
+						</div>
+					</div>
+				</div>
+
+
+			</div>
+			<div class="filter-footer">
+				<lightning-layout vertical-align="center" horizontal-align="space" pull-to-boundary="small">
+					<lightning-layout-item padding="around-small">
+						<button class={cancelBtnClass} value="Cancel" onclick={closeFilterPanel}>Cancel</button>
+					</lightning-layout-item>
+					<lightning-layout-item padding="around-small">
+						<button class={resetBtnClass} value="Reset All Filters" onclick={resetFilterPanel}>Reset All Filters</button>
+					</lightning-layout-item>
+					<lightning-layout-item padding="around-small">
+						<button class={applyBtnClass} value="Apply" onclick={applyFilter}>Apply</button>
+					</lightning-layout-item>
+				</lightning-layout>
+			</div>
+		</div>
+
+	</template>
+
+
+</template>

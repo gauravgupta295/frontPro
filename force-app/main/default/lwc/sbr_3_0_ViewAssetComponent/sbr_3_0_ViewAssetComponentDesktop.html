@@ -1,0 +1,63 @@
+<template >
+
+    <div class="custom-modal">
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <div if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="xx-small" variant="base"></lightning-spinner>
+                </div>
+                <div if:false={isLoading}>
+                    <header class="slds-modal__header">
+                        <span class="slds-modal__close">
+                            <lightning-icon icon-name="utility:close" variant="inverse" alternative-text="Close" onclick={closeModal}></lightning-icon>
+                        </span>
+                        <h2 class="slds-text-heading_medium slds-hyphenate" lwc:if={header}>{header}</h2>
+                    </header>
+                    <div class={computeScrollableClass}>
+                        <lightning-accordion
+                            allow-multiple-sections-open
+                            active-section-name={activeSections}
+                            lwc:if={asset}>
+                            <lightning-accordion-section name="details" label={asset.Product2.Name} class="accordionSectionClass">
+                                <!--START: FRONT-15208 adjusted padding around the items using layoutItemcol classes-->
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="6" class="layoutItemcol1" >
+                                        <div><span class="assetDetailView">Make: </span>{asset.SM_PS_Make__c}</div>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" class="layoutItemcol2">
+                                        <div><span class="assetDetailView">Serial #: </span>{asset.SM_PS_Serial_Number__c}</div>   
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" class="layoutItemcol1">
+                                        <div><span class="assetDetailView">Model #: </span>{asset.SM_PS_Model__c}</div> 
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" class="layoutItemcol2">
+                                        <div><span class="assetDetailView">Year: </span>{asset.SM_PS_Model_Year__c} &nbsp;&nbsp;
+                                            <span class="assetDetailView">Hours: </span>{asset.SM_PS_Year_to_Hours_Rent__c} &nbsp;&nbsp;
+                                            <span class="assetDetailView">Qty: </span>{asset.Quantity}</div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <!--END: FRONT-15208-->
+                            </lightning-accordion-section>
+                            <lightning-accordion-section name="description" label="Description" class="accordionSectionClass">
+                                <lightning-layout multiple-rows>
+                                    <lightning-layout-item size="12" padding="around-small">
+                                        {asset.Description}
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                       
+                    </div>
+                </div>
+                
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Back" title="BaCk" class="slds-var-m-right_xxx-small" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </div>
+
+</template>

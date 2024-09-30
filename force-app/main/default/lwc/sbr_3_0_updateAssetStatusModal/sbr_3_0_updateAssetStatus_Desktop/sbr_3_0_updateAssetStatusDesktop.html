@@ -1,0 +1,173 @@
+<template>
+    <lightning-modal-header label='Update Status'>
+    </lightning-modal-header>
+    <lightning-modal-body class="slds-modal_small">    
+        <div class= "slds-section slds-is-open " id="details"> 
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-m-around_medium">
+                      <div class="slds-form-element">
+                        <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                            <lightning-input disabled label="Equipment Number" value={equipNum} ></lightning-input>
+                        </lightning-layout-item>
+                      </div>
+                      <div class="slds-form-element">
+                        <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                            <lightning-input disabled label="Cat Class" value={catClass} ></lightning-input>
+                        </lightning-layout-item>
+                      </div>
+
+
+                        <div class="slds-form-element">
+                          <span class="slds-form-element__icon">
+                              <lightning-icon icon-name="standard:location" size="small"></lightning-icon>
+                          </span>
+                          <div class="slds-form-element__control">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small slds-input-has-icon slds-input-has-icon_left ">
+                              <lightning-input disabled label="Assigned Location" value={assignedLocName} ></lightning-input>
+                          </lightning-layout-item>
+                          </div>
+                      </div>
+
+
+                        
+                        
+
+                        
+                        <template lwc:if={hasERSPermission}>
+                      <!-- If can change status and ERS-->
+                          <template lwc:if={canERSEdit}>
+                            <div class="slds-form-element">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"  flexibility="auto"> 
+                                <lightning-combobox
+                                  name="Status"
+                                  label="Status"
+                                  value={status}
+                                  options={ERSoptions}
+                                  onchange={handleStatusChange} 
+                                  >
+                                </lightning-combobox>
+                              </lightning-layout-item>
+                            </div>
+                            </template>
+                            <!-- If CANT change status and ERS-->
+                            <template lwc:else>
+                              <div class="slds-form-element">
+                              <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"  flexibility="auto"> 
+                                  <lightning-combobox
+                                    name="Status"
+                                    label="Status"
+                                    value={status}
+                                    options={disabledOptions}
+                                    onchange={handleStatusChange} 
+                                    disabled
+                                    >
+                                  </lightning-combobox>
+                                </lightning-layout-item>
+                              </div>
+                              </template>
+                          </template>
+
+
+
+                        <template lwc:if={hasBMPermission}>
+                          <!-- If can change status and BM-->
+                          <template lwc:if={canBMEdit}>
+                            <div class="slds-form-element">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"  flexibility="auto"> 
+                                <lightning-combobox
+                                  name="Status"
+                                  label="Status"
+                                  value={status}
+                                  options={BMoptions}
+                                  onchange={handleStatusChange} 
+                                  >
+                                </lightning-combobox>
+                              </lightning-layout-item>
+                            </div>
+                          </template>
+                          <!-- If CANT change status and BM-->
+                          <template lwc:else>
+                            <div class="slds-form-element">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small"  flexibility="auto"> 
+                              <lightning-combobox
+                                name="Status"
+                                label="Status"
+                                value={status}
+                                options={disabledOptions}
+                                onchange={handleStatusChange} 
+                                disabled
+                                >
+                              </lightning-combobox>
+                            </lightning-layout-item>
+                          </div>
+                          </template>
+                        </template>
+                        <div class="slds-form-element">
+                        <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                          <lightning-input type="checkbox" label="For Sale" checked={forSale} onchange={handleForSaleChange} ></lightning-input>
+                      </lightning-layout-item>
+                    </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-m-around_medium">
+                      <div class="slds-form-element">
+                      <div class ="equipDes">
+                        <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                            <lightning-input disabled label="Equipment Description" value={equipDescription} ></lightning-input>
+                        </lightning-layout-item>
+                      </div>
+                    </div>
+                        <div class="slds-form-element">
+                          <span class="slds-form-element__icon">
+                              <lightning-icon icon-name="standard:location" size="small"></lightning-icon>
+                          </span>
+                          <div class="slds-form-element__control">
+                            <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small slds-input-has-icon slds-input-has-icon_left">
+                              <lightning-input disabled label="Current Location" value={currentLocName} ></lightning-input>
+                            </lightning-layout-item>
+                          </div>
+                        </div>
+
+
+                        
+                        <div class="slds-form-element">
+                        <lightning-layout-item size="12"  class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                            <lightning-input label="Hours" type="number" value={hours} max="999999999" step="0.001" onchange={handleHoursChange}></lightning-input>
+                        </lightning-layout-item>
+                      </div>
+                        
+                        
+                    </div>
+                  </div>  
+
+                  <div class="slds-size_1-of-1 slds-p-left_medium slds-p-right_medium">
+                    <lightning-layout-item size="12" class="slds-p-left_medium slds-p-right_medium slds-p-around_x-small" flexibility="auto">
+                      <lightning-textarea name="Field Employee Equipment Comment" label="Field Employee Equipment Comment" value={fieldComment} onchange={handleCommentChange}></lightning-textarea>
+                    </lightning-layout-item>
+
+                  </div>
+            </div>
+        </div>
+        
+              
+
+      <!-- modal content specified in LightningModal component -->
+    </lightning-modal-body>
+    <!-- Modal/Popup Box LWC footer starts here -->
+    <footer class="slds-modal__footer">
+      <lightning-button
+        label='Cancel'
+        onclick={closeModal}
+        class=" slds-p-around_x-small sbrSourcingBorder "
+
+      ></lightning-button>
+      <lightning-button
+        label='Submit'
+        variant="brand"
+        onclick={closeModal}
+        class="sbrSourcingBorder"
+      ></lightning-button>
+    </footer>
+</template>

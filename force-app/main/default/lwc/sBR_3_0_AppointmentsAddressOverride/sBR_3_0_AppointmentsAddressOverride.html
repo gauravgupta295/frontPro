@@ -1,0 +1,17 @@
+<template>
+        <div if:true={spinnerShow} class="slds-spinner_container">
+            <lightning-spinner variant="brand" size="large"></lightning-spinner>
+        </div>
+    <template if:true={updateAddress}>
+        <lightning-input label="Street" value={street} onchange={handleChange}> </lightning-input>
+        <lightning-input data-id="city" label="City" value={city} onchange={handleChange}> </lightning-input>
+        <lightning-combobox data-id="state" label="State"  value={state} onchange={handleChange} options={statesPicklistValues}></lightning-combobox>
+        <lightning-input data-id="zipCode" label="ZIP Code" value={zipCode} onchange={handleChange}> </lightning-input>
+        <lightning-combobox label="Country" value={country} onchange={handleChange} options={countryPicklistValues}></lightning-combobox>
+        <div class="slds-var-m-top_medium">
+            <lightning-button variant="brand" type="submit" label="Save" onclick={overrideAddress}>
+            </lightning-button>
+        </div>
+    </template>
+
+</template>

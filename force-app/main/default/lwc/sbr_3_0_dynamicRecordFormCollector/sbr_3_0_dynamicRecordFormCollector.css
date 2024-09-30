@@ -1,0 +1,33 @@
+.spinner {
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50%;
+  position: absolute;
+}
+
+.spinner lightning-spinner::after {
+  position: absolute;
+  content: attr(data-message);
+  width: 100%;
+  text-align: center;
+  top: calc(50% + 3em);
+  font-weight: bold;
+  left: -1.75rem;
+}
+.cancel-button {
+  color: #25683E;
+  font-weight: 400;
+}
+.save-button{
+  font-weight: 400;
+  color: #FFFFFF;
+  background-color: #25683E;
+}
+.slds-modal__container{
+  max-width: 35rem;
+  min-width: 35rem;
+}
+.spinnermodal{
+  height:35rem;
+  position:relative
+}

@@ -1,0 +1,254 @@
+<template>
+  <section
+    role="dialog"
+    aria-labelledby="dup-heading"
+    aria-modal="true"
+    aria-describedby="dup-content"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container large-modal-content">
+      <header class="slds-modal__header">
+        <!-- sldsValidatorIgnoreNextLine -->
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          title="Close"
+          onclick={handleCancelModal}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small"
+          ></lightning-icon>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+
+        <h2 id="dup-heading" class="slds-text-heading_medium slds-hyphenate">
+          {header}
+        </h2>
+      </header>
+      <div class="slds-modal__content" id="dup-content">
+        <div lwc:if={isLoading} class="spinner">
+          <lightning-spinner
+            class="spins"
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+
+        <lightning-layout
+          horizontal-align="space"
+          class="slds-var-p-around_large"
+          multiple-rows
+        >
+          <lightning-layout-item size="12">
+            <h2 class="sub-heading">{hardStopDuplicateSubHeading}</h2>
+            <lightning-formatted-rich-text
+              value={duplicateHardStopRecordMessage}
+            ></lightning-formatted-rich-text>
+            <br />
+            <br />
+            <p class="slds-var-p-bottom_x-large">{hardStopContinueLabel}</p>
+          </lightning-layout-item>
+        </lightning-layout>
+        <!-- Added as part of FRONT-4851-->
+        <template if:false={hideUseExistingAccCheckBox}>
+          <lightning-layout
+            horizontal-align="space"
+            multiple-rows
+            class="slds-var-p-around_large"
+          >
+            <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+              <h2 class="sub-heading">{proceedLabel}</h2>
+            </lightning-layout-item>
+            <template for:each={methodOptions} for:item="method">
+              <lightning-layout-item
+                size="12"
+                key={method.value}
+                class="slds-var-p-vertical_small"
+              >
+                <!-- FRONT-6263 added isActiveRecordSelected for disabled -->
+                <div class="slds-checkbox">
+                  <input
+                    name="duperesolveselection"
+                    id={method.value}
+                    type="checkbox"
+                    value={method.value}
+                    onchange={handleHardStopResolveChange}
+                    disabled={isActiveRecordSelected}
+                  />
+                  <label class="slds-checkbox__label" for={method.value}>
+                    <span class="slds-checkbox_faux"></span>
+                    <span
+                      class="slds-form-element__label slds-text-heading--label slds-p-left_x-small"
+                      >{method.label}</span
+                    >
+                    <p
+                      class="slds-var-m-left_xx-large slds-var-p-vertical_x-small"
+                    >
+                      {method.info}
+                    </p>
+                  </label>
+                </div>
+              </lightning-layout-item>
+            </template>
+          </lightning-layout>
+        </template>
+        <lightning-layout lwc:if={duplicateRecords} multiple-rows>
+          <lightning-layout-item
+            size="12"
+            class="duplicate-record-list-layout-item"
+          >
+            <div class="slds-var-p-around_medium duplicate-record-list-header">
+              {duplicateRecordListHeader}
+            </div>
+          </lightning-layout-item>
+          <lightning-layout-item size="12">
+            <table
+              class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_striped"
+              aria-label=" Example headless table of Opportunities with cell content wrapped "
+            >
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <th class="action-cell" scope="col" title="action"></th>
+                  <template for:each={columns} for:item="column">
+                    <th
+                      class={column.classes}
+                      scope="col"
+                      key={column.fieldName}
+                    >
+                      <div
+                        class="slds-var-p-vertical_x-small"
+                        title={column.label}
+                      >
+                        {column.label}
+                      </div>
+                    </th>
+                  </template>
+                </tr>
+              </thead>
+              <tbody>
+                <template
+                  for:each={duplicateRecords}
+                  for:item="duplicateRecord"
+                >
+                  <tr class="slds-hint-parent" key={duplicateRecord.Id}>
+                    <!-- FRONT-6263 Added Radio Group so the user will be able to select the records and use it-->
+                    <td
+                      scope="row"
+                      class="action-cell"
+                      data-label="accountRadioButtons"
+                    >
+                      <div class="slds-radio">
+                        <input
+                          type="radio"
+                          id={duplicateRecord.Id}
+                          value={duplicateRecord.Id}
+                          name="accountRadioButtons"
+                          onchange={handleRecordSelectionChange}
+                          disabled={duplicateRecord.disableRadioButton}
+                        />
+                        <label
+                          class="slds-radio__label"
+                          for={duplicateRecord.Id}
+                        >
+                          <span class="slds-radio_faux"></span>
+                          <span
+                            class="slds-form-element__label slds-text-heading--label"
+                          ></span>
+                        </label>
+                      </div>
+                    </td>
+                    <!-- FRONT-6263 changed the Account name into a clickable link so that user can open it in a new tab-->
+                    <td class="slds-cell-wrap" data-label="Name">
+                      <a
+                        tabindex="0"
+                        role="link"
+                        value={duplicateRecord.Name}
+                        id={duplicateRecord.Id}
+                        data-id={duplicateRecord.Id}
+                        title={duplicateRecord.Name}
+                        onclick={handleNavigateToExistingAccount}
+                        >{duplicateRecord.Name}</a
+                      >
+                    </td>
+
+                    <td class="slds-cell-wrap" data-label="Status">
+                      <div
+                        class={duplicateRecord.computedStatusClasses}
+                        title={duplicateRecord.Status__c}
+                      >
+                        {duplicateRecord.Status__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Phone">
+                      <div class="" title={duplicateRecord.Phone}>
+                        {duplicateRecord.Phone}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Billing Address">
+                      <div class="" title={duplicateRecord.BillingAddress}>
+                        {duplicateRecord.BillingAddress}
+                      </div>
+                    </td>
+
+                    <td class="slds-cell-wrap" data-label="D/L State">
+                      <div
+                        class=""
+                        title={duplicateRecord.Driver_s_License_State__c}
+                      >
+                        {duplicateRecord.Driver_s_License_State__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="D/L Number">
+                      <div class="" title={duplicateRecord.Drivers_License__c}>
+                        {duplicateRecord.Drivers_License__c}
+                      </div>
+                    </td>
+                    <td class="slds-cell-wrap" data-label="Email">
+                      <div class="" title={duplicateRecord.E_mail_Address__c}>
+                        {duplicateRecord.E_mail_Address__c}
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </lightning-layout-item>
+        </lightning-layout>
+        <!-- Added as part of FRONT-4851 Ends here-->
+      </div>
+      <footer class="slds-modal__footer">
+        <lightning-button
+          label={goBackButtonLabel}
+          onclick={handleCloseModal}
+          class="neutral-button"
+        ></lightning-button>
+        <!-- FRONT-6263 Removed View Existing Button as user can now open the record by clicking on its name
+             Also removed the showViewButton check as we no longer need View Existing button -->
+        <!--Added as part of FRONT-4929-->
+        <template if:true={showViewButton}>
+          <lightning-button
+            label={viewExistingAccountButton}
+            onclick={handleNavigateToExistingAccount}
+            variant="brand"
+            disabled={isViewExistingDisabled}
+            class="slds-var-p-left_small brand-button"
+          ></lightning-button
+        ></template>
+        <template if:false={showViewButton}>
+          <!--Added as part of FRONT-4851-->
+          <lightning-button
+            label={existingButtonLabel}
+            onclick={handleContinueClick}
+            variant="brand"
+            class="slds-var-p-left_small brand-button"
+            disabled={isUseExistingAccountButtonDisabled}
+          ></lightning-button>
+        </template>
+        <!-- FRONT-4929 Ended-->
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

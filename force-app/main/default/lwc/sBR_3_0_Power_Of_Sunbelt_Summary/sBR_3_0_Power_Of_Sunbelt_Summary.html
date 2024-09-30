@@ -1,0 +1,195 @@
+<template>
+    <template if:true={isPotentialLOBNULL}>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilecurrentlob}>
+                        {tilecurrentlob}
+                        <div class="TileDetail">
+                            {currentLOBUsed}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>  
+            <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilettmspend}>
+                        {tilettmspend}
+                        <div class="TileDetail">
+                            {currentTTMSpent}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-right">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilenoofproductsrented}>
+                        {tilenoofproductsrented}
+                        <div class="TileDetail">
+                            {noOfProductsRented}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item> 
+        </lightning-layout>
+        <br/>
+        <lightning-layout multiple-rows="false">
+            <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "TileHeader">
+                    <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                        <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                            <div class = "TileHeaderText">
+                                {titlecurrentlineofbusiness}
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>  
+                </div>  
+                <template if:true={isServerDown}>
+                    <div class = "TileHeader">
+                        <br/>
+                        <template if:true={isServerUpWithError}>
+                            <c-s-b-r_3_0_-customer-maturity-model-error-screen is-server-down={isServerUpWithError} error-message={errorMessage} error-message-rec={errorMessageRec} is-recommendation-tab={isRecommendationTab}></c-s-b-r_3_0_-customer-maturity-model-error-screen>
+                        </template>
+                        <template if:false={isServerUpWithError}>
+                            <c-s-b-r_3_0_-customer-maturity-model-error-screen is-server-down={isServerUpWithError} error-message={errorMessage} error-message-rec={errorMessageRec} is-recommendation-tab={isRecommendationTab} onrefresh={handleRefresh}></c-s-b-r_3_0_-customer-maturity-model-error-screen>
+                        </template>
+                    </div>
+                </template>
+                <template if:false={isServerDown}>
+                    <template for:each={currentLOB} for:item="CLOB" for:index="index">
+                        <div class = "TileHeader" key = {CLOB.Name}>
+                            <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                                <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                                    <div class = "TileBodyHeading">
+                                    {CLOB.Name}
+                                    </div>    
+                                </lightning-layout-item>
+                            </lightning-layout>    
+                            <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                                <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                                    <div class = "TileBodyText">
+                                    TTM Spend: {CLOB.TTMSpent}
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-center">
+                                    <div class = "TileBodyText">
+                                    Percentage of Total: {CLOB.PercentageOfTotal}
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item  size="4" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-right">
+                                    <div class = "TileBodyText">
+                                    No. of Products Rented: {CLOB.NoOfProductsRentedOut}
+                                    </div>
+                                </lightning-layout-item>
+                            </lightning-layout>        
+                        </div>
+                    </template>
+                </template>
+            </lightning-layout-item>  
+        </lightning-layout>
+    </template>
+    <template if:false={isPotentialLOBNULL}>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item  size="3" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilecurrentlob}>
+                        {tilecurrentlob}
+                        <div class="TileDetail">
+                            {currentLOBUsed}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>  
+            <lightning-layout-item  size="3" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilettmspend}>
+                        {tilettmspend}
+                        <div class="TileDetail">
+                            {currentTTMSpent}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item  size="3" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-right">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilenoofproductsrented}>
+                        {tilenoofproductsrented}
+                        <div class="TileDetail">
+                            {noOfProductsRented}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item> 
+            <lightning-layout-item  size="3" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-right">
+                <div class = "Tile">
+                    <div class = "TileTitle" title={tilepotentiallob}>
+                        {tilepotentiallob}
+                        <div class="TileDetail">
+                            {potentialLOBUsed}
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <br/>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item  size="6" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                <div class = "TileHeader">
+                    <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                        <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                            <div class = "TileHeaderText">
+                                {titlecurrentlineofbusiness}
+                            </div>
+                        </lightning-layout-item>  
+                    </lightning-layout>
+                </div>
+                <template for:each={currentLOB} for:item="CLOB" for:index="index">
+                    <div class = "TileHeader" key = {CLOB.Name}>
+                        <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                            <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                                <div class = "TileBodyHeading">
+                                    {CLOB.Name}
+                                </div>
+                            </lightning-layout-item>  
+                        </lightning-layout>
+                        <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                            <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                                <div class = "TileBodyText">
+                                    TTM Spend: {CLOB.TTMSpent}
+                                </div>
+                                <div class = "TileBodyText">
+                                    Percentage of Total: {CLOB.PercentageOfTotal}
+                                </div>
+                                <div class = "TileBodyText">
+                                    No. of Products Rented: {CLOB.NoOfProductsRentedOut}
+                                </div>
+                            </lightning-layout-item>  
+                        </lightning-layout>
+                    </div>
+                </template>
+            </lightning-layout-item>  
+            <lightning-layout-item  size="6" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-right">
+                <div class = "TileHeader">
+                    <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                        <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                            <div class = "TileHeaderText">
+                                {titlepotentiallineofbusiness}
+                            </div>
+                        </lightning-layout-item>  
+                    </lightning-layout>
+                </div>
+                <template for:each={potentialLOB} for:item="PLOB" for:index="index">
+                    <div class = "TileHeader" key = {PLOB.Name}>
+                        <lightning-layout class = "slds-m-left_none" multiple-rows="true">
+                            <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-large" class="slds-m-around_none slds-align_absolute-left">
+                                <div class = "TileBodyHeading">
+                                    {PLOB.Name}
+                                </div>
+                            </lightning-layout-item>  
+                        </lightning-layout>
+                    </div>
+                </template>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>

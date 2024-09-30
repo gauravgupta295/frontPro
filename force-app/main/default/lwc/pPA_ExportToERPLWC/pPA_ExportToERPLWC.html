@@ -1,0 +1,27 @@
+<template>
+    <!-- added this card div to make the container look more native to the whole page and have a background -->
+    <template if:true={showSpinner}>
+        <lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+    </template>
+
+    <!-- error will be displayed in red text here if something is wrong -->
+    <template if:true={error}>
+        <div class="slds-text-color_error">{error}</div>
+    </template>
+
+    <lightning-card title="Export to ERP" icon-name="utility:file">
+        <div slot="actions">
+            <lightning-button label="Export" onclick={handleExport} variant="brand"> </lightning-button>
+        </div>
+        <lightning-datatable
+            key-field="Id"
+            data={priceListData}
+            columns={colDisplay}
+            onrowaction={handleRowAction}
+            sorted-direction={sortDirection}
+            sorted-by={sortedBy}
+            onsort={onHandleSort}
+        >
+        </lightning-datatable>
+    </lightning-card>
+</template>

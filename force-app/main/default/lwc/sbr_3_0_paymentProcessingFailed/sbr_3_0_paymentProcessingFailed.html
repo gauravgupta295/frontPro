@@ -1,0 +1,87 @@
+<template>
+  <div class="payment-processing-failed">
+    <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small ">
+      <div class="slds-modal__container">
+        <template if:true={errorScreen}>
+          <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+            title="Close" onclick={closeModal}>
+            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+              size="small"></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+          </button>
+
+          <header class="slds-modal__header custom-modal-header">
+            <h2 class="slds-text-heading_medium">{label.HeaderTitle}</h2>
+          </header>
+          <div class="slds-modal__content custom-modal-content">
+            <br />
+            <p class="slds-text-align_center slds-p-right_large">{label.FailedMesssageLabel}</p>
+            <br /><br />
+          </div>
+          <footer class="slds-modal__footer slds-text-align_right">
+            <lightning-button label="Go Back" variant="neutral" onclick={handleBack}></lightning-button>
+            <lightning-button class="slds-p-left_medium" label="Try Again" variant="brand"
+              onclick={handleTryAgain}></lightning-button>&nbsp;&nbsp;
+          </footer>
+        </template>
+        
+        <template if:true={makedeposit}>
+          <c-sbr_3_0_make-adeposit record-id={recidN} is-terminal-visible={terminalvisibility}
+            payment-option-selected={paymentMethodPassed} deposit-amount-value={depositAmountPassed}
+            terminal-value={terminalValuePassed} is-combobox-visible={isComboboxVisible} value={value}
+            is-failed-screen-back={isFailedScreenBack} is-create-reservation={isFromCreateReservation}
+            is-payment-cash={isPaymentCash} cash-received-value={cashReceivedValue} cash-due-value={cashDueValue}
+            is-payment-check={isPaymentCheck} check-value={checkValue} is-payment-on-return={isPaymentOnReturn}>
+          </c-sbr_3_0_make-adeposit>
+        </template>
+
+        <template if:true={makeRefund}>
+          <c-sbr_3_0_refund-deposit record-id={recidN} terminal-value={terminalValuePassed}
+            deposit-amount-value={depositAmountPassed} is-combobox-visible={isComboboxVisible} value={value}
+            is-failed-screen-back={isFailedScreenBack} payment-option-selected={paymentMethodPassed}
+            is-terminal-visible={isTerminalVisible} is-new-payment-method={isNewPaymentMethod} isfromcancel={isfromcancelprocessing}
+            is-from-create-return={isFromCreateReturn} no-refund-given={noRefundGiven} reasonvalue={reasonvalue} is-card-payment={isCardPayment}
+            is-cash-or-check-payment={isCashOrCheckPayment} is-refund-change-due={isRefundChangeDue} is-check-number={isCheckNumber} 
+            is-refund-change-due-new={isRefundChangeDueNew} is-check-number-new={isCheckNumberNew} is-check-number-mixed={isCheckNumberMixed} 
+            is-refund-change-due-mixed={isRefundChangeDueMixed} check-value={checkValue} cash-due-value-u-i={cashDueValueUI}></c-sbr_3_0_refund-deposit>
+        </template>
+
+        <template if:true={uncollectedscreen}>
+          <c-sbr_3_0_make-uncolledted-payment record-id={recidN} terminal-value={terminalValuePassed}
+          is-failed-screen-back={isFailedScreenBack} payment-option-selected={paymentMethodPassed}
+          is-terminal-visible={isTerminalVisible} invoice-amount={invoiceAmount} invoice-amount-value={invoiceAmountValue} 
+          matched-invoice-details={matchedInvoiceDetails} is-payment-cash={isPaymentCash} is-payment-check={isPaymentCheck} 
+          cash-received-value={cashReceivedValue} cash-due-value={cashDueValue} check-value={checkValue}>
+        </c-sbr_3_0_make-uncolledted-payment>
+        </template>
+
+        <template if:true={roaScreen}>
+          <c-sbr_3_0_make-r-o-a-payment record-id={recidN} terminal-value={terminalValuePassed} payment-amount-value={depositAmountPassed}
+          payment-option-selected={paymentMethodPassed} is-multiple-invoice={isMultipleInvoice} is-multiple-payment-cash={isMultiplePaymentCash}
+          is-invoiceor-comment={isInvoiceorComment} is-multiple-payment-check={isMultiplePaymentCheck} is-invoice-amount-ques={isInvoiceAmountQues}
+          is-invoice={isInvoice} is-total-r-o-a-amount={isTotalROAAmount} invoice-data={invoiceData} is-cash-change-due={isCashChangeDue}
+          is-payment-cash={isPaymentCash} invoice-or-comment-entered={invoiceOrCommentEntered} cash-received-value={cashReceivedValue}
+          cash-due-value={cashDueValue} value={value} is-failed-screen-back={isFailedScreenBack} invoice-info-array={invoiceInfoArray}
+          is-payment-check={isPaymentCheck} check-value={checkValue} total-payment-amount={totalPaymentAmount}
+          is-terminal-visible={isTerminalVisible}></c-sbr_3_0_make-r-o-a-payment>
+        </template>
+
+        <template if:true={paymentprocessing}>
+          <c-sbr_3_0_payment-processing paymentprocessing={ispaymentprocessing} refundprocessing={refundprocessing}
+            processadditionaldeposit={processAdditionalDeposit} recid={recidN}
+            payment-method={paymentMethodPassed} uncollectedprocessing={uncollectedprocessing} roaprocessing={isFromRoaScreen} 
+            isfromcancel={isfromcancelprocessing} error-message={errorMessage} record-details={recordDetails}
+            payment-method-related-data={paymentMethodRelatedData} deposit-amount={depositAmountPassed} terminal-value={terminalValuePassed} 
+            transaction-id={transactionId} is-api-call-complete={isApiCallComplete}></c-sbr_3_0_payment-processing>
+        </template>
+      </div>
+
+      <template if:true={openRecordFormCollector}>
+        <c-sbr_3_0_dynamic-record-form-collector record-id={recidN} record-details={recordDetails}
+          object-api-name={objectApiName} action-name="save" is-headless="true" create-reservation={isFromCreateReservation}
+          payment-method-related-data={paymentMethodRelatedData}></c-sbr_3_0_dynamic-record-form-collector>
+      </template>
+
+    </section>
+  </div>
+</template>

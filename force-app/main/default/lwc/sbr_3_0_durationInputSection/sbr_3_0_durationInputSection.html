@@ -1,0 +1,58 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-25-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isMobile}>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+                <lightning-combobox name="durationInput" label="Duration" value={duration} placeholder="--None--"
+                    options={durationOptions} onchange={handleDurationChange} required
+                    class="slds-p-top_large"></lightning-combobox>
+            </lightning-layout-item>
+            
+            <lightning-layout-item size="12">
+                <lightning-input type="DateTime" name="startDateInput" required value={startDate} label="Start Date"
+                    onchange={handleStartDateChange} min={today} class="validate" disabled={disabled}></lightning-input>
+            </lightning-layout-item>
+            <template lwc:if={isInvalidStartDate}>
+                <div class="slds-text-color_error slds-text-body_small"></div>
+            </template>
+    
+            
+            <template lwc:if={showEndDate}>
+                <lightning-layout-item size="12">
+                    <lightning-input type="DateTime" name="endDateInput" required value={endDate} label="End Date"
+                        onchange={handleEndDateChange} min={minEndDate} class="validate"
+                        disabled={disabled}></lightning-input>
+                </lightning-layout-item>
+                <template lwc:if={isInvalidEndDate}>
+                    <div class="slds-text-color_error slds-text-body_small"></div>
+                </template>
+            </template>
+        </lightning-layout>
+    </template>
+    <template if:false={isMobile}>
+        <lightning-layout multiple-rows="true" class="container-margin">
+            <lightning-layout-item size="12">
+                <lightning-combobox name="durationInput" label="Duration" value={duration} placeholder="--None--"
+                    options={durationOptions} onchange={handleDurationChange} required
+                   ></lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" class="slds-p-top_xxx-small">
+                <lightning-input type="DateTime" name="startDateInput" required value={startDate} label="Start Date"
+                    onchange={handleStartDateChange} min={today} class="validate" disabled={disabled}></lightning-input>
+            </lightning-layout-item>
+            <template if:true={showEndDate}>
+                <lightning-layout-item size="12">
+                    <lightning-input type="DateTime" name="endDateInput" required value={endDate} label="End Date"
+                        onchange={handleEndDateChange} min={minEndDate} class="validate"
+                        disabled={disabled}></lightning-input>
+                </lightning-layout-item>
+            </template>
+        </lightning-layout>
+    </template>
+</template>

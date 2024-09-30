@@ -1,0 +1,77 @@
+<template>
+    <c-sbr_3_0_mobile-screen title={label.GeneratePdf}>
+        <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium" style="font-size: 12px;">
+                <div class="pdf-container slds-col slds-size_1-of-1">
+                    <iframe src={pdfUrl} frameborder="0" width="100%" height="70%"></iframe>
+                </div>
+                <div class="slds-grid slds-wrap">
+                    <div class="pdf-details slds-col slds-grid slds-size_1-of-1 slds-m-right_xx-large slds-p-top_small">
+                        <div class="slds-col">
+                            <p id="doctype"><lightning-icon icon-name="doctype:pdf" size="small"
+                                    alternative-text="Pdf file" title="Pdf"></lightning-icon></p>
+                        </div>
+                        {pdfName}
+                        <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                            <!--added by sreekar removed previous icon and added anchor tag for download pdf -->
+                            <p> <a href={fileUrl} download><lightning-icon icon-name="utility:download" size="small"
+                                        alternative-text="download" title="download"></lightning-icon></a></p>
+                        </div>
+                    </div>
+                </div>
+                </br>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1 slds-p-top_large">
+                        <abbr title="required" class="slds-required">* </abbr> <label
+                            for="selectid">{label.SelectMethod}</label>
+                        <p class="error-message" if:true={showError}>{label.ErrorForScreen}</p>
+                        <lightning-input class="EmailClass" type="checkbox" checked={isCheckedEmail}
+                            onchange={handleEmailCheckboxChange} data-id="email"
+                            label={label.EmailCheck}></lightning-input>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{label.EmailMessage}</span>
+                    </div>
+                    <div class="slds-col">
+                        </br>
+                        <lightning-input type="checkbox" class="PrintClass" checked={isCheckedPrint}
+                            onchange={handlePrintCheckboxChange} label={label.Print}></lightning-input>
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{label.PrintMessage}</span>
+                    </div>
+                </div>
+                </br>
+                <template if:true={isEmail}>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-size_1-of-1 slds-m-bottom_small slds-m-top_xx-small">
+                            <b><label for="authid">{label.AuthorizedContact}</label></b>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-m-bottom_small">
+                            <abbr title="required" class="slds-required">* </abbr> <label
+                                for="lookupField">{label.AuthContact}</label>
+                            <lightning-record-picker id="conid" class="conClass" object-api-name="Contact"
+                                label={label.AuthContact} limit={limitValue} placeholder="Select a Contact"
+                                value={initialContact} onchange={handleChange}
+                                variant="label-hidden"></lightning-record-picker>
+                        </div>
+                        <div class="slds-size_1-of-1 slds-m-bottom_small">
+                            <abbr title="required" class="slds-required">* </abbr> <label
+                                for="Email">{label.Email}</label>
+                            <lightning-input type="Email" id="emailid" class="emailClass" variant="label-hidden"
+                                value={initialEmail} onchange={handleEmailChange}></lightning-input>
+                        </div>
+                        <div class="slds-size_1-of-1">
+                            <lightning-textarea name="input1" label="Add Comment to Email"
+                                onchange={handleBodyChange}></lightning-textarea>
+                        </div>
+                    </div>
+                </template>
+            </div>
+
+            <footer class="slds-modal__footer slds-p-bottom_medium">
+                <lightning-button type="cancel" label="Cancel" variant="brand" onclick={closeModal}
+                    class="cancel-button slds-float_left"></lightning-button>
+
+                <lightning-button type="submit" label="Submit" variant="brand" class="success-button slds-float_right"
+                    onclick={handleSubmit}></lightning-button>
+            </footer>
+        </div>
+    </c-sbr_3_0_mobile-screen>
+</template>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Suggested Address</masterLabel>
+    <description>Component to display selection for entered vs suggested address</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="street" label="Street" type="String" role="inputOnly"/>
+          <property name="city" label="City" type="String" role="inputOnly"/>
+          <property name="state" label="State" type="String" role="inputOnly"/>
+          <property name="country" label="Country" type="String" role="inputOnly"/>
+          <property name="zip" label="Zip" type="String" role="inputOnly"/>
+          <property name="lat" label="Latitude" type="String" role="inputOnly"/>
+          <property name="lng" label="Longitude" type="String" role="inputOnly"/>
+          <property name="streetSuggested" label="Street Suggested" type="String" role="inputOnly"/>
+          <property name="citySuggested" label="City Suggested" type="String" role="inputOnly"/>
+          <property name="stateSuggested" label="State Suggested" type="String" role="inputOnly"/>
+          <property name="countrySuggested" label="Country Suggested" type="String" role="inputOnly"/>
+          <property name="zipSuggested" label="Zip Suggested" type="String" role="inputOnly"/>
+          <property name="latSuggested" label="Latitude Suggested" type="String" role="inputOnly"/>
+          <property name="lngSuggested" label="Longitude Suggested" type="String" role="inputOnly"/>
+          <property name="useSuggestedAddress" label="Use Suggested Address" type="Boolean" role="outputOnly"></property>
+      </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

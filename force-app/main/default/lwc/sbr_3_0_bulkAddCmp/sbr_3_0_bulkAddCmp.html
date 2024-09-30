@@ -1,0 +1,96 @@
+<template>
+  <template if:true={showCustomerSpecificRatesMsg}>
+    <div>
+      <div
+        class="slds-notify slds-notify_alert slds-alert_warning"
+        role="alert"
+      >
+        <span class="slds-assistive-text">info</span>
+        <h2>{customerSpecificRatesAlertMsg}</h2>
+      </div>
+    </div>
+  </template>
+  <template if:true={showBulkMsg}>
+    <div class="slds-p-around_x-small">
+      <div
+        class="slds-notify slds-notify_alert slds-alert_warning alertCss"
+        role="alert"
+      >
+        <span class="slds-assistive-text">info</span>
+        <!-- <template lwc:if={isSalesTab}> -->
+       
+          <lightning-icon
+            icon-name="utility:warning"
+            alternative-text="warning"
+            size="xx-small"
+            variant="inverse"
+            class="slds-p-right_x-small slds-p-bottom_xxx-small"
+          ></lightning-icon>
+          <h2 class="slds-text-align_left titleClass">
+          {multiAddBannerMessage}
+        </h2>
+
+        <!-- </template> -->
+        <!-- <template lwc:else>
+                    <h2>Leaving this screen will clear the Bulk Add</h2>
+                </template> -->
+        <div class="slds-notify__close">
+          <lightning-button-icon
+            icon-name="utility:close"
+            variant="bare-inverse"
+            alternative-text="Close"
+            title="Close"
+            onclick={closeMsg}
+          ></lightning-button-icon>
+        </div>
+      </div>
+    </div>
+  </template>
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+  <div>
+    <div class="addon-tiles">
+      <ul class="slds-has-dividers_bottom">
+        <template iterator:inventoryitem={inventoryItems}>
+          <li class="slds-item" key={inventoryitem.value.productId}>
+            <article class="slds-tile slds-tile_board">
+              <!--Added tabname as part of FRONT-11384-->
+              <c-sbr_3_0_inventory-item-cmp
+                variant={variant}
+                item-type={itemType}
+                item-data={inventoryitem}
+                product-type={productType}
+                record-id={recordId}
+                object-api-name={objectApiName}
+                customer-number={customerNumber}
+                company-code={companyCode}
+                tabname={tabname}
+                onadditemsuccess={disableSpinner}
+              >
+                <!--FRONT-13129 Changes added onadditemsuccess -->
+              </c-sbr_3_0_inventory-item-cmp>
+            </article>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </div>
+  <div class="atc-footer slds-p-around_small">
+    <lightning-layout horizontal-align="spread">
+      <lightning-layout-item></lightning-layout-item>
+      <lightning-layout-item>
+        <button
+          class="slds-button slds-button_brand"
+          value={addItemBtnLabel}
+          onclick={addToCart}
+        >
+          {addItemBtnLabel}
+        </button>
+      </lightning-layout-item>
+    </lightning-layout>
+  </div>
+</template>

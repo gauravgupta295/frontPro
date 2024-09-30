@@ -1,0 +1,99 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-18-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={loadSpinner}>
+        <lightning-card class="slds-card_boundary" icon-name="standard:lead_list">
+            <h1 slot="title">{title}</h1> 
+            <lightning-button class="header-button" slot="actions" variant="brand" label="Add New Line items" name="labor" onclick={addRow} disabled={disableAddButton}></lightning-button>
+            <div class="slds-card__body slds-card__body_inner">
+                <table class="slds-table slds-table_bordered"> 
+                    <thead>
+                        <tr >
+                            <template for:each={columnListLabor} for:item="column">
+                                <th key={column.apiName}><div class="slds-truncate">{column.label}</div></th>
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={laborRows} for:item="row" for:index="index">
+                            <tr class="inputRows" key={row.uuid}>
+                                <td >
+                                    <lightning-input type="text" value={row.SF_PS_Vendor_PO_Num__c}  data-id={row.uuid} message-when-bad-input="Length is too high." variant="label-hidden"  onchange={handleVenderPONumberChange}  name="venderPONumber" max-length="26" placeholder="Enter Vendor PO Number" > </lightning-input>
+                                    <template if:true={row.poNumber}>
+                                        <span style="color:red">Complete this field.</span>
+                                    </template>
+                                </td>
+                                <td>
+                                    <lightning-input type="text" value={row.SF_PS_Outside_Labor_Des__c}  data-id={row.uuid} step="0.01" message-when-bad-input="Length is too high." variant="label-hidden"  onchange={handlePODescChange}  name="PODesc" max-length="30" placeholder="Enter Outside Labor Desc.." > </lightning-input>
+                                    <template if:true={row.poDesc}>
+                                        <span style="color:red">Complete this field.</span>
+                                    </template>
+                                </td>
+                                <td >
+                                    <lightning-input type="number" value={row.SF_PS_PO_Cost__c}  data-id={row.uuid} step="0.01" message-when-bad-input="Numbers are only allowed." variant="label-hidden"  onchange={handlePOCostChange}  name="POCost" max-length="5" placeholder="00.00" > </lightning-input>
+                                    <template if:true={row.poCost}>
+                                        <span style="color:red">Complete this field.</span>
+                                    </template>
+                                </td>
+                                <td style="vertical-align: center;">
+                                    <template if:true={billCustLocL}>
+                                        <template if:true={row.SF_PS_PO_Amount__c}>
+                                            $<lightning-formatted-number value={row.SF_PS_PO_Amount__c}></lightning-formatted-number>
+                                        </template>
+                                        <template if:false={row.SF_PS_PO_Amount__c}>
+                                            <lightning-formatted-text value="-"></lightning-formatted-text>
+                                        </template>
+                                    </template>
+                                    <template if:false={billCustLocL}>
+                                        <lightning-input type="number" value={row.SF_PS_PO_Amount__c}  data-id={row.uuid} step="0.01" message-when-bad-input="Numbers are only allowed." variant="label-hidden"  onchange={handlePOAmountChange}  name="POAmount" max-length="5" placeholder="00.00" > </lightning-input>
+                                        <template if:true={row.poAmount}>
+                                            <span style="color:red">Complete this field.</span>
+                                        </template>
+                                    </template>
+                                </td>
+                                <td class="slds-text-align_right">
+                                    <lightning-button  class="delete-button" value={index} variant="destructive" label="Delete" name="labor" onclick={removeRow}></lightning-button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                <div class="slds-p-around_large" style="margin-left:auto; width:  300px;">
+                    <span><Strong>Total Outside Labor Cost: </Strong></span>
+                    <span>${calculateLaborTotal}</span>
+                </div>
+            </div>
+        </lightning-card>
+        <br>
+        <template if:true={showButtons}>
+            <c-sbr_3_0_sfs-desktop-flow-buttons
+                show-skip-button="true"
+                lable-next-button="Next"
+                lable-previous-button="back"
+                lable-skip-button="Skip"
+                show-cancel-button=true
+                lable-cancel-button="Cancel"
+                call-from="Lwc"
+                onprevious={handlePrevious}
+                onnext={hanldeNext}
+                oncancel={handleCancel}
+                onsummary={handleSummary}
+                show-summary="true"
+                lable-summary-button="Go to Summary"
+                record-to-be-deleted={recordToBeDeleted}
+                display-next-screen-message=true
+                next-screen-message="Next screen is Summary.">
+            </c-sbr_3_0_sfs-desktop-flow-buttons>
+        </template>
+    </template>
+    <template if:true={loadSpinner}>
+        <div style="align:center;">
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+        </div>
+    </template>
+</template>

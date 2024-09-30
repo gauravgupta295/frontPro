@@ -1,0 +1,111 @@
+<template>
+    <template if:true={isOpen}>
+        <div class="slds-section slds-is-open white-background">
+            <h3 class="slds-section__title">
+            <button aria-controls="general-open" aria-expanded="true" class="slds-button slds-section__title-action" onclick={toggleSection}>
+            <lightning-icon icon-name="utility:chevrondown" size="x-small" alternative-text="Toggle"></lightning-icon>
+            <span class="slds-truncate slds-p-left_small title_font" title="Section Title"> Other Info </span>
+            </button>
+            </h3>
+
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title"> Taxable </span>
+                            <p>
+                                <lightning-combobox
+                                disabled={readOnly}
+                                value={taxable}
+                                options={options}
+                                onchange={handleChange} ></lightning-combobox>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </div>
+
+                <div class="slds-col">
+                    <lightning-layout-item class="slds-hidden" size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">Hidden Field</span>
+                            <p>
+                                <lightning-input type="text"></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </div>
+            </div>
+            
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">Rental Tax Exempt Code</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly}  value={rentalTaxExemptCode} placeholder="Placeholder"></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">Tax District</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly} value={taxDistrict} placeholder="Placeholder"></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">GST Tax</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly} value={gstTax}></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </div>
+                <div class="slds-col">
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">Sales Tax Exempt Code</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly} value={salesTaxExemptCode} placeholder="Placeholder"></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">Tax Rate Used</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly} value={taxRateUsed} placeholder="Placeholder"></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+                        <div class="slds-p-around_x-small">
+                            <span class="field-title">PST Tax</span>
+                            <p>
+                                <lightning-input type="text" disabled={readOnly} value={pstTax}></lightning-input>
+                            </p>
+                        </div>
+                    </lightning-layout-item>
+                </div>
+            </div>
+
+        </div>
+    </template>
+
+    <template if:false={isOpen}>
+        <div class="slds-section">
+            <h3 class="slds-section__title">
+              <button aria-controls="expando-unique-id" aria-expanded="false" class="slds-button slds-section__title-action" onclick={toggleSection}>
+                <lightning-icon icon-name="utility:chevronright" size="x-small" alternative-text="Toggle"></lightning-icon>
+                <span class="slds-truncate slds-p-left_small title_font" title="Section Title"> Other Info </span>
+              </button>
+            </h3>
+          </div>
+    </template>
+</template>

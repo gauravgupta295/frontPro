@@ -1,0 +1,16 @@
+.dummy{
+	color : black;
+}
+.filters .filters-searchButton {
+	float: right;
+	padding: 1rem;
+}
+
+.filters {
+	padding: 1rem 0;
+	width: 100%;
+}
+
+lightning-pill-container {
+	color: #25683e;
+}

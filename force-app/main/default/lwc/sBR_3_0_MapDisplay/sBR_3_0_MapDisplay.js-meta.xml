@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Map Display</masterLabel>
+    <description>Component to display location with a pin in a map</description>
+    <targets>
+      <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>

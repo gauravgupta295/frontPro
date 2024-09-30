@@ -1,0 +1,17 @@
+/* 
+   Apply flexbox to custom-modal-content to arrange its 
+   children in a column layout.
+*/
+.custom-modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Horizontally center the content */
+    justify-content: center; /* Vertically center the content */
+    text-align: center; /* Center the text within the content */
+    font-size: 14px; /* Set the font size to 14px */
+  }
+
+  .slds-modal__container{
+   max-width: 35rem;
+   min-width: 35rem;
+ }

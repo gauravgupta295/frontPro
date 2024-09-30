@@ -1,0 +1,79 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-25-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-panel 
+                slds-size_full 
+                slds-panel_docked
+                slds-panel_docked-left 
+                product-attribute-filter-panel" 
+                aria-hidden="false">
+        <div class="slds-panel__header 
+                    product-attribute-filter-header">
+            <h2 class="slds-panel__header-title 
+                       slds-text-heading_small 
+                       slds-truncate" 
+                title="Product Attribute Filter">
+                Product Attribute Filter
+            </h2>
+            <div class="slds-panel__header-actions">
+                <lightning-button-icon  icon-name="utility:close"
+                                        onclick={handleToggleProductAttributeFilterPanelEvent} 
+                                        variant="bare" 
+                                        size="large"
+                                        alternative-text="Close Filter" 
+                                        title="Close Filter" 
+                                        class="on-select">
+                </lightning-button-icon>
+            </div>
+        </div>
+        <div class="slds-panel__body">
+            <div class="slds-grid 
+                        slds-wrap">
+                <div class="slds-size_1-of-3">
+                    <c-sbr_3_0_asset-Inquiry-Product-Attribute-Filter-Cmp ongetproductforselectioneventdetail={getProductForSelectionEventDetail}>
+                    </c-sbr_3_0_asset-Inquiry-Product-Attribute-Filter-Cmp>
+                </div>
+                    <div class="slds-size_2-of-3">
+                    <lightning-layout-item flexibility="auto" padding="around-small">
+                        <div>
+                            <c-sbr_3_0_asset-Inquiry-Product-Selection-Panel-Cmp onproductfilterchange={handleProductFilterChange}>
+                            </c-sbr_3_0_asset-Inquiry-Product-Selection-Panel-Cmp>
+                        </div>
+                    </lightning-layout-item>
+                    </div>
+            </div>
+            <div class="filter-footer">
+                <lightning-layout vertical-align="center"
+                                  horizontal-align="space" 
+                                  pull-to-boundary="small">
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Cancel" 
+                                          title="Cancel" 
+                                          onclick={handleToggleProductAttributeFilterPanelEvent}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Reset All Filters" 
+                                          title="Reset All Filters"
+                                          onclick={resetFilterPanel}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Apply" 
+                                          title="Apply" 
+                                          onclick={applyFilter}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </div>
+    </div> 
+</template>

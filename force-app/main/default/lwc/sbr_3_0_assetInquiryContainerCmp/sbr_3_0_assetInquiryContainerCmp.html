@@ -1,0 +1,43 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 01-23-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-page-header page-header-padding">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media media-wrapper">
+                        <div class="slds-media__figure">
+                            <lightning-icon icon-name="standard:forecasts" alternative-text="Asset Inquiry"
+                                title="Asset Inquiry" class="custom-forecasts"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="Asset Inquiry">Asset Inquiry</span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <lightning-tabset class="tabs-container slds-m-top_x-small">
+            <lightning-tab label="Asset Search">
+                <div class="item-search-tab max-width-ctr">
+                    <c-sbr_3_0_asset-search-ctr-cmp tabs-panel-height={tabsPanelHeight}></c-sbr_3_0_asset-search-ctr-cmp>
+                </div>
+            </lightning-tab>
+        </lightning-tabset>
+    </template>
+    <template if:true={isMobile}>
+        <!-- Mobile component to be incorporated here -->
+    </template>
+</template>

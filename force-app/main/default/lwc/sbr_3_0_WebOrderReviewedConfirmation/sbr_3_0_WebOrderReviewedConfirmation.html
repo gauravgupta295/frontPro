@@ -1,0 +1,64 @@
+<template>
+  <template lwc:if={showSpinner}>
+    <lightning-modal-body class="slds-modal_small slds-is-relative">
+      <div class="sbr_min-height">
+        <lightning-spinner
+          variant="brand"
+          size="medium"
+          alternative-text="loading..."
+        ></lightning-spinner>
+      </div>
+    </lightning-modal-body>
+  </template>
+  <template lwc:else>
+    <lightning-modal-header label={label.CONFIRM_RESO_REVIEW}>
+    </lightning-modal-header>
+    <lightning-modal-body class="slds-modal_small slds-is-relative">
+      <div class="slds-p-horizontal_medium">
+        <div class="slds-m-bottom_medium">{label.CONFIRM_RESO_MESSAGE}</div>
+        <div class="slds-m-bottom_xx-small">{label.CONFIRM_RESO_INFO}</div>
+        <ul class="slds-list_dotted slds-m-bottom_large small-bullets">
+          <li class="slds-m-bottom_xx-small">{label.CONFIRM_RESO_BULLET1}</li>
+          <li class="slds-m-bottom_xx-small">{label.CONFIRM_RESO_BULLET2}</li>
+          <li class="slds-m-bottom_xx-small">{label.CONFIRM_RESO_BULLET3}</li>
+        </ul>
+        <div class="slds-m-bottom_medium slds-list_horizontal">
+          <div
+            class="slds-m-right_xx-large slds-p-right_xx-large slds-text-align_left"
+          >
+            <p class="slds-text-title">{label.CUSTOMER_NAME}</p>
+            <h2 class="slds-m-vertical_small">{customerName}</h2>
+          </div>
+          <div
+            class="slds-m-left_xx-large slds-p-left_xx-large slds-text-align_left"
+          >
+            <p class="slds-text-title">{label.PHONE}</p>
+            <h2 class="slds-m-vertical_small">{phone}</h2>
+          </div>
+        </div>
+        <div class="slds-m-bottom_medium slds-list_horizontal">
+          <div class="slds-m-right_xx-large slds-text-align_left">
+            <p class="slds-text-title">{label.emailLabel}</p>
+            <h2 class="slds-m-vertical_small">{email}</h2>
+          </div>
+        </div>
+      </div>
+      <!-- modal content specified in LightningModal component -->
+    </lightning-modal-body>
+    <!-- Modal/Popup Box LWC footer starts here -->
+    <footer class="slds-modal__footer">
+      <lightning-button
+        label={label.CANCEL}
+        onclick={closeModal}
+        class="slds-m-right_small sbrSourcingBorder"
+      ></lightning-button>
+      <lightning-button
+        label={label.CONFIRM}
+        variant="brand"
+        onclick={confirmReservation}
+        disabled={isDisabled}
+        class="sbrSourcingBorder"
+      ></lightning-button>
+    </footer>
+  </template>
+</template>

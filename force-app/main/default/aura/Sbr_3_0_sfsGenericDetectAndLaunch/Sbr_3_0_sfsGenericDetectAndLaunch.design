@@ -1,0 +1,16 @@
+<design:component >
+    <design:attribute name="fieldChange" required="true" label="Change Field ( What field to watch for. Example for Opportunity would be StageName. )" description="This can only be used when the record is edited" />
+    <design:attribute name="fieldValue" required="true" label="Change Value ( What value are we looking for. )" description="This can only be used when the record is edited" />
+    <design:attribute name="compareType" required="true" datasource="Dynamic,Static" label="Comparison source ( change value data source. )" description="where to pull data for Change Value from Custom field or static value" />
+    <design:attribute name="compareOperator" required="true" default='lt' label="Operator ( lt,gt,lte,gte,eq )" description="operator to compare Change Value vs Change field" />
+    <design:attribute name="toastType" required="true" datasource="success,error,warning,info,other" label="Type (success, error, warning, info, other)" description="toast message type to show" />
+    <design:attribute name="toastMessage" required="true" label="Toast Message" description="Message to Show when values are equal" />
+    <design:attribute name="mode" required="true" datasource="dismissible, pester, sticky" default="dismissible" label="Dismissal Mode (dismissible, pester, sticky)"/>
+    <design:attribute name="toastTitle"  required="true" label="Toast Title" />
+    <design:attribute name="key" label="Icon (only for Type=other)" default="info_alt" />
+    <design:attribute name="duration" required="true" label="Duration in Seconds (minimum is 5, default is 10)" default="10" />
+    <design:attribute name="urlLink" label="URL Link" />
+    <design:attribute name="urlLabel" label="URL Label" />
+   
+
+</design:component>

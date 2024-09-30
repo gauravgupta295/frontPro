@@ -1,0 +1,113 @@
+<template>
+    <lightning-modal-header label={headerText}></lightning-modal-header>
+    <template if:true={isSpinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+   <template if:false={isSpinner}>
+        <lightning-modal-body>
+            <div>
+                <c-sbr_3_0_sfs-generic-lookup 
+                    tabindex="-1"
+                    icon-name="standard:product_item"
+                    s-object-api-name="ProductItem"
+                    label="Product Item:"
+                    onlookupupdate={handleProductItemChange}
+                    placeholder="Search parts here"
+                    filter-query={additionalQuery}
+                    is-required-style=true
+                    otherfield="true"
+                    other-field-api-name="SM_PS_Stock_Class__c,SM_PS_Item_Number__c"> 
+                </c-sbr_3_0_sfs-generic-lookup >
+                <template if:true={errorProductItemId}><span style="color:red">Complete this field.<br/></span></template>
+                <template if:true={errorProductPriceBook}><span style="color:red">Product does not have valid pricebook entry.<br/></span></template>
+                <template if:false={isProductItemSelected}>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                    <br/>
+                </template>
+                <template if:true={isProductItemSelected}>
+                    <br/>   
+                    Item #:<br/>  
+                    <lightning-formatted-text value={itemNum}></lightning-formatted-text>
+                    <br/> <br/>    
+                    STK/C: <br/>  
+                    <lightning-formatted-text value={stockClass}></lightning-formatted-text>
+                    <br/> <br/>    
+                    BIN Loc: <br/>  
+                    <lightning-formatted-text value={binLoc}></lightning-formatted-text>
+                    <br/> <br/>    
+                    Description: <br/>  
+                    <lightning-formatted-text value={desc}></lightning-formatted-text>
+                    <br/>  <br/>
+                    <!-- Quantity On Hand:<br/> 
+                    <lightning-formatted-number value={qtyOnHand}></lightning-formatted-number>
+                    <br/><br/> -->
+                    Quantity Available:<br/> 
+                    <lightning-formatted-number value={qtyAvail}></lightning-formatted-number>
+                    <br/><br/> 
+                    <span style="color:red">* </span> Quantity:
+                    <lightning-input 
+                        type="number" 
+                        message-when-bad-input="Numbers are only allowed."  
+                        message-when-step-mismatch="Decimals are not allowed." 
+                        variant="label-hidden" 
+                        data-field="qty"
+                        class="qty"
+                        min="1"
+                        max="999"
+                        message-when-range-underflow="Qty must be 3 characters max."
+                        message-when-range-overflow="Qty must be 3 characters max."
+                        onchange={handleQuantityChange}
+                        value={quantityConsumedValue}
+                        required> 
+                    </lightning-input>
+                    <lightning-combobox
+                        name="Labor Code"
+                        label="Labor Code:"
+                        options={pcLaborCodes}
+                        value={laborCodeValue}
+                        onchange={handleLaborCodeChange}
+                        placeholder="Select a Labor Code"
+                        required>
+                    </lightning-combobox>
+                    <br/>
+                    Shipped Quantity:<br/>  
+                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                    <br/> <br/> 
+                    Backordered Quantity:<br/> 
+                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                    <br/> <br/> 
+                    Original Backordered Quantity:<br/> 
+                    <lightning-formatted-text value="-"></lightning-formatted-text>
+                    <br/> <br/> 
+                    Item Type:<br/> 
+                    <lightning-formatted-text value={productType}></lightning-formatted-text>
+                    <br/> <br/> 
+                    Avg. Cost:<br/>  
+                    <lightning-formatted-text value={avgCostDisplay}></lightning-formatted-text>
+                    <br/> <br/>    
+                    Sell Price:<br/>  
+                    <lightning-formatted-text value={sellPriceDisplay}></lightning-formatted-text>
+                    <br/>  <br/>   
+                    List Price:<br/>  
+                    <lightning-formatted-text value={listPriceDisplay}></lightning-formatted-text>
+                    <br/>  <br/>   
+                    UOM:<br/>  
+                    <lightning-formatted-text value={uom}></lightning-formatted-text>
+            
+                    <!--value={woDescValue}-->
+                </template>
+            </div>
+        </lightning-modal-body>
+        <lightning-modal-footer>
+            <div class="slds-grid slds-grid_align-center">
+                <button class="slds-button slds-button_success" title="Yes" onclick={handleSave}>Save</button>&nbsp;&nbsp;
+            </div>
+        </lightning-modal-footer>
+    </template>
+</template>

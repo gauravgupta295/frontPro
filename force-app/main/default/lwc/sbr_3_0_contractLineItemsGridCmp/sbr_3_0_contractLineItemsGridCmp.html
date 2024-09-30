@@ -1,0 +1,43 @@
+<template>
+  <template lwc:if={showRentalDetails}>
+    <c-sbr_3_0_contract-line-items-rentals-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      line-items-cols={lineItemsCols}
+      parent-record={parentRecord}
+      show-remove-screen={showRemoveScreen}
+    ></c-sbr_3_0_contract-line-items-rentals-cmp>
+  </template>
+
+  <template lwc:if={showConsumableDetails}>
+    <c-sbr_3_0_contract-line-items-sales-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      parent-record={parentRecord}
+      line-items-cols={lineItemsCols}
+      show-remove-screen-sales={showRemoveScreenSales}
+    ></c-sbr_3_0_contract-line-items-sales-cmp>
+  </template>
+
+  <!--<template lwc:if={showDeliveryDetails}>
+   
+    <c-sbr_3_0_contract-line-items-delivery-cmp
+    record-id={recordId}
+    object-api-name={objectApiName}
+    line-items-cols={lineItemsCols}
+    parent-record={parentRecord}
+    ></c-sbr_3_0_contract-line-items-delivery-cmp>
+ 
+  </template>
+
+  <template lwc:if={showAncillaryDetails}>
+   
+    <c-sbr_3_0_contract-line-items-ancillary-cmp
+    record-id={recordId}
+    object-api-name={objectApiName}
+    line-items-cols={lineItemsCols}
+    parent-record={parentRecord}
+    ></c-sbr_3_0_contract-line-items-ancillary-cmp>
+ 
+  </template>-->
+</template>

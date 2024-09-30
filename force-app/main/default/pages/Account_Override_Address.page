@@ -1,0 +1,6 @@
+<apex:page StandardController="Account">
+<b><p>Override Address</p></b>
+<p>{!Account.Override_Address__Street__s}</p>
+<p>{!Account.Override_Address__City__s},&ensp;{!Account.Override_Address__StateCode__s} {!Account.Override_Address__PostalCode__s}</p>
+<p>{!Account.Override_Address__CountryCode__s}</p>
+</apex:page>

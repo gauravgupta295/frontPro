@@ -1,0 +1,96 @@
+<!--
+  @description       : Work Order Attribute Filter
+  @author            : Chhavi Singhal, Ritesh Mohapatra
+  @createdDate       : 26-Dec-2023 
+-->
+<template>
+    <div class="slds-panel 
+                slds-size_medium
+                slds-panel_docked
+                slds-panel_docked-right 
+                wo-attribute-filter-panel" 
+                aria-hidden="false">
+        <div class="slds-panel__header 
+                    wo-attribute-filter-header">
+            <h2 class="slds-panel__header-title 
+                       slds-text-heading_small 
+                       slds-truncate" 
+                title="Work Order Attribute Filter">
+                Work Order Attribute Filter</h2>
+            <div class="slds-panel__header-actions">
+                <lightning-button-icon  icon-name="utility:close"
+                                        onclick={handleToggleWOAttributeFilterPanelEvent} 
+                                        variant="bare" 
+                                        size="large"
+                                        alternative-text="Close Filter" 
+                                        title="Close Filter" 
+                                        class="on-select">
+                </lightning-button-icon>
+            </div>
+        </div>
+        <div class="slds-panel__body">
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Status" 
+                                                label="Status" 
+                                                options={workOrderStatusFieldOptions}
+                                                value={selectedWOStatusValues}
+                                                onchange={handleStatusPicklistChange}
+                                                disabled={disableButton}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Work Order Description" 
+                                                label="Work Order Description" 
+                                                options={workOrderDescFieldOptions}
+                                                value={selectedWorkOrderDescValues}
+                                                onchange={handleWorkOrderDescPicklistChange}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Bill Customer or Location" 
+                                                label="Bill Customer or Location" 
+                                                options={billCustLocFieldOptions}
+                                                value={selectedBillCustLocValues}
+                                                onchange={handleBillCustLocPicklistChange}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+            <lightning-layout-item class="slds-p-vertical_small">
+                    <lightning-checkbox-group   name="Claim Type" 
+                                                label="Claim Type" 
+                                                options={claimTypeFieldOptions}
+                                                value={selectedClaimTypeValues}
+                                                onchange={handleClaimTypePicklistChange}>
+                    </lightning-checkbox-group>
+            </lightning-layout-item>
+        </div>
+        <div class="wo-attribute-filter-footer">
+            <template if:false={isMobile}>
+                <lightning-layout vertical-align="center" 
+                                  horizontal-align="space" 
+                                  pull-to-boundary="small">
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button label="Cancel" 
+                                          variant="brand"  
+                                          title="Cancel" 
+                                          onclick={handleToggleWOAttributeFilterPanelEvent}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Clear All" 
+                                          title="Clear All"
+                                          onclick={resetWOAttributeFilterPanel}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" 
+                                          label="Apply" 
+                                          title="Apply" 
+                                          onclick={applyWOAttributeFilter}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+     </div>
+</template>

@@ -1,0 +1,159 @@
+<!--created as part of FRONT-9256 -->
+<template>
+  <!--START: FRONT-20772-->
+  <template lwc:if={isCreateContract}>
+    <lightning-layout horizontal-align="space">
+      <lightning-layout-item size="10">
+        <div>
+          <c-sbr_3_0_job-site-search-cmp
+            selection={initialSelection}
+            errors={errors}
+            onsearch={handleLookupSearch}
+            label="Job Site"
+            placeholder="Search for Job Site"
+            new-record-options={newRecordOptions}
+            onselectionchange={handleChange}
+            onclick={hideToastInfo}
+            onjobsitecreation={handleJobSiteCreation}
+            recent-records-label="Recent Job Sites"
+            required="true"
+          >
+          </c-sbr_3_0_job-site-search-cmp>
+        </div>
+      </lightning-layout-item>
+      <lightning-layout-item size="2" class={editInfoClass}>
+        <template lwc:if={isMobile}>
+          <lightning-icon
+            icon-name="action:edit_groups"
+            alternative-text="edit_groups"
+            size="small"
+            title="edit_groups"
+            class={btnIconClass}
+            onclick={handleEditJobSiteInfo}
+          ></lightning-icon>
+        </template>
+        <template lwc:else>
+          <lightning-button
+            variant="brand"
+            label="Edit Info"
+            class="brand-button"
+            stretch="true"
+            disabled={disableEditInfo}
+            onclick={handleEditJobSiteInfo}
+          ></lightning-button>
+        </template>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+  <template lwc:else>
+    <c-sbr_3_0_job-site-search-cmp
+      selection={initialSelection}
+      errors={errors}
+      onsearch={handleLookupSearch}
+      label="Job Site"
+      placeholder="Search for Job Site"
+      new-record-options={newRecordOptions}
+      onselectionchange={handleChange}
+      onclick={hideToastInfo}
+      onjobsitecreation={handleJobSiteCreation}
+      recent-records-label="Recent Job Sites"
+      required="true"
+    >
+    </c-sbr_3_0_job-site-search-cmp>
+  </template>
+  <!--END: FRONT-20772-->
+
+  <template if:true={hasAccountInfoChanged}>
+    <div class="warning-message slds-p-top_xxx-small">
+      <template lwc:if={isCreateContract}>
+        <span><b>Please confirm Job Site</b></span
+        >&nbsp;&nbsp;
+      </template>
+      <template lwc:else>
+        <span><b>Please verify job site.</b></span
+        >&nbsp;&nbsp;
+      </template>
+      <lightning-icon
+        icon-name="utility:warning"
+        alternative-text="Warning!"
+        variant="warning"
+        title="warning variant small"
+        size="xx-small"
+        class="custom-warning-color"
+      ></lightning-icon>
+    </div>
+  </template>
+  <!-- Front-9257 start-->
+  <template lwc:if={showNewJobSite}>
+    <section
+      role="dialog"
+      tabindex="-1"
+      aria-modal="true"
+      aria-labelledby="modal-heading-01"
+      class="slds-modal slds-fade-in-open"
+    >
+      <div class="slds-modal__container">
+        <lightning-button-icon
+          class="slds-modal__close"
+          icon-name="utility:close"
+          size="large"
+          variant="bare-inverse"
+          alternative-text="Cancel and close"
+          onclick={handleCloseModal}
+        >
+        </lightning-button-icon>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">
+            Manage Job Site
+          </h1>
+        </div>
+        <div
+          class="slds-modal__content drfJobSiteFlowContainer"
+          id="modal-content-id-1"
+          oncancelbutton={handleCloseModal}
+        >
+          <template lwc:if={isQuote}>
+            <lightning-flow
+              flow-api-name="SBR_3_0_JobSiteCreationFlow"
+              flow-input-variables={inputVariables}
+              onstatuschange={handleFlowStatusChange}
+            >
+            </lightning-flow>
+          </template>
+          <template lwc:else>
+            <lightning-flow
+              flow-api-name="sbr_3_0_orderJobsiteCreationFliow"
+              flow-input-variables={inputVariables}
+              onstatuschange={handleFlowStatusChange}
+            >
+            </lightning-flow>
+          </template>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
+  <!-- Front-9257 end-->
+
+  <!--START: FRONT-20772-->
+  <c-sbr_3_0_modal-cmp
+    variant="large"
+    lwc:ref="editJobSiteModal"
+    header="Manage Job Site"
+    save-handler={handleSaveJobSite}
+    cancel-handler={handleCancelModal}
+    type="dynamic"
+  >
+    <span slot="modalContent">
+      <c-sbr_3_0_job-site-edit-cmp
+        lwc:ref="editJobSiteCmp"
+        field={field}
+        record-id={jobsiteId}
+        account-id={accountId}
+        onclosejobsitemodal={handleJobSiteCloseModal}
+      ></c-sbr_3_0_job-site-edit-cmp>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+  <!--END: FRONT-20772-->
+</template>
+<!--FRONT-9256 Ends-->

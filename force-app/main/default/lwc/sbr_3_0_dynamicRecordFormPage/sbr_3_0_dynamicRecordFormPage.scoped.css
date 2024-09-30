@@ -1,0 +1,13 @@
+.dynamic-form-container {
+  overflow: hidden;
+  overflow-y: scroll;
+  background-color: #ffffff;
+}
+
+.heading {
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 24px;
+  font-style: Roboto;
+  color: #25683e;
+}

@@ -1,0 +1,70 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-30-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-section slds-is-open slds-m-bottom_none" data-id="Availability">
+        <div>
+            <p class="slds-text-title_bold slds-text-body_meduim">{productName}</p>
+            <p class="slds-text-title slds-text-body_meduim">{productCatClass}</p>
+        </div>
+        <div>
+            <p class="slds-text-title_bold">&nbsp;</p>
+        </div>
+        <div class="">
+            <lightning-icon size="xx-small" 
+                            icon-name="utility:checkin" 
+                            alternative-text="checkin" 
+                            title="checkin"></lightning-icon>
+            <span class="branch-link slds-m-left_xx-small" >
+                    Branch:{branch}
+            </span>
+        </div>
+        &nbsp;
+        <div>
+            <h3 class="slds-section__title slds-theme_shade">
+                    <span 
+                        class="slds-truncate slds-p-horizontal_small" 
+                        title="Availability">
+                        Availability
+                    </span>
+            </h3>
+            <div aria-hidden="false" 
+                 class="slds-section__content">
+                <div class="header-row">
+                    <template for:each={columns} 
+                              for:item="cols">
+                        <div key={cols.label} 
+                             class="columns slds-text-color_weak">
+                            {cols.label}
+                        </div>
+                    </template>
+                </div>
+                <div class="row-container">
+                    <template for:each={rows} for:item="row">
+                        <div key={row.label} class="row" onclick={showModalBox} data-id={row.label}>
+                            <template for:each={columns} for:item="cols">
+                                <div key={cols.fieldName} class="columns">
+                                    <c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp 
+                                        row-data={row} 
+                                        row-key={cols.fieldName} 
+                                        location={locationInfo}>
+                                    </c-sbr_3_0_asset-Inquiry-Asset-Row-Cmp>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+    </div>
+    <c-sbr_3_0_asset-Inquiry-Asset-Availability-Modal-Cmp 
+            locationinfo={locationInfo}  
+            branchname={branchName} 
+            productcatclass={productCatClass} 
+            onbranchchange={handleBranchChange}>
+    </c-sbr_3_0_asset-Inquiry-Asset-Availability-Modal-Cmp>
+</template>

@@ -1,0 +1,15 @@
+<aura:component implements = "force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global">  
+    <aura:html tag="style">
+        .slds-modal__container { 
+        max-width : 70% !important;
+        max-height : 90% !important;
+        width : 40%
+        } 
+    </aura:html>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <c:sbr_3_0_generatePdfPopUp onclose="{!c.handleCloseModal}"/>
+    <div class="slds-grid slds-wrap slds-m-top_small">
+        <div class="slds-col slds-size_large-3-of-12 slds-size_medium-3-of-12 slds-size_small-6-of-12 slds-size_x-small-9-of-12 slds-float_right">  
+        </div>  
+    </div>
+</aura:component>

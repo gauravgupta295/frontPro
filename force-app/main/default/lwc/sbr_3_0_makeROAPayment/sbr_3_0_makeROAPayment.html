@@ -1,0 +1,428 @@
+<template>
+    <template if:true={onLoadRender}>
+        <div class="roa-payment-container">
+            <template if:true={showSpinner}>
+    
+                <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                    <div class="slds-modal__container">
+                        <button
+                            class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                            title="Close" onclick={closeModal}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                size="small"></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <div class="slds-modal__content slds-var-p-around_medium">
+                            <div class="spinnermodal">
+                                <div class="slds-spinner_container">
+                                    <div role="status" class="slds-spinner slds-spinner_large">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+    
+            </template>
+            <template if:false={showSpinner}>
+                <template if:true={showPaymentModal}>
+                    <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                        <template class="slds-m-left_large slds-m-right_large" if:false={paymentProcessing}>
+                            <div class="slds-modal__container">
+                                <button
+                                    class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                                    title="Close" onclick={closeModal}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+    
+                                <header class="slds-modal__header">
+                                    <h2 class="slds-text-heading_medium">Make ROA Payment</h2>
+                                </header>
+                                <template if:true={noOpenInvoice}>
+                                <div class="Error_Message slds-text-heading_medium slds-p-top_small">
+                                &nbsp;&nbsp;&nbsp;<lightning-icon icon-name="utility:info" class="my-icon"
+                                    alternative-text="info" title="info"></lightning-icon>
+                                &nbsp;&nbsp; {label.OpenInvoice}</br>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span
+                                   class="slds-text-heading_small">{label.OpenInvoiceMessage}</span>
+                                </div>
+                                </template>
+                                <div class="slds-modal__content slds-p-around_medium">
+                                    <template if:true={showRadioGroup}>
+                                        <p class="mild-bold">{label.ROASelectionMessage}</p>
+                                        <br />
+                                        <lightning-input type="radio" name="paymentOption"
+                                            label={label.LumpSumLabel} value="option1"
+                                            onchange={handleRadioChange} checked={isOption1Checked}>
+                                        </lightning-input>
+                                        <br />
+                                        <lightning-input type="radio" name="paymentOption2"
+                                            label={label.MutipleInvoiceLabel} value="option2"
+                                            onchange={handleRadioChange} checked={isOption2Checked} disabled={noOpenInvoice}> 
+                                        </lightning-input>
+                                        <br />
+                                    </template>
+                                    <div class="slds-grid slds-wrap">
+                                        </br>
+                                        <template if:false={isMultipleInvoice}>
+                                        <div class="slds-size_1-of-2 slds-p-top_medium slds-p-right_large">
+                                                <abbr title="required" class="slds-required">* </abbr> <label
+                                                    for="payid">{label.PaymentMethod}</label>
+                                                <lightning-combobox id="paymentId" class="paymentClass"
+                                                    value={paymentOptionSelected} options={paymentOptions}
+                                                    variant="label-hidden" onchange={handlePaymentMethod}
+                                                    required></lightning-combobox>
+                                        </div> 
+                                        <div class="slds-size_1-of-2 slds-p-top_medium slds-p-left_large">                         
+                                        <template if:true={isTerminalVisible}>
+                                                <abbr title="required" class="slds-required">* </abbr><label
+                                                    for="terminalId">{label.Terminal}</label>
+                                                <lightning-combobox id="terminalId" class="terminalClass"
+                                                    value={terminalValue} options={terminalOptions} variant="label-hidden"
+                                                    onchange={handleTerminal} required></lightning-combobox>
+                                        </template>
+                                        <template if:true={isPaymentCash}>
+                                            <div class="slds-size_3-of-3">
+                                                <abbr title="required" class="slds-required">* </abbr><label
+                                                    for="cashid">{label.CashReceived}</label>
+                                                <lightning-input id="cashid" type="number" formatter="currency" step=".01"
+                                                    class="cashReceivedClass" value={cashReceivedValue}
+                                                    variant="label-hidden" required
+                                                    onblur={handleCashChange}></lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:true={isPaymentCheck}>
+                                            <div class="slds-size_6-of-6">
+                                                <abbr title="required" class="slds-required">* </abbr><label
+                                                    for="CheckId">{label.CheckNumber}</label>
+                                                <lightning-input id="CheckId" class="checkClass"
+                                                    pattern="^[A-Za-z0-9]{1,9}$"
+                                                    message-when-pattern-mismatch="Please specify valid check number"
+                                                    maxlength="9" value={checkValue} variant="label-hidden"
+                                                    onchange={handleCheckChange} required></lightning-input>
+                                            </div>
+                                        </template>
+                                        </div>
+                                        </template>
+                                        <template if:true={isMultipleInvoice}>
+                                            <div class="slds-size_2-of-5 slds-p-top_medium slds-p-right_xx-large addinvoicetable">
+                                                    <abbr title="required" class="slds-required">* </abbr> <label
+                                                        for="payid">{label.PaymentMethod}</label>
+                                                    <lightning-combobox id="paymentId1" class="paymentClass"
+                                                        value={paymentOptionSelected} options={paymentOptions}
+                                                        variant="label-hidden" onchange={handlePaymentMethod}
+                                                        required></lightning-combobox>
+                                            </div> 
+                                            <div class="slds-size_2-of-5 slds-p-top_medium slds-p-right_xx-large addinvoicetable">                         
+                                            <template if:true={isTerminalVisible}>
+                                                    <abbr title="required" class="slds-required">* </abbr><label
+                                                        for="terminalId">{label.Terminal}</label>
+                                                    <lightning-combobox id="terminalId1" class="terminalClass"
+                                                        value={terminalValue} options={terminalOptions} variant="label-hidden"
+                                                        onchange={handleTerminal} required></lightning-combobox>
+                                            </template>
+                                            <template if:true={isMultiplePaymentCash}>
+                                                <div class="slds-size_3-of-3">
+                                                    <abbr title="required" class="slds-required">* </abbr><label for="multipleCash">{label.CashReceived}</label>
+                                                    <lightning-input id="multipleCash" type="number" formatter="currency" step=".01"
+                                                        class="CashPaymentAmount" value={cashReceivedValue}
+                                                        variant="label-hidden" required
+                                                        onblur={handleCashChange}></lightning-input>
+                                                </div>
+                                            </template>
+                                            <template if:true={isPaymentCheck}>
+                                                <div class="slds-size_6-of-6">
+                                                    <abbr title="required" class="slds-required">* </abbr><label
+                                                        for="CheckId">{label.CheckNumber}</label>
+                                                    <lightning-input id="CheckId1" class="checkClass"
+                                                        pattern="^[A-Za-z0-9]{1,9}$"
+                                                        message-when-pattern-mismatch="Please specify valid check number"
+                                                        maxlength="9" value={checkValue} variant="label-hidden"
+                                                        onchange={handleCheckChange} required></lightning-input>
+                                                </div>
+                                            </template>
+                                            </div>
+                                        </template>
+                                        <template if:true={isInvoiceorComment}>
+                                            <div class="slds-size_1-of-2 slds-p-top_x-large slds-p-bottom_large slds-p-right_large">
+                                                <abbr title="required" class="slds-required">* </abbr>
+                                                    <label for="commentid">Invoice # or Comment</label>
+                                                <lightning-input id="commentid" type="text"
+                                                    class="invoiceorcomment" value={invoiceOrCommentEntered} variant="label-hidden"
+                                                    onchange={handleInvoiceorCommentChange} required></lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:true={isPaymentAmount}>
+                                            <div class="slds-size_1-of-2 slds-p-top_x-large slds-p-bottom_large slds-p-left_large">
+                                                <abbr title="required" class="slds-required">* </abbr><label
+                                                    for="depid">Payment Amount</label>
+                                                <lightning-input id="depid" type="number" formatter="currency"
+                                                    class="paymentAmountClass" value={paymentAmountValue} variant="label-hidden"
+                                                    data-recid="amountCollected"
+                                                    onchange={handleAmountChange} step=".01" required></lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:true={isMultiplePaymentCheck}>
+                                            <div class="slds-size_2-of-5 slds-p-top_medium slds-p-right_xx-large addinvoicetable">
+                                                <abbr title="required" class="slds-required">* </abbr><label
+                                                for="multipleCheck">Total Check Amount</label>
+                                                <lightning-input id="multipleCheck" type="number" formatter="currency"
+                                                    class="CheckPaymentAmount" value={totalPaymentAmount} variant="label-hidden"
+                                                    onchange={handleCheckAmountChange} data-recid="amountCollected"
+                                                     step=".01" required></lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:true={isCashChangeDue}>
+                                            <p class="slds-border_bottom"></p>
+                                            </br>
+                                            <div class="slds-size_6-of-6">
+                                                <div class="slds-grid slds-wrap">
+                                                    <div class="slds-col slds-size_1-of-2">
+                                                        <span><b><label
+                                                                    for="changeDueId">{label.ChangeDue}</label></b></span>
+                                                    </div>
+                                                    <div
+                                                        class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_large">
+                                                        <span><b>{cashDueValue}</b></span>
+                                                    </div>
+                                                </div>
+                                                </br>
+                                            </div>
+                                        </template>
+                                        <template if:true={isInvoiceAmountQues}>
+                                            <div class="slds-size_2-of-2 slds-p-top_medium slds-p-right_large">
+                                                <abbr title="required" class="slds-required">* </abbr> <label
+                                                    for="invoiceid">{label.InvoiceAmountQues}</label>
+                                                    <template if:true={hasZeroPaymentAmount}>
+                                                        <div class="slds-p-top_xx-small" style="color: red;">
+                                                            {errorMessage}
+                                                        </div>
+                                                    </template>
+                                                </div>
+                                                <template for:each={itemList} for:item="itemData" for:index="index">
+                                                        <div key={itemData} class="slds-size_2-of-5 slds-p-top_x-large slds-p-bottom_large slds-p-right_xx-large addinvoicetable">
+                                                            <abbr title="required" class="slds-required">* </abbr>
+                                                                <label for="commentid">Invoice # or Comment</label>
+                                                            <lightning-input type="text"
+                                                                class="invoiceorcomment" name="comment" value={itemData.Comment} variant="label-hidden"
+                                                                data-index={index} onchange={handleChange} required></lightning-input>
+                                                        </div>
+                                                        <div key={itemData} class="slds-size_2-of-5 slds-p-top_x-large slds-p-bottom_large addinvoicetable">
+                                                            <div class="slds-grid slds-wrap">
+                                                                <div class="slds-col slds-size_11-of-12">
+                                                                    <abbr title="required" class="slds-required">* </abbr><label for="depid">Payment Amount</label>
+                                                                    <lightning-input type="number" formatter="currency" class="paymentAmountClass"
+                                                                        name="amount" value={itemData.Amount} variant="label-hidden" data-recid="amountCollected"
+                                                                        data-index={index} onchange={handleChange} step=".01" required></lightning-input>
+                                                                </div>
+                                                                <div class="slds-p-top_medium slds-p-left_x-small">
+                                                                    <lightning-button-icon icon-name="utility:delete" variant="container" class="red-icon"
+                                                                    data-index={itemData.id} onclick={handleRemoveRow}>
+                                                                    </lightning-button-icon>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </template>
+                                                <div class="slds-accordion">
+                                                    <br/>
+                                                    <div>
+                                                        <lightning-button title="Add Invoice not in table" label={label.AddInvoiceNotInTable} class="addinvoice"
+                                                            icon-name="utility:add" onclick={handleAddRow}></lightning-button>
+                                                    </div>
+                                                </div>
+                                        </template>
+                                        <template if:true={isTotalROAAmount}>
+                                            <div class="slds-col slds-size_6-of-6 slds-p-top_large mild-bold total-payment">
+                                                <span><b>{label.TotalROAPaymentAmount}:</b> {totalPaymentAmountUI}</span>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <template if:true={isInvoice}>
+                                        <div class="slds-box slds-box_xx-small payment-banner">
+                                            <div class="slds-grid slds-wrap slds-p-vertical_xx-small">
+                                                <div class="slds-col slds-size_8-of-12 card-bgc">
+                                                    <lightning-card variant="narrow">
+                                                        <h2 slot="title">{label.Invoices}</h2>
+                                                    </lightning-card>
+                                                </div>
+                                                <div class="slds-col slds-size_3-of-12 custom-medium-input payment-banner">
+                                                    <lightning-input type="search" placeholder="Search Invoice #"
+                                                        class="searchInput" onchange={handleSearchChange} value={searchedInvoice}></lightning-input>
+                                                        <!--FRONT-17104 START-->
+                                                        <div class="filterWithCount">
+                                                            <lightning-button-icon icon-name="utility:filterList" alternative-text="Filter"
+                                                            onclick={handleFilterClick}
+                                                                class="filterClass">
+                                                            </lightning-button-icon>
+                                                            <template if:true={filterCount}>
+                                                                <p class="green_text" style="padding-right: 5px;font-size: 15px;padding-top: 6px;">{filterCount}</p>
+                                                            </template>
+                                                        </div>
+                                                        <!--FRONT-17104 END-->
+                                            </div> 
+                                                <!--FRONT-17104 START-->
+                                                <template if:true={openFilterPanel}>
+                                                    <div class="slds-panel slds-size_medium slds-panel_docked-right slds-is-open slds-m-top_x-large slds-m-right_none filterPanel"
+                                                        aria-hidden="false">
+                                                        <div class="slds-panel__body panelBody slds-p-around_medium">
+                                                            <div class="slds-p-bottom_x-small">
+                                                                <lightning-input data-id="jobsiteFilter" type="search" label="Jobsite" placeholder="Search Jobsite"
+                                                                    value={jobSiteFilterValue} onchange={handleFilterFieldChange} onblur={handleJobSiteValidation}></lightning-input>
+                                                            </div>
+                                                            <div class="slds-p-bottom_x-small">
+                                                                <lightning-input data-id="branchFilter" type="search" label="Branch" placeholder="Search Branch"
+                                                                    value={branchFilterValue} onchange={handleFilterFieldChange} onblur={handleBranchValidation}></lightning-input>
+                                                            </div>
+                                                            <div>
+                                                                <lightning-input data-id="fromDateFilter" type="date" date-style="short" name="fromDate" placeholder="From" label="Due Date"
+                                                                    value={fromDateFilterValue} onchange={handleFilterFieldChange}>
+                                                                </lightning-input>
+                                                            </div>
+                                                            <div class="slds-m-top_medium slds-p-bottom_x-small">
+                                                                <lightning-input data-id="untilDateFilter" type="date" date-style="short" name="UntilDate" placeholder="Until" variant="label-hidden"
+                                                                    value={untilDateFilterValue} onchange={handleFilterFieldChange}>
+                                                                </lightning-input>
+                                                            </div>
+                                                            <div>
+                                                                <lightning-input data-id="balanceFilter" type="number" label="Balance" formatter="currency" placeholder="$0.00"
+                                                                    value={balanceFilterValue} onchange={handleFilterFieldChange}>
+                                                                </lightning-input>
+                                                            </div>
+                                                            <div class="slds-filters__footer slds-grid slds-shrink-none slds-p-left_none slds-p-top_small">
+                                                                <div class="slds-col slds-size_4-of-12">
+                                                                    <lightning-button type="apply" label="Apply" variant="brand" class="button"
+                                                                        onclick={handleFilterApply} style="display: grid;"></lightning-button>
+                                                                </div>
+                                                                <div class="slds-col slds-p-top_x-small slds-p-left_small">
+                                                                    <button class="slds-button_reset" onclick={handleResetFilter}>
+                                                                        <p class="green_text">Reset All Filters</p>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                                 <!--FRONT-17104 END-->
+                                            </div>
+                                            <table
+                                                class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                                <thead>
+                                                    <tr>
+                                                        <!-- Checkbox column -->
+                                                        <th scope="col" class="slds-size_1-of-6 slds-text-align_left">
+                                                            <!-- Use SLDS checkbox class to display checkbox symbol -->
+                                                            <label class="slds-checkbox">
+                                                                <input type="checkbox" onchange={handleHeaderCheckboxChange}
+                                                                    checked={areAllRowsSelected} onsubmit={handleSubmit} />
+                                                                <span class="slds-checkbox_faux"></span>
+                                                                <span class="slds-assistive-text">Select All</span>
+                                                            </label>
+                                                             <!-- Invoice # column -->
+                                                            <span style="margin-left: 20px;">Invoice #</span>
+                                                        </th>
+                                                       
+                            
+                                                        <!-- Job Site column -->
+                                                        <th scope="col" class="slds-size_1-of-6 slds-text-align_left cardlabel">Job
+                                                            Site</th>
+                                                        <!-- Profit Center column -->
+                                                        <th scope="col" class="slds-size_1-of-6 slds-text-align_left profitlabel">Branch
+                                                            </th>
+                                                        <!-- Due Date column -->
+                 
+                                                            <th scope="col" class="slds-size_1-of-6 slds-text-align_left profitlabel">
+                                                                <div class="slds-truncate" title="Due Date" onclick={handleSortByDueDate}>Due Date
+                                                                    <!-- Icon to indicate sorting direction -->
+                                                                    <template if:true={sortByDueDateAsc}>
+                                                                        <lightning-icon icon-name="utility:arrowup" size="xx-small"></lightning-icon>
+                                                                    </template>
+                                                                    <template if:false={sortByDueDateAsc}>
+                                                                        <lightning-icon icon-name="utility:arrowdown" size="xx-small"></lightning-icon>
+                                                                    </template>
+                                                                </div>
+                                                            </th>
+                                                        <!-- Amount Due column -->
+                                                        <th scope="col" class="slds-size_1-of-6 slds-text-align_right">
+                                                            Balance</th>
+                                                        <!-- Payment Amount column -->
+                                                        <th scope="col" class="slds-size_1-of-6 slds-text-align_right">
+                                                            Payment Amount</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- Iterate over invoiceData to display rows -->
+                                                    <template for:each={invoiceData} for:item="row">
+                                                        <tr key={row.Id}>
+                                                            <!-- Checkbox column for each row -->
+                                                            <td scope="col" class="slds-size_1-of-6 slds-text-align_left">
+                                                                <!-- Use SLDS checkbox class to display checkbox symbol -->
+                                                                <label class="slds-checkbox">
+                                                                    <input type="checkbox" id={row.Id} value={row.Id}
+                                                                        name="selectedRow" onchange={handleCheckboxChange}
+                                                                        checked={row.checked}/>
+                                                                    <span class="slds-checkbox_faux"></span>
+                                                                    <span class="slds-assistive-text">Select Row</span>
+                                                                </label>
+                                                                <!-- Invoice # column -->
+                                                                <span style="margin-left: 20px;">{row.Invoice_number__c}-{row.Invoice_Sequence_Number__c}</span>
+                                                            </td>
+                                                            
+                                                           
+                                                            <!-- Job Site column -->
+                                                            <td scope="col" class="slds-size_1-of-6 slds-text-align_left cardlabel">
+                                                                <span>{row.Job_Site_Location__c}</span>
+                                                            </td>
+                                                            <!-- Profit Center column -->
+                                                            <td scope="col" class="slds-size_1-of-6 slds-text-align_left profitlabel">
+                                                                <span>{row.Profit_Center__c}</span>
+                                                            </td>
+                                                            <!-- Due Date column -->
+                                                            <td scope="col" class="slds-size_1-of-6 slds-text-align_left profitlabel">
+                                                                <span>{row.Due_Date__c}</span>
+                                                            </td>
+                                                            <!-- Amount Due column -->
+                                                            <td scope="col" class="slds-size_1-of-6 slds-text-align_right">
+                                                                <span>{row.Amount_Due__c}</span>
+                                                            </td>
+                                                            <!-- Payment Amount column -->
+                                                            <td scope="col"
+                                                                class="slds-size_1-of-6 slds-text-align_right editable-cell-container"  data-recid={row.Id}>
+                                                                <span class="editable-cell"  oninput={handleCellEdit}
+                                                                    onblur={handlePaymentAddition} onsubmit={handleSubmit}
+                                                                     contenteditable="true" data-recid={row.Id}>{row.Total_invoice_Amount__c}</span>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+    
+                                        </div>
+                                    </template>
+                                </div>
+                                <footer class="slds-modal__footer">
+                                    <lightning-button type="cancel" label="Cancel" variant="neutral" class="button1"
+                                        onclick={closeModal}></lightning-button>
+                                    <lightning-button style="padding-left: 14px" type="submit" label="Confirm"
+                                        variant="brand" class="button" onclick={handleSubmit}></lightning-button>
+                                </footer>
+                            </div>
+                        </template>
+                    </section>
+                </template>
+            </template>
+                <template if:true={paymentProcessing}>
+                    <c-sbr_3_0_payment-processing recid={recordId}
+                        roaprocessing={isROAProcessing} payment-method={paymentOptionSelected}
+                        deposit-amount={paymentAmountValue} terminal-value={terminalValue} error-message={errorMessageAPI}
+                        transaction-id={transactionId} payment-method-related-data={paymentMethodRelatedData} record-details={rec} 
+                        roa-detail-related-data={roaDetailRelatedData} is-api-call-complete={isApiCallComplete}>
+                    </c-sbr_3_0_payment-processing>
+                </template>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,64 @@
+/* 
+   This CSS code defines styles for a custom modal header and content, 
+   as well as a button with the class "buttonTry".
+*/
+
+/* Styles for the custom modal header */
+.custom-modal-header {
+  /* Define a custom property for the modal header background color with a repeating linear gradient */
+  --slds-c-modal-header-color-background: repeating-linear-gradient(
+      45deg,
+      #ba2200,
+      #ba2200 5%,
+      #ab240c 5%,
+      #ab240c 10%
+  );
+  
+  /* Apply the background color using the custom property */
+  background: var(--slds-c-modal-header-color-background);
+  
+  /* Set the text color to white */
+  color: white;
+  
+  /* Set the font size to 18 pixels */
+  font-size: 18px;
+  
+  /* Remove default margins */
+  margin: 0;
+  
+  /* Set padding to 20 pixels on all sides */
+  padding: 20px;
+}
+
+/* Styles for the custom modal content */
+.custom-modal-content {
+  /* Arrange content in a column layout */
+  display: flex;
+  flex-direction: column;
+  
+  /* Align content to the left */
+  align-items: left;
+  
+  /* Center content vertically */
+  justify-content: center;
+  
+  /* Align text to the left within the content */
+  text-align: left;
+  
+  /* Set font size to 14 pixels */
+  font-size: 14px;
+}
+
+/* Styles for the button with class "buttonTry" */
+.buttonTry { 
+  /* Set the text color to black */
+  color: black;
+}
+/*FRONT-15914*/
+.breakline{ 
+  white-space: pre-line;
+}
+.slds-modal__container{
+  max-width: 35rem;
+  min-width: 35rem;
+}

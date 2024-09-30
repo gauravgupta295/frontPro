@@ -1,0 +1,430 @@
+<template>
+  <template if:false={isMobile}>
+    <div class="itemSearchOuterContainer">
+      <div class="itemSearchInnerContainer">
+        <!--Below Condition Added for FRONT-15254,FRONT-15258 -->
+        <div if:false={isContractSalesTab}>
+          <lightning-tabset class="tabsetMobile">
+            <!-- FRONT-1933 : Start - Rental Tab -->
+            <lightning-tab
+              label="Rental"
+              value="rental"
+              onactive={activeTabHandler}
+            >
+              <lightning-layout class="max-width-ctr">
+                <lightning-layout-item flexibility="auto">
+                  <div class="main-panel slds-var-m-horizontal_small">
+                    <c-sbr_3_0_product-list-container-cmp
+                      tabs-panel-height={tabsPanelHeight}
+                      onviewcart={handleViewCart}
+                      onrowsselected={handleSelectedRows}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      data-comp-id="rentalItemSearchContainer"
+                    >
+                    </c-sbr_3_0_product-list-container-cmp>
+                  </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item>
+                  <div class="side-panel">
+                    <template if:false={onRecordPage}>
+                      <c-sbr_3_0_customer-info-cmp
+                        oncustomerselection={updateSelectedCustomer}
+                        sync-customer={_selectedCustomer}
+                        onsendcustomerselected={sendCustomerSelected}
+                      ></c-sbr_3_0_customer-info-cmp>
+                    </template>
+                    <c-sbr_3_0_filter-product-list></c-sbr_3_0_filter-product-list>
+                    <c-sbr_3_0_spotlight-panel-cmp
+                      selected-products={selectedProducts}
+                      spotlight-height={spotlightPanelHeight}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      previous-customer={previousCustomer}
+                      sync-cart-info={syncCartInfo}
+                      passed-customer-number={customerNumberToPass}
+                      data-comp-id="rentalSpotLightPanel"
+                    >
+                    </c-sbr_3_0_spotlight-panel-cmp>
+                  </div>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-tab>
+            <!-- End - Rental Tab -->
+
+            <!-- FRONT-1933 : Start - Sales Tab -->
+            <lightning-tab
+              label="Sales"
+              value="sales"
+              onactive={activeTabHandler}
+            >
+              <!-- FRONT - 12297 : added location-info -->
+              <lightning-layout class="max-width-ctr">
+                <lightning-layout-item flexibility="auto">
+                  <div class="main-panel slds-var-m-horizontal_small">
+                    <c-sbr_3_0_sales-item-search-container-cmp
+                      is-mobile={isMobile}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      location-info={locationInfoSales}
+                      onhandleviewfilterdesktop={showFilters}
+                      onsalesrowsselected={handleSelectedRows}
+                      onviewcart={handleViewCart}
+                      oncloseproductfilter={closeproductsfilter}
+                      data-comp-id="salesItemSearchContainer"
+                      onproductfilterevent={productFilterPillRemoveHandler}
+                      contract-sales-tab={isContractSalesTab}
+                    >
+                    </c-sbr_3_0_sales-item-search-container-cmp>
+                  </div>
+                </lightning-layout-item>
+                <lightning-layout-item>
+                 <div class="side-panel slds-var-m-right_small">
+                    <c-sbr_3_0_sales-product-filter-cmp
+                      is-mobile={isMobile}
+                      call-filter-cmp={callFilterCmp}
+                      onclosefiltercmp={showFilters}
+                      onapplysalesfilters={applySalesProductFilters}
+                      data-comp-id="salesProductFilter"
+                    >
+                    </c-sbr_3_0_sales-product-filter-cmp>
+
+                    <div
+                      class="consumableSpotlightPanel"
+                      lwc:if={locationInfoSales}
+                    >
+                      <!-- FRONT - 12297 : added locationInfo -->
+                      <c-sbr_3_0_consumabale-spotlight-panel-cmp
+                        selected-products={selectedProducts}
+                        spotlight-height={spotlightPanelHeight}
+                        record-id={recordId}
+                        object-api-name={objectApiName}
+                        location-info={locationInfoSales}
+                        previous-customer={previousCustomer}
+                        sync-cart-info={syncCartInfo}
+                        passed-customer-number={customerNumberToPass}
+                        data-comp-id="salesSpotLightPanel"
+                        variant="Sales"
+                      ></c-sbr_3_0_consumabale-spotlight-panel-cmp>
+                    </div>
+                  </div>
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-tab>
+            <!-- End - Rental Tab -->
+
+            <!--Added as part of FORNT-10327-->
+            <!-- FRONT-1933 -->
+            <lightning-tab
+              label="Assets"
+              value="assets"
+              onactive={activeTabHandler}
+            >
+              <lightning-layout class="max-width-ctr">
+                <lightning-layout-item flexibility="auto">
+                  <div
+                    class="main-panel slds-var-m-horizontal_small"
+                    style="height: 450px"
+                  >
+                    <!-- FRONT - 12297 -->
+                    <c-sbr_3_0_-Assign-Asset-Table-Component
+                      product-id=""
+                      location-info={locationInfoSales}
+                      current-tab-name="itemsearchassets"
+                      onrowsselected={handleSelectedRows}
+                      data-comp-id="assetItemSearchContainer"
+                      object-api-name={objectApiName}
+                    >
+                    </c-sbr_3_0_-Assign-Asset-Table-Component>
+                  </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item>
+                  <div class="side-panel">
+                    <c-sbr_3_0_asset-spotlight-cmp
+                      selected-products={selectedProducts}
+                      spotlight-height={spotlightPanelHeight}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      previous-customer={previousCustomer}
+                      sync-cart-info={syncCartInfo}
+                      passed-customer-number={customerNumberToPass}
+                      location-info={locationInfoSales}
+                      data-comp-id="assetSpotLightPanel"
+                      variant="assetsLineItems"
+                    >
+                    </c-sbr_3_0_asset-spotlight-cmp>
+                    <!--<c-sbr_3_0_consumabale-spotlight-panel-cmp
+                      selected-products={selectedProducts}
+                      spotlight-height={spotlightPanelHeight}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      previous-customer={previousCustomer}
+                      sync-cart-info={syncCartInfo}
+                      passed-customer-number={customerNumberToPass}
+                      data-comp-id="salesSpotLightPanel"
+                      variant="Sales"
+                    ></c-sbr_3_0_consumabale-spotlight-panel-cmp>-->
+                  </div>
+
+                  <!--<div class="illustrationContainer">
+                  <div
+                    class="slds-col slds-illustration slds-illustration_small"
+                  >
+                    <c-sbr_3_0_illustration-cmp
+                      variant="noevent"
+                    ></c-sbr_3_0_illustration-cmp>
+                  </div>
+                </div> -->
+                </lightning-layout-item>
+              </lightning-layout>
+            </lightning-tab>
+            <!-- FORNT-10327 Ends here-->
+          </lightning-tabset>
+        </div>
+        <template if:true={showSpinner}>
+          <lightning-spinner size="medium"></lightning-spinner>
+        </template>
+        <template if:false={showSpinner}>
+          <!--below condition added for FRONT-15258,FRONT-15254,Removed max-width-ctr css-->
+          <div if:true={isContractSalesTab}>
+            <lightning-layout>
+              
+              <lightning-layout-item size="9">
+                
+                <div class="main-panel slds-var-m-horizontal_small">
+                  <c-sbr_3_0_sales-item-search-container-cmp
+                    is-mobile={isMobile}
+                    record-id={recordId}
+                    object-api-name={objectApiName}
+                    location-info={locationInfoSales}
+                    onhandleviewfilterdesktop={showFilters}
+                    onsalesrowsselected={handleSelectedRows}
+                    onviewcart={handleViewCart}
+                    oncloseproductfilter={closeproductsfilter}
+                    data-comp-id="salesItemSearchContainer"
+                    onproductfilterevent={productFilterPillRemoveHandler}
+                    contract-sales-tab={isContractSalesTab}
+                  >
+                  </c-sbr_3_0_sales-item-search-container-cmp>
+                
+                </div>
+              </lightning-layout-item>
+              
+              <lightning-layout-item size="3">
+                <div class="side-panel">
+                  <c-sbr_3_0_sales-product-filter-cmp
+                    is-mobile={isMobile}
+                    call-filter-cmp={callFilterCmp}
+                    onclosefiltercmp={showFilters}
+                    onapplysalesfilters={applySalesProductFilters}
+                    data-comp-id="salesProductFilter"
+                  >
+                  </c-sbr_3_0_sales-product-filter-cmp>
+
+                  <div
+                    class="consumableSpotlightPanel"
+                    lwc:if={locationInfoSales}
+                  >
+                    <!-- FRONT - 12297 : added locationInfo -->
+                    <c-sbr_3_0_consumabale-spotlight-panel-cmp
+                      selected-products={selectedProducts}
+                      spotlight-height={spotlightPanelHeight}
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      location-info={locationInfoSales}
+                      previous-customer={previousCustomer}
+                      sync-cart-info={syncCartInfo}
+                      passed-customer-number={customerNumberToPass}
+                      data-comp-id="salesSpotLightPanel"
+                      variant="Sales"
+                      contract-sales-tab={isContractSalesTab}
+                    ></c-sbr_3_0_consumabale-spotlight-panel-cmp>
+                  </div>
+                </div>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </template>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isMobile}>
+    <!-- 11395 -->
+    <!-- <template if:true={isItemSearchPage}> -->
+    <!--FRONT 10483 Start-->
+    <template if:false={showSpinner}>
+      <template if:false={isContractSalesTab}>
+        <div
+          class="slds-button-group prod-inq-mob-group border-class"
+          role="group"
+        >
+          <button
+            type="button"
+            class={rentalButtonClass}
+            value="Rental"
+            onclick={tabChangeHandler}
+          >
+            Rental
+          </button>
+          <button
+            type="button"
+            class={salesButtonClass}
+            value="Sales"
+            onclick={tabChangeHandler}
+          >
+            Sales
+          </button>
+          <button
+            type="button"
+            class={assetButtonClass}
+            value="Asset"
+            onclick={tabChangeHandler}
+          >
+            Assets
+          </button>
+        </div>
+        <!-- </template> -->
+
+        <div class={rentalDisplay}>
+          <lightning-layout class="plclist">
+            <div class={productListContainerDisplay}>
+              <lightning-layout-item flexibility="auto">
+                <c-sbr_3_0_product-list-container-cmp
+                  ontoggleprodinqmobilestate={toggleProdInqMobileState}
+                  record-id={recordId}
+                  object-api-name={objectApiName}
+                  is-customer-added={isCustomerAdded}
+                  sync-customer-name={syncCustomerName}
+                >
+                </c-sbr_3_0_product-list-container-cmp>
+              </lightning-layout-item>
+            </div>
+            <div class={productFilterDisplay}>
+              <lightning-layout-item flexibility="auto">
+                <c-sbr_3_0_filter-product-list
+                  ontoggleprodinqmobilestate={toggleProdInqMobileState}
+                ></c-sbr_3_0_filter-product-list>
+              </lightning-layout-item>
+            </div>
+            <div class={addCustomerInfoDisplay}>
+              <lightning-layout-item flexibility="auto">
+                <c-sbr_3_0_customer-info-cmp
+                  oncustomerselection={updateSelectedCustomer}
+                  sync-customer={_selectedCustomer}
+                  ontoggleprodinqmobilestate={toggleProdInqMobileState}
+                  view-state={viewStateOld}
+                  selected-products={oldSelectedProduct}
+                  onsendcustomerselected={sendCustomerSelected}
+                >
+                </c-sbr_3_0_customer-info-cmp>
+              </lightning-layout-item>
+            </div>
+            <div class={itemSpotlightDisplay}>
+              <lightning-layout-item flexibility="auto">
+                <c-sbr_3_0_spotlight-panel-cmp
+                  selected-products={selectedProducts}
+                  spotlight-height={spotlightPanelHeight}
+                  record-id={recordId}
+                  object-api-name={objectApiName}
+                  ontoggleprodinqmobilestate={toggleProdInqMobileState}
+                  is-customer-added={isCustomerAdded}
+                  previous-customer={previousCustomer}
+                  sync-cart-info={syncCartInfo}
+                  passed-customer-number={customerNumberToPass}
+                ></c-sbr_3_0_spotlight-panel-cmp>
+              </lightning-layout-item>
+            </div>
+            <div class={availabilityAssetsDisplay}>
+              <lightning-layout-item flexibility="auto">
+                <c-sbr_3_0_availability-mobile-assets-cmp
+                  ontoggleprodinqmobilestate={toggleProdInqMobileState}
+                  selected-product={oldSelectedProduct}
+                  location-info={locationInfo}
+                ></c-sbr_3_0_availability-mobile-assets-cmp>
+              </lightning-layout-item>
+            </div>
+          </lightning-layout>
+        </div>
+        <!-- FRONT-11395 -->
+        <div class={salesDisplay} lwc:if={locationInfoSales}>
+          <lightning-layout class="showSalesData slds-show">
+            <!-- FRONT - 12298 : added location info -->
+            <c-sbr_3_0_sales-item-search-container-cmp
+              is-mobile={isMobile}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              location-info={locationInfoSales}
+              onbackitemsearchevent={handleBackToItemSearchButton}
+              oncheckboxchecked={handleCheckboxCheckedOnSalesTab}
+            ></c-sbr_3_0_sales-item-search-container-cmp
+          ></lightning-layout>
+        </div>
+        <div class={assetDisplay}>
+          <!--Added as part of FRONT-10330-->
+          <!-- locationInfoSales added as a part of Front-20343-->
+          <lightning-layout-item size="9" class="slds-p-right_xx-small">
+            <c-sbr_3_0_-Assign-Asset-Table-Component
+              product-id=""
+              location-info={locationInfoSales}
+              current-tab-name="itemsearchassets"
+              onrowsselected={handleSelectedRows}
+              object-api-name={objectApiName}
+              originrecordid={recordId}
+            >
+            </c-sbr_3_0_-Assign-Asset-Table-Component>
+          </lightning-layout-item>
+
+          <!--Added as part of FRONT-10330-->
+        </div>
+        <!--FRONT 10483 END-->
+      </template>
+
+      <template if:true={isContractSalesTab}>
+        <div
+          class="slds-button-group prod-inq-mob-group border-class"
+          role="group"
+        >
+          <button
+            type="button"
+            class={assetButtonClass}
+            value="Asset"
+            onclick={tabChangeHandler}
+          >
+            Assets
+          </button>
+
+          <button
+            type="button"
+            class={salesButtonClass}
+            value="Sales"
+            onclick={tabChangeHandler}
+          >
+            Sales
+          </button>
+        </div>
+        <div class={assetDisplay}>
+          <c-sbr_3_0_item-search-assets-tab-cmp
+            record-id={recordId}
+            object-api-name={objectApiName}
+          ></c-sbr_3_0_item-search-assets-tab-cmp>
+        </div>
+        <div class={salesDisplay} lwc:if={locationInfoSales}>
+          <lightning-layout class="showSalesData slds-show">
+             <c-sbr_3_0_sales-item-search-container-cmp
+              is-mobile={isMobile}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              location-info={locationInfoSales}
+              onbackitemsearchevent={handleBackToItemSearchButton}
+              oncheckboxchecked={handleCheckboxCheckedOnSalesTab}
+              contract-sales-tab={isContractSalesTab}
+            ></c-sbr_3_0_sales-item-search-container-cmp
+          ></lightning-layout>
+        </div>
+      </template>
+    </template>
+  </template>
+</template>

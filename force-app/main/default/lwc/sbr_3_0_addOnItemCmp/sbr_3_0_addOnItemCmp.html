@@ -1,0 +1,92 @@
+<template>
+    <template if:true={isRequiredAddOn}>
+        <div class="slds-notify slds-notify_alert" role="alert">
+            <span class="slds-assistive-text">info</span>
+            <lightning-icon icon-name="utility:info" alternative-text="info" title="info" variant="inverse" size="x-small"></lightning-icon>
+            <div class="slds-text-align_left slds-p-left_xx-small">This will be automatically added when selected item is added.
+            </div>
+        </div>
+    </template>
+    <template if:true={isRentalItem}>
+        <h3 class="brand-color slds-truncate" title={itemData.value.name} >
+            {itemData.value.name}
+        </h3>
+    
+        <div class="slds-p-bottom_xx-small">
+            <p class={itemDetailCatClass}>Cat Class: {itemData.value.catClass}</p>
+            <p>
+                <span class={itemDetailClass}>D: <strong>${itemData.value.ratesDaily}</strong></span> 
+                <span class={itemDetailClass}>W: <strong>${itemData.value.ratesWeekly}</strong></span>
+                <span class={itemDetailClass}>M: <strong>${itemData.value.ratesMonthly}</strong></span>
+            </p>
+        </div>
+    </template>
+
+    <template if:true={isRentalItemChronos}>
+        <h3 class="brand-color slds-truncate" title={itemData.value.name} >
+            {itemData.value.name}
+        </h3>
+        <div class="slds-tile__detail">
+            <p class={itemDetailCatClass}>Cat Class: {itemData.value.catClass}</p>
+            <p class="slds-p-bottom_xx-small">
+                <template if:false={isUnavailable}>
+                    <span class="icon-check slds-icon_container slds-icon_container_circle">
+                        <lightning-icon icon-name="utility:check" size="xx-small" variant="inverse" alternative-text="available" title="available"></lightning-icon>
+                    </span>
+                </template>
+                <template if:true={isUnavailable}>
+                    <span class="icon-priority slds-icon_container slds-icon_container_circle">
+                        <lightning-icon icon-name="utility:priority" size="xx-small" variant="inverse" alternative-text="unavailable" title="unavailable"></lightning-icon>
+                    </span>
+                </template>
+                <span class={itemDetailClass}>A: {itemData.value.availabilityInfo.available}</span> 
+                <span class={itemDetailClass}>U: {itemData.value.availabilityInfo.pickUp}</span>
+                <span class={itemDetailClass}>R: {itemData.value.availabilityInfo.reserve}</span>
+            </p>
+            <p class="slds-p-bottom_xx-small">
+                <span class={itemDetailClass}>D: <strong>${itemData.value.ratesDaily}</strong></span> 
+                <span class={itemDetailClass}>W: <strong>${itemData.value.ratesWeekly}</strong></span>
+                <span class={itemDetailClass}>M: <strong>${itemData.value.ratesMonthly}</strong></span>
+            </p>
+        </div>
+    </template>
+
+    <template if:true={isSalesItem}>
+        <h3 class="brand-color slds-truncate" title={itemData.value.name} >
+            {itemData.value.name}
+        </h3>
+        <div class="slds-tile__detail">
+            <p class={itemDetailCatClass}>ITEM #: {itemData.value.catClass}</p>
+            <p class={itemDetailCatClass}>Available: {itemData.value.availQuantity}</p>
+            <p class={itemDetailSalesPrice}>Price: <strong>${itemData.value.sellPrice}</strong></p>
+        </div>
+    </template>
+
+    <template if:true={isSalesItemChronos}>
+        <h3 class="brand-color slds-truncate" title={itemData.value.name}>
+            {itemData.value.name}
+        </h3>
+        <div class="slds-tile__detail">
+            <p class={itemDetailCatClass}>ITEM #: {itemData.value.catClass}</p>
+            <p class="slds-p-bottom_xx-small">
+                <template if:true={isAvailable}>
+                    <span class="icon-check slds-icon_container slds-icon_container_circle">
+                        <lightning-icon icon-name="utility:check" size="xx-small" variant="inverse" alternative-text="available" title="available"></lightning-icon>
+                    </span>
+                </template>
+                <template if:false={isAvailable}>
+                    <span class="icon-priority slds-icon_container slds-icon_container_circle">
+                        <lightning-icon icon-name="utility:priority" size="xx-small" variant="inverse" alternative-text="unavailable" title="unavailable"></lightning-icon>
+                    </span>
+                </template>
+                <span class={itemDetailClass}>Available: {itemData.value.availQuantity}</span> 
+            </p>
+            <p class={itemDetailSalesPrice}>Price: <strong>${itemData.value.sellPrice}</strong></p>
+        </div>
+    </template>
+
+    <div class="slds-tile__detail">
+        <c-sbr_3_0_add-to-cart-cmp variant="addon" selected-item-panel={itemData} max-count={maxCount} record-id={recordId}  object-api-name={objectApiName}
+            disable-add-to-cart={isDisabled} parent-qty-from-child={parentQty}></c-sbr_3_0_add-to-cart-cmp>
+    </div>
+</template>

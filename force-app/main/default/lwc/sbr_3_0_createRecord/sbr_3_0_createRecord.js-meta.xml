@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Create Record</masterLabel>
+    <description>This is a component to create a record</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+
+            <property name="objectApiName" label="Object API Name" type="String" required="true"/>
+            <property name="recordId" label="Record ID" type="String"/>
+            <property name="fields" label="Fields" type="String" />
+            <property name="columns" label="Columns" type="String" />
+            <property name="recordTypeId" label="RecordType ID" type="String" />
+            <property name="layoutType" label="Layout Type" description="Compact or Full" type="String" />
+            <property name="fieldsToSet" label="Set Fields On Submit" description="Key/Value comma separated values (field__c : val, field2__c : val2)" type="String" />
+            <property name="nextPageOnSuccess" label="Next Page on Success" description="True or False" type="Boolean" />
+            <property name="finishOnSuccess" label="Finish Flow on Success" description="True or False" type="Boolean" />
+            <property name="previousOnCancel" label="Previous Page on Cancel" description="True or False" type="Boolean" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,134 @@
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner
+      class="spins relativePosition"
+      size="large"
+    ></lightning-spinner>
+  </template>
+  <div class="jobSiteContainer">
+    <lightning-accordion
+      allow-multiple-sections-open
+      active-section-name={activeSections}
+    >
+      <lightning-accordion-section
+        name="JobSite"
+        label="Job Site"
+        class="accordianBorder"
+      >
+        <lightning-layout multiple-rows>
+          <lightning-layout-item
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            class="slds-p-bottom_small"
+          >
+            <c-s-b-r_3_0_required-custom-lookup-cmp
+              record-id={selectedContactId}
+              label="Job Site Contact"
+              default-record={selectedContactId}
+              fields-to-include="LastName, FirstName, Phone"
+              s-object-api-name="Contact"
+              placeholder="Search Contacts..."
+              icon-name="standard:contact"
+              onlookupupdate={handleContactChange}
+              where-clause={whereClause}
+              value={selectedContactId}
+              show-new-contact-button="true"
+              app-name={appName}
+              acc-id={accountId}
+            ></c-s-b-r_3_0_required-custom-lookup-cmp>
+          </lightning-layout-item>
+
+          <lightning-layout-item
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            class="slds-p-bottom_small"
+          >
+            <lightning-input
+              label="Job Site Phone"
+              name="Phone"
+              value={jobSiteRecord.Job_Site_Contact__c}
+              data-field-key="Job_Site_Contact__c"
+              required
+              class="validate"
+              onchange={handleFieldChange}
+            >
+            </lightning-input>
+          </lightning-layout-item>
+
+          <lightning-layout-item
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            class="slds-p-bottom_small"
+          >
+            <lightning-input
+              label="PO Number"
+              name="PONumber"
+              value={jobSiteRecord.Purchase_Order_Number__c}
+              data-field-key="Purchase_Order_Number__c"
+              class="validate"
+              onchange={handleFieldChange}
+            >
+            </lightning-input>
+          </lightning-layout-item>
+
+          <lightning-layout-item
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            class="slds-p-bottom_small"
+          >
+            <lightning-input
+              type="checkbox"
+              label="Use Custom Job Number"
+              name="JobNumber"
+              onchange={handleUseCustomJobNumber}
+            >
+            </lightning-input>
+          </lightning-layout-item>
+
+          <lightning-layout-item
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            class="slds-p-bottom_small spacingColumn1"
+            lwc:if={useCustomJobNumber}
+          >
+            <lightning-input
+              label="Job Number"
+              name="JobNumber"
+              value={jobSiteRecord.Job_Number__c}
+              data-field-key="Job_Number__c"
+              required
+              class="validate"
+              onchange={handleFieldChange}
+            >
+            </lightning-input>
+          </lightning-layout-item>
+        </lightning-layout>
+      </lightning-accordion-section>
+
+      <lightning-accordion-section
+        name="LocationDetails"
+        label="Location Details"
+        class="accordianBorder"
+      >
+        <template lwc:if={isDataLoaded}>
+          <c-s-b-r_3_0_-map-pin-drop
+            lwc:ref="mapPinDropCmp"
+            is-edit-info-modal="true"
+            pin-drop-street={jobSiteRecord.Street_Address__c}
+            pin-drop-city={jobSiteRecord.City__c}
+            pin-drop-state={jobSiteRecord.State__c}
+            pin-drop-country={jobSiteRecord.Country__c}
+            pin-drop-zip={jobSiteRecord.Zip_Code__c}
+            pin-drop-lat={jobSiteRecord.Latitude_Longitude__Latitude__s}
+            pin-drop-lng={jobSiteRecord.Latitude_Longitude__Longitude__s}
+          ></c-s-b-r_3_0_-map-pin-drop>
+        </template>
+      </lightning-accordion-section>
+    </lightning-accordion>
+  </div>
+</template>

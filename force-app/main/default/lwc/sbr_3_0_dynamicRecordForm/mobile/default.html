@@ -1,0 +1,119 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <c-sbr_3_0_custom-toast-component></c-sbr_3_0_custom-toast-component>
+    <template lwc:if={dynamicForms}>
+      <div
+        class="dynamic-form-container"
+        data-form-id={config}
+        tabindex="0"
+      >
+        <lightning-record-edit-form
+          record-id={recordId}
+          object-api-name={objectApiName}
+          onsubmit={handleSubmit}
+          onload={handleLoad}
+        >
+          <lightning-messages> </lightning-messages>
+          <template lwc:if={storeInitialized}>
+            <div class="slds-tabs-mobile__container">
+              <ul class="slds-tabs-mobile tab-list">
+                <template for:each={dynamicForms} for:item="page">
+                  <li class="slds-tabs-mobile__item" key={page.externalId}>
+                    <button
+                      type="button"
+                      class="slds-button slds-button_full-width"
+                      onclick={handleTogglePanel}
+                      data-target-panel-id={page.externalId}
+                    >
+                      <span
+                        class="slds-truncate"
+                        title={page.label}
+                        onclick={handleTogglePanel}
+                        >{page.label}</span
+                      >
+                      <lightning-icon
+                        icon-name="utility:chevronright"
+                        size="x-small"
+                      ></lightning-icon>
+                    </button>
+                  </li>
+                </template>
+              </ul>
+              <template for:each={dynamicForms} for:item="page">
+                <div
+                  class="
+                    slds-panel slds-panel_docked slds-panel_animated
+                    panel-content
+                    slds-hide
+                  "
+                  hidden
+                  data-panel-id={page.externalId}
+                  key={page.externalId}
+                >
+                  <c-sbr_3_0_mobile-screen
+                    props={mobileProps}
+                    data-panel-id={page.externalId}
+                  >
+                    <div
+                      class="slds-panel__header slds-p-around_none"
+                      slot="title"
+                    >
+                      <lightning-button-icon
+                        class="slds-panel__back"
+                        icon-name="utility:chevronleft"
+                        variant="bare"
+                        onclick={handleTogglePanel}
+                        data-target-panel-id={page.externalId}
+                      >
+                      </lightning-button-icon>
+                      <h2
+                        class="
+                          slds-panel__header-title
+                          slds-text-heading_small
+                          slds-truncate
+                          panel-title
+                        "
+                        title={page.label}
+                      >
+                        {page.label}
+                      </h2>
+                      <!--Added as part of FRONT - 15703-->
+                      <template lwc:if={page.helpText}>
+                        <div class="tooltip-container slds-p-top_xx-small">
+                        <lightning-helptext content={page.helpText}></lightning-helptext>
+                      </div>
+                    </template>
+                    <!--FRONT - 15703 Ends-->
+                    </div>
+                    <template if:true={showUpdateTotals}>  <!-- START FRONT - 13994 -->
+                    <div>
+                      <c-sbr_3_0_update-totals
+                      record-id={recordId}
+                      object-api-name={objectApiName}
+                      onerrorupdatetotals={handleErrorUpdateTotals}
+                      onclose={handleClose}></c-sbr_3_0_update-totals>
+                    </div>
+                    </template>
+                    <template if:false={showUpdateTotals}>  <!-- END FRONT - 13994 -->
+                    <div>
+                      <c-sbr_3_0_dynamic-record-form-page
+                        page={page}
+                        record-id={recordId}
+                        object-api-name={objectApiName}
+                        ondrf_fieldchange={handleCustomFieldChange}
+                        onshowtoast={showToastNotification}
+                        onhidetoast={hideToastNotification}
+                      ></c-sbr_3_0_dynamic-record-form-page>
+                    </div>
+                  </template>
+                  </c-sbr_3_0_mobile-screen>
+                </div>
+              </template>
+            </div>
+  
+            <button type="submit" class="slds-hide drf_submitBtn">></button>
+          </template>
+        </lightning-record-edit-form>
+      </div>
+    </template>
+  </template>

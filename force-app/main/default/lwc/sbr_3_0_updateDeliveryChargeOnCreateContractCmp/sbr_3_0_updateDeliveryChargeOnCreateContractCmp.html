@@ -1,0 +1,61 @@
+<template>
+  <lightning-record-edit-form
+    object-api-name={objectApiName}
+    record-id={recordId}
+    onsubmit={handleSubmit}
+  >
+    <lightning-layout multiple-rows>
+      <lightning-layout-item
+        size="12"
+        large-device-size="6"
+        small-device-size="12"
+        class="slds-var-p-horizontal_x-large"
+      >
+        <label class="slds-form-element__label">
+          <span class="slds-m-right_x-small">Delivery Charges Override</span>
+          <lightning-helptext
+            content={helpTextLabelDeliveryOverride}
+          ></lightning-helptext>
+        </label>
+        <lightning-input-field
+          field-name="Delivery_Charges_Override__c"
+          variant="label-hidden"
+          onchange={handleCheckBoxChange}
+        ></lightning-input-field>
+      </lightning-layout-item>
+      <lightning-layout-item
+        size="12"
+        large-device-size="6"
+        small-device-size="12"
+        class="slds-var-p-horizontal_medium"
+      >
+      </lightning-layout-item>
+
+      <lightning-layout-item
+        size="12"
+        large-device-size="6"
+        small-device-size="12"
+        class="slds-var-p-horizontal_medium"
+      >
+        <lightning-input-field
+          variant="label-stacked"
+          field-name="Delivery_Charges__c"
+          disabled={disableChargeFields}
+        ></lightning-input-field>
+      </lightning-layout-item>
+      <lightning-layout-item
+        size="12"
+        large-device-size="6"
+        small-device-size="12"
+        class="slds-var-p-horizontal_medium"
+      >
+        <lightning-input-field
+          variant="label-stacked"
+          field-name="Pickup_Charges__c"
+          disabled={disableChargeFields}
+        ></lightning-input-field>
+      </lightning-layout-item>
+    </lightning-layout>
+    <button type="submit" class="slds-hide btnclass"></button>
+  </lightning-record-edit-form>
+</template>

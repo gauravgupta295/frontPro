@@ -1,0 +1,73 @@
+.spinner {
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}
+.spinner lightning-spinner::after {
+  position: absolute;
+  content: attr(data-message);
+  width: 100%;
+  text-align: center;
+  top: calc(50% + 3em);
+  font-weight: bold;
+}
+
+.large-modal-content {
+  width: 65%;
+  max-width: 65%;
+}
+
+.attribute-label {
+  font-weight: 700;
+  font-size: 12px;
+}
+
+.action-cell {
+  width: 5%;
+}
+
+.duplicate-record-list-layout-item {
+  border: 1px solid #aeaeae;
+}
+
+.duplicate-record-list-header {
+  background-color: #e5e5e5;
+  font-weight: 700;
+}
+
+.color-boxes {
+  display: inline-block;
+  border-radius: 4px;
+  color: white;
+  padding: 4px;
+}
+
+.greenColor {
+  background-color: #008545;
+}
+
+.greyColor {
+  background-color: #a0a0a0;
+}
+
+.orangeColor {
+  background-color: #ffaa05;
+}
+
+.redColor {
+  background-color: #ba0517;
+}
+
+.existing-account-list {
+  list-style: disc;
+  word-wrap: break-word;
+  font-size: 13px;
+}
+
+.fixed-width-10 {
+  width: 10%;
+}
+
+.fixed-width-15 {
+  width: 15%;
+}

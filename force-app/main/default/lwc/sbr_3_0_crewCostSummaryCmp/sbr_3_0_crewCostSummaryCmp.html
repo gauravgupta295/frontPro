@@ -1,0 +1,135 @@
+<template>
+    <template if:true={showSpinner}>
+        <lightning-spinner class="spins" size="large"></lightning-spinner>
+    </template>
+    <lightning-accordion >
+        <lightning-accordion-section name="Details" label="Details">   
+            <div class=" slds-p-around_small">
+                 <template if:true={showEdit}>
+                    <div class="slds-clearfix slds-float_right">
+                        <lightning-button variant="brand" label="Edit" title="Edit" onclick={handleEdit} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                </template>
+            <template if:false={showEdit}>
+                <template if:true={isEdit}>
+                    <div class="slds-clearfix slds-float_right">
+                      <lightning-button variant="base" label="Cancel" title="Cancel" onclick={handleCancel} class="slds-m-left_x-small"></lightning-button>
+                      <lightning-button variant="brand" label="Save" title="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+                    </div>
+                    </template>
+            </template>  
+            </div>                  
+
+
+            <lightning-layout multiple-rows>
+
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="ST Burden">ST Average</p>
+                        <p>       <lightning-formatted-number value={quoteDetails.stAverage} format-style="currency" currency-display-as="code" currency-code="USD" > </lightning-formatted-number>   </p>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="OT Average">OT Average</p>   
+                        <p>   <lightning-formatted-number value={quoteDetails.otAverage} format-style="currency" currency-display-as="code" currency-code="USD" > </lightning-formatted-number>  </p>
+                    </div>
+                </lightning-layout-item>
+
+   
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="ST Burden">ST Burden</p>
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="STBurden" value={quoteDetails.stBurden} format-style="percent-fixed"> </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.stBurden} format-style="percent-fixed" > </lightning-formatted-number>    </template>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="OT Burden">OT Burden</p>   
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="OTBurden" value={quoteDetails.otBurden}  format-style="percent-fixed"> </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.otBurden} format-style="percent-fixed" > </lightning-formatted-number>    </template>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="ST Overhead">ST Overhead</p>  
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="STOverhead" value={quoteDetails.stOverhead} format-style="percent-fixed" > </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.stOverhead} format-style="percent-fixed" > </lightning-formatted-number>    </template>
+                        </p>
+                        </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="OT Overhead">OT Overhead</p>  
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="OTOverhead" value={quoteDetails.otOverhead} format-style="percent-fixed"  > </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.otOverhead} format-style="percent-fixed" > </lightning-formatted-number>    </template>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="ST Profit">ST Profit</p>   
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="STProfit" value={quoteDetails.stProfit} format-style="percent-fixed"  > </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.stProfit} format-style="percent-fixed"  > </lightning-formatted-number>    </template>
+                        </p>
+                    </div>
+                </lightning-layout-item>
+
+                <lightning-layout-item  size="6" >
+                    <div class="slds-border_bottom slds-p-around_x-small">
+                        <p class="field-title" title="OT Profit">OT Profit</p>   
+                        <p> 
+                            <template if:true={isEdit}> 
+                                <lightning-input type="number"  data-field="OTProfit" value={quoteDetails.otProfit} format-style="percent-fixed" > </lightning-input>
+                        
+                            </template>
+
+                            <template if:false={isEdit}> 
+                                <lightning-formatted-number value={quoteDetails.otProfit} format-style="percent-fixed"> </lightning-formatted-number>    </template>
+                        </p>
+                        </div>
+                </lightning-layout-item>
+                     
+                      
+        </lightning-layout>
+</lightning-accordion-section> 
+</lightning-accordion> 
+</template>

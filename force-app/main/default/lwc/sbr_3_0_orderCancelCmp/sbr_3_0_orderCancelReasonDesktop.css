@@ -1,0 +1,57 @@
+.contClass{
+    bottom: -22.5px !important;
+    min-width:30%;
+    position: unset !important;
+    height: 88 !important;
+    
+    
+}
+
+.spins{
+    position: absolute;
+    top: 292px;
+    left: 190px;
+    right: 190px;
+    bottom: 268px;
+    
+}
+.outerPara{
+    text-align:center;
+    font-size:18px;
+     margin-top:4px;
+}
+.InnerPara{
+    text-align:center;
+    font-size:15px;
+    margin-top:8px;
+      margin-bottom:6px;
+}
+
+.clClass{
+    box-shadow: none;
+}
+
+.custom{
+min-width: 100vw !important;
+left: 50% !important;
+top: 37% !important;
+transform: translate(-50%, -37%) !important;
+}
+.slds-combobox__input:focus, .slds-combobox__input.slds-has-focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .slds-input:focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+  }
+
+.marginCl{
+    margin-bottom:12px;
+}
+.picklistMargin{
+    margin-bottom:15px;
+}

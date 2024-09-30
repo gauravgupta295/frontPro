@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__Tab</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <propertyType name="SfObject" extends="SObject" label="Record List" description="Generic sObject data type used for input sObject properties" />
+            <property name="amcrList" label="Record List" type='{SfObject[]}' />
+            <property name="fieldList" label="Fields for table column(comma seprated)" type="String" />
+            <property name="objectType" label="Object Name" type="String" />
+            <property name="objectScreenLabel" label="Object Screen Label" type="String" />
+            <property name="isEditable" label="Is screen editable?" type="Boolean"/>
+
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

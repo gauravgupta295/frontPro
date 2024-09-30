@@ -1,0 +1,8 @@
+/*FRONT - 9276 : unsetting the height and providing borders around*/
+.editCell .slds-table_header-fixed_container{
+    height: unset !important;
+    /*FRONT-10497 : Changing border colours to grey*/
+    border: 0.5px grey solid;
+    /*END : FRONT-10497*/
+}
+/*END : FRONT-9276*/

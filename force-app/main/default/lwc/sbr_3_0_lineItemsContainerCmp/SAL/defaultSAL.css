@@ -1,0 +1,219 @@
+:host {
+    padding-left: 0 1rem;
+    padding-right: 0 1rem;
+    padding-top: 0 1rem;
+    display: block;
+    height: 100%;
+}
+
+.li-title {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-left: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.slds-section__content {
+    border-bottom: 1px solid #c9c9c9;
+}
+
+.lii-input {
+    width: 184px;
+}
+
+.max-width-ctr {
+    max-width: 1940px;
+    margin: 0 auto;
+}
+
+.cart-info-main-dropdown {
+    display: flex;
+    justify-content: space-evenly;
+    /*justify-content: space-around;*/
+    align-items: center;
+    border-width: 1px;
+    border-color: #C9C9C9;
+    border-style: solid;
+    flex-direction: row;
+    /*padding: 0px 16px 0px 10px;*/
+    padding-right: 16px;
+    padding-left: 16px;
+    gap: 16px;
+    background-color: #f3f3f3;
+    height: 54px;
+    left: 0px;
+    width: 100vw;
+}
+
+.date-txt {
+    font-weight: 400;
+    font-size: 13px;
+    color: #444444;
+}
+
+.cart-info-main {
+    background-color: #FFFFFF;
+    width: 100vw;
+}
+
+.cart-info-header {
+    background-color: #FFFFFF;
+    display: flex;
+    /*flex-direction: row;*/
+    justify-content: space-evenly;
+    align-items: center;
+    border-width: 1px;
+    border-color: #D9D9D9;
+    border-style: solid;
+    width: 100vw;
+}
+
+.cancel-btn-class {
+    font-weight: 400;
+    color: #25683E;
+    text-align: center;
+}
+
+.cart-info-title {
+    font-weight: 400;
+}
+
+.save-btn-class {
+    font-weight: 400;
+    color: #25683E;
+    font-weight: bold;
+    text-align: center;
+}
+
+.cart-info-body {
+    background-color: #FFFFFF;
+    border-radius: #D9D9D9;
+    width: 100vw;
+}
+
+.cart-info {
+    display: none;
+}
+
+.cart-info.show {
+    display: block;
+}
+
+.text-left-align{
+    justify-content: left;
+}
+
+header {
+    display: none;
+}
+header.show {
+    display: block;
+}
+
+.btn-menu {
+    width: 15px;
+    height: auto;
+    --lwc-colorTextDefault: #25683E;
+    --lwc-brandAccessibleActive:  #25683E;
+
+}
+
+.slds-button--icon-border,
+.slds-button--icon-border-filled,
+.slds-button--icon-border-inverse,
+.slds-button--icon-container,
+.slds-button--icon-container-more,
+.slds-button--icon-more,
+.slds-button_icon-border,
+.slds-button_icon-border-filled,
+.slds-button_icon-border-inverse,
+.slds-button_icon-brand,
+.slds-button_icon-container,
+.slds-button_icon-container-more,
+.slds-button_icon-more .field-size {
+    width: 2rem;
+    height: 2rem;
+}
+
+.field-size {
+    padding-top: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.slds-input {
+    width: 360px;
+}
+
+.empty-cart {
+    height: 24px;
+    width: 136px;
+    left: 130px;
+    top: 325px;
+    color: #444444;
+    position: absolute;
+    text-align: center;
+}
+
+.spinner {
+    --lwc-brandPrimary: #25683E;
+}
+
+@media only screen and (max-device-width: 480px) {
+    :host {
+        padding: 0 0;
+    }
+    .line-items-ctr-mob{
+        width: 100vw;
+        background-color: #fff;
+    }
+    .line-items-ctr-mob.on-record{
+        height: calc(120vh - 51px);
+    }
+    .line-items-ctr-mob.on-pi{
+        height: calc(120vh - 44px);
+    }
+    .line-items-mob{
+        overflow-y: auto;
+    }
+    .line-items-mob.on-record{
+        height: 100%;
+    }
+    .line-items-mob.on-pi{
+        height: calc(100% - 54px);
+    }
+}
+
+
+.cover-spin {
+    position:fixed;
+    width:100%;
+    left:0;right:0;top:0;bottom:0;
+    background-color: rgba(255,255,255,0.7);
+    z-index:9999;
+}
+
+@-webkit-keyframes spin {
+	from {-webkit-transform:rotate(0deg);}
+	to {-webkit-transform:rotate(360deg);}
+}
+
+@keyframes spin {
+	from {transform:rotate(0deg);}
+	to {transform:rotate(360deg);}
+}
+
+.cover-spin::after {
+    content:'';
+    display:block;
+    position:absolute;
+    left:48%;top:40%;
+    width:40px;height:40px;
+    border-style:solid;
+    border-color:black;
+    border-top-color:transparent;
+    border-width: 4px;
+    border-radius:50%;
+    -webkit-animation: spin .8s linear infinite;
+    animation: spin .8s linear infinite;
+}

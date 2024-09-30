@@ -1,0 +1,15 @@
+.dynamic-form-container {
+    overflow: hidden;
+    overflow-y: scroll;
+    background-color: #ffffff;
+  }
+  
+  .panel-title {
+    padding-left: 0;
+    padding-right: 3rem;
+    text-align: center;
+  }
+  
+  .panel-content {
+    position: fixed !important;
+  }

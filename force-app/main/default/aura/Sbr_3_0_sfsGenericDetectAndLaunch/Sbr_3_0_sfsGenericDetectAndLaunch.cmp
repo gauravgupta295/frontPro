@@ -1,0 +1,35 @@
+<aura:component implements="flexipage:availableForAllPageTypes,force:hasRecordId,lightning:isUrlAddressable">
+    <lightning:workspaceAPI aura:id="workspace" />
+    <aura:attribute name="recordError" type="String" description="An error message bound to force:recordData"/>
+    <aura:attribute name="fieldChange" type="String" description="Launch this flow when the record is edited and this field is changed"/>
+    <aura:attribute name="fieldValue" type="String" description="Launch this flow when the record is edited and this field equals this"/>
+    <aura:attribute name="compareType" type="String" description="Launch this flow when the record is edited and this field equals static value or dynamic from field"/>
+    <aura:attribute name="compareOperator" type="String" default="lt" description="Launch this flow when the record is edited and this field equals lt,gt,lte,gte,eq"/>
+    <aura:attribute name="toastType" type="String"/>
+    <aura:attribute name="toastMessage" type="String"/>
+    <aura:attribute name="toastTitle" type="String"/>
+    <aura:attribute name="ObjectRecord" type="Object"/>
+    <aura:attribute name="mode" type="string" default="dismissable"/>
+    <aura:attribute name="key" type="string"  default="info_alt"/>
+    <aura:attribute name="duration" type="string" default="10"/>
+    <aura:attribute name="urlLink" type="string"/>
+    <aura:attribute name="urlLabel" type="string"/>
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+    <aura:attribute name="fieldNameList" access="private" type="String[]" default="['Id']" />
+    <aura:attribute name="dataMap" type="string"/>
+    <aura:attribute name="fieldCompare" type="Object"/>
+    <aura:attribute name="operatorMap" type="Object"/>
+    <aura:attribute name="messageMap" type="Object"/>
+    <aura:attribute name="record" type="Object"/>
+
+    <aura:html tag="style">.toastMessage.forceActionsText{white-space : pre-line !important;}</aura:html>
+    <force:recordData aura:id="recordLoader"
+    fields="{!v.fieldNameList}"
+    recordId="{!v.recordId}"
+    targetError="{!v.recordError}"
+    recordUpdated="{!c.recordUpdated}"
+    targetFields="{!v.ObjectRecord}"
+    targetRecord ="{!v.record}"
+    mode="VIEW"/>
+
+</aura:component>

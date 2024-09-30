@@ -1,0 +1,19 @@
+:host {
+    --slds-c-modal-header-color-background:#008545;
+    --slds-c-modal-header-text-color:white;
+    --sds-c-checkbox-color-background-checked: #008545;
+    --sds-c-checkbox-mark-color-foreground: white;
+    --slds-c-button-success-color-background:#008545;
+
+}
+
+button{
+    height:32px;
+    width:56px;
+    color:white;
+   
+}
+
+.moveRight{
+    float:right;
+}

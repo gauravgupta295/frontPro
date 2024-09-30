@@ -1,0 +1,48 @@
+/* 
+   Set width for custom-small-input lightning-input
+   to 140px.
+*/
+.custom-small-input lightning-input {
+    width: 140px;
+}
+
+/* 
+   Set width for custom-medium-input lightning-input
+   to 140px.
+*/
+.custom-medium-input lightning-input {
+    width: 140px;
+}
+
+/* 
+   Use flexbox to create a grid layout with equal 
+   space between elements.
+*/
+.slds-grid {
+    display: flex;
+    justify-content: space-between;
+}
+
+/*  Front - 22271 */
+.totals{
+    width: 30% !important;
+}
+
+/* 
+   Set background color for elements with class payment-banner
+   to #f0f0f0.
+*/
+.payment-banner {
+    background-color: #f0f0f0;
+}
+
+/* 
+   Set background color for elements with class card-bgc
+   to #f0f0f0.
+*/
+.card-bgc {
+    --slds-c-card-color-background: #f0f0f0;
+}
+.slds-grid.slds-grid_align-end{
+    justify-content: flex-start !important;
+}

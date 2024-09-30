@@ -1,0 +1,131 @@
+<template>
+  <section role="dialog" class="mobile-container">
+    <div class="mobile-container-inner">
+      <div
+        class="slds-grid slds-border_bottom slds-grid_align-spread header-section"
+      >
+        <header class="slds-grid slds-var-p-around_small">
+          <h3 class="">
+            <span class="slds-truncate">{header}</span>
+          </h3>
+        </header>
+      </div>
+      <div class="content-section">
+        <div lwc:if={isLoading}>
+          <lightning-spinner
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+
+        <lightning-accordion
+          allow-multiple-sections-open
+          active-section-name={activeSections}
+          onsectiontoggle={handleSectionToggle}
+          lwc:if={asset}
+        >
+          <lightning-accordion-section
+            name="details"
+            label={asset.Product2.Name}
+            class="asset-accordion-section"
+            ><lightning-layout multiple-rows>
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Make:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.SM_PS_Make__c}</lightning-layout-item
+              >
+
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Model:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.SM_PS_Model__c}</lightning-layout-item
+              >
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Serial #:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.SM_PS_Serial_Number__c}</lightning-layout-item
+              >
+
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Year:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.SM_PS_Model_Year__c}</lightning-layout-item
+              >
+
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Hours:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.SM_PS_Year_to_Hours_Rent__c}</lightning-layout-item
+              >
+              <lightning-layout-item
+                size="4"
+                class="slds-var-p-vertical_x-small"
+                ><span class="attribute-label"
+                  >Qty:</span
+                ></lightning-layout-item
+              >
+              <lightning-layout-item
+                size="8"
+                class="slds-var-p-vertical_x-small"
+                >{asset.Quantity}</lightning-layout-item
+              >
+            </lightning-layout>
+          </lightning-accordion-section>
+          <lightning-accordion-section
+            name="description"
+            label="Description"
+            class="asset-accordion-section"
+            > <lightning-formatted-rich-text
+            value={asset.Description}
+        ></lightning-formatted-rich-text></lightning-accordion-section
+          >
+        </lightning-accordion>
+      </div>
+      <div class="footer-section">
+        <div class="">
+          <lightning-button
+            class="neutral-button"
+            label="Back"
+            name="back"
+            onclick={handleGoBack}
+          ></lightning-button>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>

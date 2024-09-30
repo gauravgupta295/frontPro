@@ -1,0 +1,15 @@
+<template>
+    <template lwc:if={isCheckboxField}>
+        <lightning-input type={fieldType} label={fieldLabel} checked={fieldValueBoolean} disabled={isDisabled}
+            required={isRequired} field-level-help={fieldLevelHelp} onchange={handleChange} data-id="fieldValueBoolean"></lightning-input>
+    </template>
+    <template lwc:elseif={isNumberField}>
+        <lightning-input type={fieldType} label={fieldLabel} value={fieldValueNumber} disabled={isDisabled}
+            required={isRequired} field-level-help={fieldLevelHelp} formatter={numberFormatter} decimal=2 step="any"
+            onchange={handleChange} data-id="fieldValueNumber"></lightning-input>
+    </template>
+    <template lwc:else>
+        <lightning-input type={fieldType} label={fieldLabel} value={fieldValueText} disabled={isDisabled}
+            required={isRequired} field-level-help={fieldLevelHelp} onchange={handleChange} data-id="fieldValueText"></lightning-input>
+    </template>
+</template>

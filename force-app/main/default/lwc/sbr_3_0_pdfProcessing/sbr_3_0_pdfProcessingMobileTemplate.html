@@ -1,0 +1,24 @@
+<template>
+    <template if:true={processing}>
+        <c-sbr_3_0_mobile-screen title={label.GeneratingPDF}>
+            <br />
+            <div style="padding-top: 43%;">
+                <div style="height:10rem;position:relative;">
+                    <div class="slds-spinner_container ">
+                        <div role="status" class="slds-spinner slds-spinner_large">
+                            <span class="slds-assistive-text">Loading</span>
+                            <div class="slds-spinner__dot-a"></div>
+                            <div class="slds-spinner__dot-b"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-p-left_x-large">
+                    <p>{label.PDFMessage}</p>
+                </div>
+            </div>
+        </c-sbr_3_0_mobile-screen>
+    </template>
+    <template if:true={success}>
+        <c-sbr_3_0_generate-pdf recid={recid}></c-sbr_3_0_generate-pdf>
+    </template>
+</template>

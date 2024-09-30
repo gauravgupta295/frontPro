@@ -1,0 +1,81 @@
+<template>
+  <div class="slds-section slds-is-close slds-m-bottom_none" data-id="Rates">
+    <template if:true={showSectionTitle}>
+      <h3 class="slds-section__title slds-theme_shade">
+        <button
+          type="button"
+          class="slds-button slds-section__title-action"
+          data-buttonid="Rates"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span class="slds-truncate slds-p-horizontal_small" title="Rates"
+            >Rates Qty: {itemQty}</span
+          >
+        </button>
+      </h3>
+    </template>
+    <div class={illustrationDisplayClass}>
+      <div class="slds-align_absolute-center slds-p-top_xx-small">
+        <c-sbr_3_0_illustration-cmp
+          message="Rates Unavailable"
+        ></c-sbr_3_0_illustration-cmp>
+      </div>
+      <div class="slds-align_absolute-center">
+        <template if:false={isMobile}>
+          <lightning-button
+            variant="base"
+            label="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}
+            icon-name="utility:refresh"
+            icon-position="right"
+            class="refresh-button"
+          >
+          </lightning-button>
+        </template>
+        <template if:true={isMobile}>
+          <lightning-button
+            variant="base"
+            label="Refresh"
+            title="Refresh"
+            onclick={handleRefresh}
+            icon-name="utility:refresh"
+            icon-position="right"
+            class="refresh-button-mobile"
+          >
+          </lightning-button>
+        </template>
+      </div>
+    </div>
+    <div class={ratesDisplayClass}>
+      <div aria-hidden="false" class="slds-section__content">
+        <div
+          class="slds-button-group rates-variant-group slds-m-vertical_small"
+          role="group"
+        >
+          <button class={suggBtnClass} value="Suggested" onclick={toggleRates}>
+            Suggested
+          </button>
+          <button class={targetBtnClass} value="Target" onclick={toggleRates}>
+            Target
+          </button>
+          <button class={floorBtnClass} value="Floor" onclick={toggleRates}>
+            Floor
+          </button>
+        </div>
+        <div>
+          <c-sbr_3_0_custom-table-cmp
+            rows={selectedVariantRows}
+            columns={tableColumns}
+          ></c-sbr_3_0_custom-table-cmp>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

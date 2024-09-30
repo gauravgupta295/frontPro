@@ -1,0 +1,240 @@
+<template>
+  <lightning-accordion-section
+    name={sectionName}
+    label={rentalItemsDynamicLabel}
+    class="accordianBorder"
+  >
+    <div
+      class="customBorderRadius slds-border_left slds-border_right slds-border_top slds-border_bottom"
+    >
+      <div class="slds-page-header page-header-padding">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media media-wrapper">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name={iconName}
+                  alternative-text={sectionName}
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body slds-m-top_xx-small">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span
+                        class="slds-page-header__title slds-truncate"
+                        title="Line Items"
+                        >{sectionName}</span
+                      >
+                    </h1>
+                  </div>
+                </div>
+              </div>
+              <div class="slds-page-header__col-actions">
+                <div class="slds-page-header__controls">
+                  <div class="slds-page-header__control">
+                    <lightning-button-group class="slds-p-right_xx-small">
+                      <lightning-button
+                        variant="brand-outline"
+                        label="Edit All"
+                        title="Edit All"
+                        data-name="removeItems"
+                        disabled={isEditAllDisabled}
+                      ></lightning-button>
+                      <lightning-button
+                        variant="brand-outline"
+                        label="Remove Item(s)"
+                        title="Remove Item(s)"
+                        data-name="removeItems"
+                        onclick={handleRemoveItemsToggle}
+                        disabled={_disableRemoveItem}
+                      ></lightning-button>
+                    </lightning-button-group>
+
+                    <div class="slds-button-group" role="group">
+                      <lightning-input
+                        type="search"
+                        data-source="searchItemsInputField"
+                        variant="label-hidden"
+                        onkeypress={handleQuickAddDesktop}
+                        placeholder={assetSearchPlaceholder}
+                      ></lightning-input>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <template lwc:if={isDataAvailable}>
+        <div class="slds-is-relative">
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+          ></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:else>
+        <div class="manual-override-section">
+          <c-sbr_3_0_custom-data-table-cmp
+            key-field="Id"
+            columns={rentalColumns}
+            data={rentalLineItems}
+            draft-values={draftValues}
+            hide-checkbox-column={isReadOnlyRecord}
+            errors={draftErrors}
+            resize-column-disabled
+            onrowaction={handleRowAction}
+            onsave={handleRowSave}
+            onrowselection={handleLineItemSelection}
+            class="quantityClassRental"
+            onnotesiconselected={handleRowNotesAction}
+          ></c-sbr_3_0_custom-data-table-cmp>
+          <template if:false={isRecordListNotEmpty}>
+            <lightning-card>
+              <div
+                class="slds-illustration slds-illustration_small backCl"
+                aria-hidden="true"
+              >
+                <img class="slds-illustration__svg" alt="" src={noItemUrl} />
+                <h3
+                  class="slds-text-heading_small noContImg slds-p-horizontal_medium"
+                >
+                  {LABELS.NO_RENTAL_ITEM_MSG}
+                </h3>
+              </div>
+            </lightning-card>
+          </template>
+        </div>
+      </template>
+    </div>
+    <template lwc:if={isReadOnlyRecord}>
+      <c-sbr_3_0_modal-cmp class="viewlineitemNotes" header="Line Item Notes">
+        <span slot="modalContent">
+          <div class="slds-grid slds-wrap slds-p-around_small">
+            <div class="slds-col">
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <div class="slds-output slds-p-vertical_medium">
+                    {lineItemNotes}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </span>
+      </c-sbr_3_0_modal-cmp>
+    </template>
+    <template lwc:else>
+      <c-sbr_3_0_modal-cmp
+        lwc:ref="notesModal"
+        class="editlineitemNotes"
+        header="Line Item Notes"
+        cancel-btn-label="Cancel"
+        save-btn-label="Confirm"
+        save-handler={updateOrderItemNotes}
+      >
+        <span slot="modalContent">
+          <lightning-textarea
+            name="notes"
+            label=""
+            data-name="notes"
+            value={lineItemNotes}
+            onchange={handleNotesChange}
+          >
+          </lightning-textarea>
+        </span>
+      </c-sbr_3_0_modal-cmp>
+    </template>
+
+    <!-- Start - This modal is used for Edit Line Item-->
+    <c-sbr_3_0_modal-cmp
+      lwc:ref="selectedRentalAssetContainerModal"
+      class="rentalassetcontainermodal"
+      header={modalHeader}
+      save-handler={handleConfirm}
+      save-btn-label="Confirm"
+      oncancelbutton={handleCloseModal}
+      close-btn-handler={handleCloseButtonClick}
+      type="dynamic"
+    >
+      <span slot="modalContent">
+        <c-sbr_3_0_item-search-select-asset-container-cmp
+          lwc:ref="editRentalLineItem"
+          selected-asset={selectedAssetRow}
+          origin="RentalEdit"
+          order-data={parentRecord}
+          is-confirm={isConfirm}
+        >
+        </c-sbr_3_0_item-search-select-asset-container-cmp>
+      </span>
+    </c-sbr_3_0_modal-cmp>
+    <!-- End - This modal is used for Edit Line Item-->
+
+    <!-- Start - This modal is used for Quick Add item-->
+    <c-sbr_3_0_modal-cmp
+      lwc:ref="quickAddRentalAssetContainerModal"
+      class="quickaddassetcontainermodal"
+      header={modalHeader}
+      save-handler={handleConfirm}
+      save-btn-label="Confirm"
+      oncancelbutton={handleCloseModal}
+      type="dynamic"
+    >
+      <span slot="modalContent">
+        <c-sbr_3_0_item-search-select-asset-container-cmp
+          lwc:ref="orderItemObject"
+          selected-asset={selectedAssetRow}
+          origin="QuickAdd"
+          order-data={parentRecord}
+          is-confirm={isConfirm}
+        >
+        </c-sbr_3_0_item-search-select-asset-container-cmp>
+      </span>
+      <div class="spinnerContainer">
+        <lightning-spinner
+          alternative-text="Loading"
+          size="medium"
+        ></lightning-spinner>
+      </div>
+    </c-sbr_3_0_modal-cmp>
+    <!-- End - This modal is used for Quick Add item-->
+  </lightning-accordion-section>
+  <!--FRONT-20111 Testing code-->
+  <c-sbr_3_0_modal-cmp
+    lwc:ref="selectedItemRemoveModal"
+    header="Remove Item(s)"
+    selected-remove-item={selectedAssetRow}
+    save-handler={removeLineItem}
+    save-btn-label="Remove Item(s)"
+    cancel-btn-label="Cancel"
+    props={props}
+    uuid="selectedItemRemoveModal"
+  >
+    <span slot="modalContent">
+      <p class="slds-align_absolute-center">{LABELS.REMOVE_ITEM_MSG}</p>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+  <!--START Front-28588 for Bulk Remove Item(s)-->
+  <c-sbr_3_0_modal-cmp
+    variant="fitLarge"
+    lwc:ref="selectedAllItemRemoveModal"
+    header="Remove Item(s)"
+    save-handler={handleRemoveSelectedLineItems}
+    save-btn-label="Remove Item(s)"
+    cancel-btn-label="Go Back"
+    oncancelbutton={handleRemoveItemsCloseModal}
+    close-btn-handler={handleRemoveItemsCloseButtonClick}
+  >
+    <span slot="modalContent">
+      <c-sbr_3_0_contract-line-items-bulk-remove
+        lwc:ref="itemBulkRemove"
+        selected-rows={selectedRows}
+        line-items-cols={lineItemsCols}
+        is-confirm={isConfirm}
+      ></c-sbr_3_0_contract-line-items-bulk-remove>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+  <!--END Front-28588 for Bulk Remove Item(s)-->
+</template>

@@ -1,0 +1,157 @@
+.headersection{
+    margin-bottom: 16px;
+}
+.panelSection{
+    background-color: white;
+    padding: 10px;
+    border: 1px solid lightgray;
+    border-top: 0px;
+}
+.slds-page-header{
+    border-radius: 0px;
+}
+.currencyIcon{
+     background-color: var(--slds-c-button-brand-color-background, var(--sds-c-button-brand-color-background, var(--lwc-brandAccessible,rgb(1, 118, 211))));
+}
+.inputReadonly{
+    border: 1px solid lightgray;
+    background-color: rgb(243, 243, 243);
+    border-radius: 5px;
+    font-size: 16px;
+}
+.inputReadonly p{
+    color: gray;
+    padding: 8px 16px;
+}
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.main-container {
+    width: 1250px; /* Fixed width */
+    margin: 0 auto; /* Center the container */
+    position: relative;
+    overflow-y: auto;
+    height: 100%;
+}
+
+/* Disable user scaling by setting the maximum-scale to 1 */
+meta[name="viewport"] {
+    content: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
+}
+
+.inputReadonly1{
+    border: 1px solid lightgray;
+    background-color: rgb(243, 243, 243);
+    border-radius: 5px;
+}
+.inputReadonly1 p{
+    color: gray;
+    padding: 8px 16px;
+}
+
+.labelgroup{
+    display: inline-flex;
+    justify-content: space-between;
+    padding-right: 10px;
+}
+.readonlyfields{
+    padding-right: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid lightgray;
+    text-align: right;
+}
+.slds-button_neutral{
+    border: 1px solid green;
+    width:150px;
+    height: 36px;
+}
+.slds-button_neutral.hidebtn{
+    border: 1px solid lightgray;
+}
+.modalcancel{
+    width: initial;
+}
+.slds-modal__container{
+    width: 35%;
+}
+.custom-modal-header {
+    /* Define a custom property for the modal header background color with a repeating linear gradient */
+    --slds-c-modal-header-color-background: repeating-linear-gradient(
+        45deg,
+        #ba2200,
+        #ba2200 5%,
+        #ab240c 5%,
+        #ab240c 10%
+    );
+    
+    /* Apply the background color using the custom property */
+    background: var(--slds-c-modal-header-color-background);
+    
+    /* Set the text color to white */
+    color: white;
+    
+    /* Set the font size to 18 pixels */
+    font-size: 18px;
+    
+    /* Remove default margins */
+    margin: 0;
+    
+    /* Set padding to 20 pixels on all sides */
+    padding: 20px;
+  }
+  .custom-model-content{
+    text-align: center;
+    font-size: 18px;
+  }
+  .custom-model-content-todaytill{
+    text-align: center;
+    font-size: 16px;
+  }
+  .startdrawerwarning{
+    display: flex;
+    padding: 12px;
+    background: #FE9339;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 24px;
+    text-align: left;
+   color: #181818;
+}
+
+.headrer-bgc {
+    background-color: #F2F2F2 !important;
+    display: block;
+    border:0.5px solid#c0bfbf;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.important-box {
+    max-width: 80rem !important;
+    width: 70% !important;
+    height: 110%;
+}
+.removebtn{
+    color: var(--slds-g-color-error-base-40, var(--lwc-colorTextError,rgb(234, 0, 30)));
+    border: 1px solid lightgray;
+    padding: 8px 16px;
+}
+
+.totalError{
+    padding-left: 267px;
+}
+.errorborder{
+    border: 1px solid var(--slds-g-color-error-base-40, var(--lwc-colorTextError,rgb(234, 0, 30)));
+    box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.19);
+}
+.startdrawermodelclass{
+    max-width : 28rem;
+    min-width : 26rem;
+    }

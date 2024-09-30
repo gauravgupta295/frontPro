@@ -1,0 +1,118 @@
+<template>
+	<lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}
+		active-section-name={activeSections}>
+		<lightning-accordion-section name="A" label="Reservation Fulfillment Sourcing">
+			<template for:each={FulfillmentSourcingData} for:item="item">
+				<div class="item-class" key={item.id}>
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Branch
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Branch}
+						</lightning-layout-item>
+					</lightning-layout>
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Distance (Miles)
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Distance}
+						</lightning-layout-item>
+					</lightning-layout>
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Fulfillment %
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Fulfillment}
+						</lightning-layout-item>
+					</lightning-layout>
+				</div>
+			</template>
+
+		</lightning-accordion-section>
+
+		<lightning-accordion-section name="B" label="Cat-Class Fulfillment Sourcing">
+
+
+			<template for:each={catClassData} for:item="item">
+				<div class="item-class" key={item.id}>
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Branch
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Branch}
+						</lightning-layout-item>
+					</lightning-layout>
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Req | Alt
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Req_Alt}
+						</lightning-layout-item>
+					</lightning-layout>
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Cat-Class
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Cat_Class}
+						</lightning-layout-item>
+					</lightning-layout>
+
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-label" size="5">Distance (Miles)
+						</lightning-layout-item>
+
+						<lightning-layout-item class="asset-info" size="7">{item.Distance}
+						</lightning-layout-item>
+					</lightning-layout>
+
+					<lightning-layout>
+						<lightning-layout-item class="asset-info" size="5">
+							<template if:true={item.View_More}>
+								<span class="custom-label" onclick={viewMore} data-value={item.id}>View More</span>
+							</template>
+
+							<template if:true={item.View_Less}>
+								<span class="custom-label" onclick={viewLess} data-value={item.id}>View Less</span>
+							</template>
+						</lightning-layout-item>
+					</lightning-layout>
+
+
+					<template if:true={item.View_Less}>
+						<lightning-layout>
+							<lightning-layout-item class="asset-label" size="5">Description
+							</lightning-layout-item>
+							<lightning-layout-item class="asset-info" size="7">{item.Description}
+							</lightning-layout-item>
+						</lightning-layout>
+
+						<lightning-layout>
+							<lightning-layout-item class="asset-label" size="5">Avail
+							</lightning-layout-item>
+							<lightning-layout-item class="asset-info" size="7">{item.Avail}
+							</lightning-layout-item>
+						</lightning-layout>
+
+						<lightning-layout>
+							<lightning-layout-item class="asset-label" size="5">Inv. Type
+							</lightning-layout-item>
+							<lightning-layout-item class="asset-info" size="7">{item.Inv_Type}
+
+							</lightning-layout-item>
+						</lightning-layout>
+					</template>
+
+
+
+				</div>
+			</template>
+		</lightning-accordion-section>
+
+
+	</lightning-accordion>
+</template>

@@ -1,0 +1,880 @@
+<template>
+    <div class="main-container">
+    <!-- Refresh Cards -->
+    <template if:true={isRefreshCards}> 
+        <template if:true={isProcessingRefresh}>
+            <div class="payment-processing-container">
+                <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">Refreshing Till</h2>
+                        </div>
+                        <div class="custom-modal-content slds-modal__content">
+                            <br />
+                            <p style="text-align: center;">Please wait while the till is refreshed.</p>
+                            <br /><br />
+                            <div style="height:5rem;position:relative">
+                                <div class="slds-spinner_container">
+                                    <div role="status" class="slds-spinner slds-spinner_large">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+        <template if:true={isRefreshFailed}>
+            <div class="payment-processing-failed">
+                <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small ">
+                  <div class="slds-modal__container">
+                      <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                        title="Close" onclick={handleRefreshCardsBack}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                          size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                      </button>
+            
+                      <header class="slds-modal__header custom-modal-header">
+                        <h2 class="slds-text-heading_medium">Refresh Failed</h2>
+                      </header>
+                      <div class="slds-modal__content custom-modal-content">
+                        <br />
+                        <p class="slds-text-align_center slds-p-right_large">Till failed to refresh.</p>
+                        <br /><br />
+                      </div>
+                      <footer class="slds-modal__footer slds-text-align_right">
+                        <lightning-button label="Go Back" variant="neutral" onclick={handleRefreshCardsBack}></lightning-button>
+                        <lightning-button class="slds-p-left_medium" label="Try Again" variant="brand"
+                          onclick={handleRefreshCardsTryAgain}></lightning-button>&nbsp;&nbsp;
+                      </footer>     
+                  </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+              </div>
+        </template>
+    </template>
+
+    <template if:true={isEndOfDayTill}> 
+        <div class="headersection">
+            <div class="slds-page-header slds-page-header_record-home">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media">
+                            <div class="slds-media__figure">
+                                <lightning-icon icon-name="standard:currency" class="currencyIcon" size="medium" alternative-text="Contact"></lightning-icon>
+                            </div>
+                            <div class="slds-media__body" style="line-height: 16px;">
+                                <span  title='End of Day Till'>End of Day Till</span>
+                                <br /><b><span style="font-size: 16px;">Details</span></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__col-actions">
+                        <div class="slds-page-header__controls">
+                            <div class="slds-page-header__control">
+                                <lightning-button-group>
+                                    <template if:false={submittedRec}>
+                                    <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                                    <lightning-button label="Refresh Till" onclick={handleRefreshTill}></lightning-button>
+                                    <lightning-button label="Save & Exit" onclick={handleSave}></lightning-button>
+                                    <lightning-button label="Submit" onclick={handleSubmit}></lightning-button>
+                                    </template>
+                                    <!-- We can add drop down if needed 
+                                    <lightning-button-menu alternative-text="Show menu" variant="border-filled" menu-alignment="right">
+                                        <lightning-menu-item label="Menu Item One" value="item1"></lightning-menu-item>
+                                    </lightning-button-menu>
+                                    -->
+                                </lightning-button-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>  
+            <div class="panelSection">
+                <p class="slds-p-bottom_small">Date</p>
+                <p>{selectedformateddate}</p>
+            </div>
+                
+        </div>
+        
+        <div class="slds-card slds-grid slds-p-around_medium mainsection">
+            <div class="slds-col slds-size_6-of-12">
+                <template if:false={submittedRec}>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12 labelgroup">
+                
+                        <p class="slds-p-top_x-small"><abbr class="slds-required" title="required">*</abbr>{fields.Total_Currency__c}</p>
+                        <button onclick={handleEnterCurrency} class="slds-button slds-button_neutral">Enter Currency</button>
+                    </div>
+                    
+                    <div if:false={CurrencyEntered} class="slds-col slds-size_6-of-12 validatecurrency">
+                       <div class={currencyvalidationstyle}>
+                       <p class="slds-text-align_right"><i>{subTotalCurrencyMessage}</i></p>
+                       </div>
+                       <div if:true={currencyvalidation} class="slds-text-color_error slds-p-top_xx-small">Please enter total currency.</div>
+                    </div>
+                   
+                    <div if:true={CurrencyEntered} class="slds-col slds-size_6-of-12 inputReadonly1">
+                        <p class="slds-text-align_right">{subTotalCurrency}</p>
+                     </div>
+                     
+                </div>
+               
+                </template>
+                <template if:true={submittedRec}>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Total_Currency__c}</p>         
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{subTotalCurrency}</p>
+                    </div>
+                </div>
+                </template>
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small"><abbr class="slds-required" title="required">*</abbr>{fields.Total_Checks__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input type="number" formatter="currency" min="0" message-when-range-underflow="Please enter value greater than or equal to 0" value={totalchecks} class="inputnolabel validate" required="true" onchange={handleTotalChecks}  step=".01" message-when-value-missing="Please enter total checks."></lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small">{fields.Total_Checks__c}</p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <p class="readonlyfields"><lightning-formatted-number value={totalchecks} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div>
+                </template>
+               
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small"><abbr class="slds-required" title="required">*</abbr>{fields.Total_ROA_Checks__c}  <lightning-helptext content="ROA checks MUST be equal to the total in the Cash ROA Control details below."></lightning-helptext></p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input type="number" formatter="currency" min="0" message-when-range-underflow="Please enter value greater than or equal to 0" value={totalRoaChecks} class="inputnolabel validate" required="true" onchange={handleTotalRoaChecks} step=".01" message-when-value-missing="Please enter total ROA checks."></lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small">{fields.Total_ROA_Checks__c}</p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <p class="readonlyfields"><lightning-formatted-number value={totalRoaChecks} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div>
+                </template>
+               
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12 labelgroup">                
+                            <p class="slds-p-top_x-small">{fields.Total_Credit_Cards__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="readonlyfields"> <lightning-formatted-number value={TotalCreditCards} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                         </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small">{fields.Total_Credit_Cards__c}</p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <p class="readonlyfields"><lightning-formatted-number value={TotalCreditCards} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div>
+                </template>
+               
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Total_Drawer__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields"> <lightning-formatted-number value={TotalDrawer} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                    </div>
+                </div>
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12 labelgroup">
+                            <p class="slds-p-top_x-small"><abbr class="slds-required" title="required">*</abbr>{fields.Start_Drawer__c}</p>
+                            <button onclick={handleStartDrawer} class="slds-button slds-button_neutral">Edit Start Drawer</button>
+                        </div>
+                        <div if:true={finalStartDrawerValue} class="slds-col slds-size_6-of-12 inputReadonly1">
+                            <p class="slds-text-align_right">
+                             <lightning-formatted-number value={finalStartDrawerValue} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                        <div if:false={finalStartDrawerValue} class="slds-col slds-size_6-of-12 inputReadonly">
+                           <p class="slds-text-align_right">
+                           <lightning-formatted-number value={finalStartDrawerValue} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small">{fields.Start_Drawer__c}</p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <p class="readonlyfields"> <lightning-formatted-number value={finalStartDrawerValue} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div> 
+                </template>
+              
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                       <b> <p class="slds-p-top_small">{fields.Total_Transaction__c}  <lightning-helptext content="Total of the Total Currency, Total Checks, Total ROA Checks, and
+                         Total Credit Cards minus the Start Drawer amount."></lightning-helptext></p></b>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                      <b><p class="readonlyfields"><lightning-formatted-number value={TotalTransactions} format-style="currency" currency-code="USD"></lightning-formatted-number></p></b>
+                    </div>
+                </div>
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                    
+                            <p class="slds-p-top_x-small"><abbr class="slds-required" title="required">*</abbr>{fields.Next_Day_Drawer__c}</p>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-input type="number" min="0" message-when-range-underflow="Please enter value greater than or equal to 0" value={nextDayDrawer} class="inputnolabel validate" required="true" onchange={handleNextDayDrawer} formatter="currency" step="0.01"  message-when-value-missing="Please enter next day drawer."></lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <p class="slds-p-top_small">{fields.Next_Day_Drawer__c}</p>
+                           
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <p class="readonlyfields"><lightning-formatted-number value={nextDayDrawer} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                    </div> 
+                </template>
+    
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <b><p class="slds-p-top_small">{fields.Total_Deposit__c}</p></b>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                      <b> <p class="readonlyfields"><lightning-formatted-number value={TotalDeposits} format-style="currency" currency-code="USD"></lightning-formatted-number></p></b>
+                    </div>
+                </div>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Less_Auto_Deposit__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields"><lightning-formatted-number value={LessAutoDeposits} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Less_ROA__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields"><lightning-formatted-number value={LessROAAutoDeposits} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <b><p class="slds-p-top_small">{fields.Total_Deposit_in_Bank__c}</p></b>
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <b><p class="readonlyfields"><lightning-formatted-number value={TotalDepostInBank} format-style="currency" currency-code="USD"></lightning-formatted-number></p></b>
+                    </div>
+                </div>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Status__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{statusValue}</p>
+                    </div>
+                </div>
+                <template if:false={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12 labelgroup">
+                    
+                            <p class="slds-p-top_x-small"><abbr class="slds-required" title="required">*</abbr>{fields.Adjustments_Accounted_For__c}</p>
+                            <button if:true={hideReasonbtn} class="slds-button slds-button_neutral hidebtn"  disabled = {hideReasonbtn}>Enter Reasons</button>
+                            <button if:false={hideReasonbtn} onclick={handleEnterReasons} class="slds-button slds-button_neutral">Enter Reasons</button>
+                        </div>
+                        <div if:true={reasonsValue} class="slds-col slds-size_6-of-12 inputReadonly1">
+                           <p class="slds-text-align_right"><lightning-formatted-number value={reasonsValue} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                        </div>
+                        <div if:false={reasonsValue} class="slds-col slds-size_6-of-12">
+                            <div class={reasonsvalidationstyle}>
+                                <p class="slds-text-align_right"><i>{reasonsMessage}</i></p>
+                                </div>
+                                <div if:true={reasonsvalidation} class="slds-text-color_error slds-p-top_xx-small">Please enter reasons.</div>
+                         </div>
+                    </div>
+                </template>
+                <template if:true={submittedRec}>
+                    <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                        <div class="slds-col slds-size_6-of-12">
+                            <b><p class="slds-p-top_small">{fields.Adjustments_Accounted_For__c}</p></b>
+                        </div>
+                        <div class="slds-col slds-size_6-of-12">
+                           <b><p class="readonlyfields"><lightning-formatted-number value={adjustmentsAccountedFor} format-style="currency" currency-code="USD"></lightning-formatted-number></p></b>
+                        </div>
+                    </div>
+                </template>
+              
+            </div>   
+            <div class="slds-col slds-size_6-of-12">
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Received_on_Charge_Account__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{ReceivedOnChargeAccount}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Cash_Sales__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{CashSales}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Deposits_Applied_Refunded__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{DepositsAppliedRefunded}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Uncollected__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{Uncollected}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Wire_Transfer__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{WireTransfers}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Net_Cash_From_Invoice__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{NetCashFromInvoice}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Deposits_Taken__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{DepositsTaken}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Refunds_Not_Given__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{RefundsNotTaken}</p>
+                    </div>
+                </div>
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Inter_Location_Cash__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{InterLocationCash}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Total_Cash__c}</p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{TotalCash}</p>
+                    </div>
+                </div> 
+                <div class="slds-grid slds-p-horizontal_medium slds-p-vertical_x-small">
+                    <div class="slds-col slds-size_6-of-12">
+                        <p class="slds-p-top_small">{fields.Total_Transactions_System__c}  <lightning-helptext content="Total of Received on Charge Account, Cash Sales, and Deposits Taken minus Deposits Applied/Refunded and accounting for any over/short amount."></lightning-helptext></p>
+                       
+                    </div>
+                    <div class="slds-col slds-size_6-of-12">
+                       <p class="readonlyfields">{TotalTransactionsystem}</p>
+                    </div>
+                </div> 
+            </div>
+    
+      </div>
+      
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class={modalClass}>
+        <div class="slds-modal__container">
+            <header class="slds-modal__header custom-modal-header" style="background-color: red; color:white">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Unable to {errorlabel}</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_large custom-model-content" id="modal-content-id-1">
+                <p>Till must be in balance before {errorlabel1}.</p>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand" onclick={goBack} title="Go Back">Go Back</button>
+            </footer>
+        </div>
+    </section>
+    <div class={backdropClass}></div>    
+    
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class={todaytillmodelclass}>
+        <div class="slds-modal__container startdrawermodelclass">
+            <header class="slds-modal__header custom-modal-header" style="background-color: red; color:white">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-05" class="slds-text-heading_medium slds-hyphenate">Unable to Submit</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_large" id="modal-content-id-5">
+                <p>{tillTodayMessage}</p>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button
+                class="slds-button"
+                variant="neutral"
+                label="Go Back"
+                onclick={goBack}
+            ></lightning-button>
+              
+                <lightning-button
+                    class="slds-button slds-m-left_x-small"
+                    variant="brand"
+                    label="Save as Draft"
+                    onclick={handleSave}
+                ></lightning-button>
+                </footer>
+            </footer>
+        </div>
+    </section>
+    <div class={todaytillbackdropClass}></div>   
+
+
+
+    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class={inbalancemodelclass}>
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Enter Password</h2>
+            </header>
+    
+                <div class="slds-modal__content slds-p-around_large slds-text-align_left" id="modal-content-id-2">
+                    <p class="slds-p-bottom_large">By entering your Salesforce password and submitting, you certify that the amounts for this till have been counted and reported to the best of your knowledge.</p>
+                    <abbr class="slds-required" title="required">* </abbr>Salesforce Password
+                    <lightning-input class="validatepassword slds-p-top_xx-small" type="password" value={userpswd} onchange={savePassword}></lightning-input>
+                    <template if:true={passworderror}><p class="slds-text-color_error slds-p-top_xx-small">{PswdErrorMessage}</p></template>
+                </div>  
+            <footer class="slds-modal__footer">
+                <lightning-button
+                class="slds-button"
+                variant="neutral"
+                label="Cancel"
+                onclick={closeModal}
+            ></lightning-button>
+            <lightning-button
+                class="slds-button slds-m-left_x-small"
+                variant="brand"
+                label="Submit"
+                onclick={finalSubmit}
+            ></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class={inbalancebackdropClass}></div>   
+    <section role="dialog" tabindex="-1" aria-modal="true" class={startdrawerclass}>
+        <div class="slds-modal__container startdrawermodelclass">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium slds-hyphenate">Edit Start Drawer</h2>
+            </header>
+            <div class="startdrawerwarning">
+                <svg class="slds-icon slds-icon_small" focusable="false" data-key="warning" aria-hidden="true" viewBox="0 0 520 520" part="icon"><g><path fill="black" d="M514 425L285 55a28 28 0 00-50 0L6 425c-14 23 0 55 25 55h458c25 0 40-32 25-55zm-254-25c-17 0-30-13-30-30s13-30 30-30 30 13 30 30-13 30-30 30zm30-90c0 6-4 10-10 10h-40c-6 0-10-4-10-10V180c0-6 4-10 10-10h40c6 0 10 4 10 10v130z"></path></g></svg>
+                <P class="slds-m-left_small">Start drawer should only be edited when absolutely<br/> necessary. Ensure the previous day's next day drawer<br/> does not match the start drawer before changing.</P>
+            </div>
+                <div class="slds-modal__content slds-p-around_large slds-text-align_left">
+                   
+                    <lightning-input label="Start Drawer" class="validatestartdrawer" type="number"   min="0" message-when-range-underflow="Please enter value greater than or equal to 0" value={finalStartDrawerValue} required="true" formatter="currency" step="0.01" onchange={updateStartDrawer} message-when-value-missing="Please enter amount."></lightning-input>
+                </div>  
+            <footer class="slds-modal__footer">
+                <lightning-button
+                class="slds-button"
+                variant="neutral"
+                label="Cancel"
+                onclick={closeModal}
+            ></lightning-button>
+            <lightning-button
+                class="slds-button slds-m-left_x-small"
+                variant="brand"
+                label="Save"
+                onclick={submitStartDrawer}
+            ></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class={startdrawerbackdropClass}></div>   
+    
+<!--Enter currencies-->
+    <section role="dialog" tabindex="-1" aria-modal="true" class={entercurrencyclass}>
+        <div class="slds-modal__container important-box">
+            <header class="slds-modal__header">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <h2 class="slds-text-heading_medium slds-hyphenate">Amounts by Currency Denomination</h2>
+            </header>
+                <div class="slds-modal__content custom-modal-content slds-p-around_large slds-text-align_left">
+                        <p>Please enter the total value for each bill NOT the number of bills.
+                            For example, if you have four $20 bills you would enter $80 in the $20 Bills Amount field.</p>
+                        <br /><br />
+    
+                        <div class="slds-card slds-grid">
+                            <!-- Left Side Input Boxes -->
+                            <div class="slds-col slds-size_6-of-12">
+                                <!-- $100 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="hundredBillAmountid">*</abbr>$100 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="hundredBillAmountid" name="Drawer_Bills_Hundred__c" type="number" value={Currencies.Drawer_Bills_Hundred__c}
+                                         onchange={currencyChangeHandler}
+                                            formatter="currency" step="0.01" class="inputnolabel validate"></lightning-input>
+                                    
+                                    </div>
+                                </div>
+                                <br/>
+                                <!-- $50 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="fiftyBillAmountid">*</abbr>$50 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="fiftyBillAmountid" name="Drawer_Bills_Fifty__c" type="number" value={Currencies.Drawer_Bills_Fifty__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+                                <!-- $20 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="twentyBillAmountid">*</abbr>$20 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="twentyBillAmountid" name="Drawer_Bills_Twenty__c" type="number" value={Currencies.Drawer_Bills_Twenty__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- $10 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="tenBillAmountid">*</abbr>$10 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="tenBillAmountid" name="Drawer_Bills_Ten__c" type="number" value={Currencies.Drawer_Bills_Ten__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- $5 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="fiveBillAmountid">*</abbr>$5 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="fiveBillAmountid" name="Drawer_Bills_Five__c" type="number" value={Currencies.Drawer_Bills_Five__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- $2 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="twoBillAmountid">*</abbr>$2 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="twoBillAmountid" name="Drawer_Bills_Two__c" type="number" value={Currencies.Drawer_Bills_Two__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- $1 Bills Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="oneBillAmountid">*</abbr>$1 Bills Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="oneBillAmountid" name="Drawer_Bills_One__c" type="number" value={Currencies.Drawer_Bills_One__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+    
+                            </div>
+    
+                            <!-- Right Side Input Boxes -->
+                            <div class="slds-col slds-size_6-of-12" style="margin-left: 10px;">
+                                <!-- $1 Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="oneCoinAmountid">*</abbr>$1 Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="oneCoinAmountid" name="Drawer_Coins_One__c" type="number" value={Currencies.Drawer_Coins_One__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- 50¢ Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="fiftyCoinAmountid">*</abbr>50¢ Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="fiftyCoinAmountid" name="Drawer_Coins_Fifty__c" type="number" value={Currencies.Drawer_Coins_Fifty__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- 25¢ Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="twentyFiveCoinAmountid">*</abbr>25¢ Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="twentyFiveCoinAmountid" name="Drawer_Coins_Quarter__c" type="number"
+                                            value={Currencies.Drawer_Coins_Quarter__c} class="inputnolabel validate"
+                                            onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- 10¢ Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="tenCoinAmountid">*</abbr>10¢ Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="tenCoinAmountid" name="Drawer_Coins_Dime__c" type="number" value={Currencies.Drawer_Coins_Dime__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- 5¢ Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="fiveCoinAmountid">*</abbr>5¢ Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="fiveCoinAmountid" name="Drawer_Coins_Nickel__c" type="number" value={Currencies.Drawer_Coins_Nickel__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+    
+                                <!-- 1¢ Coins Amount -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small"><abbr class="slds-required" title="required"
+                                                for="CoinCentAmountid">*</abbr>1¢ Coins Amount</p>
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                        <lightning-input id="CoinCentAmountid" name="Drawer_Coins_Penny__c" type="number" value={Currencies.Drawer_Coins_Penny__c}
+                                        class="inputnolabel validate" onchange={currencyChangeHandler} formatter="currency"
+                                            step="0.01"></lightning-input>
+                                    </div>
+                                </div><br/>
+                                 <!-- Sub Total Currency -->
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_5-of-12">
+                                        <p class="slds-p-top_small">Subtotal Currency</p>
+                                       
+                                    </div>
+                                    <div class="slds-col slds-size_7-of-12">
+                                       <p class="readonlyfields">{subTotalCurrency}</p>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </div>
+              </div>  
+            <footer class="slds-modal__footer">
+                <lightning-button
+                class="slds-button"
+                variant="neutral"
+                label="Cancel"
+                onclick={closeModal}
+            ></lightning-button>
+            <lightning-button
+                class="slds-button slds-m-left_x-small"
+                variant="brand"
+                label="Save"
+                onclick={submitCurrencies}
+            ></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class={entercurrencybackdropClass}></div> 
+<!--Enter currencies end-->
+
+<!--Enter Reasons Start-->
+ 
+<section role="dialog" tabindex="-1" aria-modal="true" class={enterReasonsClass}>
+    <div class="slds-modal__container">
+        <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse" size="small"></lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 class="slds-text-heading_medium slds-hyphenate">Over/Short Reasons</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_large slds-text-align_left">
+            <P>Please enter the amounts and the reasons.</P> 
+            <template for:each={reasons} for:item="reason" for:index="index">
+                <div key={reason.id}>
+                    <div class="slds-col">
+                        <lightning-radio-group class="reasonsRadio slds-p-top_medium validatereasons" name={reason.id} label="Reason" value={reason.selectedReason} options={reasonOptions}  onchange={handleReasonChange} data-id={reason.id} data-field="selectedReason"></lightning-radio-group>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-p-right_medium">
+                            <lightning-input type="number" class="slds-p-top_small validatereasons" formatter="currency" step="0.01" label="Amount" value={reason.amount} onchange={handleReasonChange} data-id={reason.id} data-field="amount" message-when-value-missing="Please enter amount." required></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2">
+                            <lightning-input type="text" label="Comment" class="slds-p-top_small validatereasons" maxlength="30" value={reason.comments} onchange={handleReasonChange} data-id={reason.id} data-field="comments" message-when-value-missing="Please enter comment." required></lightning-input>
+                        </div>
+                    </div>
+                    <div class="slds-col">
+                        <template if:true={index}>
+                            <lightning-button class="reasonbtn" variant="destructive-text"  icon-name="utility:delete"  label="Remove" onclick={handleRemoveReason} data-id={reason.id}></lightning-button>
+                        </template>
+                    </div>
+                </div>
+            </template>
+            <template if:true={reasonlimit}>
+                <lightning-button class="reasonbtn" label="+ Add Another Reason" onclick={handleAddReason}></lightning-button>
+            </template>
+         
+            
+            <div class="slds-grid slds-p-top_large">
+                <div class="slds-col slds-size_1-of-2">
+                    <p>Total Accounted For</p>
+                </div>
+                <div class="slds-col slds-size_1-of-2 readonlyfields">
+                    <p class="slds-p-right_small"> <lightning-formatted-number value={totalReasonsAmount1} format-style="currency" currency-code="USD"></lightning-formatted-number></p>
+                </div>
+             
+            </div>
+            
+        </div>  
+        <footer class="slds-modal__footer">
+            <lightning-button
+            class="slds-button"
+            variant="neutral"
+            label="Cancel"
+            onclick={closeModal}
+        ></lightning-button>
+        <lightning-button
+            class="slds-button slds-m-left_x-small"
+            variant="brand"
+            label="Save"
+            onclick={submitReasons}
+        ></lightning-button>
+        </footer>
+    </div>
+</section>
+<div class={enterReasonsbackdropClass}></div> 
+<!--Enter Reasons End-->
+    <div class="slds-p-top_small">
+        <lightning-card>
+            <template if:true={openEndOfDayTab}><!--FRONT-32190-->
+                <c-sbr3_0_end-of-day-till-tab till-detail-id={tillDetailId} amounts-by-credit-card={amountsByCreditCard}
+                    get-till-summary-response={getTillSummaryResponse} branch-location-number={branchLocationNumber} 
+                    branch-company-id={branchCompanyId} selected-date={selectedDate}></c-sbr3_0_end-of-day-till-tab>
+            </template>
+        </lightning-card>
+    </div>
+    
+    </template>
+    </div>
+</template>

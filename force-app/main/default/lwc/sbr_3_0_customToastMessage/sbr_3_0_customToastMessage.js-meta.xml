@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+      <apiVersion>52.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="displayWarningToast" label="is warning toast" type="Boolean"/>
+            <property name="errmsg" label="message" type="String"/>
+            <property name="errmsg2" label="message 2" type="String"/>
+            <property name="email" label="support email" type="String"/>
+            <property name="isWarning" label="is Warning msg" type="Boolean"/>
+            <property name="displayFullWidth" label="display full width ?" type="Boolean"/>
+            <property name="errtitle" label="title" type="String"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

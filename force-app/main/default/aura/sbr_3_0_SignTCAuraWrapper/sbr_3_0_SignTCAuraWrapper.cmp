@@ -1,0 +1,16 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName"
+>
+  <aura:html tag="style">
+    .slds-modal__content{ height:unset !important; max-height:unset !important;
+    }.slds-modal__content.slds-p-around--medium { padding: 0rem !important;
+    }.cuf-content { padding: 0 0rem !important; }
+    .modal-container.slds-modal__container{ width: 80% !important; max-width:
+    80rem !important; }.forceChatterPublisherPresentationMobile .cuf-scroller-inside{padding : 0 !important}
+  </aura:html>
+  <c:sbr_3_0_SignTCCmp
+    recordId="{!v.recordId}"
+    sObjectName="{!v.sObjectName}"
+    oncloseaction="{!c.handleCloseAction}"
+  ></c:sbr_3_0_SignTCCmp>
+</aura:component>

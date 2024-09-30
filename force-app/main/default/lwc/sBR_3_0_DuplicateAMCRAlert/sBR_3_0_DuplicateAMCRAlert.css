@@ -1,0 +1,19 @@
+.alert-box {
+    background-color: #FF8C00;
+    padding: 25px;
+    height: 10px;
+    text-align: bottom;
+}
+
+.alert-symbol {
+    font-size: 35px;
+    color: black;
+    margin-top:-20px;
+    margin-left:-10px;
+}
+
+.text-style{
+margin-top: -35px;
+margin-left: 45px;
+font-size: 14px;
+}

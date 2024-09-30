@@ -1,0 +1,169 @@
+<template>
+  <!-- 11395 -->
+  <!-- <template if:true={isSalesTabPage}> -->
+  <div class="slds-page-header header-mob bgcolor">
+    <template if:false={showSpinner}>
+      <lightning-spinner
+        variant="brand"
+        size="medium"
+        alternative-text="loading..."
+      >
+      </lightning-spinner>
+    </template>
+    <div class="slds-page-header__col-title slds-p-bottom_x-small">
+      <div class="slds-page-header__name slds-is-relative">
+        <div class="slds-page-header__name-title">
+          <h1>
+            <span
+              class="slds-page-header__title slds-truncate"
+              title="All Items"
+            >
+              <template lwc:if={showAvailability}>
+                <!-- FRONT-14361 starts-->
+                <div>Sales Items ({totalRecords})</div>
+              </template>
+              <template lwc:else>
+                <div>Misc Items ({totalRecords})</div>
+              </template>
+              <!-- FRONT-14361 ends-->
+            </span>
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="slds-page-header__row headerInline">
+      <div class="slds-page-header__controls">
+        <div class="slds-grid slds-gutters">
+          <div class="slds-page-header__controls customheight">
+            <!-- start FRONT-10297 -->
+            <select
+              id="menu"
+              onchange={handleChangeOptions}
+              class="zeroBorderRadius"
+            >
+              <!-- FRONT-14361 starts-->
+              <option value="SALES">Sales</option>
+              <option value="MISC">Misc</option>
+            </select>
+            <!--<lightning-combobox
+                variant="label-hidden"
+                options={options}
+                style="width: 100px"
+                value={SelectedValue}
+                onchange={handleChangeOptions}
+
+              >
+              </lightning-combobox>-->
+            <!-- FRONT-14361 ends-->
+
+            <!-- end FRONT-10297 -->
+          </div>
+          <div class="slds-page-header__control inputclass placeholder_font">
+            <lightning-input
+              class="slds-input-has-icon_right item-search-input"
+              type="search"
+              data-source="searchItemsInputField"
+              variant="label-hidden"
+              placeholder={itemSearchPlaceholder}
+              onkeydown={searchItems}
+              is-loading={isItemSearchLoading}
+            >
+            </lightning-input>
+          </div>
+        </div>
+        <template lwc:if={isSelectedValueNotMisc}>
+          <!-- FRONT-14361-->
+          <div class="slds-page-header__control">
+            <div class="iconstyle">
+              <lightning-button-icon
+                icon-name="utility:filterList"
+                onclick={handleViewFilter}
+                variant="bare"
+                alternative-text="Open Filters"
+                size="large"
+                title="Open Filters"
+                class="on-select"
+              >
+              </lightning-button-icon>
+            </div>
+            <template if:true={showFilters}>
+              <lightning-layout-item>
+                <div class="side-panel slds-var-m-right_small">
+                  <c-sbr_3_0_sales-product-filter-cmp
+                    is-mobile={isMobile}
+                    onclosefilters={handleViewFilter}
+                    call-filter-cmp={showFilters}
+                    onclosefiltercmp={showFilters}
+                    onapplysalesfilters={applySalesProductFiltersMobile}
+                    location-options={locationOptions}
+                    selected-location-filter={selectedLoctionFilter}
+                    selected-value-list={selectedValueList}
+                    preserved-available-only={availableOnly}
+                    preserved-stock-vendor-value={stockVendorValue}
+                    preserved-manufacturer-value={manufacturerValue}
+                    contract-sales-tab={contractSalesTab}
+                  >
+                  </c-sbr_3_0_sales-product-filter-cmp>
+                </div>
+              </lightning-layout-item>
+            </template>
+            <!-- FRONT-14361-->
+          </div>
+        </template>
+        <template lwc:if={isNotRecordPage}
+          ><!--added as a part of 20794-->
+          <div
+            class="slds-page-header__control cart-button-container iconstyle"
+          >
+            <lightning-button-icon
+              icon-name="utility:cart"
+              variant="bare"
+              alternative-text="View Cart"
+              class="slds-m-left_xx-small on-select"
+              title="View Cart"
+              onclick={handleCartClick}
+              size="large"
+            >
+            </lightning-button-icon>
+          </div>
+        </template>
+      </div>
+    </div>
+
+    <template if:true={showPill}>
+    <!-- FRONT-14361 -->
+    <div class="slds-page-header__row">
+      <div class="pillsContainer">
+          <span class="customPills slds-pill slds-m-right_x-small">
+            <span class="slds-pill__label">{locationFilter}</span>
+          </span>
+
+        <template if:true={selectedValueList}>
+          <template for:each={selectedValueList} for:item="filter">
+            <lightning-pill
+              key={filter}
+              label={filter}
+              onremove={handlePillsRemove}
+              class="filterPills slds-p-right_x-small"
+            ></lightning-pill>
+          </template>
+        </template>
+      </div>
+    </div>
+    </template>
+    <!-- <hr/> -->
+  </div>
+  <!--ondetailView added for FRONT-19392-->
+  <c-sbr_3_0_sales-product-item-list-comp
+    product-item-details={data}
+    object-api-name={objectApiName}
+    location-info={locationInfo}
+    selected-product-ids={selectedProductIds}
+    record-id={recordId}
+    selected-type={SelectedValue}
+    onloadmore={handleLoadMoreMobile}
+    ondetailview={detailedview}
+    is-contract-sales-tab={contractSalesTab}
+    show-availability={showAvailability}
+  ></c-sbr_3_0_sales-product-item-list-comp>
+</template>

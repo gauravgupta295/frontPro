@@ -1,0 +1,66 @@
+.asset {
+  color: #008545;
+  font-size: small;
+  font-weight: bold;
+  cursor: pointer;
+}
+p {
+  margin: 0 0 3px 1px;
+}
+.itemDetail {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.link {
+  color: #25683e;
+}
+.link:hover {
+  text-decoration: underline;
+}
+
+.contract-link {
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .open {
+    display: block;
+  }
+  .closed {
+    display: none;
+  }
+
+  .slds-section {
+    border-bottom: 1px solid #e5e5e5;
+  }
+
+  .slds-section.slds-is-open {
+    margin-bottom: 12px;
+  }
+
+  .slds-section__title-action {
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .slds-section__content {
+    padding-top: unset !important;
+  }
+
+  p {
+    font-size: 14px;
+  }
+
+  .itemDetail {
+    font-size: 14px;
+    font-weight: 700;
+    padding: unset;
+  }
+
+  /*Added as part of FRONT-9837 to provide a minimum height to prevent scrolling issue*/
+  .asset-info-section {
+    min-height: 800px;
+  }
+}

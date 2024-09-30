@@ -1,0 +1,63 @@
+<template>
+    <lightning-card title="Addresses">
+        <div class="slds-p-around_medium">
+            <template if:true={account}>
+                <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-input
+                        label="Shipping Street"
+                        value={ShippingStreet_Value}
+                        onchange={handleShippingStreetChange}
+                    ></lightning-input>
+                    <lightning-input
+                        label="Shipping City"
+                        value={ShippingCity_Value}
+                        onchange={handleShippingCityChange}
+                    ></lightning-input>
+                    <lightning-input
+                        label="Shipping State"
+                        value={ShippingState_Value}
+                        onchange={handleShippingStateChange}
+                    ></lightning-input>
+                    <lightning-input
+                        label="Shipping Postal Code"
+                        value={ShippingPostalCode_Value}
+                        onchange={handleShippingPostalCodeChange}
+                    ></lightning-input>
+                    <lightning-input
+                        label="Shipping Country"
+                        value={ShippingCountry_Value}
+                        onchange={handleShippingCountryChange}
+                    ></lightning-input>
+                    <lightning-button label="Update Street Address" variant="brand" onclick={handleUpdateStreetAddress}></lightning-button>
+                </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <lightning-input
+                            label="Override Street"
+                            value={OverrideStreet_Value}
+                        ></lightning-input>
+                        <lightning-input
+                            label="Override City"
+                            value={OverrideCity_Value}
+                        ></lightning-input>
+                        <lightning-input
+                            label="Override State"
+                            value={OverrideState_Value}
+                        ></lightning-input>
+                        <lightning-input
+                            label="Override Postal Code"
+                            value={OverridePostalCode_Value}
+                        ></lightning-input>
+                        <lightning-input
+                            label="Override Country"
+                            value={OverrideCountry_Value}
+                        ></lightning-input>
+                    </div>                
+                </div>
+            </template>
+            <template if:false={account}>
+                <p>No Account found.</p>
+            </template>
+        </div>
+    </lightning-card>
+</template>

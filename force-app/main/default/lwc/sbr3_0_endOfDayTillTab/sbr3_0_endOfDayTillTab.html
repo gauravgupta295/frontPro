@@ -1,0 +1,656 @@
+<!-- endOfDayTill.html -->
+<template>
+    <lightning-tabset onselect={handleTabChange}>
+        <lightning-tab label="Cash Control" value="cashControl">
+            <template if:true={isCashControlTab}>
+                <div class="page-section page-header slds-grid ">
+                    <div class="slds-col slds-p-left_x-small">
+                        <div class="slds-grid" style="flex: none;">
+                            <div class="slds-col" style="flex: none;">
+                                <lightning-icon icon-name="standard:timesheet" size="small"
+                                    alternative-text="Filter" title="Totals">
+                                </lightning-icon>
+                            </div>
+                            <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                                <p> Totals</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>                
+                
+                <div class="Details">
+                    <lightning-card>
+                        <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_1-of-2 totals">
+                                <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                    <template if:true={cashControlFlags.Visa}>
+                                        <li class="slds-item slds-border_bottom">
+                                            <dl class="slds-list_horizontal ">
+                                                <dt class="slds-item_label  slds-truncate " title="First Label">Visa Total</dt>
+                                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                  <lightning-formatted-number value={cashControlTotals.Visa} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                    </template>
+                                    <template if:true={cashControlFlags.Amex}>
+                                        <li class="slds-item slds-border_bottom">
+                                            <dl class="slds-list_horizontal">
+                                                <dt class="slds-item_label  slds-truncate " title="First Label">Amex Total</dt>
+                                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                    <lightning-formatted-number value={cashControlTotals.Amex} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                                </dd>
+                                            </dl>
+                                        </li>
+                                    </template>
+                                <template if:true={cashControlFlags.Mastercard}>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal">
+                                            <dt class="slds-item_label  slds-truncate " title="First Label">MasterCard Total</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={cashControlTotals.Mastercard} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </template>
+                                <template if:true={cashControlFlags.Diners_Club}>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal">
+                                            <dt class="slds-item_label  slds-truncate " title="First Label">Diners Total</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={cashControlTotals.Diners_Club} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </template>
+                                <template if:true={cashControlFlags.Discover}>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal">
+                                            <dt class="slds-item_label  slds-truncate " title="First Label">Discover Total</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={cashControlTotals.Discover} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </template>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal ">
+                                            <dt class="slds-item_label  slds-truncate"
+                                                title="First Label">Check Total</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={cashControlTotals.Check} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal ">
+                                            <dt class="slds-item_label  slds-truncate text-container"
+                                                title="First Label">Cash Currency Total</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={cashControlTotals.Cash_Currency} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                    <li class="slds-item slds-border_bottom">
+                                        <dl class="slds-list_horizontal ">
+                                            <dt class="slds-item_label  slds-truncate "
+                                                title="First Label">Subtotal</dt>
+                                            <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                                <lightning-formatted-number value={subtotal} format-style="currency" currency-code="USD"></lightning-formatted-number>
+                                            </dd>
+                                        </dl>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </lightning-card>
+                </div>
+
+                <div class="headrer-bgc slds-text-heading_x-medium" >
+                    <div class="slds-grid slds-border_bottom" style="flex: none;">
+                        <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                            <p> Cash Control</p>
+                        </div>
+                        <div class="slds-col slds-size_4-of-5"></div>
+                    </div>
+                    <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                        <lightning-datatable
+                            key-field="id"
+                            data={cashDetails}
+                            show-row-number-column
+                            row-number-offset={rowOffset}
+                            hide-checkbox-column
+                            columns={columns}
+                            resize-column-disabled
+                            class="custom-datatable">
+                        </lightning-datatable>
+                    </div>   
+                </div>   
+            </template>
+            <!-- Content for Cash Control tab -->
+        </lightning-tab>
+        <lightning-tab label="Cash ROA Control" value="cashROAControl">
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-5"></div>
+            </div>
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 totals">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate "
+                                            title="First Label">Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate " title="Description for first label">
+                                            {roaTotal}</dd>
+                                    </dl>
+                                </li>                                
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom" style="flex: none;">
+                    <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> Cash ROA Control</p>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={cashROADetails}
+                        column-class="align-right"
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={roaColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>
+        </lightning-tab>
+        <lightning-tab label="Amounts by Credit Card">
+    <!-- Content for Amounts by Credit Card tab -->
+    <div class="page-section page-header slds-grid">
+        <div class="slds-col slds-p-left_x-small">
+            <div class="slds-grid" style="flex: none;">
+                <div class="slds-col" style="flex: none;">
+                    <lightning-icon icon-name="standard:timesheet" size="small"
+                        alternative-text="Filter" title="Totals">
+                    </lightning-icon>
+                </div>
+                <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                    <p> Totals</p>
+                </div>
+            </div>
+        </div>
+        <div class="slds-col slds-size_4-of-5"></div>
+    </div>
+    
+    <div class="Details">
+        <lightning-card>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-2 creditTotals">
+                    <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal ">
+                                <dt class="slds-item_label  slds-truncate"
+                                    title="First Label">Total Credit Card</dt>
+                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                    {totalCreditCard}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal ">
+                                <dt class="slds-item_label  slds-truncate"
+                                    title="First Label">Total Auto Deposit</dt>
+                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                    {totalAutoDeposit}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal ">
+                                <dt class="slds-item_label  slds-truncate text-container"
+                                    title="First Label">Total ROA Credit Card</dt>
+                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                    {totalROACreditCard}</dd>
+                            </dl>
+                        </li>
+                        <li class="slds-item">
+                            <dl class="slds-list_horizontal ">
+                                <dt class="slds-item_label  slds-truncate text-container"
+                                    title="First Label">Total ROA Auto Deposit</dt>
+                                <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                    {totalROAAutoDeposit}</dd>
+                            </dl>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </lightning-card>
+    </div>
+
+    <div class="headrer-bgc slds-text-heading_x-medium">
+        <div class="slds-grid slds-border_bottom">
+            <div class="slds-col slds-size_4-of-5 slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                <p> Amounts by Credit Card</p>
+            </div>
+        </div>
+        <div class="slds-table_bordered slds-table_col-bordered slds-table_striped"> 
+            <lightning-datatable
+                key-field="id"
+                data={amountByCredit}
+                row-number-offset={rowOffset}
+                hide-checkbox-column
+                columns={creditColumns}
+                resize-column-disabled
+                class="custom-datatab">
+            </lightning-datatable>
+        </div>
+    </div>
+
+    <div class="headrer-bgc slds-text-heading_x-medium">
+        <div class="slds-grid slds-border_bottom">
+            
+                <div class="slds-col slds-size_4-of-5 slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                    <p> ROA Amounts by Credit Card</p>
+                </div>
+            </div>
+        </div>
+        <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+            <lightning-datatable
+                key-field="id"
+                data={amountByROACredit}
+                row-number-offset={rowOffset}
+                hide-checkbox-column
+                columns={roaCreditcolumns}
+                resize-column-disabled
+                class="custom-datatabS">
+            </lightning-datatable>
+        </div>
+        </lightning-tab>
+        <lightning-tab label="Cash from Invoices">
+            <!-- Content for Cash from Invoices tab -->
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-5"></div>
+            </div>                
+            
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 invoiceTotal">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Invoice Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {cashInvoiceAmountTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Applied Deposit Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {cashInvoiceAppliedDepositTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Net Cash Received Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {cashInvoiceNetCashReceivedTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Other Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {cashInvoiceOtherAmountTotal}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom myUniqueTable" style="flex: none;">
+                    <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> Cash From Invoices</p>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={cashInvoices}
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={cashColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>
+        </lightning-tab>
+        <lightning-tab label="New Deposits">
+            <!-- Content for New Deposits tab -->
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-5"></div>
+            </div>
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 totals">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate "
+                                            title="First Label">Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate " title="Description for first label">
+                                            {newDepositTotal}</dd>
+                                    </dl>
+                                </li>                                
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom" style="flex: none;">
+                    <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> New Deposits </p>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={newDepositDetails}
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={depositColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>
+        </lightning-tab>
+        <lightning-tab label="Additional Deposits">
+            <!-- Content for New Deposits tab -->
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-5"></div>
+            </div>
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 totals">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate "
+                                            title="First Label">Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate " title="Description for first label">
+                                            {additionalDepositTotal}</dd>
+                                    </dl>
+                                </li>                                
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom" style="flex: none;">
+                    <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> Additional Deposits </p>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={additionalDepositDetails}
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={depositColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>
+        </lightning-tab>
+        <lightning-tab label="Contracts Opened at Other Locations">
+            <!-- Content for Contracts Opened at Other Locations tab -->
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+            </div>                
+            
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 invoiceTotal">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Invoice Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {invoiceAmountTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Applied Deposit Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {appliedDepositTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Net Cash Received Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {netReceivedTotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Other Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {otherAmountTotal}</dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom" style="flex: none;">
+                    <div class="slds-col slds-size_4-of-5 slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> Contracts Opened at Other Locations</p>
+                    </div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={otherLocationDetails}
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={otherLocationColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>
+            
+        </lightning-tab>
+        <lightning-tab label="Total Business">
+            <!-- Content for Total Business tab -->
+            <div class="page-section page-header slds-grid "> <!-- slds-list_horizontal -->
+                <div class="slds-col slds-p-left_x-small">
+                    <div class="slds-grid" style="flex: none;">
+                        <div class="slds-col" style="flex: none;">
+                            <lightning-icon icon-name="standard:timesheet" size="small"
+                                alternative-text="Filter" title="Totals">
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-col slds-p-left_small slds-p-top_xxx-small slds-text-align_left slds-text-heading_x-medium slds-text-title_bold">
+                            <p> Totals</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-5"></div>
+            </div>                
+            
+            <div class="Details">
+                <lightning-card>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 invoiceTotal">
+                            <ul class="slds-has-dividers_bottom-space slds-p-bottom_small slds-p-left_xx-small">
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Invoice Amount Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {businessinvoiceAmounttotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item slds-border_bottom">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Sales Tax Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {businesssalesTaxtotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Delivery/Pickup Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                            {businessdelivertotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Subtotal</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                           {businesssalesTaxtotal}</dd>
+                                    </dl>
+                                </li>
+                                <li class="slds-item">
+                                    <dl class="slds-list_horizontal ">
+                                        <dt class="slds-item_label  slds-truncate text-container"
+                                            title="First Label">Damage Waiver Total</dt>
+                                        <dd class="slds-item_detail slds-truncate align-right" title="Description for first label">
+                                           {businessdamageWaivertotal} </dd>
+                                    </dl>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </lightning-card>
+            </div>
+
+            <div class="headrer-bgc slds-text-heading_x-medium" >
+                <div class="slds-grid slds-border_bottom" style="flex: none;">
+                    <div class="slds-col slds-p-left_small slds-p-top_small slds-p-bottom_small slds-text-title_bold">
+                        <p> Total Business</p>
+                    </div>
+                    <div class="slds-col slds-size_4-of-5"></div>
+                </div>
+                <div class="slds-table_bordered slds-table_col-bordered slds-table_striped">
+                    <lightning-datatable
+                        key-field="id"
+                        data={totalBusinessDetailsData}
+                        show-row-number-column
+                        row-number-offset={rowOffset}
+                        hide-checkbox-column
+                        columns={businessColumns}
+                        resize-column-disabled
+                        class="custom-datatable">
+                    </lightning-datatable>
+                </div>   
+            </div>    
+            
+        </lightning-tab>
+    </lightning-tabset>
+</template>

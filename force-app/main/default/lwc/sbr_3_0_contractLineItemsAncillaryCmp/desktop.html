@@ -1,0 +1,62 @@
+<template>
+  <lightning-accordion-section
+    name={sectionName}
+    label={ancillaryItemsDynamicLabel}
+    class="accordianBorder"
+  >
+    <div class="slds-border_left slds-border_right slds-border_top">
+      <div class="slds-page-header page-header-padding">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media media-wrapper">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name={iconName}
+                  alternative-text={sectionName}
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body slds-m-top_xx-small">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span
+                        class="slds-page-header__title slds-truncate"
+                        title="Line Items"
+                        >{sectionName}</span
+                      >
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <template lwc:if={isDataAvailable}>
+        <div class="slds-is-relative">
+          <lightning-spinner
+            alternative-text="Loading"
+            size="medium"
+          ></lightning-spinner>
+        </div>
+      </template>
+      <template lwc:else>
+        <div class="manual-override-section">
+          <c-sbr_3_0_custom-data-table-cmp
+            key-field="Id"
+            columns={LineItemsColumns}
+            data={records}
+            draft-values={draftValues}
+            hide-checkbox-column={isReadOnlyRecord}
+            errors={draftErrors}
+            resize-column-disabled
+            onrowaction={handleRowAction}
+            onsave={handleRowSave}
+            onrowselection={handleLineItemSelection}
+            class="quantityClass"
+          ></c-sbr_3_0_custom-data-table-cmp>
+        </div>
+      </template>
+    </div>
+  </lightning-accordion-section>
+</template>

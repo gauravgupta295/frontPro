@@ -1,0 +1,265 @@
+.fullwidth .slds-form-element legend::before {
+    content: "* ";
+    color: red;
+}
+
+.fullwidth .slds-form-element__row lightning-lookup-address label::before {
+    content: " ";
+    color: red;
+}
+
+.addressClass .slds-size_4-of-6,
+.fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+
+.addressClass .slds-form-element__row {
+    flex-flow: row wrap;
+    display: flex;
+}
+
+.addressClass .slds-size_2-of-6,
+.fullwidth .slds-size--2-of-6,
+.fullwidth .slds-form-element {
+    padding-left: 0px !important;
+    width: 100%;
+    margin-top: 5px !important;
+}
+
+
+/*
+.fullwidth lightning-textarea::before
+{
+    content:"* ";
+    color: red;
+}
+*/
+
+/*lightning-input div label::before
+{
+content:"* ";
+color: red;
+} */
+
+.fullwidth .slds-size_4-of-6,
+.fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+
+.fullwidth .slds-form-element__row {
+    flex-flow: row wrap;
+    display: flex;
+}
+
+
+.fullwidth .slds-size_2-of-6,
+.fullwidth .slds-size--2-of-6,
+.fullwidth .slds-form-element {
+    padding-left: 0px !important;
+    width: 100%;
+}
+
+.fullwidth .slds-form-element__row lightning-lookup-address {
+    margin-top: -10px !important;
+}
+
+/*.addressFieldCss  .slds-form-element__row [data-field="country"] label::before
+{
+    content:"*  ";
+    color: red;
+}*/
+
+/*.addressFieldCss  .slds-form-element legend::before
+{
+    content:"* ";
+    color: red;
+} 
+
+.addressFieldCss  .slds-form-element__row lightning-lookup-address label::before
+{
+    content:" ";
+    color: red;
+} */
+
+/* Added @media for Front-20281*/
+@media only screen and (max-width: 1000px) {
+
+    .addressFieldCss .slds-size_2-of-6,
+    .addressFieldCss .slds-size--2-of-6,
+    .addressFieldCss .slds-form-element {
+        padding-left: 0px !important;
+        width: 100%;
+    }
+}
+
+.addressFieldCss .slds-form-element__row lightning-lookup-address {
+    margin-top: -28px !important;
+}
+
+.addressFieldCss.slds-size_4-of-6,
+.fullwidth .slds-size--4-of-6 {
+    width: 100%;
+}
+
+.addressFieldCss .slds-form-element__row {
+    flex-flow: row wrap;
+    display: flex;
+}
+
+.addressFieldCss lightning-lookup-address {
+    margin-top: -28px !important;
+}
+
+.slds-input,
+.slds-combobox__input,
+.slds-textarea {
+    border-color: #c2bcbc;
+}
+
+/* Added for FRONT-3129 */
+.dateBir {
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 11px;
+    bottom: 22px;
+    z-index: 1;
+    height: 2px;
+}
+
+.addressClass lightning-input-address legend:first-of-type {
+    padding-top: 8px;
+}
+
+.addressClass {
+    padding-top: 8px;
+}
+
+
+.helpText-address .slds-form-element__icon,
+.billingaddress-header .slds-form-element__label {
+    padding: unset;
+}
+
+.account-id-mobile>* {
+    width: 100% !important;
+}
+
+
+.dobwidth {
+    width: 100% !important;
+}
+
+/*Added for FRONT-1946*/
+.reasonClass .slds-combobox__input:focus,
+.slds-combobox__input.slds-has-focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.reasonClass .slds-input:focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+}
+
+.commenClass .slds-form-element__label {
+    margin-left: 8px !important;
+}
+
+.reasonPicklist .slds-listbox {
+    border-color: #C9C9C9 !important;
+}
+
+/* Ended for FRONT-1946 */
+/* start for Front-1664 */
+.borderBox .slds-input:focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+
+}
+
+.slds-dropdown {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Commented since it was impacting all the dropdowns. If needed, please scope the css to your component
+      .slds-combobox__input{
+        border:none !important;
+      }
+      */
+/* start for Front-1664 */
+
+/* start for Front-1664 */
+/*Front-15677*/
+.combStyle .slds-combobox__input:focus,
+.slds-combobox__input.slds-has-focus {
+    border-color: #C2BCBC !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.helpText-address .slds-form-element__icon,
+.billingaddress-header .slds-form-element__label {
+    padding: unset;
+    padding-bottom: 16px;
+}
+
+/*FRONT-20425 changes start*/
+.btnGroup .slds-input,
+.btnGroup .slds-combobox__input .slds-textarea {
+    border-radius: 0px 4px 4px 0px;
+}
+
+.btnGroup .slds-combobox__input,
+.slds-textarea {
+    border-radius: 4px 0px 0px 4px;
+}
+
+/*20281*/
+.adresImpCl::before {
+    content: "* ";
+    color: #ba0517;
+    padding-left: 6px;
+}
+
+.adresCl::before {
+    content: "* ";
+    color: #ba0517;
+    padding-left: 8px;
+}
+
+.asterickClass::before {
+    content: "* ";
+    color: #ba0517;
+    padding-right: 2px;
+}
+
+.billAd .slds-form-element_compound .slds-form-element__row .slds-form-element__label {
+    padding-top: 8px;
+}
+
+/*FRONT-20425 changes ends*/
+
+/* FRONT-20281 & FRONT-20757*/
+.addressFieldCss .slds-form-element__row [data-field="country"] {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+/* Front-31380*/
+.bordorCls .slds-input:focus {
+    border: 1px solid !important;
+    border-color: #008545 !important;
+}
+
+/*FRONT-10323 : Fix to address search text box which gets hidden due to search results : making position sticky as important*/
+.input-address-search-class .slds-listbox {
+    position: sticky !important;
+}

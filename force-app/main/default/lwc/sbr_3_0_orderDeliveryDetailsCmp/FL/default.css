@@ -1,0 +1,18 @@
+.c-container {
+    border: 1px solid #d8dde6;
+  }
+  .header-column {
+    padding: 0 2rem;
+  }
+  .field-title {
+    line-height: 1.25;
+    color: #54698d;
+    margin-bottom: 0.25rem;
+  }
+  .brand-button {
+    --slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-text-color-hover: #fff;
+  }

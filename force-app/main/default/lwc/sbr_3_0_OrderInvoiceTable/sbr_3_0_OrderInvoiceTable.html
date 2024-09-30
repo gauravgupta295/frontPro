@@ -1,0 +1,51 @@
+<template>
+    <div style="position:relative">
+        <div class="slds-wrap">
+        <div class="slds-col slds-size_12-of-12">
+            <lightning-card variant="narrow" title="Invoices" icon-name="standard:partner_fund_claim">
+                <div class="slds-grid slds-grid_reverse slds-border_bottom slds-p-bottom_x-small">
+
+                    <div class = "slds-col slds-size_2-of-12 slds-p-top_medium">
+                        <lightning-button
+                        variant="brand-outline"
+                        label="Clear Filters"
+                        icon-name="utility:clear"
+                        icon-position="right"
+                        onclick={clearFilter}
+                        class="slds-m-bottom_xx-small">
+                        </lightning-button>
+                    </div>
+
+                    <div class="slds-col slds-size_2-of-12 slds-p-right_large">
+                        <lightning-combobox data-my-id="status-filter" placeholder='Status Filter'
+                        options={statusOptions} onchange={filterStatus} value={statusFilter}>
+                        </lightning-combobox>
+                    </div>
+
+                    <div class="slds-col slds-size_2-of-12 slds-p-right_large">
+                        <lightning-combobox data-my-id="date-filter" placeholder='Date Filter'
+                        options={dateOptions} onchange={filterDate} value={dateFilter}>
+                        </lightning-combobox>
+                    </div>
+                </div>
+
+                <div class="slds-p-top_x-small slds-p-bottom_x-small">
+                <div class="slds-col slds-size_12-of-12">
+                    <lightning-datatable
+                        key-field="id"
+                        columns={columns}
+                        data={invoiceData}
+                        hide-checkbox-column
+                        default-sort-direction={defaultSortDirection}
+                        sorted-direction={sortDirection}
+                        sorted-by={sortedBy}
+                        onsort={onHandleSort}
+                        onrowaction={handleRowActions}>
+                    </lightning-datatable>
+                </div>
+                </div>
+            </lightning-card>
+        </div>
+        </div>
+    </div>
+</template>

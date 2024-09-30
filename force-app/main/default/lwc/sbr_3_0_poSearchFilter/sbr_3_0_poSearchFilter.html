@@ -1,0 +1,247 @@
+<template>
+  <template if:true={isMobileView}>
+    <div class="slds-p-left_small">
+      <span class="slds-media__figure slds-listbox__option-icon" onclick={openFilters}>
+        <span class="slds-icon_container slds-m-around_x-small">
+          <lightning-icon icon-name="utility:filterList" size="small" alternative-text="Filter Button"></lightning-icon>
+        </span>
+      </span>
+    </div>
+    <template if:true={mobileFilterOpen}>
+      <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-02" aria-modal="true"
+        aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+          <div class="slds-page-header__controls filters-info-header">
+            <p class="customer-info-title" style="text-align: left; padding: 16px">
+              Filters
+            </p>
+            <button style="height: fit-content; margin-top: 8px" class="slds-button slds-modal__close" title="Close"
+              onclick={handleFilterCancel}>
+              <lightning-icon icon-name="utility:close" alternative-text="close" size="x-small" class="close-icn">
+              </lightning-icon>
+            </button>
+          </div>
+          <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+            <div class="slds-form fiterForm">
+                  <div class="slds-form-element__label slds-m-left_xxx-small">
+                    <label>Branch Only</label>
+                    <lightning-input type="checkbox" checked={isBranchOnly} onchange={handleBranchOnly}
+                      onkeydown={handleKeyDown} data-field-class="filterOption">
+                    </lightning-input>
+                  </div>
+                <!-- Priya -->
+                <br />
+                  <div class="slds-form-element__label slds-m-left_xxx-small">
+                    <label>Filter by Item # Only</label>
+                    <lightning-input type="checkbox" checked={isFilterByItemOnly} onchange={handleFilterByItemOnly}
+                      onkeydown={handleKeyDown} data-field-class="filterOption">
+                    </lightning-input>
+                  </div>
+              <!-- <br /><br /><br />-->
+<template lwc:if={isFilterByItemOnly} > 
+              <lightning-input placeholder="Search an Item #" label="Item #" name="ItemNumber"
+                    data-label="itemNumber" value={itemNumber} maxlength="255" onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                    message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                  <lightning-input placeholder="Search for Location" label="Location" data-label="location" name="Location"
+                value={location} onchange={handleFilterChange} onkeydown={handleKeyDown} data-field-class="filterOption"
+                pattern="[\w\- ]*" message-when-pattern-mismatch="Special Characters are not allowed">
+              </lightning-input>
+</template>
+<template lwc:else >
+
+
+             <!-- Priya -->
+
+              
+    
+              <lightning-input placeholder="Search a Purchase Order #" label="Purchase Order #" name="PONumber"
+                data-label="poNumber" value={poNumber} maxlength="255" onchange={handleFilterChange}
+                onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                message-when-pattern-mismatch="Special Characters are not allowed">
+              </lightning-input>
+    
+              <lightning-input placeholder="Search a Vendor Number" label="Vendor Number" name="VendorNumber"
+                data-label="vendorNumber" value={accNumber} maxlength="255" onchange={handleFilterChange}
+                onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                message-when-pattern-mismatch="Special Characters are not allowed">
+              </lightning-input>
+    
+              <lightning-input placeholder="Search a Vendor Name" label="Vendor Name" name="VendorName"
+                data-label="vendorName" value={accName} maxlength="255" onchange={handleFilterChange}
+                onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                message-when-pattern-mismatch="Special Characters are not allowed">
+              </lightning-input>
+    
+              <lightning-combobox placeholder="Search for PO Status" name="Status" label="Status" value={status}
+                onchange={handleFilterChange} options={statusOptions} data-label="status" data-field-class="filterOption"
+                data-attribute="=" onkeydown={handleKeyDown}></lightning-combobox>
+    
+              <lightning-combobox placeholder="Search for PO Type" name="Type" label="Type" value={type}
+                onchange={handleFilterChange} options={recordTypes} data-label="type" data-field-class="filterOption"
+                data-attribute="=" onkeydown={handleKeyDown}></lightning-combobox>
+    
+              
+    
+              <lightning-input placeholder="Search for Ship To" label="Ship To" data-label="shipTo" name="ShipTo"
+                value={shipTo} onchange={handleFilterChange} onkeydown={handleKeyDown} data-field-class="filterOption"
+                pattern="[\w\- ]*" message-when-pattern-mismatch="Special Characters are not allowed">
+              </lightning-input>
+    
+              <lightning-input placeholder="Start Date" type="date" date-style="short" label="Start Date"
+                data-label="startDate" name="StartDate" value={startDate} onchange={handleFilterChange}
+                onkeydown={handleKeyDown} data-field-class="filterOption">
+              </lightning-input>
+    
+              <lightning-input placeholder="End Date" type="date" date-style="short" label="End Date" data-label="endDate"
+                name="EndDate" value={endDate} onchange={handleFilterChange} onkeydown={handleKeyDown}
+                data-field-class="filterOption">
+              </lightning-input>
+              </template>
+              <br /><br /><br />
+            </div>
+            <div
+              class="slds-m-top_medium slds-grid slds-grid_align-spread slds-docked-form-footer stickyFooter bottomfooter">
+              <div class="slds-col slds-size_3-of-4">
+                <span>&nbsp;&nbsp;&nbsp;</span>
+                <lightning-button label="Cancel" variant="neutral" onclick={handleCancel}
+                  class="neutral-button"></lightning-button>
+                <span>&nbsp;&nbsp;</span>
+                <lightning-button class="reset-button" label="Reset All Filters" variant="base"
+                  onclick={handleReset}></lightning-button>
+              </div>
+              <div class="slds-col slds-size_1-of-4">
+                <lightning-button label="Apply" variant="brand" onclick={handleApply}
+                  class="brand-button"></lightning-button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </template>
+  </template>
+  <template if:false={isMobileView}>
+    <div class="slds-form-element">
+      <div class={computedFilterCmpCSS}>
+        <div class="slds-combobox_container">
+          <div class="slds-combobox" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right setdivWidth" role="none">
+              <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value combobox-input-class"
+                id="select-sobject-id" autocomplete="off" data-id="select-sobject-id" aria-autocomplete="list"
+                aria-controls="listbox-id-11" role="textbox" placeholder={placeholder} title={filterLabel}
+                onclick={handleInputClick} value={filterLabel} readonly disabled={disabled} />
+              <lightning-icon class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+                icon-name="utility:down" size="x-small"></lightning-icon>
+            </div>
+            <div id="listbox-id-11" class={computedDropDownClasses} style="overflow-y:auto;" tabindex="0">
+              <lightning-layout multiple-rows="true">
+                <lightning-layout-item padding="around-small" size="12">
+
+                  <div class="slds-form-element__label slds-m-left_xxx-small">
+                    <label>Branch Only</label>
+                    <lightning-input type="checkbox" checked={isBranchOnly} onchange={handleBranchOnly}
+                      onkeydown={handleKeyDown} data-field-class="filterOption">
+                    </lightning-input>
+                  </div>
+                  <!-- Priya -->
+                  <br />
+              <div class="slds-form-element__label slds-m-left_xxx-small">
+                <label>Filter by Item # Only</label>
+                <lightning-input type="checkbox" checked={isFilterByItemOnly} onchange={handleFilterByItemOnly}
+                  onkeydown={handleKeyDown} data-field-class="filterOption">
+                </lightning-input>
+              </div>
+              <template lwc:if={isFilterByItemOnly} > 
+             <lightning-input placeholder="Search an Item #" label="Item #" name="ItemNumber"
+                    data-label="itemNumber" value={itemNumber} maxlength="255" onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                    message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                   <lightning-input placeholder="Search for Location" label="Location" data-label="location" name="Location"
+                    value={location} onchange={handleFilterChange} onkeydown={handleKeyDown} data-field-class="filterOption"
+                    pattern="[\w\- ]*" message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+              </template>
+              <template lwc:else >
+               <!-- Priya -->
+                  <lightning-input placeholder="Search a Purchase Order #" label="Purchase Order #" name="PONumber"
+                    data-label="poNumber" value={poNumber} maxlength="255" onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                    message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                  <lightning-input placeholder="Search a Vendor Number" label="Vendor Number" name="VendorNumber"
+                    data-label="vendorNumber" value={accNumber} maxlength="255" onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                    message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                  <lightning-input placeholder="Search a Vendor Name" label="Vendor Name" name="VendorName"
+                    data-label="vendorName" value={accName} maxlength="255" onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption" pattern="[\w\- ]*"
+                    message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                  <lightning-combobox placeholder="Search for PO Status" name="Status" label="Status" value={status}
+                    onchange={handleFilterChange} options={statusOptions} data-label="status"
+                    data-field-class="filterOption" data-attribute="=" onkeydown={handleKeyDown}></lightning-combobox>
+
+                  <!-- <lightning-input placeholder="Search for PO Status"
+                      label="Status" name="Status" data-label="status"
+                      value={status} onchange={handleFilterChange}
+                      onkeydown={handleKeyDown}
+                      data-field-class="filterOption" pattern="[\w\- ]*"
+                      message-when-pattern-mismatch="Special Characters are not allowed">
+                    </lightning-input> -->
+
+                  <lightning-combobox placeholder="Search for PO Type" name="Type" label="Type" value={type}
+                    onchange={handleFilterChange} options={recordTypes} data-label="type" data-field-class="filterOption"
+                    data-attribute="=" onkeydown={handleKeyDown}></lightning-combobox>
+
+                  <!-- <lightning-input
+                      placeholder="Search for PO Type"
+                      label="Type"
+                      name="Type" data-label="type" value={type}
+                      onchange={handleFilterChange}
+                      onkeydown={handleKeyDown}
+                      data-field-class="filterOption"
+                      pattern="[\w\- ]*"
+                      message-when-pattern-mismatch="Special Characters are not allowed">
+                    </lightning-input> -->
+
+                 
+
+                  <lightning-input placeholder="Search for Ship To" label="Ship To" data-label="shipTo" name="ShipTo"
+                    value={shipTo} onchange={handleFilterChange} onkeydown={handleKeyDown} data-field-class="filterOption"
+                    pattern="[\w\- ]*" message-when-pattern-mismatch="Special Characters are not allowed">
+                  </lightning-input>
+
+                  <lightning-input placeholder="Start Date" type="date" date-style="short" label="Start Date"
+                    data-label="startDate" name="StartDate" value={startDate} onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption">
+                  </lightning-input>
+
+                  <lightning-input placeholder="End Date" type="date" date-style="short" label="End Date"
+                    data-label="endDate" name="EndDate" value={endDate} onchange={handleFilterChange}
+                    onkeydown={handleKeyDown} data-field-class="filterOption">
+                  </lightning-input>
+                  </template>
+
+                  <div class="slds-p-top_small">
+                    <lightning-button label="Apply" variant="brand" onclick={handleApply}
+                      class="slds-var-p-left_small brand-button"></lightning-button>
+                    <lightning-button class="slds-p-left_medium" label="Reset All Filters" variant="base"
+                      onclick={handleReset}></lightning-button>
+                  </div>
+                </lightning-layout-item>
+              </lightning-layout>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

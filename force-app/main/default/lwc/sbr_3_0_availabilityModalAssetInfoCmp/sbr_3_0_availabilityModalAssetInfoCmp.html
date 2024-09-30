@@ -1,0 +1,416 @@
+<template>
+  <!--    <template if:false={isMobile}>-->
+  <!--        <lightning-tabset>-->
+  <!--            <lightning-spinner if:true={isLoading}></lightning-spinner>-->
+  <!--            <div if:false={isLoading}>-->
+  <!--                <lightning-tab label="Details">-->
+  <!--                    <div class="slds-section slds-is-open" data-id="assetDetail">-->
+  <!--                        <h3 class="slds-section__title" label="Units">-->
+  <!--                            <button type="button"  class="slds-button slds-section__title-action" data-buttonid="assetDetail" onclick={toggleSection}>-->
+  <!--                                <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>-->
+  <!--                                <span class="slds-truncate" title="assetDetail">Asset Detail</span>-->
+  <!--                            </button>-->
+  <!--                        </h3>-->
+  <!--                        <div class="slds-section__content">-->
+  <!--                            <div class="slds-section__content">-->
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}><strong>Make:</strong> {assetInformation.SM_PS_Make__c} </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Original Cost: </strong>-->
+  <!--                                            <lightning-formatted-number value={assetInformation.SM_PS_Original_Cost__c} format-style="currency" currency-code="USD"></lightning-formatted-number>  </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}><strong>Model: </strong>  {assetInformation.SM_PS_Model__c} </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Book Value: </strong>-->
+  <!--                                            <lightning-formatted-number value={assetInformation.SM_PS_Book_Value__c} format-style="currency" currency-code="USD"></lightning-formatted-number>  </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Serial #: </strong> {assetInformation.SM_PS_Serial_Number__c}</p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Sell Price: </strong>-->
+  <!--                                            <lightning-formatted-number value={assetInformation.SM_PS_Sell_Price__c} format-style="currency" currency-code="USD"></lightning-formatted-number>  </p>-->
+
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Year: </strong> {assetInformation.SM_PS_Model_Year__c}-->
+  <!--                                            <strong> Hours: </strong> {assetInformation.SM_PS_Year_to_Hours_Rent__c}-->
+  <!--                                            <strong>  Qty: </strong> {assetInformation.Quantity} </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+  <!--                            </div>-->
+  <!--                        </div>-->
+  <!--                    </div>-->
+
+  <!--                    <div class="slds-section slds-is-open" data-id="description">-->
+  <!--                        <h3 class="slds-section__title" label="Units">-->
+  <!--                            <button type="button"  class="slds-button slds-section__title-action" data-buttonid="description" onclick={toggleSection}>-->
+  <!--                                <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>-->
+  <!--                                <span class="slds-truncate" title="description">Description</span>-->
+  <!--                            </button>-->
+  <!--                        </h3>-->
+  <!--                        <div class="slds-section__content">-->
+  <!--                            <div class="slds-section__content">-->
+  <!--                                <p class={itemDetail}> {assetInformation.Description} </p>-->
+  <!--                            </div>-->
+  <!--                        </div>-->
+  <!--                    </div>-->
+
+  <!--                    <div class="slds-section slds-is-open" data-id="order">-->
+  <!--                        <h3 class="slds-section__title" label="Units">-->
+  <!--                            <button type="button"  class="slds-button slds-section__title-action" data-buttonid="order" onclick={toggleSection}>-->
+  <!--                                <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>-->
+  <!--                                <span class="slds-truncate" title="order">Contract Order</span>-->
+  <!--                            </button>-->
+  <!--                        </h3>-->
+  <!--                        <div class="slds-section__content">-->
+  <!--                            <div class="slds-section__content">-->
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Contract Order Number </strong>  <span if:true={showContractNumber}>-->
+
+  <!--                                            <lightning-formatted-url value={orderRecordId} label={orderInformation.Order.Contract_Order_Number__c} target="_blank" ></lightning-formatted-url>-->
+  <!--                                        </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Customer Name: </strong> <span if:true={orderInformation.Order}>  {orderInformation.Order.Account.Name} </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Job Site: </strong> <span if:true={orderInformation.Order}>  {orderInformation.Order.Jobsite__r.Name__c}  </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Job Site Location: </strong>   <span if:true={orderInformation.Order}>  {orderInformation.Order.Job_Location__c } </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Sales Rep: </strong> <span if:true={orderInformation.Order}> {orderInformation.Order.Sales_Rep__r.LastName}, {orderInformation.Order.Sales_Rep__r.FirstName}-->
+  <!--                                        </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Day: </strong> <span if:true={orderInformation.Daily_Rate2__c}>-->
+  <!--                                            <lightning-formatted-number value={orderInformation.Daily_Rate2__c} format-style="currency" currency-code="USD"></lightning-formatted-number>-->
+  <!--                                        </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Ordered By: </strong> <span if:true={orderInformation.Order}> {orderInformation.Order.Order_By__r.LastName}, {orderInformation.Order.Order_By__r.FirstName} </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong> Week: </strong>  <span if:true={orderInformation.Weekly_Rate2__c}>-->
+  <!--                                            <lightning-formatted-number value={orderInformation.Weekly_Rate2__c} format-style="currency" currency-code="USD"></lightning-formatted-number>-->
+  <!--                                    </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Branch {branchNum}: </strong>   <span if:true={orderInformation.Order}>-->
+  <!--                                            <lightning-formatted-phone value={orderInformation.Order.Branch__r.Phone__c}></lightning-formatted-phone> </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Month: </strong>  <span if:true={orderInformation.Monthly_Rate2__c}>-->
+  <!--                                             <lightning-formatted-number value={orderInformation.Monthly_Rate2__c} format-style="currency" currency-code="USD"></lightning-formatted-number>-->
+  <!--                                         </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                                <div class="slds-grid slds-gutters">-->
+  <!--                                    <div class="slds-col slds-size_1-of-2">-->
+  <!--                                        <p class={itemDetail}> <strong>Total Billed: </strong>  <span if:true={orderInformation}>-->
+  <!--                                              <lightning-formatted-number value={orderInformation.Total_Amount_Billed__c} format-style="currency" currency-code="USD"></lightning-formatted-number>-->
+  <!--                                        </span> </p>-->
+  <!--                                    </div>-->
+  <!--                                </div>-->
+
+  <!--                            </div>-->
+  <!--                        </div>-->
+  <!--                    </div>-->
+
+  <!--                    <div class="slds-section slds-is-open" data-id="pickupTicket">-->
+  <!--                        <h3 class="slds-section__title" label="Units">-->
+  <!--                            <button type="button"  class="slds-button slds-section__title-action" data-buttonid="pipckupTicket" onclick={toggleSection}>-->
+  <!--                                <lightning-icon icon-name="utility:switch" alternative-text="button icon" size="x-small" class="slds-section__title-action-icon slds-button__icon_left"></lightning-icon>-->
+  <!--                                <span class="slds-truncate" title="pipckupTicket">Pickup Ticket</span>-->
+  <!--                            </button>-->
+  <!--                        </h3>-->
+  <!--                        <div class="slds-section__content">-->
+  <!--                            <p class={itemDetail}> <strong>Number: </strong> </p>-->
+  <!--                            <p class={itemDetail}> <strong>Requested On: </strong> </p>-->
+  <!--                            <p class={itemDetail}> <strong>By: </strong> </p>-->
+  <!--                        </div>-->
+  <!--                    </div>-->
+  <!--                </lightning-tab>-->
+  <!--            </div>-->
+  <!--        </lightning-tabset>-->
+  <!--    </template>-->
+  <!--    <template if:true={isMobile}>-->
+  <lightning-spinner if:true={isLoading}></lightning-spinner>
+  <template if:false={isLoading}>
+    <div class="asset-info-section">
+      <!--Added as part of FRONT-9837 to provide a minimum height to prevent scrolling issue-->
+      <div class="slds-section" data-id="assetDetail">
+        <h3 class="slds-section__title">
+          <button
+            type="button"
+            class="slds-button slds-section__title-action"
+            data-buttonid="assetDetail"
+            onclick={toggleSection}
+          >
+            <lightning-icon
+              icon-name="utility:switch"
+              alternative-text="button icon"
+              size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"
+            ></lightning-icon>
+            <span class="slds-truncate" title="assetDetail"
+              >{assetInformation.Name}</span
+            >
+          </button>
+        </h3>
+        <div class="slds-section__content slds-m-horizontal_medium">
+          <lightning-layout multiple-rows="true">
+            <lightning-layout-item size={itemSize}>
+              <p>
+                <span class="itemDetail">Make: </span
+                >{assetInformation.SM_PS_Make__c}
+              </p>
+              <p>
+                <span class="itemDetail">Model: </span
+                >{assetInformation.SM_PS_Model__c}
+              </p>
+              <p>
+                <span class="itemDetail">Serial #: </span
+                >{assetInformation.SM_PS_Serial_Number__c}
+              </p>
+              <template if:false={isMobile}>
+                <p>
+                  <span class="itemDetail">Year: </span
+                  >{assetInformation.SM_PS_Model_Year__c}
+                  <span class="itemDetail"> Hours: </span
+                  >{assetInformation.SM_PS_Year_to_Hours_Rent__c}
+                  <span class="itemDetail"> Qty: </span
+                  >{assetInformation.Quantity}
+                </p>
+              </template>
+              <template if:true={isMobile}>
+                <p>
+                  <span class="itemDetail">Year: </span
+                  >{assetInformation.SM_PS_Model_Year__c}
+                </p>
+                <p>
+                  <span class="itemDetail">Hours: </span
+                  >{assetInformation.SM_PS_Year_to_Hours_Rent__c}
+                </p>
+                <p>
+                <span class="itemDetail">Qty: </span>{assetInformation.Quantity}
+                </p>
+              </template>
+            </lightning-layout-item>
+            <lightning-layout-item size={itemSize}>
+              <p>
+                <span class="itemDetail">Original Cost: </span
+                >{assetInformation.SM_PS_Original_Cost__c}
+              </p>
+              <p>
+                <span class="itemDetail">Book Value: </span
+                >{assetInformation.SM_PS_Book_Value__c}
+              </p>
+              <p>
+                <span class="itemDetail">Sell Price: </span
+                >{assetInformation.SM_PS_Sell_Price__c}
+              </p>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+      </div>
+
+      <div class="slds-section" data-id="description">
+        <h3 class="slds-section__title">
+          <button
+            type="button"
+            class="slds-button slds-section__title-action"
+            data-buttonid="description"
+            onclick={toggleSection}
+          >
+            <lightning-icon
+              icon-name="utility:switch"
+              alternative-text="button icon"
+              size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"
+            ></lightning-icon>
+            <span class="slds-truncate" title="description">Description</span>
+          </button>
+        </h3>
+        <div class="slds-section__content slds-m-horizontal_medium">
+          <p class={itemDetail}>{assetInformation.Description}</p>
+        </div>
+      </div>
+
+      <div class="slds-section" data-id="order">
+        <h3 class="slds-section__title">
+          <button
+            type="button"
+            class="slds-button slds-section__title-action"
+            data-buttonid="order"
+            onclick={toggleSection}
+          >
+            <lightning-icon
+              icon-name="utility:switch"
+              alternative-text="button icon"
+              size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"
+            ></lightning-icon>
+            <span class="slds-truncate" title="order">Contract Order</span>
+          </button>
+        </h3>
+        <div class="slds-section__content slds-m-horizontal_medium">
+          <lightning-layout multiple-rows="true">
+            <lightning-layout-item size={itemSize}>
+              <p>
+                <span class="itemDetail">Contract Order Number: </span>
+                <template if:true={orderInformation.Order}>
+                  <span
+                    class="contract-link link"
+                    onclick={navigateToRecord}
+                    data-id={orderInformation.Order.ContractId}
+                    data-newtab="true"
+                    >{orderInformation.Order.Contract_Order_Number__c}</span
+                  >
+                </template>
+              </p>
+              <p>
+                <span class="itemDetail">Customer Name: </span>
+                <template if:true={orderInformation.Order}
+                  >{orderInformation.Order.Account.Name}</template
+                >
+              </p>
+              <p>
+                <span class="itemDetail">Job Site: </span>
+                <template if:true={jobsite}>
+                  <span
+                    class="link"
+                    onclick={navigateToRecord}
+                    data-id={jobsite.Id}
+                    >{jobsite.Name__c}</span
+                  >
+                </template>
+              </p>
+              <p>
+                <span class="itemDetail">Job Site Location: </span>
+                <template if:true={orderInformation.Order}
+                  >{orderInformation.Order.Job_Location__c}</template
+                >
+              </p>
+              <p>
+                <span class="itemDetail">Sales Rep: </span>
+                <template if:true={orderInformation.Order}>
+                  <template if:true={orderInformation.Order.Sales_Rep__c}>
+                    {orderInformation.Order.Sales_Rep__r.LastName},
+                    {orderInformation.Order.Sales_Rep__r.FirstName}
+                  </template>
+                </template>
+              </p>
+            </lightning-layout-item>
+            <lightning-layout-item size={itemSize}>
+              <p>
+                <span class="itemDetail">Ordered By: </span>
+                <template if:true={orderInformation.Order}>
+                  <template if:true={orderInformation.Order.Order_By__c}>
+                    {orderInformation.Order.Order_By__r.LastName},
+                    {orderInformation.Order.Order_By__r.FirstName}
+                  </template>
+                </template>
+              </p>
+              <p>
+                <span class="itemDetail">Branch {branchNum}: </span>
+                <template if:true={orderInformation.Order}>
+                  <template if:true={orderInformation.Order.Branch__c}>
+                    <a class="link" href={phoneValue}>{formattedPhoneNumber}</a>
+                  </template>
+                </template>
+              </p>
+              <p>
+                <span class="itemDetail">Total Billed: </span
+                ><lightning-formatted-number
+                  value={orderInformation.Total_Amount_Billed__c}
+                  format-style="currency"
+                  currency-code="USD"
+                ></lightning-formatted-number>
+              </p>
+              <p>
+                <span class="itemDetail">Day: </span
+                ><lightning-formatted-number
+                  value={orderInformation.Daily_Rate2__c}
+                  format-style="currency"
+                  currency-code="USD"
+                ></lightning-formatted-number>
+              </p>
+              <p>
+                <span class="itemDetail">Week: </span
+                ><lightning-formatted-number
+                  value={orderInformation.Weekly_Rate2__c}
+                  format-style="currency"
+                  currency-code="USD"
+                ></lightning-formatted-number>
+              </p>
+              <p>
+                <span class="itemDetail">Month: </span
+                ><lightning-formatted-number
+                  value={orderInformation.Monthly_Rate2__c}
+                  format-style="currency"
+                  currency-code="USD"
+                ></lightning-formatted-number>
+              </p>
+            </lightning-layout-item>
+          </lightning-layout>
+        </div>
+      </div>
+
+      <div class="slds-section" data-id="pickupTicket">
+        <h3 class="slds-section__title">
+          <button
+            type="button"
+            class="slds-button slds-section__title-action"
+            data-buttonid="pickupTicket"
+            onclick={toggleSection}
+          >
+            <lightning-icon
+              icon-name="utility:switch"
+              alternative-text="button icon"
+              size="x-small"
+              class="slds-section__title-action-icon slds-button__icon_left"
+            ></lightning-icon>
+          <span class="slds-truncate" title="pickupTicket">Pickup Ticket</span>
+          </button>
+        </h3>
+        <div class="slds-section__content slds-m-horizontal_medium">
+          <p><span class="itemDetail">Number: </span></p>
+          <p><span class="itemDetail">Requested For: </span></p>
+          <p><span class="itemDetail">By: </span></p>
+        </div>
+      </div>
+    </div>
+    <!--FRONT-9837-->
+  </template>
+  <!--    </template>-->
+</template>

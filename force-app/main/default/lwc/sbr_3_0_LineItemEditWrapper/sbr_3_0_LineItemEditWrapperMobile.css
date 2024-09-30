@@ -1,0 +1,90 @@
+.prod-inq-mob-group{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+.prod-inq-mob-group .slds-button{
+    width: 100%;
+    border: #EAEAEB;
+}
+
+.content-block {
+    position: fixed !important;
+    top: 50px !important;
+}
+
+.bottomfooter {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    width: 100%;
+    margin: auto;
+    position: fixed;
+}
+.headerClass{
+    font-size: 17px !important;
+}
+
+:host {
+    --slds-c-tabs-item-spacing-inline-end:21px;
+    --slds-c-tabs-item-spacing-inline-start:21px;
+    --slds-c-tabs-list-color-border:grey;
+
+--slds-c-tabs-list-sizing-border:0px;
+}
+.spins {
+    position:fixed !important;
+}
+.slds-modal__container{
+    height:100% !important;
+}
+
+.selected-btn{
+  color: #25683e;
+    font-weight: 400;
+  border-bottom: #e5e5e5;
+}
+.active-state{
+    color: #25683E;
+    background:#EDF6EF;
+    font-weight: 400;
+}
+.editor-hide{
+    display: none;
+}
+.ratematrix-hide{
+    display: none;
+}
+.availability-hide{
+    display: none;
+}
+.availability.show{
+    display: block;
+}
+
+.ratematrix.show{
+    display: block;
+}
+.editor.show{
+    display: block;
+}
+
+ .border-class{
+     border-bottom:1pt solid grey;
+ }
+ .testg{
+    display:none !important;
+ }
+
+ .availability-comp {
+    width: 100% !important;
+ }
+ .rateSection{
+    width:100% !important;
+ }
+ .rateSect{
+    width:100% !important;
+    
+ }

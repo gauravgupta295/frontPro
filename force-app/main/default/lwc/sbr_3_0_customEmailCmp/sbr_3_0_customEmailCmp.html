@@ -1,0 +1,179 @@
+<!--
+  @description       : Email Cmp
+  @author            : SBR
+  @group             : SBR
+  @last modified on  : 07-15-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+
+<template>
+
+  <template if:true={isSpinner}>
+    <br /><br /><br /><br />
+    <div>
+      <lightning-spinner
+        alternative-text="Loading"
+        size="small"
+      ></lightning-spinner>
+    </div>
+  </template>
+
+  <template if:false={isSpinner}>
+    <lightning-quick-action-panel header="">
+      <div class="slds-grid slds-wrap">
+        <!--Combox box  to add contact-->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+          <label class="slds-form-element__label" for="addContact"
+            ><strong>{labelCombobox}</strong></label
+          >
+          <lightning-combobox
+            name="progress"
+            label=""
+            value={addContactDefaultvalue}
+            placeholder={placeholderCombobox}
+            options={options}
+            onchange={handleChangeContact}
+            disabled={disableCombobox}
+            class="slds-p-top_none"
+            style="display: unset;"
+          >
+          </lightning-combobox>
+
+
+
+        </div>
+
+        <!--To-->
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+          <br />
+          <label class="slds-form-element__label" for="to"
+            ><strong>{labelTo}</strong></label
+          >
+          <!--Modified as part of FRONT-12390-->
+          <c-sbr_3_0_custom-email-cmp-to-input
+            aria-errormessage="errMsg"
+            aria-invalid="true"
+            aria-labelledby="to"
+            onselection={handleToAddressChange}
+            default-value-to={defaultValueTo}
+            onhandleremove={handleRemove}
+          ></c-sbr_3_0_custom-email-cmp-to-input>
+          <div id="errMsg" aria-live="assertive" style="visibility: visible">
+            <template if:true={errorToAndAddContact}>
+              <div class="slds-text-color_error">
+                {errorToAndAddContactMessage}
+              </div>
+            </template>
+            <template if:true={errorToEmailInvalid}>
+              <div class="slds-text-color_error">
+                Email or emails are invalid.
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!--From-->
+      <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+        <br />
+        <label class="slds-form-element__label" for="From"
+          ><strong>From:</strong></label
+        >
+        <!--added as part of FRONT-12389-->
+        <p>
+          <a
+            href={mailToUserEmailFromValue}
+            aria-label={ariaLabelEmailFromValue}
+            >{userEmail}</a
+          >
+        </p>
+      </div>
+
+      <!--Bcc-->
+      <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+        <br />
+        <label class="slds-form-element__label" for="Bcc"
+          ><strong>Bcc:</strong></label
+        >
+        <!--added as part of FRONT-12389-->
+        <p>
+          <a href={mailToUserEmailBccValue} aria-label={ariaLabelBccValue}
+            >{bccDefaultValue}</a
+          >
+
+        </p>
+      </div>
+
+      <!--Subject-->
+      <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+        <br />
+        <label class="slds-form-element__label" for="sub" id="sub"
+          ><strong>Subject:</strong></label
+        >
+
+        <!-- FRONT-12051 : Issue 2 Added aria-disabled -->
+        <!--added aria-labelledby as part of FRONT-12389-->
+        <lightning-input
+          aria-labelledby="sub"
+          type="text"
+          label=""
+          value={subjectDefaultValue}
+          onchange={handleSubjectChnage}
+          read-only="true"
+          style="display: unset"
+          aria-disabled="true"
+        ></lightning-input>
+        <!-- END : FRONT-12051 -->
+
+        <template if:true={errorSubjectRequired}>
+          <div class="slds-text-color_error">Subject is required.</div>
+        </template>
+      </div>
+
+      <!--Body-->
+      <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+        <br />
+        <label
+          class="slds-form-element__label"
+          for="body"
+          id="body"
+          aria-hidden="true"
+          ><strong>Note to customer:</strong></label
+        >
+        <!--added aria-labelledby as part of FRONT-12389-->
+        <lightning-input
+          aria-labelledby="body"
+          type="text"
+          value={body}
+          onchange={handleBodyChange}
+        ></lightning-input>
+        <template if:true={errorBodyRequired}>
+          <div class="slds-text-color_error">Note to customer is required.</div>
+        </template>
+      </div>
+
+      <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-1">
+        <br />
+        <label
+          class="slds-form-element__label"
+          for="body"
+          id="mca"
+          aria-hidden="true"
+          ><strong>Manual Credit Application</strong></label
+        > <br>
+        <a href={creditApplicationForm} style="text-decoration:underline" target="_blank">View PDF and print</a>
+      </div>
+
+      <!--Footer-->
+
+      <div slot="footer">
+        <lightning-button
+          variant="brand"
+          label="Send Email"
+          onclick={validateAndSendEmail}
+        >
+        </lightning-button>
+      </div>
+    </lightning-quick-action-panel>
+  </template>
+</template>

@@ -1,0 +1,32 @@
+.cancel-btn {
+  color: #25683e;
+  font-weight: 400;
+}
+
+.save-btn {
+  font-weight: 400;
+  color: #ffffff;
+  background-color: #25683e;
+}
+
+.wide-modal {
+  max-width: 40rem;
+  width: 40rem;
+}
+/* Added as part of FRONT-2195 , FRONT-8759*/
+.large-modal {
+  max-width: 65rem;
+  width: 65rem;
+}
+/*FRONT-2195 , FRONT-8759 Ends*/
+/*FRONT-9276 : Making the boundary colour grey for the button*/
+.buttonGreyBoundary {
+  --slds-c-button-color-border: #aeaeae;
+}
+/*END : FRONT - 9276*/
+
+/* FRONT-13980 */
+.fit-large-modal{
+    max-width: 80%;
+    width: 80%;
+}

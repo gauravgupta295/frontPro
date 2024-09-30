@@ -1,0 +1,255 @@
+<template>
+  <template lwc:if={isLoading}>
+    <c-loading-spinner loading-message="Loading..."></c-loading-spinner>
+  </template>
+  <div class={variantClass}>
+    <template if:false={isMobile}>
+      <lightning-layout horizontal-align="spread">
+        <template if:true={isDisableAddToCart}>
+          <lightning-layout-item>
+            <lightning-button-group>
+              <lightning-button-icon
+                disabled=""
+                class="adjust-button"
+                icon-name="utility:dash"
+                variant="border-filled"
+                alternative-text="Reduce"
+                onclick={subtractItem}
+              ></lightning-button-icon>
+
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <input
+                    disabled=""
+                    type="text"
+                    onchange={handleCountChange}
+                    value={count}
+                    class="disabled-input slds-input atc-input quantity-input"
+                  />
+                </div>
+              </div>
+              <lightning-button-icon
+                disabled=""
+                class="adjust-button"
+                icon-name="utility:add"
+                variant="border-filled"
+                alternative-text="Increase"
+                onclick={addItem}
+              ></lightning-button-icon>
+            </lightning-button-group>
+          </lightning-layout-item>
+          <lightning-layout-item if:false={hideBtn}>
+            <button
+              type="button"
+              disabled=""
+              class={atcButtonClass}
+              value={addItemBtnLabel}
+              onclick={addToCart}
+            >
+              {addItemBtnLabel}
+            </button>
+          </lightning-layout-item>
+        </template>
+        <template if:false={isDisableAddToCart}>
+          <lightning-layout-item>
+            <lightning-button-group>
+              <lightning-button-icon
+                class="adjust-button"
+                icon-name="utility:dash"
+                variant="border-filled"
+                alternative-text="Reduce"
+                onclick={subtractItem}
+              ></lightning-button-icon>
+
+              <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                  <input
+                    type="text"
+                    onchange={handleCountChange}
+                    value={count}
+                    class="slds-input atc-input quantity-input"
+                  />
+                </div>
+              </div>
+              <lightning-button-icon
+                class="adjust-button"
+                icon-name="utility:add"
+                variant="border-filled"
+                alternative-text="Increase"
+                onclick={addItem}
+              ></lightning-button-icon>
+            </lightning-button-group>
+          </lightning-layout-item>
+          <lightning-layout-item>
+            <button
+              type="button"
+              disabled={disableBtn}
+              class={atcButtonClass}
+              value={addItemBtnLabel}
+              onclick={addToCart}
+            >
+              {addItemBtnLabel}
+            </button>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template>
+
+    <template if:true={isMobile}>
+      <lightning-layout horizontal-align="spread">
+        <template if:true={isDisableAddToCart}>
+          <lightning-layout-item>
+            <lightning-button-group>
+              <button
+                type="button"
+                class="disabled-icon atc-input slds-button slds-button_icon slds-button_icon-border-filled"
+                title="Reduce"
+                disabled=""
+                onclick={subtractItem}
+              >
+                <span
+                  class="slds-icon_container slds-icon_x-small slds-align_absolute-center"
+                  title="Reduce"
+                >
+                  <lightning-icon
+                    icon-name="utility:dash"
+                    size="x-small"
+                    alternative-text="Reduce"
+                    title="Reduce"
+                  ></lightning-icon>
+                </span>
+              </button>
+              <div class="slds-form-element slds-align_absolute-center">
+                <div
+                  class="slds-form-element__control slds-align_absolute-center"
+                >
+                  <input
+                    class="mobile-atc-input quantity-input"
+                    type="text"
+                    disabled=""
+                    onchange={handleCountChange}
+                    value={count}
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                class="atc-input slds-button slds-button_icon slds-button_icon-border-filled"
+                title="Increase"
+                disabled=""
+                onclick={addItem}
+              >
+                <span
+                  class="disabled-icon slds-icon_container slds-icon_x-small slds-align_absolute-center"
+                  title="Increase"
+                >
+                  <lightning-icon
+                    icon-name="utility:add"
+                    size="x-small"
+                    alternative-text="Increase"
+                    title="Increase"
+                  ></lightning-icon>
+                </span>
+              </button>
+            </lightning-button-group>
+          </lightning-layout-item>
+          <lightning-layout-item if:false={hideBtn}>
+            <button
+              type="button"
+              class={atcButtonClass}
+              style="background-color: grey; color: white"
+              value={addItemBtnLabel}
+              disabled
+              onclick={addToCart}
+            >
+              {addItemBtnLabel}
+            </button>
+          </lightning-layout-item>
+        </template>
+        <template if:false={isDisableAddToCart}>
+          <lightning-layout-item>
+            <lightning-button-group>
+              <button
+                type="button"
+                class="atc-input slds-button slds-button_icon slds-button_icon-border-filled"
+                title="Reduce"
+                onclick={subtractItem}
+              >
+                <span
+                  class="slds-icon_container slds-icon_x-small slds-align_absolute-center"
+                  title="Reduce"
+                >
+                  <lightning-icon
+                    icon-name="utility:dash"
+                    size="x-small"
+                    alternative-text="Reduce"
+                    title="Reduce"
+                  ></lightning-icon>
+                </span>
+              </button>
+              <div class="slds-form-element slds-align_absolute-center">
+                <div
+                  class="slds-form-element__control slds-align_absolute-center"
+                >
+                  <input
+                    type="text"
+                    onchange={handleCountChange}
+                    value={count}
+                    class="mobile-atc-input quantity-input"
+                  />
+                </div>
+              </div>
+              <button
+                type="button"
+                class="atc-input slds-button slds-button_icon slds-button_icon-border-filled"
+                title="Increase"
+                onclick={addItem}
+              >
+                <span
+                  class="slds-icon_container slds-icon_x-small slds-align_absolute-center"
+                  title="Increase"
+                >
+                  <lightning-icon
+                    icon-name="utility:add"
+                    size="x-small"
+                    alternative-text="Increase"
+                    title="Increase"
+                  ></lightning-icon>
+                </span>
+              </button>
+            </lightning-button-group>
+          </lightning-layout-item>
+          <lightning-layout-item>
+            <button
+              type="button"
+              disabled={disableBtn}
+              class={atcButtonClass}
+              value={addItemBtnLabel}
+              onclick={addToCart}
+            >
+              {addItemBtnLabel}
+            </button>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template>
+  </div>
+
+  <!-- FRONT-22235/22237 : Sales/Misc Item Selection Modal -->
+  <c-sbr_3_0_modal-cmp
+    class="salesContractEditorModalClass"
+    lwc:ref="salesContractEditorModal"
+    header={salesContractEditorModalHeader}
+    save-handler={handleConfirm}
+    save-btn-label="Confirm"
+  >
+    <span slot="modalContent">
+      <c-sbr_3_0_add-to-contract-sales-editor
+        lwc:ref="salesContractEditor"
+        selected-sales-item={selectedItem}
+        cost-price={costPrice}
+        variant={itemTypeVariant}
+      ></c-sbr_3_0_add-to-contract-sales-editor>
+    </span>
+  </c-sbr_3_0_modal-cmp>
+</template>

@@ -1,0 +1,58 @@
+<template lwc:render-mode="light">
+  <section
+    role="dialog"
+    class="mobile-container"
+    data-z-index={computedZIndex}
+    style={computedInlineStyle}
+    data-comp-uuid={uuid}
+  >
+    <div class="mobile-container-inner">
+      <template lwc:if={hasStringTitle}>
+        <div class={headerClasses}>
+          <header class={subHeaderClass}>
+            <h2 class={titleClass}>
+              <span class="slds-text-heading_small slds-truncate">
+                {title}
+              </span>
+            </h2>
+            <template lwc:if={showCrossBtnOnHeader}>
+              <lightning-button-icon
+                variant="bare"
+                size="large"
+                icon-name="utility:close"
+                alternative-text="close"
+                class="slds-modal__close slds-button_icon-inverse slds-var-p-top_small slds-var-p-right_small"
+                onclick={handleHeaderCloseClick}
+              ></lightning-button-icon>
+            </template>
+          </header>
+        </div>
+      </template>
+      <template lwc:else>
+        <div class={slottedTitedClasses}>
+          <slot name="title"></slot>
+        </div>
+      </template>
+
+      <div class={contentClasses}>
+        <template lwc:if={isLoading}>
+          <div class={spinnerClasses}>
+            <lightning-spinner
+              lwc:if={isLoading}
+              variant="brand"
+              alternative-text={spinnerMessage}
+              data-message={spinnerMessage}
+            ></lightning-spinner>
+          </div>
+        </template>
+        <template lwc:if={isLoaded}>
+          <slot></slot>
+        </template>
+        
+      </div>
+      <div class={footerClasses} lwc:if={showFooter} style={zIndexStyle}>
+        <slot name="footer"></slot>
+      </div>
+    </div>
+  </section>
+</template>

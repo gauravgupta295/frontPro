@@ -1,0 +1,159 @@
+.TopBox{
+    align-items: center;
+    justify-content: center;
+    border-radius: 3px 3px 0px 0px;
+    background: var(--foundation-gray-neutral-95, #F3F3F3);
+    box-shadow: 0px 1px 0px 0px #C9C9C9;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    }
+    .custom-top-margin {
+        margin-top: 10px; 
+        white-space: pre-wrap; 
+        white-space: -moz-pre-wrap; 
+        white-space: -pre-wrap; 
+        white-space: -o-pre-wrap; 
+        word-wrap: break-word; 
+    }
+.Columns1{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.Columns2{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.Columns3{
+    display: flex;
+    color: var(--text-default, #181818);
+    justify-content: left;
+    align-items: left;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+    gap: 5px;
+}
+.Columns3Tablet{
+    display: flex;
+    color: var(--text-default, #181818);
+    justify-content: left;
+    align-items: left;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+    gap: 5px;
+}
+.Columns2Full{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 20px;
+}
+.Column1Data{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+.Column2Data{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+    white-space: pre-wrap;
+    white-space: -moz-pre-wrap;
+    white-space: -pre-wrap;
+    white-space: -o-pre-wrap;
+    word-wrap: break-word;
+}
+.Column3Data{
+    display: flex;
+    color: var(--text-default, #181818);
+    justify-content: left;
+    align-items: left;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 20px;
+    gap: 2px;
+}
+.Column3DataTablet{
+    display: flex;
+    color: var(--text-default, #181818);
+    justify-content: left;
+    align-items: left;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 8px;
+    font-weight: 700;
+    line-height: 20px;
+    gap: 2px;
+}
+.Column2DataFull{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    gap: 10px;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+}
+.TitleOfTable{
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    border-radius: 3px 3px 0px 0px;
+    background: var(--foundation-gray-neutral-95, #F3F3F3);
+    box-shadow: 0px 1px 0px 0px #C9C9C9;
+    color: #000;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 21px;
+}
+.TextForNoData{
+    display: flex;
+    color: #000;
+    text-align: center;
+    justify-content: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+}

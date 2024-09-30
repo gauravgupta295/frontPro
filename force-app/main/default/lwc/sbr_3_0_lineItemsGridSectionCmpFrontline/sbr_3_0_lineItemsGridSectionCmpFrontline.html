@@ -1,0 +1,1011 @@
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner class="spins" size="large"></lightning-spinner>
+  </template>
+  <!-- FRONT 7652,7653,7655 START-->
+  <template if:true={isCancel}>
+    <c-sbr_3_0_cancel-line-items-cmp
+      cancel-rows={cancelSelectedRows}
+      is-mobile={isMobile}
+      onhandleitemacancelction={handleCancelItemAction}
+      onhandlecancelaction={handleCancelAction}
+      record-id={recordId}
+      records-length={recordsLength}
+      is-rental={rentalItems}
+    >
+    </c-sbr_3_0_cancel-line-items-cmp>
+    <!-- FRONT 7652,7653,7655 END-->
+  </template>
+  <template if:false={isMobile}>
+    <lightning-accordion-section name={accname} label={label}>
+      <div class="slds-page-header page-header-padding">
+        <div class="slds-page-header__row">
+          <div class="slds-page-header__col-title">
+            <div class="slds-media media-wrapper">
+              <div class="slds-media__figure">
+                <lightning-icon
+                  icon-name={_iconName}
+                  alternative-text="Rental Items"
+                  title={accname}
+                ></lightning-icon>
+              </div>
+              <div class="slds-media__body slds-m-top_xx-small">
+                <div class="slds-page-header__name">
+                  <div class="slds-page-header__name-title">
+                    <h1>
+                      <span
+                        class="slds-page-header__title slds-truncate"
+                        title="Line Items"
+                        >{accname}</span
+                      >
+                    </h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <template if:true={showHeaderButtons}>
+            <div class="slds-page-header__col-actions">
+              <div class="slds-page-header__controls">
+                <div class="slds-page-header__control">
+                  <lightning-button-group>
+                    <template if:false={showCancelLineItem}>
+                      <template if:false={isAncillary}>
+                        <lightning-button
+                          variant="brand-outline"
+                          label="Remove Item"
+                          title="Remove Item"
+                          data-name="remove"
+                          onclick={handleItemAction}
+                          disabled={_disableRemoveItem}
+                        ></lightning-button>
+                      </template>
+                    </template>
+                    <template if:true={isRentalOrSales}>
+                      <lightning-button
+                        variant="brand-outline"
+                        label={labels.LINE_ITEMS_EDIT_ALL_LABEL}
+                        title="Bulk Edit"
+                        data-name="bulkEdit"
+                        onclick={handleItemAction}
+                        data-is-rental={isRental}
+                        data-is-sales={isSales}
+                        disabled={disableBulkEdit}
+                      ></lightning-button>
+                    </template>
+                    <!-- FRONT-7653 FRONT-7651 START-->
+                    <template if:true={showCancelLineItem}>
+                      <template if:true={isRentalOrSales}>
+                        <template if:false={isAncillary}>
+                          <lightning-button
+                            variant="brand-outline"
+                            label={labels.CANCEL_ITEM_BUTTON_LABEL}
+                            title="Cancel Item(s)"
+                            disabled={_disableRemoveItem}
+                            onclick={handleCancelItemAction}
+                            data-name="cancelItems"
+                            data-is-rental={isRental}
+                            data-is-sales={isSales}
+                            hide-cancel={handleCancelItemAction}
+                          ></lightning-button>
+                        </template>
+                      </template>
+                    </template>
+                    <!-- FRONT-7653 FRONT-7651 END-->
+                  </lightning-button-group>
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+      <!--Modified for FRONT-9233,10479,11421 -->
+      <div class="manual-override-section">
+        <c-sbr_3_0_custom-data-table-cmp
+          key-field="Id"
+          columns={columns}
+          data={records}
+          draft-values={draftValues}
+          hide-checkbox-column={isReadOnly}
+          errors={draftErrors}
+          resize-column-disabled
+          onrowaction={handleRowAction}
+          onsave={handleRowSave}
+          onrowselection={handleLineItemSelection}
+          class="quantityClass"
+          onnotesiconselected={handleRowNotesAction}
+        ></c-sbr_3_0_custom-data-table-cmp>
+      </div>
+    </lightning-accordion-section>
+  </template>
+
+  <template if:true={isMobile}>
+    <!--
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col">
+                <h1>
+                    <span class="slds-page-header__title slds-truncate" title="Line Items">{label}</span>
+                </h1>
+            </div>
+        </div>
+        -->
+    <lightning-accordion-section name={accname} label={label}>
+      <div if:true={itemListDisplay}>
+        <div class="item-list-ctr">
+          <template if:true={isRecordListNotEmpty}>
+            <template for:each={records} for:item="lineItem" for:index="index">
+              <div class="line-item slds-p-around_medium" key={lineItem.Id}>
+                <div class={lineItem.noAvailability}>
+                  <div
+                    class="line-item-header slds-grid slds-grid_align-spread"
+                  >
+                    <div class="slds-form-element slds-col">
+                      <div
+                        class="slds-grid"
+                        if:true={lineItem.noAvailabilityIcon}
+                      >
+                        <!--Added as part of FRONT-1958-->
+                        <div
+                          class="no-availability-icon slds-col"
+                          if:true={lineItem.noAvailabilityIcon}
+                          onclick={onIconClicked}
+                        >
+                          <!--FRONT-8793 onClick was moved to the div from the icon-->
+                          <lightning-icon
+                            icon-name="utility:warning"
+                            alternative-text="Warning"
+                            title="Warning"
+                            size="small"
+                            class="no-availability-icon"
+                            id={lineItem.Id}
+                            name={lineItem.Id}
+                          ></lightning-icon
+                          ><!--FRONT-8793 onClick was moved to the div from the icon-->
+                          <div
+                            class="slds-popover slds-popover_tooltip slds-nubbin_left no-availability-tooltip hide-tooltip mobile-tooltip"
+                            role="tooltip"
+                            id={lineItem.Id}
+                          >
+                            <!--FRONT-8793-->
+                            <div class="slds-popover__body">
+                              This Cat-Class Item is no longer available. Update
+                              item<!--FRONT-8793-->
+                              by selecting a substitute or cancel item.
+                            </div>
+                          </div>
+                        </div>
+                        <!--START:FRONT-1958-->
+                        <div if:true={isRental}>
+                          <div
+                            class="slds-col partially-converted-icon"
+                            onclick={onIconClicked}
+                            if:true={lineItem.partiallyConvertedItem}
+                          >
+                            <lightning-icon
+                              icon-name="utility:info"
+                              title="“Info”"
+                              size="small"
+                              id={lineItem.Name}
+                              name={lineItem.Id}
+                              class="partially-converted-icon"
+                            ></lightning-icon>
+                            <div
+                              class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left hide-tooltip partially-converted-tooltip info-mobile-tooltip"
+                              role="tooltip"
+                              id={lineItem.Name}
+                            >
+                              <div class="slds-popover__body">
+                                {labels.INFO_TOOLTIP}
+                              </div>
+                            </div>
+                          </div>
+                          <div
+                            class="slds-col partially-converted-icon"
+                            onclick={onIconClicked}
+                            if:true={lineItem.fullyConvertedItem}
+                          >
+                            <lightning-icon
+                              icon-name="utility:info_alt"
+                              title="“Info”"
+                              size="small"
+                              id={lineItem.Id}
+                              name={lineItem.Id}
+                              class="partially-converted-icon"
+                            ></lightning-icon>
+                          </div>
+                        </div>
+                      </div>
+                      <!--END:FRONT-1958-->
+                      <div class="slds-form-element__control">
+                        <div class="slds-checkbox">
+                          <!--START:FRONT-1958-->
+                          <div lwc:if={isRental}>
+                            <div
+                              lwc:if={lineItem.fullyConvertedNoSubstituteItem}
+                              class="slds-input-has-fixed-addon converted-icon"
+                            >
+                              <lightning-icon
+                                icon-name="utility:info_alt"
+                                title="“Info”"
+                                size="small"
+                                id={lineItem.Id}
+                                name={lineItem.Id}
+                                class="converted-icon"
+                              ></lightning-icon>
+                              <div
+                                class="fully-converted-text"
+                                if:false={isReadOnly}
+                              >
+                                <!--FRONT-11422 showing checkbox in edit mode, 11571 Removed checkbox in edit mode-->
+                                {lineItem.Name}
+                              </div>
+                              <div
+                                class="fully-converted-text"
+                                if:true={isReadOnly}
+                              >
+                                <!--FRONT-11422 hiding checkbox in read only mode-->
+                                {lineItem.Name}
+                              </div>
+                            </div>
+                            <div
+                              lwc:elseif={lineItem.patiallyConvertedNoSubstituteItem}
+                              class="converted-icon slds-input-has-fixed-addon"
+                              onclick={onIconClicked}
+                            >
+                              <lightning-icon
+                                icon-name="utility:info"
+                                title="“Info”"
+                                size="small"
+                                id={lineItem.Id}
+                                name={lineItem.Id}
+                                class="converted-icon"
+                              ></lightning-icon>
+                              <div
+                                class="slds-popover slds-popover_tooltip slds-nubbin_bottom-left hide-tooltip converted-tooltip info-mobile-tooltip"
+                                role="tooltip"
+                                id={lineItem.Id}
+                              >
+                                <div class="slds-popover__body">
+                                  {labels.INFO_TOOLTIP}
+                                </div>
+                              </div>
+                              <div if:false={isReadOnly}>
+                                <!--FRONT-11422 showing checkbox in edit mode-->
+                                <lightning-input
+                                  type="checkbox"
+                                  checked={lineItem._isChecked}
+                                  label={lineItem.Name}
+                                  name={lineItem.Name}
+                                  id={lineItem.Id}
+                                  data-id={lineItem.Id}
+                                  value={lineItem.Id}
+                                  onchange={handleRowSelection}
+                                  disabled={isAncillary}
+                                  class="textInput partially-converted-text"
+                                >
+                                </lightning-input>
+                              </div>
+                              <div
+                                class="fully-converted-text"
+                                if:true={isReadOnly}
+                              >
+                                <!--FRONT-11422 hiding checkbox in read only mode-->
+                                {lineItem.Name}
+                              </div>
+                            </div>
+                            <div lwc:else class="slds-input-has-fixed-addon">
+                              <!--END:FRONT-1958-->
+                              <div if:false={isReadOnly}>
+                                <!--FRONT-11422 showing checkbox in edit mode-->
+                                <lightning-input
+                                  type="checkbox"
+                                  checked={lineItem._isChecked}
+                                  label={lineItem.Name}
+                                  name={lineItem.Name}
+                                  id={lineItem.Id}
+                                  data-id={lineItem.Id}
+                                  value={lineItem.Id}
+                                  onchange={handleRowSelection}
+                                  disabled={isAncillary}
+                                  class="textInput"
+                                >
+                                </lightning-input>
+                              </div>
+                              <div
+                                class="fully-converted-text"
+                                if:true={isReadOnly}
+                              >
+                                <!--FRONT-11422 hiding checkbox in read only mode-->
+                                {lineItem.Name}
+                              </div>
+                            </div>
+                          </div>
+                          <div lwc:else class="slds-input-has-fixed-addon">
+                            <!--END:FRONT-1958-->
+                            <div if:false={isReadOnly}>
+                              <!--FRONT-11422 showing checkbox in edit mode-->
+                              <lightning-input
+                                type="checkbox"
+                                checked={lineItem._isChecked}
+                                label={lineItem.Name}
+                                name={lineItem.Name}
+                                id={lineItem.Id}
+                                data-id={lineItem.Id}
+                                value={lineItem.Id}
+                                onchange={handleRowSelection}
+                                disabled={isAncillary}
+                                class="textInput slds-p-right_medium"
+                              >
+                              </lightning-input>
+                            </div>
+                            <div
+                              class="fully-converted-text"
+                              if:true={isReadOnly}
+                            >
+                              <!--FRONT-11422 hiding checkbox in read only mode-->
+                              {lineItem.Name}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <template lwc:if={isQuoteOrOrder}>
+                      <!--START: FRONT:9206-->
+                      <template if:true={isRental}>
+                        <template if:false={lineItem.fullyConvertedItem}>
+                          <lightning-button-menu
+                            class="slds-p-left_x-small slds-col converted-chevron"
+                            icon-size="medium"
+                            variant="border-filled"
+                            alternative-text="Show menu"
+                            menu-alignment="auto"
+                          >
+                            <!--FRONT-11422-Added product details option-->
+                            <lightning-menu-item
+                              value="productDetailsLineItem"
+                              class="menu-item-txt menuItem"
+                              id={lineItem.Id}
+                              data-index={index}
+                              data-name={lineItem.Name}
+                              data-groupid={lineItem._groupId}
+                              onclick={productDetailsItemHandler}
+                              label="Product Details"
+                            >
+                            </lightning-menu-item>
+                            <!-- Start FRONT-1931: Adding visibility condition -->
+                            <template if:false={isLockedOrReadOnlyOrder}>
+                              <template if:false={lineItem.noAvailabilityIcon}>
+                                <lightning-menu-item
+                                  value="editLineItem"
+                                  disabled={disableEdit}
+                                  class="menu-item-txt menuItem"
+                                  id={lineItem.Id}
+                                  data-index={index}
+                                  data-name={lineItem.Name}
+                                  data-groupid={lineItem._groupId}
+                                  onclick={editLineItemHandler}
+                                  label="Edit"
+                                >
+                                </lightning-menu-item>
+                              </template>
+                              <!--FRONT-13033 Added check for not showing substitute in quotes-->
+                              <template if:false={isQuote}>
+                                <!-- FRONT : 24214 -->
+                                <template
+                                  if:true={showSubstituteLineItemButton}
+                                >
+                                  <lightning-menu-item
+                                    value="SubstituteLineItem"
+                                    class="menu-item-txt menuItem"
+                                    data-index={index}
+                                    data-name={lineItem.Name}
+                                    data-groupid={lineItem._groupId}
+                                    onclick={substituteLineItemHandler}
+                                    label="Substitute Item"
+                                  >
+                                  </lightning-menu-item>
+                                </template>
+                              </template>
+                              <template if:true={showCancelLineItem}>
+                                <lightning-menu-item
+                                  value="canceLineItem"
+                                  class="menu-item-txt menuItem"
+                                  id={lineItem.Id}
+                                  onclick={handleCancelChevronAction}
+                                  data-index={index}
+                                  label={labels.CANCEL_ITEM}
+                                >
+                                </lightning-menu-item>
+                              </template>
+                            </template>
+                            <!-- End FRONT-1931 -->
+                          </lightning-button-menu>
+                        </template>
+                        <template if:true={lineItem.fullyConvertedItem}>
+                          <lightning-button-menu
+                            class="slds-p-left_x-small slds-col converted-chevron"
+                            icon-size="medium"
+                            variant="border-filled"
+                            alternative-text="Show menu"
+                            menu-alignment="auto"
+                          >
+                          </lightning-button-menu>
+                        </template>
+                      </template>
+                      <template if:false={isRental}
+                        ><!--END: FRONT:9206-->
+                        <lightning-button-menu
+                          class="slds-p-left_x-small slds-col converted-chevron"
+                          icon-size="medium"
+                          variant="border-filled"
+                          alternative-text="Show menu"
+                          menu-alignment="auto"
+                        >
+                          <!--FRONT-11422-Added product details option-->
+                          <lightning-menu-item
+                            value="productDetailsLineItem"
+                            class="menu-item-txt menuItem"
+                            id={lineItem.Id}
+                            data-index={index}
+                            data-name={lineItem.Name}
+                            data-groupid={lineItem._groupId}
+                            onclick={productDetailsItemHandler}
+                            label="Product Details"
+                          >
+                          </lightning-menu-item>
+                          <!-- Start FRONT-1931: Adding visibility condition -->
+                          <template if:false={isLockedOrReadOnlyOrder}>
+                            <template if:false={lineItem.Status}>
+                              <lightning-menu-item
+                                value="editLineItem"
+                                disabled={disableEdit}
+                                class="menu-item-txt menuItem"
+                                id={lineItem.Id}
+                                data-index={index}
+                                data-name={lineItem.Name}
+                                data-groupid={lineItem._groupId}
+                                onclick={editLineItemHandler}
+                                label="Edit"
+                              >
+                              </lightning-menu-item>
+                              <!-- FRONT-8773 start -->
+                              <template if:false={isQuote}
+                                ><!--FRONT-13033 Added check for not showing substitute in quotes-->
+                                <template if:true={isRental}>
+                                  <!-- FRONT-12400 end -->
+                                  <lightning-menu-item
+                                    value="SubstituteLineItem"
+                                    class="menu-item-txt menuItem"
+                                    data-index={index}
+                                    data-name={lineItem.Name}
+                                    data-groupid={lineItem._groupId}
+                                    onclick={substituteLineItemHandler}
+                                    label="Substitute Item"
+                                  >
+                                  </lightning-menu-item>
+                                </template>
+                              </template>
+                              <!-- FRONT-8773 end -->
+                            </template>
+                            <!-- FRONT-7652 START-->
+                            <template if:true={isSales}
+                              ><!--Modified as part of FRONT-9206-->
+                              <template if:true={showCancelLineItem}>
+                                <lightning-menu-item
+                                  value="canceLineItem"
+                                  class="menu-item-txt menuItem"
+                                  id={lineItem.Id}
+                                  onclick={handleCancelChevronAction}
+                                  data-index={index}
+                                  label={labels.CANCEL_ITEM}
+                                >
+                                </lightning-menu-item>
+                              </template>
+                            </template>
+                            <!-- FRONT-7652 END-->
+                          </template>
+                          <!-- End FRONT-1931 -->
+                        </lightning-button-menu>
+                      </template>
+                    </template>
+                    <!-- FRONT-11379 -->
+                    <template lwc:else>
+                      <lightning-button-icon
+                        icon-name="utility:delete"
+                        alternative-text="Remove"
+                        size="medium"
+                        type="button"
+                        id={lineItem.Id}
+                        data-id={lineItem.Id}
+                        data-index={index}
+                        variant="base"
+                        onclick={handleRemovePISelectedRow}
+                      ></lightning-button-icon>
+                    </template>
+                    <!--END : FRONT-11379 -->
+                  </div>
+                  <div class="line-item-body slds-p-left_x-large">
+                    <!--FRONT-8793-->
+                    <template if:true={isQuoteOrOrder}>
+                      <div class="slds-grid slds-gutters slds-wrap">
+                        <div
+                          class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                          if:true={isRentalOrSalesOrAncillary}
+                        >
+                          <span class="slds-text-title textBold">
+                            <!--FRONT-9234 Start-->
+                            <template if:true={orderIsPartiallyFilled}>
+                              <template if:true={isRental}
+                                >Remaining/Total Qty</template
+                              >
+                              <template if:false={isRental}>Quantity</template>
+                            </template>
+                            <!--added for 22315-->
+                            <template if:false={orderIsPartiallyFilled}
+                              >Item Quantity</template
+                            >
+                            <!--FRONT-9234 End-->
+                          </span>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2"
+                          if:true={isRentalOrSalesOrAncillary}
+                        >
+                          <span class="slds-text-title slds-p-bottom_x-small">
+                            <!--FRONT-9234 Start-->
+                            <template if:true={orderIsPartiallyFilled}>
+                              <template if:true={isRental}
+                                >{lineItem.RemainingQuantity} of
+                                {lineItem.TotalQuantity}</template
+                              >
+                              <template if:false={isRental}
+                                >{lineItem.Quantity}</template
+                              >
+                            </template>
+                            <template if:false={orderIsPartiallyFilled}
+                              >{lineItem.Quantity}</template
+                            >
+                            <!--FRONT-9234 End-->
+                          </span>
+                        </div>
+                      </div>
+                    </template>
+                    <template if:false={isQuoteOrOrder}>
+                      <div class="slds-form-element slds-p-bottom_x-small">
+                        <label class="slds-form-element__label is-bold textBold"
+                          >Item Quantity</label
+                        >
+                        <div class="slds-form-element__control">
+                          <input
+                            type="number"
+                            pattern="\d*"
+                            class="slds-input"
+                            data-lineid={lineItem.Id}
+                            value={lineItem.Quantity}
+                            onblur={mobileEditQuantity}
+                          />
+                        </div>
+                      </div>
+                    </template>
+
+                    <div class="slds-grid slds-gutters slds-wrap">
+                      <!-- FRONT-7654 START-->
+                      <!--added for 22315-->
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isRentalOrFrontlineOrAccountRecordType}
+                      >
+                        <span class="slds-text-title textBold">Min Rate</span>
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={isRentalOrFrontlineOrAccountRecordType}
+                      >
+                        <span class="slds-text-title">{lineItem.Min_Rate}</span>
+                      </div>
+                      <!--ended for 22315-->
+                      <template
+                        if:true={isRentalOrFrontlineOrAccountRecordType}
+                      >
+                        <div
+                          class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                          if:true={isRentalOrSales}
+                        >
+                          <span class="slds-text-title textBold"
+                            >Cat Class</span
+                          >
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                          if:true={isRentalOrSales}
+                        >
+                          <span class="slds-text-title"
+                            >{lineItem.CatClass}</span
+                          >
+                        </div>
+                      </template>
+                      <!-- FRONT-7654 END-->
+                     
+
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title textBold"
+                          >Daily Rate (ea.)</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title"
+                          >{lineItem.Daily_Rate}</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title textBold"
+                          >Weekly Rate (ea.)</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title"
+                          >{lineItem.Weekly_Rate}</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title textBold"
+                          >4 Weekly Rate (ea.)</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={isRental}
+                      >
+                        <span class="slds-text-title"
+                          >{lineItem.Monthly_Rate}</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isSalesOrAncillary}
+                      >
+                        <span class="slds-text-title textBold"
+                          >Sales/Misc Price (ea.)</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={isSalesOrAncillary}
+                      >
+                        <span class="slds-text-title"
+                          >${lineItem.Sale_Price}</span
+                        >
+                      </div>
+
+                      <!-- SAL-26001 -->
+                      <template if:false={hidesubtotalcolumn}
+                        ><!--Added as part of FRONT-9236-->
+                        <div
+                          class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        >
+                          <span class="slds-text-title textBold"
+                            >Item Subtotal</span
+                          >
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        >
+                          <span class="slds-text-title"
+                            >${lineItem.Item_Subtotal}</span
+                          >
+                        </div> </template
+                      ><!--Added as part of FRONT-9236-->
+                      <!-- <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        if:true={isRentalOrSalesOrDelivery}
+                      >
+                        <span class="slds-text-title fake-link"
+                          >View Notes</span
+                        >
+                      </div> -->
+                      <!--<div
+                        class="slds-col slds-size_1-of-2"
+                        if:true={isRentalOrSalesOrDelivery}
+                      >
+                        <span class="slds-text-title slds-p-bottom_x-small"
+                          >{lineItem.Notes}</span
+                        >
+                      </div>-->
+                      <!-- SAL-26001 -->
+                      <div
+                        class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                        title={lineItem.Id}
+                        onclick={showKitComponents}
+                        data-id={index}
+                        id={index}
+                        if:true={lineItem.hasKit}
+                      >
+                        <span
+                          class="slds-text-title slds-text-link viewKitItems"
+                          if:false={showCustomKitItem}
+                          >View Kit Components</span
+                        >
+                        <span
+                          class="slds-text-title slds-text-link viewKitItems"
+                          if:true={showCustomKitItem}
+                          >Hide Kit Components</span
+                        >
+                      </div>
+                      <div
+                        class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                        if:true={lineItem.hasKit}
+                      >
+                        <span class="slds-text-title"></span>
+                      </div>
+                      <div
+                        if:true={showCustomKitItem}
+                        class="slds-grid slds-size_1-of-1 slds-wrap"
+                      >
+                        <template for:each={kitCompArray} for:item="elem">
+                          <div
+                            key={elem.Id}
+                            class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                          >
+                            <span class="slds-text-title">{elem.Name}</span>
+                          </div>
+                          <div
+                            key={elem.Id}
+                            class="slds-col slds-size_1-of-2 slds-p-bottom_x-small"
+                          >
+                            <span class="slds-text-title"
+                              >Qty:{elem.SBQQ__Quantity__c}</span
+                            >
+                          </div>
+                        </template>
+                        <!-- <template if:false={lineItem.kitItemsAmount}>
+                                                        <div class="slds-col slds-size_1-of-1 slds-p-bottom_x-small">
+                                                            <span class="slds-text-title">No Items</span>
+                                                        </div>
+                                                    
+                                                </template> -->
+                      </div>
+
+                      <!-- <template if:true={isQuoteOrOrder}>
+                                            <div class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                                                title={lineItem.Id} onclick={showNotes} data-id={index} id={index}
+                                                if:true={lineItem.hasNotes}>
+                                                <span class="slds-text-title slds-text-link viewKitItems"
+                                                    if:false={lineItem.showNoteItem}>View Notes</span>
+                                                <span class="slds-text-title slds-text-link viewKitItems"
+                                                    if:true={lineItem.showNoteItem}>Hide Notes</span>
+                                            </div>
+                                            <div if:true={lineItem.showNoteItem}
+                                                class="slds-grid slds-size_1-of-1 slds-wrap">
+                                                <div key={item.Id}
+                                                    class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                                                    <span class="slds-text-title">{lineItem.Notes}</span>
+                                                </div>
+                                            </div>
+                                        </template> -->
+                      <!-- FRONT-15894-->
+                      <template if:true={isQuoteOrOrder}>
+                        <!--div
+                          class="slds-col slds-size_1-of-1 is-bold"
+                          if:true={lineItem.Notes}
+                        -->
+                        <div class="slds-col slds-size_1-of-1 is-bold">
+                          <template lwc:if={lineItem.showNoteItem}>
+                            <span
+                              onclick={hideNotes}
+                              style="color: green; text-decoration: underline"
+                              class="slds-text-title slds-p-bottom_x-small"
+                              title={lineItem.Id}
+                              >Hide Notes</span
+                            >
+                          </template>
+                          <template lwc:else>
+                            <span
+                              onclick={showNotes}
+                              style="color: green"
+                              class="slds-text-title slds-p-bottom_x-small"
+                              title={lineItem.Id}
+                              >View Notes</span
+                            >
+                          </template>
+                        </div>
+                        <div
+                          class="slds-col slds-size_1-of-1"
+                          if:true={lineItem.showNoteItem}
+                        >
+                          <span class="slds-text-title slds-p-bottom_x-small"
+                            >{lineItem.Notes}</span
+                          >
+                        </div>
+                      </template>
+                      <!-- FRONT-15894-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </template>
+          </template>
+
+          <template if:false={isRecordListNotEmpty}>
+            <c-sbr_3_0_empty-state-image
+              message={noItemsMsg}
+            ></c-sbr_3_0_empty-state-image>
+          </template>
+        </div>
+
+        <!-- </template> -->
+      </div>
+    </lightning-accordion-section>
+
+    <div
+      if:true={lineItemEditorDisplay}
+      class="slds-size_12-of-12 slds-p-bottom_xx-large"
+    >
+      <lightning-layout-item flexibility="auto">
+        <!--   <c-sbr_3_0_line-item-editor-cmp
+          line-id={lineId}
+          record-id={recordId}
+          group-id={selectedItemGroup}
+        > 
+        </c-sbr_3_0_line-item-editor-cmp>-->
+        <!--Added as a part of FRONT-1670, 1906-->
+        <c-sbr_3_0_-line-item-edit-wrapper
+          line-id={lineId}
+          record-id={recordId}
+          group-id={selectedItemGroup}
+          is-mobile={isMobile}
+          oncancel={closeLineItemEditor}
+          onsave={mobileSaveQuoteLine}
+          line-item-name={lineItemName}
+          object-api-name={objectApiName}
+          is-loading={isLoading}
+          selected-record={selectedRecord}
+          total-requested-quantity={totalRequestedQuantity}
+          remaining-quantity={remainingQuantity}
+          filled-quantity={filledQuantity}
+          is-rental={isRental}
+        >
+        </c-sbr_3_0_-line-item-edit-wrapper
+        ><!--Modified as part of FRONT-1958-->
+      </lightning-layout-item>
+
+      <!--<div class="sticky-footer">
+        <lightning-layout
+          horizontal-align="spread"
+          class="estimates-panel slds-p-horizontal_medium slds-p-vertical_small"
+        >
+          <lightning-layout-item size="12">
+            <lightning-layout horizontal-align="spread">
+              <lightning-layout-item size="6">
+                <button
+                  class="slds-button slds-button_brand"
+                  value="save"
+                  onclick={mobileSaveQuoteLine}
+                >
+                  Save
+                </button>
+              </lightning-layout-item>
+              <lightning-layout-item size="6">
+                <button
+                  class="slds-button is-bold"
+                  value="cancel"
+                  onclick={closeLineItemEditor}
+                >
+                  Cancel
+                </button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>-->
+    </div>
+
+    <div
+      if:true={displaySubstituteDisplay}
+      class="slds-size_12-of-12 slds-p-bottom_xx-large"
+    >
+      <lightning-layout-item flexibility="auto">
+        <c-sbr_3_0_order-substitute-item
+          record-id={recordId}
+          is-mobile={isMobile}
+          oncancel={closeLineItemSubstituteDisplay}
+          onsave={substituteLineItem}
+          item-name={lineItemName}
+          object-api-name={objectApiName}
+          selected-record={selectedRecord}
+          customer-info={customerInfo}
+          line-item={lineItemId}
+          oneventnotification={notificationFromSubstituteScreen}
+        >
+        </c-sbr_3_0_order-substitute-item>
+      </lightning-layout-item>
+    </div>
+
+    <template if:true={itemSelected}>
+      <template if:false={showCancelLineItem}>
+        <lightning-layout
+          horizontal-align="spread"
+          class="selection-panel slds-p-horizontal_medium slds-p-vertical_small"
+        >
+          <lightning-layout-item size="6" class="selected-row-count-config">
+            <span class="slds-text-color_weak"
+              >Item Selected: {selectedRowsCount}</span
+            >
+          </lightning-layout-item>
+          <lightning-layout-item size="6">
+            <lightning-layout horizontal-align="spread">
+              <lightning-layout-item size="6">
+                <button
+                  class="slds-button is-bold select-all-btn-config"
+                  value="selectAll"
+                  onclick={selectionPanelActions}
+                >
+                  Select All
+                </button>
+              </lightning-layout-item>
+              <lightning-layout-item size="6">
+                <button
+                  class="slds-button slds-button_brand remove-btn-config"
+                  onclick={toggleRemoveModal}
+                >
+                  Remove
+                </button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </lightning-layout-item>
+        </lightning-layout>
+      </template>
+      <!-- FRONT-7652 START-->
+      <template if:true={isRentalOrSales}>
+        <template if:true={showCancel}>
+          <div class="slds-button-group border-class" role="group">
+            <span class="slds-text-color_weak selected-item"
+              >{labels.ITEM_SELECTED}: {selectedRowsCount}</span
+            >
+            <button
+              class="is-bold slds-button selected-btn select-all"
+              value="selectAll"
+              onclick={selectionPanelActions}
+            >
+              {labels.SELECT_ALL}
+            </button>
+            <lightning-button
+              label={labels.CANCEL_ITEMS}
+              onclick={handleCancelbuttonAction}
+              variant="brand"
+              class="brand-button"
+            ></lightning-button>
+          </div>
+        </template>
+      </template>
+      <!-- FRONT-7652 END-->
+    </template>
+
+    <c-sbr_3_0_modal-cmp
+      class="removeModal"
+      header="Remove Line Items"
+      cancel-btn-label="Cancel"
+      save-btn-label="Remove"
+      save-handler={removeItemHandler}
+    >
+      <span slot="modalContent">
+        Are you sure you want to remove the selected items?
+      </span>
+    </c-sbr_3_0_modal-cmp>
+  </template>
+</template>

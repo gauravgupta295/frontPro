@@ -1,0 +1,66 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-16-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+    <lightning-quick-action-panel header="Convert to Order Request">
+        <!-- modal body start -->
+        <div class="slds-is-relative">
+        <template if:true = {isProgressing}>
+            <lightning-spinner
+                  alternative-text="Loading..." variant="brand">
+            </lightning-spinner>
+          </template>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+            <div class="slds-form-element">
+                <div class="slds-form-element__control">
+                    <div class="slds-combobox_container">
+                        <label class="slds-form-element__label" for="form-element-01">Original Request</label>
+                        <div id="box" class={boxClass} aria-expanded="true" aria-haspopup="listbox" role="combobox">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                                <lightning-input class={inputClass} type="search" id="input2" value={selectedName} name={selectedName}
+                                onremove={handleRemovePill} onchange={onChange} onclick={handleClick} onblur={onBlur}
+                                variant="label-hidden" autocomplete="off" placeholder={searchPlaceholder}>
+                                </lightning-input>
+
+                            </div>
+                            <template if:true = {length}>
+                                <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                        <template for:each={records} for:item="record">
+                                            <li key={record.Id} onclick={onSelect} data-id={record.Id} role="presentation" data-name={record.Name}>
+                                                <span class="slds-lookup__item-action slds-lookup__item-action--label" role="option">
+                                                    <lightning-icon class="slds-icon slds-icon--small slds-icon-text-default" icon-name={iconName} alternative-text={objName} size="small"></lightning-icon>
+                                                    <span class="slds-truncate">{record.Name}  {record.Revision_Number__c}</span>
+                                                </span>
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </div>
+                            </template>
+                            <template if:false = {length}>
+                                <div id="listbox-id-2" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox">
+                                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                          No records present
+                                    </ul>
+                                </div>    
+                            </template>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_success" onclick={convertOrderRequest} disabled={isDisabled}>Save</button>
+             </footer>
+        </div>
+    </div>
+
+   <!-- <div class="slds-backdrop slds-backdrop_open"></div>-->
+    </lightning-quick-action-panel>
+<!-- modal end -->
+</template>

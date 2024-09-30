@@ -1,0 +1,13 @@
+:host {
+    --slds-c-modal-header-color-background:#008545;
+    --slds-c-modal-header-text-color:white;
+    --slds-c-button-success-color-background:#008545;
+
+}
+
+button{
+    height:32px;
+    width:56px;
+    color:white;
+   
+}

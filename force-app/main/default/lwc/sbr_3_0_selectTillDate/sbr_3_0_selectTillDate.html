@@ -1,0 +1,178 @@
+<template>
+    <template if:false={isRefreshFailed}>
+        <template if:false={isProcessingRefresh}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+
+                <div class="slds-modal__container">
+                    <div if:true={modelLoaded}>
+                        <template if:false={showmultipleDrafts}>
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title="Close" onclick={handleClose}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Select Till
+                                    Date</h2>
+                            </header>
+                            <!--Start Front 19983-->
+                            <template if:true={singleDraftRecord}>
+                                <div class="warningbackground">
+                                    <svg class="slds-icon slds-icon_small" focusable="false" data-key="warning"
+                                        aria-hidden="true" viewBox="0 0 520 520" part="icon">
+                                        <g>
+                                            <path fill="black"
+                                                d="M514 425L285 55a28 28 0 00-50 0L6 425c-14 23 0 55 25 55h458c25 0 40-32 25-55zm-254-25c-17 0-30-13-30-30s13-30 30-30 30 13 30 30-13 30-30 30zm30-90c0 6-4 10-10 10h-40c-6 0-10-4-10-10V180c0-6 4-10 10-10h40c6 0 10 4 10 10v130z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    <P class="slds-m-left_small">The till for {singleDraftDate} has not been submitted.
+                                        Please submit this till as soon as possible.</P>
+                                </div>
+                            </template>
+                            <template if:true={multipleDraftRecords}>
+                                <div class="warningbackground">
+                                    <svg class="slds-icon slds-icon_small" focusable="false" data-key="warning"
+                                        aria-hidden="true" viewBox="0 0 520 520" part="icon">
+                                        <g>
+                                            <path fill="black"
+                                                d="M514 425L285 55a28 28 0 00-50 0L6 425c-14 23 0 55 25 55h458c25 0 40-32 25-55zm-254-25c-17 0-30-13-30-30s13-30 30-30 30 13 30 30-13 30-30 30zm30-90c0 6-4 10-10 10h-40c-6 0-10-4-10-10V180c0-6 4-10 10-10h40c6 0 10 4 10 10v130z">
+                                            </path>
+                                        </g>
+                                    </svg>
+                                    <P class="slds-m-left_small">There are several tills that have not been
+                                        submitted.<br /> Please submit as soon as possible. <button
+                                            class="slds-button moreinfo" onclick={handleMultipleDrafts}>More
+                                            information.</button></P>
+                                </div>
+                            </template>
+                            <!--End Front 19983-->
+                            <div class="slds-modal__content slds-p-around_large setHeight" id="modal-content-id-1">
+                                <div class="slds-form-element slds-m-bottom_small">
+                                    <div class="slds-form-element__control">
+                                        <lightning-input type="date" label="Date" class="validateDate"
+                                            date-style="short" required="true" value={selectedDate}
+                                            onchange={getDateVal}> </lightning-input>
+                                        <template if:true={futuredate}><span class="futuredate">A till cannot be logged
+                                                for a future date.</span></template>
+
+                                        <div class="slds-p-top_medium adjustHeight">
+
+                                            <div if:true={dataExist}>
+                                                <template for:each={tableData} for:item="item" for:index="index">
+                                                    <div key={item.key} class="slds-grid tillDataRow">
+                                                        <div class="slds-col slds-size_5-of-12">
+                                                            {item.key}
+                                                        </div>
+                                                        <div class="slds-col slds-size_4-of-12 slds-text-align_left">
+                                                            {item.value}
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div if:true={showFutureDateError} class="slds-text-color_error">A till cannot be logged
+                                    for a
+                                    future date.</div>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" onclick={handleCancel}
+                                    title="Cancel">Cancel</button>
+                                <button class="slds-button slds-button_brand submitBtn" onclick={handleNext}
+                                    title={actionlabel}>{actionlabel}</button>
+                            </footer>
+                        </template>
+                        <template if:true={showmultipleDrafts}>
+                            <header class="slds-modal__header">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title="Close" onclick={handleClose}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">Overdue Tills
+                                </h2>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_large draftlist" id="modal-content-id-2">
+                                <p class="slds-m-bottom_medium">The following tills have not been submitted.</p>
+                                <template for:each={multipleDrafts} for:item="draftitem">
+                                    <li key={draftitem} class="slds-p-bottom_x-small slds-p-left_small">{draftitem}</li>
+
+                                </template>
+                            </div>
+                            <footer class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" onclick={handleCancel}
+                                    title="Cancel">Cancel</button>
+                                <button class="slds-button slds-button_brand" onclick={handleBacktoTIll}>Back to Select
+                                    Till Date</button>
+                            </footer>
+                        </template>
+
+                    </div>
+                </div>
+
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={isProcessingRefresh}>
+            <div class="payment-processing-container">
+                <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+                    <div class="slds-modal__container">
+                        <div class="slds-modal__header">
+                            <h2 class="slds-text-heading_medium">Loading End of Day Till</h2>
+                        </div>
+                        <div class="custom-modal-content slds-modal__content">
+                            <br />
+                            <p style="text-align: center;">Please wait while end of day till is opened.</p>
+                            <br /><br />
+                            <div style="height:5rem;position:relative">
+                                <div class="slds-spinner_container">
+                                    <div role="status" class="slds-spinner slds-spinner_large">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </template>
+    </template>
+    <template if:true={isRefreshFailed}>
+        <div class="payment-processing-failed">
+            <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small ">
+                <div class="slds-modal__container">
+                    <button
+                        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                        title="Close" onclick={handleClose}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+
+                    <header class="slds-modal__header custom-modal-header">
+                        <h2 class="slds-text-heading_medium">Loading Failed</h2>
+                    </header>
+                    <div class="slds-modal__content custom-modal-content">
+                        <br />
+                        <p class="slds-text-align_center slds-p-right_large">{label.FailedMesssage}</p>
+                        <br /><br />
+                    </div>
+                    <footer class="slds-modal__footer slds-text-align_right">
+                        <lightning-button label="Go Back" variant="neutral" onclick={handleGoBack}></lightning-button>
+                        <lightning-button class="slds-p-left_medium" label="Try Again" onclick={handleNext}
+                            variant="brand"></lightning-button>&nbsp;&nbsp;
+                    </footer>
+                </div>
+            </section>
+        </div>
+    </template>
+
+</template>

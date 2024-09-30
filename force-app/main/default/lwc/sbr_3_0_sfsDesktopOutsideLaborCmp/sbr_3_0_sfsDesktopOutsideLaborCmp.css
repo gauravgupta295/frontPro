@@ -1,0 +1,16 @@
+:host{
+    --sds-c-card-color-background:#F0F0F0;
+}
+
+.header-button{
+    --slds-c-button-brand-text-color:#008545; 
+    --slds-c-button-brand-color-background:white;
+    --slds-c-button-brand-color-background-active:white;
+    --slds-c-button-brand-text-color-active:#008545;
+    --slds-c-button-brand-text-color-hover:#008545;
+    --slds-c-button-brand-color-background-hover:white;
+    --slds-c-button-brand-color-border:#F0F0F0;
+    --slds-c-button-brand-color-border-hover:#F0F0F0;
+    --slds-c-button-brand-text-color-active:#F0F0F0;
+    border: #F0F0F0 2px;
+}

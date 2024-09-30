@@ -1,0 +1,25 @@
+<template>
+    <div class="tabs-availability">
+        <div if:true={showAvailability}>
+            <lightning-tabset active-tab-value={activetabContent} class="edit-tab">
+                <lightning-tab label={branchName} value="Branch" title={branchName} onactive={tabChangeHandler}>
+                  <div if:true={isBranchOpen}><!-- branch moved to tab as part of FRONT 8722 and 8721-->
+                    <c-sbr_3_0_availability-modal-info-cmp onreturnpage={handleReturnPage} onnewheadertext={handleUpdateHeader} onchangepage={handleChangePage} product-cat={productCat} branch-num={branchNumber} ></c-sbr_3_0_availability-Modal-info-cmp>
+                  </div>
+                </lightning-tab>
+                <lightning-tab label="District" value="District" title="District" onactive={tabChangeHandler}>
+                    <c-sbr_3_0_availability-cmp is-in-modal={isModalOpen} product-cat={productCat} type="District" location-info={locationInfo} ongotobranch={openBranch} ontitleupdate={titleUpdate} title={title}></c-sbr_3_0_availability-cmp>
+                </lightning-tab>
+                <lightning-tab label="Region" value="Region" title="Region" onactive={tabChangeHandler}>
+                    <c-sbr_3_0_availability-cmp is-in-modal={isModalOpen} product-cat={productCat} type="Region" location-info={locationInfo} ongotobranch={openBranch}  title={title}></c-sbr_3_0_availability-cmp>
+                </lightning-tab>
+                <lightning-tab label="Territory" value="Territory" title="Territory" onactive={tabChangeHandler}>
+                    <c-sbr_3_0_availability-cmp is-in-modal={isModalOpen} product-cat={productCat} type="Territory" location-info={locationInfo} ongotobranch={openBranch}  title={title}></c-sbr_3_0_availability-cmp>
+                </lightning-tab>
+                <lightning-tab label="Company" value="Company" title="Company" onactive={tabChangeHandler}>
+                    <c-sbr_3_0_availability-cmp is-in-modal={isModalOpen} product-cat={productCat} type="Company" location-info={locationInfo} ongotobranch={openBranch}  title={title}></c-sbr_3_0_availability-cmp>
+                </lightning-tab>
+            </lightning-tabset>
+        </div>
+    </div>
+</template>

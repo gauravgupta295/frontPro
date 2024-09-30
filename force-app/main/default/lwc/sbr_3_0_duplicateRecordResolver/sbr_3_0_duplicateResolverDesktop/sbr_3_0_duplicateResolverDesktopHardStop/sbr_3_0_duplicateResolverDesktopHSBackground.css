@@ -1,0 +1,66 @@
+.bodyMargin {
+    margin-top: -20px;
+}
+.footerMargin {
+    margin-right: 10px;
+}
+.headerFont {
+    font-size: 20px;
+}
+.hrTag {
+    margin-top: 13px;
+    margin-bottom: 25px;
+}
+
+/* .slds-modal__header .slds-modal__close{
+    display: none !important;
+} */
+.posClass{
+    position: absolute;
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    top: 225px;
+    left: 8px;
+    z-index: 99;
+    font-size: 5px;
+    font-weight: bold ;
+    opacity: 0;
+}
+
+.fullwidth
+{
+    width: 100%;
+}
+.duplicate-record-list-layout-item {
+    border: 1px solid #aeaeae;
+}
+.duplicate-record-list-header {
+    background-color: #e5e5e5;
+    font-weight: 700;
+}
+.color-boxes {
+    display: inline-block;
+    border-radius: 4px;
+    color: white;
+    padding: 4px;
+  }
+  .greenColor {
+    background-color: #008545;
+  }
+  .greyColor {
+    background-color: #a0a0a0;
+  }
+  .orangeColor {
+    background-color: #ffaa05;
+  }
+  .redColor {
+    background-color: #ba0517;
+  }
+  .sub-heading {
+    font-weight: bold;
+}
+
+.action-cell {
+  width: 7%;
+}

@@ -1,0 +1,18 @@
+<template>
+        <c-s-b-r_3_0_custom-lookup-cmp
+            record-id={initialLookupValue}
+            default-record={initialLookupValue}
+            label={componentLabel}
+            s-object-api-name={objectAPIName}
+            placeholder="Search Contracts..."
+            icon-name="standard:account"
+            onlookupupdate={handleLookupChange}
+            onlookupselect={handleLookupChange}
+            value={initialLookupValue}
+            fields-to-include="SM_PS_Branch_Location_Number__c,SM_PS_Branch_Location__c, SM_PS_Contract_Order__r.Customer_Name__r.Name"
+            is-required={isRequired}
+            where-clause={filterClause}
+        ></c-s-b-r_3_0_custom-lookup-cmp>
+</template>
+
+<!-- fields-to-include="SM_PS_Branch_Location_Number__c, SM_PS_Branch_Location__c, SM_PS_Contract_Order__r.Jobsite__r.Location.Address__c, SM_PS_Contract_Order__r.Jobsite__r.Job__c" -->

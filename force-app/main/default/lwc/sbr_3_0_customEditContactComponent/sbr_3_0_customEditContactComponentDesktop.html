@@ -1,0 +1,587 @@
+<template>
+  <div class={searchModalComputedClasses}>
+    <div class="slds-modal__container fullWidth">
+      <button
+        class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+        title="Close"
+        onclick={handleCancelClick}
+      >
+        <lightning-icon
+          icon-name="utility:close"
+          alternative-text="close"
+          variant="inverse"
+          size="small"
+        ></lightning-icon>
+        <span class="slds-assistive-text">Close</span>
+      </button>
+      <div class="slds-modal__header">
+        <h1
+          id="edit-account-modal-heading"
+          class="slds-modal__title slds-hyphenate"
+        >
+          {headerLabel}
+        </h1>
+      </div>
+      <div
+        class="slds-modal__content slds-p-around_x-large"
+        id="edit-modal-content"
+      >
+      <div if:true={isLoading}  class="slds-is-relative">
+      <lightning-spinner
+        variant="brand"
+        size="medium"
+        alternative-text="loading..."
+          ></lightning-spinner>
+       </div>
+        <div class="general-header">
+          <h3 class="slds-section__title slds-var-p-left_small">
+            {label.GENERALSEC}
+          </h3>
+        </div>
+
+        <lightning-layout-item
+          size="12"
+          large-device-size="12"
+          medium-device-size="6"
+          small-device-size="12"
+          class="slds-var-p-around_small"
+        >
+          <lightning-layout multiple-rows="">
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+              ><!--slds-var-p-around_medium-->
+              <lightning-combobox
+                name="Salutation"
+                label={label.CON_SALUTATION}
+                value={contactRecord.Salutation}
+                options={salutationOptions}
+                onchange={handleFieldChange}
+                placeholder="--None--"
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-combobox
+                required="true"
+                name="Status__c"
+                label={label.CON_STATUS}
+                value={contactRecord.Status__c}
+                options={contactStatus}
+                onchange={handleFieldChange}
+                class="validate"
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.CON_FIRSTNAME}
+                required
+                name="FirstName"
+                value={contactRecord.FirstName}
+                data-field
+                onblur={handleFieldFocusOut}
+                onchange={handleFieldChange}
+                class="validate"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+            ></lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.CON_MIDDLENAME}
+                name="MiddleName"
+                value={contactRecord.MiddleName}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+            ></lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.CON_LASTNAME}
+                name="LastName"
+                value={contactRecord.LastName}
+                data-field
+                onchange={handleFieldChange}
+                onblur={handleFieldFocusOut}
+                required
+                class="validate"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+            ></lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.CON_SUFFIX}
+                name="Suffix"
+                value={contactRecord.Suffix}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+            ></lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                type="text"
+                label={label.ACCOUNTNAME}
+                name="AccountId"
+                onchange={handleFieldChange}
+                max-length="255"
+                value={accountName}
+                disabled
+                class="customdisabledinput"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-combobox
+                name="Drivers_License_State__c"
+                label={label.DLSTATE}
+                options={dlOptions}
+                onchange={handleFieldChange}
+                placeholder="--None--"
+                value={contactRecord.Drivers_License_State__c}
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.PHONE}
+                name="Phone"
+                value={contactRecord.Phone}
+                data-field
+                onblur={handleFieldFocusOut}
+                onchange={handleFieldChange}
+                required
+                class="validate"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-input
+                label={label.DLNUMBER}
+                name="Drivers_License__c"
+                value={contactRecord.Drivers_License__c}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                label={label.ACC_EMAIL}
+                name="Email"
+                value={contactRecord.Email}
+                data-field
+                onblur={handleFieldFocusOut}
+                onchange={handleFieldChange}
+                required
+                class="validate"
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-input
+                label={label.CON_TITLE}
+                name="Title"
+                value={contactRecord.Title}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-combobox
+                name="Preferred_Contact_Method__c"
+                label={label.CON_PREF_CONT_METHOD}
+                value={contactRecord.Preferred_Contact_Method__c}
+                options={preferredMethod}
+                onchange={handleFieldChange}
+                placeholder="--None--"
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-input
+                label={label.CON_MOBILE}
+                name="MobilePhone"
+                value={contactRecord.MobilePhone}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-combobox
+                name="Role__c"
+                label={label.CON_ROLE}
+                value={contactRecord.Role__c}
+                options={roles}
+                onchange={handleFieldChange}
+                placeholder="--None--"
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-input
+                label={label.CON_FAX}
+                name="Fax"
+                value={contactRecord.Fax}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-textarea
+                label={label.CON_DESC}
+                name="Description"
+                value={contactRecord.Description}
+                data-field
+                onchange={handleFieldChange}
+              >
+              </lightning-textarea>
+            </lightning-layout-item>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-record-edit-form object-api-name="Contact">
+                <lightning-input-field
+                  field-name="ReportsToId"
+                  data-type="input-field"
+                  name="ReportsToId"
+                  value={contactRecord.ReportsToId}
+                  data-field
+                  onchange={handleFieldChange}
+                  placeholder="Contacts"
+                >
+                </lightning-input-field>
+              </lightning-record-edit-form>
+            </lightning-layout-item>
+          </lightning-layout>
+          <div class="general-header slds-m-top_medium slds-m-bottom_small">
+            <h3 class="slds-section__title slds-var-p-left_small">
+              {label.CON_ADDRS_INFO}
+            </h3>
+          </div>
+          <div>
+            <lightning-layout multiple-rows>
+              <lightning-layout-item
+                size="12"
+                large-device-size="12"
+                medium-device-size="12"
+                small-device-size="12"
+                class="slds-var-p-around_small spacingColumn1"
+              >
+                <div class="addressFieldCss">
+                  <div class="slds-grid slds-grid_vertical billingaddress-grid">
+                    <div class="slds-col billingaddress-header">
+                      <legend
+                        class="slds-form-element__label slds-form-element__legend"
+                      >
+                        {label.CON_ADDRS}&nbsp;&nbsp;
+                      </legend>
+                    </div>
+                    <lightning-input-address
+                      variant="label-hidden"
+                      address-lookup-placeholder={label.SEARCH_ADDRESS}
+                      country-label={label.CON_COUNTRY}
+                      street-label={label.CON_STREET}
+                      city-label={label.CON_CITY}
+                      province-label={label.CON_STATE}
+                      postal-code-label={label.CON_ZIPCODE}
+                      country-options={countryOptions}
+                      province-options={stateOptions}
+                      street={contactRecord.MailingStreet}
+                      city={contactRecord.MailingCity}
+                      country={contactRecord.MailingCountry}
+                      province={contactRecord.MailingState}
+                      postal-code={contactRecord.MailingPostalCode}
+                      field-level-help=""
+                      show-address-lookup="show-address-lookup"
+                      data-name="MailingAddress"
+                      onchange={addressInputChange}
+                      class="validate"
+                      required
+                    >
+                    </lightning-input-address>
+                  </div>
+                </div>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+
+          <div class="general-header slds-m-top_medium slds-m-bottom_small">
+            <h3 class="slds-section__title slds-var-p-left_small">
+              {label.CON_ADDNT_INFO}
+            </h3>
+          </div>
+          <lightning-layout multiple-rows="">
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                type="date"
+                label={label.DATE_OF_BIRTH}
+                name="Birthdate"
+                date-style="short"
+                data-bad-input-message={label.DOBERRMSG}
+                max={today}
+                value={contactRecord.Birthdate}
+                onchange={handleFieldChange}
+                message-when-range-underflow="Date has to be from 1950s to current year."
+                message-when-range-overflow={dateOfBirthOverFlowMessage}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-combobox
+                label={label.CON_LEAD_SOURCE}
+                name="LeadSource"
+                value={contactRecord.LeadSource}
+                options={leadSource}
+                onchange={handleFieldChange}
+                placeholder="--None--"
+              >
+              </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <lightning-input
+                type="text"
+                label={label.CON_ASST}
+                name="AssistantName"
+                value={contactRecord.AssistantName}
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <lightning-input
+                type="text"
+                label={label.CON_ASST_PHONE}
+                name="AssistantPhone"
+                value={contactRecord.AssistantPhone}
+                onchange={handleFieldChange}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <label
+                class="slds-form-element__label"
+                for="horizontal-input-id-01"
+                >{label.CON_DNC}</label
+              >
+              <lightning-input
+                type="checkbox"
+                name="DoNotCall"
+                data-type="checkbox"
+                value={contactRecord.DoNotCall}
+                onchange={handleFieldChange}
+                checked={contactRecord.DoNotCall}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn2"
+            >
+              <label
+                class="slds-form-element__label"
+                for="horizontal-input-id-02"
+                >{label.CON_EOO}</label
+              >
+              <lightning-input
+                type="checkbox"
+                name="HasOptedOutOfEmail"
+                data-type="checkbox"
+                value={contactRecord.HasOptedOutOfEmail}
+                onchange={handleFieldChange}
+                checked={contactRecord.HasOptedOutOfEmail}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class="slds-p-bottom_small spacingColumn1"
+            >
+              <label
+                class="slds-form-element__label"
+                for="horizontal-input-id-03"
+                >{label.CON_FOO}</label
+              >
+              <lightning-input
+                type="checkbox"
+                name="HasOptedOutOfFax"
+                data-type="checkbox"
+                value={contactRecord.HasOptedOutOfFax}
+                onchange={handleFieldChange}
+                checked={contactRecord.HasOptedOutOfFax}
+              >
+              </lightning-input>
+            </lightning-layout-item>
+          </lightning-layout>
+        </lightning-layout-item>
+      </div>
+      <footer class="slds-modal__footer">
+        <button
+          class="slds-button slds-button_neutral"
+          onclick={handleCancelClick}
+          title="Cancel"
+        >
+          {label.CANCEL}
+        </button>
+        <button
+          class="slds-button slds-button_brand"
+          onclick={submitDetails}
+          title="Save and Select"
+        >
+          {label.SAVE}
+        </button>
+      </footer>
+    </div>
+  </div>
+</template>

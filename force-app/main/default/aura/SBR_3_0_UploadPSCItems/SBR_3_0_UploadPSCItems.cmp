@@ -1,0 +1,122 @@
+<aura:component implements="force:hasRecordId,flexipage:availableForAllPageTypes" controller="SBR_3_0_UploadPSCItems_Controller" access="global">
+    <aura:handler name="init" value="{!this}" action="{!c.init}" />
+	<aura:attribute name="csvFile" type="Object" />
+    <aura:attribute name="fieldOptions" type="String[]" />
+    <aura:attribute name="selectedField" type="String" default="Id"/>
+    <aura:attribute name="spinner" type="boolean" default="false"/>
+    <aura:attribute name="validationPassed" type="boolean" default="false"/>
+    <aura:attribute name="uploadedFileName" type="String" default="Please attach a file"/>
+<div class="slds-box slds-theme_default">
+        <div class="slds-page-header">
+            <p class="slds-text-heading--label">Product Service Campaign Items</p>
+            <h1>Template Upload</h1>
+        </div>
+        <lightning:layout verticalAlign="top" class="x-large">
+            <lightning:layoutItem flexibility="auto" padding="around-small" size="7">
+                <!--div class="slds-border_bottom slds-theme uploadStepBox">
+                    <div class="slds-text-heading_medium" style="margin-bottom: 5px;">Specify Product Identifier</div>
+                    <div style="max-width: 400px;">
+                        <p class="slds-p-horizontal_small" style="padding-top: 15px;">
+                            <lightning:select aura:id="prodIdentifier" value="{!v.selectedField}" name="prodField" label="Select a Product field API name" required="true" title="The value of this field is used to identify Products in Salesforce using information taken from the uploaded CSV">
+                                <aura:iteration items="{!v.fieldOptions}" var="field">
+                                    <option value="{!field}">{!field}</option>
+                                </aura:iteration>
+                            </lightning:select>
+                        </p> 
+                    </div>
+                </div-->
+                <div class="slds-border_bottom slds-theme uploadStepBox">
+                    <div style="margin-bottom: 10px;position:relative;">
+                        <span class="slds-text-heading_medium">Attach Template CSV File</span>
+                        <lightning:buttonGroup class="rightBtnGroup">
+                            <!--lightning:select aura:id="prodRecords" onchange="{!c.setProdRecs}" variant="label-hidden" value="{!v.selectedProdRecs}" name="prodRecs" label="Number of Products" title="The number of Products to extract for population on the example CSV">
+                                <option value="10">10 Assets</option>
+                                <option value="50">50 Assets</option>
+                                <option value="100">100 Assets</option>
+                                <option value="200">200 Assets</option>
+                            </lightning:select-->
+                            
+                        </lightning:buttonGroup>
+                    </div>
+                    <p class="slds-p-horizontal_small">
+                        <lightning:input aura:id="uploadedCsvFile" name="uploadedCsvFile" files="{!v.csvFile}" type="file" label="" multiple="false" accept=".csv" onchange="{!c.handleFilesChange}"/>
+                    </p>
+                    <p class="slds-p-horizontal_small" style="padding-top: 10px;">
+                        <lightning:formattedText value="{!v.uploadedFileName}" />
+                    </p>
+                </div>
+                 <div class="slds-border_bottom slds-theme uploadStepBox">
+                    <div class="slds-text-heading_medium" style="margin-bottom: 5px;">Specify Delivery Method</div>
+                    <div style="max-width: 400px;">
+                        <p class="slds-p-horizontal_small" style="padding-top: 15px;">
+                            <lightning:select  aura:id="prodIdentifier" value="{!v.selectedField}" name="delMethodField" label="Select a delivery method" required="true" title="The value of this field is used to create type of PSC Line Item from the uploaded CSV">
+                                <aura:iteration items="{!v.fieldOptions}" var="field">
+                                    <option value="{!field}">{!field}</option>
+                                </aura:iteration>
+                            </lightning:select >
+                        </p> 
+                    </div>
+
+                </div>
+                
+                <div class="slds-border_bottom slds-theme uploadStepBox">
+                    <div class="slds-text-heading_medium" style="margin-bottom: 5px;">Validate &amp; Upload</div>
+                    <p class="slds-p-horizontal_small" style="padding-top: 15px;">
+                        <lightning:buttonGroup>
+                            <lightning:button label="Validate" onclick="{!c.validateCsvFile}"/>
+                            <lightning:button label="Upload" disabled="{!!v.validationPassed}" onclick="{!c.prepareCsvFile}"/>
+                        </lightning:buttonGroup>  
+                    </p>
+                </div> 
+            </lightning:layoutItem>
+            <lightning:layoutItem flexibility="auto" padding="around-small" size="5">
+                <lightning:accordion aura:id="accordion1" allowMultipleSectionsOpen="true" activeSectionName="">
+                    <lightning:accordionSection name="1" label="Steps">
+                        <div class="slds-box slds-theme_shade" style="margin-bottom: 20px;margin-top: 20px;">
+                            <ul class="instructions">
+                                <li>Click on th <span class="highlight">"Download Example"</span> button to generate a CSV file to use as a guide containing Assets that can added to a Product Service Campaign.</li>
+                                <li>Update the file to contain correct Asset Information.</li>
+                                <li>Attach the file to the uploader by either dragging it onto the <span class="highlight">"Attach"</span> dropzone or clicking the button.</li>
+                                <li>Select the Delivery Method.</li>
+                                <li>Validate the file by clicking on the <span class="highlight">"Validate"</span> button.</li>
+                                <li>If validation is successful,  the Product Service Campaign Items can be created by clicking the <span class="highlight">"Upload"</span> button.</li>
+                                <li>The <span class="highlight">"Download Example"</span> button can then be used to download the next batch of Products that do not have any templates and the process starts again.</li>
+                            </ul>
+                        </div>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection name="1" label="Help">
+                        <div class="slds-box slds-theme_shade" style="margin-bottom: 20px;margin-top: 20px;">
+                            <ul class="instructions">
+                                <li>The value of <span class="highlight">"ASSET ID"</span> on the example CSV file is the External ID that is used to look up and add Assets to the Product Service Campaign.</li>
+                                <li>The <span class="highlight">"ASSET ID"</span> is a the concatenation of Company Code and Equipment Number</li>
+                                <ul class="slds-is-nested slds-list_dotted">
+                                    <li>Example Company Code = 01, Equipment Number = 10029812, Then Asset ID = 01-10029812</li>
+                                </ul>
+                                <li>All other column headings are required in the exact format they appear in the example file.</li>
+                                <li>Records can be added in any order.</li>
+                                <li>Use <span class="highlight"> "SELECT DELIVERY METHOD" </span> option do determine the delivery Method.</li>
+                                <ul class="slds-is-nested slds-list_dotted">
+                                    <li><span class="highlight">DELIVERY METHOD</span> options are <span class="highlight">“WORK ORDER”</span> or <span class="highlight">“ASSET NOTIFICATION”</span> </li>
+                                    <li>Two lines need be entered in CSV file for Assets that require a WORK ORDER and an <span class="highlight"> ASSET NOTIFICATION </span> Delivery Method</li>
+                                    <li>If no Delivery Method is entered then it is defaulted to <span class="highlight">“WORK ORDER”</span> </li> 
+                                </ul> 
+                            </ul>
+                        </div>
+                    </lightning:accordionSection>
+                    <lightning:accordionSection name="2" label="Limitations">
+                        <div class="slds-box slds-theme_shade">
+                            <ul class="instructions">
+                                <li>CSV files can have a maximum size of 750kb.</li>
+                            </ul>
+                        </div>
+                        
+                    </lightning:accordionSection>
+                </lightning:accordion>
+                <lightning:button label="Download Example" onclick="{!c.downloadExampleCsv}"/>
+            </lightning:layoutItem>
+        </lightning:layout>
+        <aura:if isTrue="{!v.spinner}">    
+            <lightning:spinner aura:id="mapSpinner" variant="brand" size="large" alternativeText="Calling server"/>
+        </aura:if>
+    </div>        
+</aura:component>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>SBR 3.0 - Search Job Site and Location Custom Cmp</masterLabel>
+    <description>Component to search job site and location</description>
+    <targets>
+      <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+      <targetConfig targets="lightning__FlowScreen">
+          <property name="jobSiteId" label="Job Site Id" type="String" />
+          <property name="contactId" label="Contact Id" type="String" />
+          <property
+        name="jobLocationId"
+        label="Job Location Id"
+        type="String"
+      />
+          <property
+        name="createNewJobLocation"
+        label="Create New Job Location"
+        type="Boolean"
+      />
+          <property
+        name="createNewJobSite"
+        label="Create New Job Site"
+        type="Boolean"
+      />
+          <property
+        name="jobLocationRecordTypeId"
+        label="Job Location Record Type Id"
+        type="String"
+        role="inputOnly"
+      />
+          <property
+        name="recordId"
+        label="Parent Account Id"
+        type="String"
+        role="inputOnly"
+      />
+          <property
+        name="companyCode"
+        label="Company code for Location filter"
+        type="String"
+      />
+          <property
+        name="showJobSiteCheckbox"
+        label="Show Job Site Checkbox"
+        type="Boolean"
+      />
+          <property
+        name="noJobSiteChecked"
+        label="No Job Site"
+        type="Boolean"
+      />
+          <property name="LastLoginApp" label="App Name" type="String" />
+          <property
+        name="RecordTypeName"
+        label="Record Type Name"
+        type="String"
+      />
+      </targetConfig>
+  </targetConfigs>
+</LightningComponentBundle>

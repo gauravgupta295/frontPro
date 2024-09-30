@@ -1,0 +1,59 @@
+<template>
+    <section role="dialog" aria-labelledby="modal-heading-02" aria-modal="true" aria-describedby="modal-content-id-2" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- Modal/Popup Box LWC header here -->
+            <header class="slds-modal__header row">
+                <lightning-button class='left' variant="base" label="Cancel" onclick={closeModal}></lightning-button> 
+                <!-- <span class="slds-assistive-text left"  onclick={closeModal}>Close</span> -->
+                <h3 id="modal-heading" class="slds-text-heading_small slds-hyphenate col-sm-8">{modalHeader}</h3>
+                <!-- <span class="slds-assistive-text right"  onclick={handleSuccess}>Save</span> -->
+                <lightning-button class='right' disabled={disabled} variant="base" label="Save" onclick={handleSuccess}></lightning-button> 
+            </header>
+            <!-- Modal/Popup Box LWC body starts here -->
+            
+            <div class="slds-modal__content slds-p-around_medium" id ="modal-content-id-2">
+                <template if:true={showLoading}>
+                    <lightning-spinner alternative-text="Loading" size="medium" variant="brand" class="spinnerClass"></lightning-spinner>
+                </template>
+                <lightning-card>
+                    <lightning-layout>
+                        <lightning-layout-item class="slds-p-around_xx-small" size="12">
+                            <lightning-layout>
+                                <lightning-layout-item class="slds-p-around_xx-small" size=12>
+                                    <lightning-input type="text" label="Account Name" onchange={nameChange}></lightning-input>
+                                    <lightning-input type="tel" label ="Phone" pattern="[0-9]+" max-length="10" min-length="10" required onchange={phoneChange}></lightning-input>
+                                    <lightning-input type='email' label="E-mail Address" onchange={emailChange} required></lightning-input>                                
+                                    <lightning-combobox label="Drivers License State" value="" options={getProvinceOptions} onchange={stateChange} required></lightning-combobox>
+                                    <lightning-input label="Drivers License #" onchange={licenseChange} required></lightning-input>
+                                    <lightning-input type="date" label="Date Of Birth" date-style="short" onchange={birthDateChange} min="1950-01-01" max={today} required></lightning-input>
+                                    <span></span>
+                                    <lightning-input-address 
+                                        address-label="Billing Address"
+                                        street-label="Street"
+                                        city-label="City"
+                                        country-label="Country"
+                                        province-label="Billing State/Province"
+                                        postal-code-label="PostalCode"
+                                        street=""
+                                        city=""
+                                        country-options={getCountryOptions}
+                                        province-options={getProvinceOptions}
+                                        postal-code=""
+                                        required
+                                        field-level-help="Select Billing Address"
+                                        show-address-lookup
+                                        onchange={genericInputChange}
+                                        >
+                                    </lightning-input-address>
+        
+                                    <lightning-input label="Description (Comment #2)" onchange={commentChange}></lightning-input>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-card>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

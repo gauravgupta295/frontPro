@@ -1,0 +1,196 @@
+<template>
+	<div class="slds-section slds-is-open">
+		<h3 class="customHeader slds-section__title slds-theme_shade">
+			<span class="customSpan slds-truncate slds-p-horizontal_small" title="Vendor Info">Vendor Info</span>
+		</h3>
+		<div class="slds-section__content">
+			<div>
+				<div class="slds-form-element" data-id="divForm">
+					<label class="slds-form-element__label" for="text-input-id-46"><abbr class="slds-required" title="required">*
+                        </abbr>Vendor Info</label>
+					<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
+						<div class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+							aria-hidden="true">
+							<lightning-icon icon-name={vendorSearchIcon} size="x-small" title=""></lightning-icon>
+						</div>
+						<input type="text" id="text-input-id-46" placeholder="Click to search" required="" class="slds-input" aria-describedby="error-message-id-55" data-id="vendorSearch" onclick={handleOpenModal} onkeypress={handleKeyPress} value={vendorVal}/>
+						<button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Clear" onclick={handleClearVendor}>
+                            <div class="slds-button__icon slds-icon-text-light" aria-hidden="true">
+                                <lightning-icon icon-name="utility:close" size="x-small" title=""></lightning-icon>
+                            </div>
+                            <span class="slds-assistive-text">Clear</span>
+                        </button>
+					</div>
+					<div class="slds-form-element__help slds-hide" id="error-message-id-55" data-id="divError">Complete
+						this field.</div>
+				</div>
+			</div>
+			<div class="slds-p-top_x-small">
+				<!-- 
+                    <c-s-b-r_3_0_required-custom-lookup-cmp record-id={currentUserId} label="Ordered By" placeholder="Search ..."
+                    default-record={currentUserId} s-object-api-name="User" icon-name="standard:contact"
+                    onlookupupdate={selectedUserHandler} 
+                    is-read-only="true"
+                    >
+                </c-s-b-r_3_0_required-custom-lookup-cmp> 
+                -->
+				<div class="slds-form-element" data-id="divForm">
+					<label class="slds-form-element__label" for="text-input-id-47"><abbr class="slds-required" title="required">*
+                        </abbr>Ordered By</label>
+					<div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left-right">
+						<div class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+							aria-hidden="true">
+							<lightning-icon icon-name="standard:contact" size="x-small" title=""></lightning-icon>
+						</div>
+						<input type="text" disabled id="text-input-id-47" placeholder="Click to search" required="" class="slds-input"
+                            aria-describedby="error-message-id-56" data-id="orderedBy" value={currentUserName} style="color: black;"/>
+
+						<!-- <lightning-input  type="text" disabled id="text-input-id-47" placeholder="Click to search" required
+                            aria-describedby="error-message-id-56" data-id="orderedBy" value={currentUserName}></lightning-input> -->
+					</div>
+					<div class="slds-form-element__help slds-hide" id="error-message-id-56" data-id="divErrorMsg">
+						Complete this field.
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="slds-section slds-is-open slds-p-top_small">
+		<h3 class="customHeader slds-section__title slds-theme_shade">
+			<span class="customSpan slds-truncate slds-p-horizontal_small" title="Type of Purchase Order">Type of Purchase Order</span>
+		</h3>
+		<div class="slds-section__content">
+			<div>
+				<lightning-radio-group name="radioGroup" label="" options={poRecTypeVals} value={poRecTypeVal}
+					onchange={handlePORecChange} type="radio"></lightning-radio-group>
+			</div>
+		</div>
+	</div>
+	<!--Buttons-->
+	<div class="slds-border_top slds-p-top_small">
+		<div class="footerContainer slds-grid slds-grid_align-spread">
+			<div class="navigation-bar__spacer"></div>
+			<div class="navigation-bar__right-align">
+				<lightning-button label="Next" onclick={handleNext} class="slds-button brand-button" variant="brand">
+				</lightning-button>
+			</div>
+		</div>
+	</div>
+	<template if:true={showModal}>
+		<template if:false={isMobileView}>
+			<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+				aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+				<div class="slds-modal__container" style="width: 100% !important; max-width: 100% !important;">
+					<div class="slds-modal__header">
+						<lightning-button-icon class="slds-modal__close" title="Close" icon-name="utility:close"
+							size="large" variant="bare" icon-class="slds-button_icon-inverse"
+							onclick={handleCloseModal}></lightning-button-icon>
+						<h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Vendor Search</h2>
+					</div>
+					<div class="slds-modal__content" id="modal-content-id-2">
+						<template if:true={showErrorMessage}>
+							<div class="slds-theme_error">
+								<lightning-icon icon-name="utility:error" variant="inverse" size="small">
+								</lightning-icon>
+								<span class="slds-p-left_xx-small">{errorMessage}</span>
+							</div>
+						</template>
+						<div class="slds-grid slds-wrap">
+							<div
+								class="slds-col slds-size_4-of-12 slds-p-right_small slds-p-top_small slds-p-left_small">
+								<lightning-input data-name="searchBox" variant="label-hidden" type="search"
+									pattern="[a-zA-Z0-9\-_ ]*"
+									message-when-pattern-mismatch="Special Characters are not allowed" label="test test"
+									placeholder="Search for Vendor" onkeypress={handleSearch} oncommit={handleClear}>
+								</lightning-input>
+							</div>
+							<div class="slds-col slds-size_3-of-12 slds-p-right_small">
+								<c-sbr_3_0_changevendorfilter ongetsearchvalue={getSearchValue}>
+								</c-sbr_3_0_changevendorfilter>
+							</div>
+						</div>
+						<div class="slds-col slds-size_5-of-12">
+						</div>
+						<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+							<div class="slds-page-header" style="height:55px;background-color:lightgrey">
+								<b class="slds-page-header__title slds-truncate">Vendor</b>
+								<p style="padding-top:2px">{totalNoOfRecords} Results</p>
+							</div>
+							<div class="record-container">
+								<lightning-datatable hide-checkbox-column="true" key-field="Id" data={data}
+									columns={columns} resize-column-disabled sorted-by={sortBy}
+									sorted-direction={sortDirection} onsort={handleSorting}
+									onrowaction={handleRowAction}>
+								</lightning-datatable>
+							</div>
+						</div>
+						<div class="slds-border_top slds-p-around_small">
+							<div class="footerContainer slds-grid slds-grid_align-spread">
+								<div class="navigation-bar__spacer"></div>
+								<div class="navigation-bar__right-align">
+									<lightning-button label="Cancel" onclick={handleCloseModal} variant="neutral"
+										class="neutral-button"></lightning-button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+		</template>
+		<template if:true={isMobileView}>
+			<c-sbr_3_0_mobile-screen>
+				<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-04" aria-modal="true"
+					class="slds-modal slds-fade-in-open">
+					<div class="slds-modal__container">
+						<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4">
+							<div class="slds-page-header__controls customer-info-header slds-p-bottom_medium slds-align_absolute-center">
+								<p class="customer-info-title slds-align_absolute-center">
+									Vendor Search
+								</p>
+							</div>
+								<div class="slds-grid slds-p-top_large">
+									<div class="slds-col slds-size_11-of-12">
+										<div class="searchBoxWrapper slds-show slds-p-bottom_small">
+											<lightning-input data-name="searchBox" variant="label-hidden"
+												type="search" pattern="[a-zA-Z0-9\-_ ]*"
+												message-when-pattern-mismatch="Special Characters are not allowed"
+												label="test test" placeholder="Search for Vendor"
+												onkeypress={handleSearch} oncommit={handleClear}>
+											</lightning-input>
+										</div>
+									</div>
+									<div class="slds-col slds-size_1-of-12">
+										<c-sbr_3_0_changevendorfilter ongetsearchvalue={getSearchValue}>
+										</c-sbr_3_0_changevendorfilter>
+									</div>
+								</div>
+								<div class="slds-page-header" style="height:65px;background-color:lightgrey">
+									<b class="slds-page-header__title slds-truncate">Vendor</b>
+									<p style="padding-top:2px">{totalNoOfRecords}
+										Results</p>
+								</div>
+								<c-sbr_3_0_po-mobile-custom-data-table record-list={recordList}
+									onselect={handleRowSelect}>
+								</c-sbr_3_0_po-mobile-custom-data-table>
+								<template if:false={hasRecords}>
+									<div class="slds-illustration slds-illustration_medium" aria-hidden="true">
+										<img class="slds-illustration__svg" alt="" src={noContentimageUrl} />
+										<div class="slds-text-color_weak">
+											<h3 class="slds-text-heading_medium">No Results Found</h3>
+										</div>
+									</div>
+								</template>
+							<div class="slds-grid slds-docked-form-footer cancelBut">
+								<div class="slds-col slds-size_1-of-1">
+									<lightning-button class="neutral-button" label="Cancel" title="Back"
+										onclick={handleCloseModal}></lightning-button>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</c-sbr_3_0_mobile-screen>
+		</template>
+	</template>
+</template>

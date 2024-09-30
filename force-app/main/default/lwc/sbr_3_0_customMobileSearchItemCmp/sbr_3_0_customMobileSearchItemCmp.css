@@ -1,0 +1,64 @@
+.item-box {
+     padding: 4% 2%; 
+  border-top: 1px solid #f2f2f2;
+}
+/* Start for 2442, 2443, 2445 */
+.itemVal {
+padding: 5px 0px; 
+}
+/* End for 2442, 2443, 2445 */
+.title {
+    font-weight: bold;
+    font-size: 0.8rem;
+    width:max-content !important;
+    margin-top:5px !important;
+    
+}
+
+.status-active {
+    background: #008545;
+  border: 1px solid #ffffff;
+    border-radius: 7px;
+    color: white;
+}
+
+.display-name {
+    font-size: 1rem;
+    -webkit-box-decoration-break:clone;
+}
+
+.data {
+    font-size: 0.8rem;
+}
+/* Start for 2442, 2443, 2445*/
+.accountDetails {
+padding:0px !important;
+ float:left !important;
+}
+/* End for 2442, 2443, 2445*/
+
+/*FRONT-4592*/
+.color-boxes{
+    display : block;
+    border-radius : 4px;
+    color : white;
+    padding : 4px;
+    text-align: right;
+    float: right;
+  }
+  
+.greenColor{
+    background-color : #008545;
+}
+  
+.greyColor{
+  background-color: #a0a0a0;
+}
+  
+.orangeColor{
+  background-color: #ffaa05;
+}
+  
+.redColor{
+  background-color: #ba0517;
+}

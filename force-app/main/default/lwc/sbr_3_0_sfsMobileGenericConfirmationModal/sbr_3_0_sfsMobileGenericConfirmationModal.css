@@ -1,0 +1,28 @@
+:host {
+    --slds-c-modal-header-color-background:#008545;
+    --slds-c-modal-header-text-color:white;
+    --slds-c-button-success-color-background:#008545;
+}
+
+.secondary-button {
+    --slds-c-button-text-color: #008545;
+    --slds-c-button-text-color-hover: #008545;
+    --slds-c-button-outline-brand-color-border: #747474;
+    --slds-c-button-outline-brand-color-border-hover: #747474;
+}
+
+.primary-button {
+    --slds-c-button-success-color-border: #008545;
+    --slds-c-button-success-color-background: #008545;
+    --slds-c-button-success-color-border-hover: #186338;
+    --slds-c-button-success-color-background-hover: #186338;
+    --slds-c-button-success-text-color: #FFFFFF;
+}
+/*Considering That all the button can not be of same height, width, color, I am commenting this css.*/
+/*Additionally We are already using standard LDS classes*/
+/*This is a bad example of writing the css, we should always write it as a css class not to default an element to specific values.*/
+/* button{
+    height:32px;
+    width:56px;
+    color:white;
+}*/

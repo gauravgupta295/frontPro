@@ -1,0 +1,17 @@
+.custom-datatable .slds-dropdown__item a {
+    color: #008545; 
+}
+/* FRONT-8764 - Start */
+.custom-datatable .slds-scrollable_y {
+    width: 100% !important;
+}
+
+.custom-datatable .slds-scrollable_x {
+    overflow-x: hidden !important;
+}
+
+.custom-datatable table {
+    width: 99.99% !important;
+    table-layout: auto !important;
+}
+/* FRONT-8764 - Start */

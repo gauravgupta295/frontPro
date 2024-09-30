@@ -1,0 +1,29 @@
+<apex:page standardController="ProductItem" lightningStylesheets="true">
+  <div style="overflow: scroll;">
+    <apex:pageBlock >
+    
+        <apex:pageBlockSection columns="2">
+        
+            <apex:repeat value="{!productitem}" var="a">
+            
+                <apex:outputField value="{!a.SM_PS_Bulk_Item__c}" />
+                <apex:outputField value="{!a.SM_PS_Sell_Months__c}" />
+                <apex:outputField value="{!a.SM_PS_Is_this_Cat_Class_a_KIT__c}" />
+                <apex:outputField value="{!a.SM_PS_GSA_Flag__c}" />
+                <apex:outputField value="{!a.SM_PS_Horse_Power__c}" />
+                <apex:outputField value="{!a.SM_PS_Off_Road__c}" />
+                <apex:outputField value="{!a.SM_PS_Status_of_Equipment_When_Returned__c}" />
+                <apex:outputField value="{!a.SM_PS_Self_Propelled__c}" />
+                <apex:outputField value="{!a.SM_PS_Salvage_Value_Percent__c}" />
+                <apex:outputField value="{!a.SM_PS_Prompt_Charge__c}" />
+                <apex:outputField value="{!a.SM_PS_Depreciation_Life_in_Months__c}" />
+                <apex:pageBlockSectionItem />
+                
+            </apex:repeat>
+            
+        </apex:pageBlockSection>
+        
+    </apex:pageBlock>
+    </div>
+    
+</apex:page>

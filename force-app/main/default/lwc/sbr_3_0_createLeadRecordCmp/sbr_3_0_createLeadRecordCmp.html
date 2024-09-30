@@ -1,0 +1,399 @@
+<template>
+    <div class="mobile-style">
+        <lightning-record-edit-form object-api-name="Lead" onsubmit={handleSubmit} onsuccess={handleSuccess}
+            onerror={handleError}>
+
+            <template if:false={isLeadShare}>
+                <template if:false={relatedRecordId}>
+                    <template if:true={isMobileApp}>
+                        <div data-id="save-cancel-section"
+                            class="slds-align_absolute-center flex-header slds-p-horizontal_x-small slds-is-fixed grey-background"
+                            style="z-index: 99; width: 85%;">
+                            <div>
+                                <h1 class="green-text" onclick={handleCancel}> Cancel </h1>
+                            </div>
+                            <div>
+                                <h1 class="title-text"> New Lead </h1>
+                            </div>
+                            <div>
+                                <lightning-button variant="base" type="submit" label="Save" class="my-button"
+                                    disabled={disableBtn} data-id="save-button"></lightning-button>
+                            </div>
+                        </div>
+                    </template>
+                    <div style="padding:18px;">
+                    </div>
+                </template>
+            </template>
+
+            <div class="mobile-style">
+                <div class={sectionGeneralClass}>
+
+                    <h3 class="slds-section__title slds-theme_default" onclick={toggleGeneralSection}>
+                        <button aria-controls="expando-unique-id" aria-expanded="true"
+                            class="slds-button slds-section__title-action">
+                            <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+                                aria-hidden="true">
+                                <use
+                                    xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#switch">
+                                </use>
+                            </svg>
+                            <span class="slds-truncate" title="Section Title">General</span>
+                        </button>
+                    </h3>
+
+                    <div class={sectionGeneralContentClass}>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field data-id="accountId" field-name={accountLookupField}
+                                    value={account} onchange={handleAccountChange} variant="label-stacked">
+                                </lightning-input-field>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field data-id="companyNameValueId" field-name={companyField}
+                                    value={companyNameValue} variant="label-stacked">
+                                </lightning-input-field>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <c-s-b-r_3_0_custom-lookup-cmp record-id={officeAccount}
+                                        default-record={defaultOfficeAccountId} label="Office Account"
+                                        s-object-api-name="Account" placeholder="Search Accounts..."
+                                        icon-name="standard:account" onlookupupdate={handleOfficeAccount}
+                                        where-clause={officeWhere}></c-s-b-r_3_0_custom-lookup-cmp>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <!-- Intentional Spacing -->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+
+                </div>
+
+                <div class={sectionContactClass}>
+
+                    <h3 class="slds-section__title slds-theme_default" onclick={toggleContactSection}>
+                        <button aria-controls="expando-unique-id" aria-expanded="true"
+                            class="slds-button slds-section__title-action">
+                            <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+                                aria-hidden="true">
+                                <use
+                                    xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#switch">
+                                </use>
+                            </svg>
+                            <span class="slds-truncate" title="Section Title">Contact Information</span>
+                        </button>
+                    </h3>
+
+                    <div class={sectionContactInfoContentClass}>
+                        <!-- class="slds-p-horizontal_large" -->
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <div class="slds-form-element slds-form-element_stacked">
+                                    <!-- SF-6413 : remove is-required attribute -->
+                                    <c-s-b-r_3_0_custom-lookup-cmp record-id={contactAccount}
+                                        default-record={defaultContactId} label="Contact" s-object-api-name="Contact"
+                                        placeholder="Search Contact..." icon-name="standard:contact"
+                                        onlookupupdate={handleContactChange} data-id="contactLookup"
+                                        where-clause={contactWhere}>
+                                    </c-s-b-r_3_0_custom-lookup-cmp>
+                                </div>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={firstNameField}
+                                    value={fnameValue} data-id="fnameValueId">
+                                </lightning-input-field>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={lastNameField}
+                                    value={lnameValue} data-id="lnameValueId">
+                                </lightning-input-field>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={suffixField}
+                                    value={suffixValue}>
+                                </lightning-input-field>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="12"
+                                class="slds-p-horizontal_small slds-m-bottom_medium">
+                                <p><b>Phone, Mobile, or Email is required.</b></p>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={phoneField}
+                                    value={phoneValue}>
+                                </lightning-input-field>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={mobileField}
+                                    value={mobileValue}>
+                                </lightning-input-field>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={emailField}
+                                    value={emailValue}>
+                                </lightning-input-field>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small">
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                class="slds-p-horizontal_small">
+                                <lightning-input-field variant="label-stacked" field-name={descriptionField} required>
+                                </lightning-input-field>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+
+                <template if:false={hideRelatedSection}>
+                    <div class={sectionProjClass}>
+                        <h3 class="slds-section__title slds-theme_default" onclick={toggleProjSection}>
+                            <!-- <span class="arrow-icon">{sectionProjIcon}</span><span class="slds-truncate slds-p-horizontal_small form-header" title="Section Title">Related Project/Opportunity</span> -->
+                            <button aria-controls="expando-unique-id" aria-expanded="true"
+                                class="slds-button slds-section__title-action">
+                                <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+                                    aria-hidden="true">
+                                    <use
+                                        xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#switch">
+                                    </use>
+                                </svg>
+                                <span class="slds-truncate" title="Section Title">Related Project/Opportunity</span>
+                            </button>
+                        </h3>
+                        <div class={sectionProjContentClass}>
+                            <!-- class="slds-p-horizontal_large" -->
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                    class="slds-p-horizontal_small">
+                                    <lightning-input-field variant="label-stacked" field-name={projectLookupField}
+                                        value={projectId} onchange={setSelectedProject}>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                    class="slds-p-horizontal_small">
+                                    <!-- <lightning-input-field field-name={opportunityLookupField} onchange={handleOpportunityChange} value={opportunityId}>
+                            </lightning-input-field> -->
+                                    <c-s-b-r_3_0_custom-lookup-cmp record-id={opportunityId}
+                                        default-record={defaultOpportunityId} label="Opportunity"
+                                        s-object-api-name="Opportunity" placeholder="Search Opportunties..."
+                                        icon-name="standard:opportunity" onlookupupdate={handleOpportunityChange}
+                                        where-clause={opportunityWhere}>
+                                    </c-s-b-r_3_0_custom-lookup-cmp>
+                                </lightning-layout-item>
+                                <!-- <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="slds-p-horizontal_small">
+                        </lightning-layout-item> -->
+                                <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                    class="slds-p-horizontal_small">
+                                    <lightning-input-field variant="label-stacked"
+                                        field-name={sharedLocationLookupField} onchange={handleSharedLocationChange}
+                                        value={sharedLocationId}>
+                                    </lightning-input-field>
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </div>
+                    </div>
+                </template>
+
+                <div class={sectionAddrClass}>
+                    <h3 class="slds-section__title slds-theme_default" onclick={toggleAddrSection}>
+                        <button aria-controls="expando-unique-id" aria-expanded="true"
+                            class="slds-button slds-section__title-action">
+                            <svg class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+                                aria-hidden="true">
+                                <use
+                                    xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#switch">
+                                </use>
+                            </svg>
+                            <span class="slds-truncate" title="Section Title">Address
+                                Information</span>
+                        </button>
+                    </h3>
+                    <!-- No Change? -->
+                    <div class={sectionAddrContentClass}>
+                        <lightning-layout multiple-rows>
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="12"
+                                class="slds-p-horizontal_small slds-m-bottom_medium">
+                                <p><b>At minimum, City OR Zip Code OR State (Country is required to pick a State) is
+                                        required.</b></p>
+                            </lightning-layout-item>
+
+
+
+                            <!-- First Column : Customer Address -->
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6">
+                                <lightning-layout multiple-rows>
+                                    <!-- Customer Address Street-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={custStreetField}
+                                            value={streetValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Customer Address City-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={custCityField}
+                                            value={cityValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Customer Address State-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={custStateField}
+                                            value={stateValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Customer Address Zip Code-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={custPostalcodeField}
+                                            value={postalcodeValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Customer Address Country-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={custCountryField}
+                                            value={countryValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+
+                            </lightning-layout-item>
+
+                            <!-- Second Column : Job Address -->
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6">
+                                <lightning-layout multiple-rows>
+                                    <!-- Job Address Street -->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={streetField}
+                                            value={jobStreetValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Job Address City-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={cityField}
+                                            value={jobCityValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Job Address State-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={stateField}
+                                            value={jobStateValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+
+                                    <!-- Job Address Zip Code-->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={postalcodeField}
+                                            value={jobPostalValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                    <!-- Job Address Country -->
+                                    <lightning-layout-item size="12" medium-device-size="12" large-device-size="12"
+                                        class="slds-p-horizontal_small">
+                                        <lightning-input-field variant="label-stacked" field-name={countryField}
+                                            value={jobCountryValue}>
+                                        </lightning-input-field>
+                                    </lightning-layout-item>
+
+                                </lightning-layout>
+                            </lightning-layout-item>
+
+                            <lightning-layout-item size="12" medium-device-size="6" large-device-size="6"
+                                class="slds-p-horizontal_small" style="display:none;">
+                                <lightning-input-location variant="label-stacked" label="Latitude / Longitude"
+                                    latitude={latitudeDefault} longitude={longitudeDefault}>
+                                </lightning-input-location>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+
+                <template if:false={isMobileApp}>
+                    <template if:true={showNext}>
+                        <div data-id="save-cancel-section" class="slds-align_absolute-center">
+                            <template if:true={showCancel}>
+                                <lightning-button variant="neutral" label="Cancel" class="slds-m-right_xx-small"
+                                    onclick={handleCancel}>
+                                </lightning-button>
+                            </template>
+                            <lightning-button variant="brand" type="submit" label="Next" disabled={disableBtn}
+                                data-id="save-button">
+                            </lightning-button>
+                        </div>
+                    </template>
+                    <template if:true={showSave}>
+                        <div data-id="save-cancel-section" class="slds-align_absolute-center">
+                            <lightning-button variant="neutral" label="Cancel" class="slds-m-right_xx-small"
+                                onclick={handleCancel}>
+                            </lightning-button>
+                            <lightning-button variant="brand" type="submit" label="Save" disabled={disableBtn}
+                                data-id="save-button">
+                            </lightning-button>
+                        </div>
+                    </template>
+                </template>
+                <template lwc:if={isLeadShare}>
+                    <template lwc:if={isMobileApp}>
+                        <div class="slds-box slds-theme_shade">
+                            <div class="slds-docked-form-footer" style="justify-content:right;">
+                                <div class="slds-grid slds-grid_vertical">
+                                    <!-- <div class="slds-col">
+                                        <span class="slds-m-bottom_small">
+                                            <c-sbr_3_0_reusable-popover-component show={showPopver}
+                                                onclose={hidePopover} body={errorMessage} header="Error" size="small"
+                                                variant="error" show-footer="true" nubbin="bottom-right">
+                                            </c-sbr_3_0_reusable-popover-component>
+                                        </span>
+                                    </div> -->
+                                    <div class="slds-col">
+                                    </div>
+                                    <div class="slds-col slds-clearfix slds-float_right">
+                                        <lightning-button type="submit" label="Next" variant="brand"
+                                            class="slds-m-right_x-large sbr-green" disabled={disableBtn}
+                                            data-id="save-button"></lightning-button>
+                                           <!--  style="display:flex; justify-content:right!important;" -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </lightning-record-edit-form>
+    </div>
+</template>

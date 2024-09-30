@@ -1,0 +1,108 @@
+<template>
+    <!--Start for 2443,2440,2445,2439,2442-->
+    <div class="slds-grid slds-wrap item-box" data-id="quOrd"  >
+         <!--End for 2443,2440,2445,2439,2442-->
+        <div class="slds-col slds-size_9-of-12">
+            <span class="display-name slds-p-left_medium">{displayName}</span>
+        </div>
+        
+       <template if:true={checkVisibility}>
+        <template if:true={status}>
+            <div class="slds-col slds-size_3-of-12 slds-p-right_medium">
+                <!-- FRONT-4592 -->
+                <span class={statusButtonBackgroundColour}>{status}</span>
+            </div>
+
+        </template>
+        </template>
+      <!--Start for 2440, 2442, 2443-->
+        <div class="slds-col slds-size_4-of-5 accountDetails">
+             <!--End for 2440, 2442, 2443-->
+            <div class="slds-grid slds-wrap slds-p-horizontal_medium">
+                <template if:true={checkVisibility}>
+                     <!--Addedfor 2440, 2442, 2443-->
+                    <div class="slds-col slds-size_3-of-5">
+                        <span class="title">Account #</span>
+                    </div>
+                    
+                    <div class="slds-col slds-size_2-of-5">
+                        <span class="data">{itemNumber}</span>
+                    </div>
+                </template>
+                 <!--Addedfor 2440, 2442, 2443-->
+                <div class="slds-col slds-size_3-of-5" >
+                    <span class="title">Account Type</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{itemType}</span>
+                </div>
+                 <!--Addedfor 2440, 2442, 2443-->
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">Phone #</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{phoneNumber}</span>
+                </div>
+                 <!--Addedfor 2440, 2442, 2443-->
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">City/State</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{cityState}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="slds-col slds-size_1-of-5">
+            <!-- Start FRONT-13601 -->
+            <template lwc:if={isAccountScreenParent}>
+                <div class="slds-col slds-size_1-of-5 slds-p-around_medium lgc-bg">
+                        <lightning-button-menu alternative-text="More actions" icon-size='medium' onclick={openMenu} menu-alignment="auto">
+                            <template if:true={isAccEditable}>
+                            <lightning-menu-item value="Edit" label="Edit" onclick={openEditForm} class="menuItem"></lightning-menu-item>
+                            </template>
+                             <lightning-menu-item value="View" label="View Account Details" onclick={viewDetails} class="menuItem"></lightning-menu-item>
+                            <template if:true={IsConvert}>
+                            <lightning-menu-item value="Convert" label="Convert to Non-Credit" onclick={handleConversion} class="menuItem"></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                </div>
+            </template>
+            <!-- End FRONT-13601 -->
+            <template lwc:else>
+            <template if:true={hasEditable}>
+                <div class="slds-col slds-size_1-of-5 slds-p-around_medium lgc-bg">
+          <!-- Start FRONT-11071 and Front-2487-->
+                    <template if:true={showchevron}>
+            <lightning-button-menu
+              alternative-text="More actions"
+              icon-size="medium"
+              onclick={openMenu}
+              menu-alignment="auto"
+            >
+              <lightning-menu-item
+                value="Edit"
+                label="Edit"
+                onclick={openEditForm}
+                class="menuItem"
+              ></lightning-menu-item>
+                            <!--start for 4002-->
+                            <template if:true={IsConvert}>
+                <lightning-menu-item
+                  value="Convert"
+                  label="Convert to Non-Credit"
+                  onclick={handleConversion}
+                  class="menuItem"
+                ></lightning-menu-item>
+                            </template>
+                        </lightning-button-menu>
+                    </template>
+          <!-- End FRONT-11071 and Front-2487-->
+                </div>
+            </template>
+            </template>
+          </div>
+      
+       
+    </div>
+</template>

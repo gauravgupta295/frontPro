@@ -1,0 +1,10 @@
+<template>
+    <lightning-modal-header label={modalHeader}></lightning-modal-header>
+    <lightning-modal-body>
+        <div style="text-align: center">{modalBody}</div>
+    </lightning-modal-body>
+    <lightning-modal-footer>
+        <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+        <lightning-button label="Clear" variant="brand" style="padding-left: 10px" onclick={handleClear}></lightning-button>
+    </lightning-modal-footer>
+</template>

@@ -1,0 +1,46 @@
+/* Custom CSS */
+.THIS h1 {
+    font-size: 2em;
+    color: #000066;
+}
+.THIS .instructions {
+    list-style: decimal;
+    padding-left: 20px;
+}
+.THIS .instructions li {
+    padding-bottom: 3px;
+    padding-left: 5px;
+}
+.THIS .instructions > ul {
+    list-style: inner;
+}
+.THIS .highlight {
+    font-weight: bold;
+    font-style: italic;
+}
+.THIS .rightBtnGroup {
+    position:absolute;
+    right:0;
+}
+.THIS .uploadStepBox {
+    padding-top:20px;
+    padding-bottom:20px;
+}
+/* SLDS overrides */
+.THIS .slds-form-element__label {
+    display:none;
+}
+.THIS .slds-file-selector__button {
+    cursor:pointer;
+}
+.THIS .slds-file-selector__dropzone .slds-file-selector__text{
+    display: none;
+}
+.THIS .slds-file-selector__dropzone .slds-file-selector__button{
+    font-size: 0;
+}
+.THIS .slds-file-selector__dropzone .slds-file-selector__button:after{
+    content: 'Attach';
+    font-size: .8125rem;
+    color: rgba(17, 82, 121, 1.0);
+}

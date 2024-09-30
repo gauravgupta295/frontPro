@@ -1,0 +1,23 @@
+.slds-spinner-text {
+  width: 320px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.button-color {
+  --sds-c-button-success-color-background: #008545;
+  --sds-c-button-success-text-color: #ffffff;
+}
+.button-color-close {
+  --sds-c-button-color-background: #ffffff;
+  --sds-c-button-text-color: #008545;
+}
+.custom-modal-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Horizontally center the content */
+  justify-content: center; /* Vertically center the content */
+  text-align: center; /* Center the text within the content */
+  font-size: 14px; /* Set the font size to 14px */
+}

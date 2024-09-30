@@ -1,0 +1,309 @@
+<template>
+  <template if:true={isAltInventory}>
+    <h3
+      class="itemDetail-title brand-color slds-truncate"
+      title={itemData.value.name}
+      onclick={changeItem}
+      data-id={itemData.value.id}
+      data-name={itemData.value.name}
+      data-cat-class={itemData.value.catClass}
+      data-category={itemData.value.category}
+      data-subcategory={itemData.value.subcategory}
+    >
+      {itemData.value.name}
+    </h3>
+    <div class="slds-tile__detail slds-grid slds-wrap">
+      <span class="itemDetail"
+        >D: <strong>${itemData.value.ratesDaily}</strong></span
+      >
+      <span class="itemDetail"
+        >W: <strong>${itemData.value.ratesWeekly}</strong></span
+      >
+      <span class="itemDetail-no-padding"
+        >M: <strong>${itemData.value.ratesMonthly}</strong></span
+      >
+      <div class="slds-col">
+        <span class="itemDetail-right slds-float_right">Qty: {itemQty}</span>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isAltInventoryChronos}>
+    <h3
+      class="itemDetail-title brand-color slds-truncate"
+      title={itemData.value.name}
+      onclick={changeItem}
+      data-id={itemData.value.id}
+      data-name={itemData.value.name}
+      data-cat-class={itemData.value.catClass}
+      data-category={itemData.value.category}
+      data-subcategory={itemData.value.subcategory}
+    >
+      {itemData.value.name}
+    </h3>
+
+    <div class="slds-tile__detail slds-grid slds-wrap">
+      <div class="slds-col slds-size_4-of-12">
+        <span>
+          <div class="itemDetail-left">
+            <lightning-icon
+              size="xx-small"
+              icon-name="utility:checkin"
+              alternative-text="checkin"
+              title="checkin"
+            ></lightning-icon>
+            <template if:true={hasBranchPhone}>
+              <a
+                class="branch-id slds-m-left_xx-small"
+                href={hrefBranchPhone}
+                onclick={handleBranchPhone}
+                >Branch: {branchDisplay}</a
+              >
+            </template>
+            <template if:false={hasBranchPhone}>
+              <a class="branch-id slds-m-left_xx-small"
+                >Branch: {branchDisplay}</a
+              >
+            </template>
+          </div>
+        </span>
+      </div>
+      <!--div  class="slds-col slds-size_4-of-12"></div>
+                <div  class="slds-col slds-size_4-of-12">
+                
+                    <template if:true={hasBranchAvailability}>
+                        <span class="slds-badge pending-badge1">
+                            Available &nbsp;&nbsp;
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <lightning-icon icon-name="utility:check" size="x-small"></lightning-icon>   
+                            </span>
+                        </span>                        
+                    </template>
+                    <template if:false={hasBranchAvailability}>
+                        <span class="slds-badge pending-badge2">
+                            <span class="slds-badge__icon slds-badge__icon_left">
+                                <lightning-icon icon-name="utility:warning" size="x-small"></lightning-icon>   
+                            </span>
+                            Not Available
+                        </span>
+                    </template>
+                </div-->
+
+      <!-- Added to show availability information -->
+      <template if:true={chronosEnabled}>
+        <div class="slds-col slds-size_8-of-12">
+          <template if:true={itemData.value.locationItemInfo.badge1}>
+            <span class="slds-badge pending-badge1">
+              <span class="slds-badge__icon slds-badge__icon_left">
+                <lightning-icon
+                  icon-name="utility:check"
+                  size="x-small"
+                ></lightning-icon>
+              </span>
+              Book it. Available to Promise.
+            </span>
+          </template>
+
+          <template if:true={itemData.value.locationItemInfo.badge2}>
+            <span class="slds-badge pending-badge2">
+              <span class="slds-badge__icon slds-badge__icon_left">
+                <lightning-icon
+                  icon-name="utility:warning"
+                  size="x-small"
+                ></lightning-icon>
+              </span>
+              Caution! Not Available to Promise.
+            </span>
+          </template>
+
+          <template if:true={itemData.value.locationItemInfo.badge3}>
+            <span class="slds-badge pending-badge3">
+              <span class="slds-badge__icon slds-badge__icon_left">
+                <lightning-icon
+                  icon-name="utility:warning"
+                  size="x-small"
+                ></lightning-icon>
+              </span>
+              Warning. No Inventory Near Job Site.
+            </span>
+          </template>
+
+          <template if:true={itemData.value.locationItemInfo.badge4}>
+            <span class="slds-badge pending-badge3">
+              <span class="slds-badge__icon slds-badge__icon_left">
+                <lightning-icon
+                  icon-name="utility:warning"
+                  size="x-small"
+                ></lightning-icon>
+              </span>
+              Warning. No Inventory Near Job Site.
+            </span>
+          </template>
+        </div>
+      </template>
+    </div>
+    <div class="slds-tile__detail slds-grid slds-wrap">
+      <span class="itemDetail"
+        ><strong>{itemData.value.locationItemInfo.atpLabel} </strong
+        >{itemData.value.locationItemInfo.atp}</span
+      >
+      <div class="slds-col">
+        <span class="itemDetail-right slds-float_right"
+          ><strong>Util: </strong
+          >{itemData.value.availabilityInfo.utilization}</span
+        >
+      </div>
+    </div>
+    <div class="slds-tile__detail slds-grid slds-wrap">
+      <span class="itemDetail"
+        >D: <strong>${itemData.value.ratesDaily}</strong></span
+      >
+      <span class="itemDetail"
+        >W: <strong>${itemData.value.ratesWeekly}</strong></span
+      >
+      <span class="itemDetail-no-padding"
+        >M: <strong>${itemData.value.ratesMonthly}</strong></span
+      >
+      <div class="slds-col">
+        <span class="itemDetail-right slds-float_right">Qty: {itemQty}</span>
+      </div>
+    </div>
+  </template>
+
+  <template if:true={isBulkInventory}>
+    <div class="iconPadding">
+    <lightning-icon
+      icon-name="action:delete"
+      size="xx-small"
+      variant="warning"
+      onclick={deleteProduct}
+      alternative-text="delete"
+      title="delete"
+    ></lightning-icon>
+    </div>
+    <h3 class="slds-truncate headingTitle" title={itemData.value.name}>
+      {itemData.value.name}
+    </h3>
+    <div class="slds-tile__detail">
+      <!--Added as part of FRONT-11384-->
+      <template lwc:if={isSalesTab}>
+        <p class="itemDetail">Part/Item#: {itemData.value.itemNumber}</p>
+        <template if:false={productType}>
+        <p>
+          <lightning-icon
+            icon-name="action:check"
+            alternative-text="check"
+            size="xx-small"
+            title="check"
+            class="sales-itemDetail"
+          >
+          </lightning-icon>
+          <span>A: {itemData.value.availQuantity}</span>
+        </p>
+        <p class="sales-itemDetail">
+          <!--Removed prefix sales as a part of front-20998-->
+            Price: <strong>${itemData.value.sellPrice}</strong>
+          </p>
+        </template>
+        <template if:true={productType}>
+          <p class="sales-itemDetail">
+          <!--Removed prefix sales as a part of front-20998-->
+            Sales Price: <strong>${itemData.value.sellPrice}</strong>
+          </p>
+        </template>
+      </template>
+      <!-- Added as part of FRONT-11320,FRONT-13129 -->
+      <template lwc:elseif={isAssetTab}>
+        <p class="itemDetail">
+          Cat-Class: {itemData.value.catClass} | Asset #:
+          {itemData.value.assetnumber}
+        </p>
+        <p>
+          <lightning-icon
+            icon-name="action:check"
+            alternative-text="check"
+            size="xx-small"
+            title="check"
+          >
+          </lightning-icon>
+          <span class="sales-itemDetail">{itemData.value.assetstatus}</span>
+        </p>
+
+        <p>
+          <span class="itemDetail"
+            >D: <strong>${itemData.value.ratesDaily}</strong></span
+          >
+          <span class="itemDetail"
+            >W: <strong>${itemData.value.ratesWeekly}</strong></span
+          >
+          <span class="itemDetail"
+            >M: <strong>${itemData.value.ratesMonthly}</strong></span
+          >
+        </p>
+      </template>
+      <template lwc:else>
+        <!-- FRONT-11384 Ends-->
+        <p>Cat Class: {itemData.value.catClass}</p>
+        <!--
+            <p>
+                <lightning-icon icon-name="action:check" size="xx-small" variant="warning" alternative-text="ok" title="ok"></lightning-icon>
+                <span class="itemDetail">A: {itemData.value.availabilityA}</span> 
+                <span class="itemDetail">U: {itemData.value.availabilityU}</span>
+                <span class="itemDetail">R: {itemData.value.availabilityR}</span>
+            </p>
+            -->
+        <p>
+          <lightning-icon
+            icon-name="action:check"
+            size="xx-small"
+            variant="warning"
+            alternative-text="ok"
+            title="ok"
+          ></lightning-icon>
+          <span class="itemDetail">A: {itemData.value.availabilityA}</span>
+          <span class="itemDetail">U: {itemData.value.availabilityU}</span>
+          <span class="itemDetail">R: {itemData.value.availabilityR}</span>
+        </p>
+        <p>
+          <span class="itemDetail"
+            >D: <strong>${itemData.value.ratesDaily}</strong></span
+          >
+          <span class="itemDetail"
+            >W: <strong>${itemData.value.ratesWeekly}</strong></span
+          >
+          <span class="itemDetail"
+            >M: <strong>${itemData.value.ratesMonthly}</strong></span
+          >
+        </p></template
+      ><!-- FRONT-11384 -->
+    </div>
+    <div class="slds-tile__detail buttonCss">
+      <template if:false={isAssetTab}>
+        <lightning-button-group>
+          <lightning-button-icon
+            icon-name="utility:dash"
+            variant="border-filled"
+            alternative-text="Reduce"
+            onclick={subtractItem}
+          ></lightning-button-icon>
+          <div class="slds-form-element">
+            <div class="slds-form-element__control">
+              <input
+                type="text"
+                onchange={handleCountChange}
+                value={count}
+                class="slds-input atc-input"
+              />
+            </div>
+          </div>
+          <lightning-button-icon
+            icon-name="utility:add"
+            variant="border-filled"
+            alternative-text="Increase"
+            onclick={addItem}
+          ></lightning-button-icon>
+        </lightning-button-group>
+      </template>
+    </div>
+  </template>
+</template>

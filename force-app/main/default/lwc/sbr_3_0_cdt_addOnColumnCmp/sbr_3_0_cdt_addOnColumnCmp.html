@@ -1,0 +1,41 @@
+<template>
+    <template if:true={isAddOn}>
+        <lightning-button-icon icon-name="utility:collection_alt" onclick={toggleAddOnModal} variant="bare" alternative-text="Show Add Ons" title="Add Ons"></lightning-button-icon>
+
+        <c-sbr_3_0_modal-cmp header="Add Ons" cancel-btn-label="Cancel">
+            <span slot="modalContent">
+
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered"
+                    aria-label="Add Ons">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Item Name">Item Name</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={addOns} for:item="addOn">
+                            <tr key={addOn.Id} class="slds-hint-parent">
+                                <td>hello
+                                <!--<template if:true={isRental}>
+                                    <td data-label="Account Name">
+                                    <div class="slds-truncate" title="Name">{addOn.Name}</div>
+                                </td>
+                                </template>-->
+                                <!--<template if:true={isSales}>
+                                    <td data-label="Account Name">
+                                    <div class="slds-truncate" title="Name">{addOn.Name}</div>
+                                </td>
+                                </template>-->
+                                </td>
+                            </tr>    
+                        </template>
+                    </tbody>
+                </table>
+
+            </span>
+        </c-sbr_3_0_modal-cmp>
+
+    </template>
+</template>

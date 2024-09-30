@@ -1,0 +1,35 @@
+<template>
+  <lightning-layout multiple-rows>
+    <!-- CatClass -->
+    <lightning-layout-item
+      size="12"
+      padding="around-small"
+      small-device-size="12"
+      medium-device-size="6"
+      large-device-size="6"
+    >
+      <div class="cc-label labelFontCL slds-p-left_x-small">Cat Class</div>
+      <div class="custom-box slds-m-top_small slds-p-left_x-small">
+        {catClass}
+      </div>
+    </lightning-layout-item>
+    <!-- CatClassDescription -->
+    <lightning-layout-item
+      size="12"
+      padding="around-small"
+      small-device-size="12"
+      medium-device-size="6"
+      large-device-size="6"
+    >
+      <div class="cc-label labelFontCL">Cat Class Description</div>
+
+      <div class="custom-box slds-m-top_small">{productName}</div>
+    </lightning-layout-item>
+  </lightning-layout>
+  <div>
+    <c-sbr_3_0_rates-cmp
+      rates={rates}
+      hide-section-title="true"
+    ></c-sbr_3_0_rates-cmp>
+  </div>
+</template>

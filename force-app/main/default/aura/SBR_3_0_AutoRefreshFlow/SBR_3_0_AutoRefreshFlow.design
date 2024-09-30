@@ -1,0 +1,5 @@
+<design:component label="SBR 3.0 - Auto Refresh Flow">
+    <design:attribute label="Flow Name"
+                      name="flowName"
+                      description="API Name of the Flow to display."/>
+</design:component>

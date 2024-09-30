@@ -1,0 +1,29 @@
+<template>
+  <div class={headerClass}>
+    <template for:each={columnData} for:item="cols">
+      <div key={cols.label} class="headerItem slds-text-color_weak">
+        {cols.label}
+      </div>
+    </template>
+  </div>
+  <div class="row-container">
+    <template for:each={rowData} for:item="row">
+      <div
+        key={row.label}
+        class="row"
+        data-id={row.label}
+        onclick={handleRowClicked}
+      >
+        <template for:each={columnData} for:item="cols">
+          <div key={cols.fieldName} class={columnStyle}>
+            <c-sbr_3_0_parts-and-merchandise-availability-row-cmp
+              row-data={row}
+              row-key={cols.fieldName}
+              calling-from={callingFrom}
+            ></c-sbr_3_0_parts-and-merchandise-availability-row-cmp>
+          </div>
+        </template>
+      </div>
+    </template>
+  </div>
+</template>

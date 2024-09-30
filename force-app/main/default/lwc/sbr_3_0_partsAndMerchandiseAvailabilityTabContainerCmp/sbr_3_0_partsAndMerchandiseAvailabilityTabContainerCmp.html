@@ -1,0 +1,33 @@
+<template>
+  <lightning-layout multiple-rows class={computedClass}>
+    <lightning-layout-item
+      size="12"
+      small-device-size="12"
+      large-device-size="6"
+      class={itemComputedClass}
+    >
+      <strong>{containerSubtitle}</strong>
+    </lightning-layout-item>
+    <lightning-layout-item
+      size="12"
+      small-device-size="12"
+      large-device-size="6"
+      lwc:if={searchPlaceholderLabel}
+      class="slds-p-around_small"
+    >
+      <lightning-input
+        class="searchBoxFieldClass"
+        type="search"
+        placeholder={searchPlaceholderLabel}
+        variant="label-hidden"
+        onchange={handleValueChange}
+        onkeypress={handleKeyPress}
+      >
+      </lightning-input>
+    </lightning-layout-item>
+  </lightning-layout>
+
+  <div class={containerComputedClass}>
+    <slot name="containerContent"></slot>
+  </div>
+</template>

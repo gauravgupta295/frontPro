@@ -1,0 +1,783 @@
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner class="spins" size="large"></lightning-spinner>
+  </template>
+
+  <template if:false={isMobile}>
+    <template if:true={isQuoteOrOrder}>
+      <!-- Start FRONT-7977 -->
+      <template if:true={isParentRecordLoaded}>
+        <template if:true={isCurrentUserRecordLoaded}>
+          <!-- End FRONT-7977 -->
+          <!-- Adding 'parent-record={parentRecord}' as part of FRONT-7977 -->
+          <!-- Adding 'current-user-record={currentUserRecord}’ as part of FRONT-7977 -->
+          <!-- 23417 Start -->
+          <!-- Adding 'is-read-only' as part of FRONT-11421-->
+          <lightning-accordion
+            allow-multiple-sections-open
+            active-section-name={activeSections}
+          >
+            <c-sbr_3_0_line-items-grid-section-cmp-frontline
+              is-mobile={isMobile}
+              accname="Rental Items"
+              label={rentalItemsDynamicLabel}
+              columns={rentalColumns}
+              object-api-name={objectApiName}
+              records={rentalLineItems}
+              draft-values={draftValues}
+              draft-error={draftErrors}
+              onhandlerowaction={handleRowActionMethod}
+              onhandlerowsave={handleRowSaveMethod}
+              onhandleitemaction={handleItemActionMethod}
+              is-read-only={isReadOnlyRecord}
+              hide-cancel={isCancel}
+              props={dataForGrid}
+              record-id={recordId}
+              parent-record={parentRecord}
+              current-user-record={currentUserRecord}
+              onnotesiconselectedresult={handleRowNotesAction}
+            ></c-sbr_3_0_line-items-grid-section-cmp-frontline
+            ><!-- Added onnotesiconselectedresult as part of Notes Change-->
+            <template if:false={isRateQuote}>
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                is-mobile={isMobile}
+                accname="Sales/Misc Items"
+                label={salesMiscItemsDynamicLabel}
+                columns={salesColumns}
+                object-api-name={objectApiName}
+                records={salesLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlerowaction={handleRowActionMethod}
+                onhandlerowsave={handleRowSaveMethod}
+                onhandleitemaction={handleItemActionMethod}
+                is-read-only={isReadOnlyRecord}
+                props={dataForGrid}
+                record-id={recordId}
+                parent-record={parentRecord}
+                current-user-record={currentUserRecord}
+                onnotesiconselectedresult={handleRowNotesAction}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline
+              ><!-- Added onnotesiconselectedresult as part of Notes Change-->
+
+              <!-- FRONT-9235 hiding below sections when Order is in Edit Mode and viewed by Frontline User withing RAE Frontline app -->
+              <template if:false={hideSubtotalonRecordEdit}>
+                <!--Modified for FRONT-9237-->
+                <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                  is-mobile={isMobile}
+                  accname="Delivery Items"
+                  label={deliveryItemsDynamicLabel}
+                  columns={deliveryColumns}
+                  object-api-name={objectApiName}
+                  records={deliveryLineItems}
+                  draft-values={draftValues}
+                  draft-error={draftErrors}
+                  onhandlerowaction={handleRowActionMethod}
+                  onhandlerowsave={handleRowSaveMethod}
+                  onhandleitemaction={handleItemActionMethod}
+                  is-read-only={isReadOnlyRecord}
+                  record-id={recordId}
+                  parent-record={parentRecord}
+                  current-user-record={currentUserRecord}
+                  onnotesiconselectedresult={handleRowNotesAction}
+                ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+                <!-- Added onnotesiconselectedresult as part of Notes Change-->
+                <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                  is-mobile={isMobile}
+                  accname="Ancillary Items"
+                  label={ancillaryItemsDynamicLabel}
+                  columns={ancillaryColumns}
+                  object-api-name={objectApiName}
+                  records={ancillaryLineItems}
+                  draft-values={draftValues}
+                  draft-error={draftErrors}
+                  onhandlerowaction={handleRowActionMethod}
+                  onhandlerowsave={handleRowSaveMethod}
+                  onhandleitemaction={handleItemActionMethod}
+                  is-read-only={isReadOnlyRecord}
+                  record-id={recordId}
+                  parent-record={parentRecord}
+                  current-user-record={currentUserRecord}
+                  onnotesiconselectedresult={handleRowNotesAction}
+                ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+                <!-- Added onnotesiconselectedresult as part of Notes Change-->
+              </template>
+            </template>
+          </lightning-accordion>
+          <!-- 23417 End -->
+          <!-- Start FRONT-7977 -->
+        </template>
+      </template>
+      <!-- End FRONT-7977 -->
+    </template>
+    <template if:false={isQuoteOrOrder}>
+      <div class="slds-text-heading_small">Items</div>
+      <br />
+      <!-- 23417 Start  -->
+      <template if:true={isCart}>
+        <lightning-accordion
+          allow-multiple-sections-open
+          active-section-name={activeSections}
+        >
+          <c-sbr_3_0_line-items-grid-section-cmp-frontline
+            is-mobile={isMobile}
+            accname="Rental Items"
+            label={rentalItemsDynamicLabel}
+            columns={rentalColumns}
+            object-api-name={objectApiName}
+            records={rentalLineItems}
+            draft-values={draftValues}
+            draft-error={draftErrors}
+            onhandlerowaction={handleRowActionMethod}
+            onhandlerowsave={handleRowSaveMethod}
+            onhandleitemaction={handleItemActionMethod}
+          ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+          <c-sbr_3_0_line-items-grid-section-cmp-frontline
+            is-mobile={isMobile}
+            accname="Sales/Misc Items"
+            label={salesMiscItemsDynamicLabel}
+            columns={salesColumns}
+            object-api-name={objectApiName}
+            records={salesLineItems}
+            draft-values={draftValues}
+            draft-error={draftErrors}
+            onhandlerowaction={handleRowActionMethod}
+            onhandlerowsave={handleRowSaveMethod}
+            onhandleitemaction={handleItemActionMethod}
+          ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+          <c-sbr_3_0_line-items-grid-section-cmp-frontline
+            is-mobile={isMobile}
+            accname="Delivery Items"
+            label={deliveryItemsDynamicLabel}
+            columns={deliveryColumns}
+            object-api-name={objectApiName}
+            records={deliveryLineItems}
+            draft-values={draftValues}
+            draft-error={draftErrors}
+            onhandlerowaction={handleRowActionMethod}
+            onhandlerowsave={handleRowSaveMethod}
+            onhandleitemaction={handleItemActionMethod}
+          ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+          <c-sbr_3_0_line-items-grid-section-cmp-frontline
+            is-mobile={isMobile}
+            accname="Ancillary Items"
+            label={ancillaryItemsDynamicLabel}
+            columns={ancillaryColumns}
+            object-api-name={objectApiName}
+            records={ancillaryLineItems}
+            draft-values={draftValues}
+            draft-error={draftErrors}
+            onhandlerowaction={handleRowActionMethod}
+            onhandlerowsave={handleRowSaveMethod}
+            onhandleitemaction={handleItemActionMethod}
+          ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+        </lightning-accordion>
+      </template>
+
+      <template if:false={isCart}>
+        <!--This is for Product Inquiry screen data={lineItems}rentalLineItems-->
+        <c-sbr_3_0_custom-data-table-cmp
+          key-field="Id"
+          columns={columns}
+          data={lineItems}
+          draft-values={draftValues}
+          errors={draftErrors}
+          hide-checkbox-column
+          resize-column-disabled
+          onrowaction={handleRowAction}
+          onsave={handleSave}
+        ></c-sbr_3_0_custom-data-table-cmp>
+      </template>
+      <!-- 23417 End -->
+
+      <!-- FRONT-11378 start -->
+      <div class="slds-section slds-is-open">
+        <h3 class="slds-section__title">
+          <button
+            aria-controls="li-SalesItems"
+            aria-expanded="true"
+            class="slds-button slds-section__title-action"
+            onclick={toggleSalesItemsPanel}
+          >
+            <lightning-icon
+              icon-name="utility:switch"
+              size="x-small"
+              alternative-text="SalesItems"
+              title="Sales Items"
+              class="slds-section__title-action-icon slds-button__icon slds-button__icon_left"
+            >
+            </lightning-icon>
+            <span class="slds-truncate" title="SalesItems">Sales Items</span>
+          </button>
+        </h3>
+        <div
+          aria-hidden="false"
+          class="slds-section__content"
+          id="li-SalesItems"
+        >
+          <!-- FRONT-11309 to show sales items added to cart on Product Inquiry -->
+          <template if:true={cartSalesLineItems}>
+            <div class="cartSalesLineItems">
+              <c-sbr_3_0_custom-data-table-cmp
+                key-field="Id"
+                columns={cartSalesColumns}
+                data={cartSalesLineItems}
+                hide-checkbox-column
+                resize-column-disabled
+                onrowaction={handleSalesRowAction}
+                column-widths-mode="auto"
+              ></c-sbr_3_0_custom-data-table-cmp>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- FRONT-11378 end -->
+    </template>
+    <template if:false={showLineItemsTable}>
+      <c-sbr_3_0_empty-state-image
+        message={noItemsMsg}
+      ></c-sbr_3_0_empty-state-image>
+    </template>
+
+    <!-- FRONT-9235 hiding below sections when Order is in Edit Mode and viewed by Frontline User withing RAE Frontline app -->
+    <template if:false={hideSubtotalonRecordEdit}>
+      <!--Modified for FRONT-9237-->
+      <div class="totals">
+        <div
+          class="c-container slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none"
+        >
+          <lightning-layout multiple-rows>
+            <!-- FRONT-11378 start -->
+            <template if:true={showlineitemComponents}>
+              <lightning-layout-item size="5" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_left">
+                  Totals
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Subtotal: ${subtotal}
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="2" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Delivery/Pickup & Ancillary Charges: ${charges}
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Tax: ${tax}
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Total: ${total}
+                </div>
+              </lightning-layout-item>
+            </template>
+            <template if:false={showlineitemComponents}>
+              <lightning-layout-item size="9" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_left">
+                  Totals
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Subtotal: ${subtotal}
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Tax: ${tax}
+                </div>
+              </lightning-layout-item>
+              <lightning-layout-item size="1" padding="around-small">
+                <div class="slds-p-around_medium slds-text-align_right">
+                  Total: ${total}
+                </div>
+              </lightning-layout-item>
+            </template>
+            <!-- FRONT-11378 end -->
+          </lightning-layout>
+        </div>
+      </div>
+    </template>
+
+    <!--23417 -->
+    <template if:true={isQuoteOrOrder}>
+      <c-sbr_3_0_modal-cmp
+        class="editModal"
+        header="Line Editor"
+        cancel-btn-label="Cancel"
+        save-btn-label={saveButtonLabel}
+        save-handler={saveQuoteLine}
+        onreturnpage={handleToggle}
+        oncancelbutton={handleToggle}
+      >
+        <span slot="modalContent">
+          <template if:true={showItemEditor}>
+            <c-sbr_3_0_-line-item-edit-wrapper
+              line-id={lineId}
+              record-id={recordId}
+              group-id={selectedItemGroup}
+              selected-row={selectedRow}
+              is-mobile={isMobile}
+              ontabswitch={handleTabSwitch}
+              onclosemodal={closeModal}
+            >
+            </c-sbr_3_0_-line-item-edit-wrapper>
+          </template>
+        </span>
+      </c-sbr_3_0_modal-cmp>
+
+      <c-sbr_3_0_modal-cmp
+        class="removeModal"
+        header="Remove Line items"
+        cancel-btn-label="Cancel"
+        save-btn-label="Remove"
+        save-handler={removeItems}
+      >
+        <span slot="modalContent">
+          Are you sure you want to remove the selected items?
+        </span>
+      </c-sbr_3_0_modal-cmp>
+      <!--Modified as part of FRONT-2195-->
+      <c-sbr_3_0_modal-cmp
+        class="bulkEditModal"
+        header={label.LINEITEMS_BULK_EDIT_HEADER}
+        cancel-btn-label={label.CANCEL}
+        save-btn-label={label.CONFIRM_BUTTON_LABEL}
+        save-handler={handleSaveEdit}
+        disbale-confirm-button={disbaleConfirmButton}
+        variant="large"
+      >
+        <span slot="modalContent">
+          <!--Modified as part of FRONT-2195-->
+          <p class="slds-p-bottom_small">{label.LINEITEMS_FIELDS_EDIT_TEXT}</p>
+          <c-sbr_3_0_custom-data-table-edit-cmp
+            key-field="Id"
+            record-id={recordId}
+            csp={CSP}
+            cmpdata={bulkEditRows}
+            is-quote={isQuote}
+            is-order={isOrder}
+            is-sales={isSales}
+            is-cancel-items={isCancel}
+            hide-checkbox-column
+            onsuccess={hideBulkEdit}
+            onfieldedited={handleFieldEdits}
+          >
+          </c-sbr_3_0_custom-data-table-edit-cmp>
+        </span>
+      </c-sbr_3_0_modal-cmp>
+      <!--Added as part of FRONT-2195-->
+      <c-sbr_3_0_modal-cmp
+        class="bulkEditConfirmModal"
+        header={label.LINEITEMS_BULK_EDIT_HEADER}
+        cancel-btn-label={label.CANCEL}
+        save-btn-label={label.CONFIRM_BUTTON_LABEL}
+        back-btn-label={label.BACK_BUTTON_LABEL}
+        save-handler={saveData}
+        back-btn-handler={handleBack}
+        onreturnpage={handleToggle}
+        variant="wide"
+      >
+        <span slot="modalContent"> {label.EDIT_CONFIRMATION_MESSAGE} </span>
+      </c-sbr_3_0_modal-cmp>
+      <!-- FRONT-2195 Ends-->
+      <c-sbr_3_0_modal-cmp
+        class="bulkEditModalWarning"
+        header={label.LINEITEMS_BULK_EDIT_HEADER}
+        cancel-btn-label="Cancel"
+        save-btn-label="Next"
+        save-handler={showBulkEdit}
+      >
+        <span slot="modalContent"> {CSP_msg} </span>
+      </c-sbr_3_0_modal-cmp>
+      <c-sbr_3_0_modal-cmp
+        class="bulkEditModalError"
+        header={label.LINEITEMS_BULK_EDIT_HEADER}
+        cancel-btn-label="Cancel"
+      >
+        <span slot="modalContent"> {CSP_msg} </span>
+      </c-sbr_3_0_modal-cmp>
+      <!-- Notes Change Start-->
+      <template lwc:if={isReadOnlyRecord}>
+        <c-sbr_3_0_modal-cmp class="viewlineitemNotes" header="Line Item Notes">
+          <span slot="modalContent">
+            <div class="slds-grid slds-wrap slds-p-around_small">
+              <div class="slds-col">
+                <div class="slds-form-element">
+                  <div class="slds-form-element__control">
+                    <div class="slds-output slds-p-vertical_medium">
+                      {lineItemNotes}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+        </c-sbr_3_0_modal-cmp>
+      </template>
+      <template lwc:else>
+        <c-sbr_3_0_modal-cmp
+          lwc:ref="notesModal"
+          class="editlineitemNotes"
+          header="Line Item Notes"
+          cancel-btn-label="Cancel"
+          save-btn-label="Confirm"
+          save-handler={updateOrderItemNotes}
+        >
+          <span slot="modalContent">
+            <lightning-textarea
+              name="notes"
+              label=""
+              data-name="notes"
+              value={lineItemNotes}
+              onchange={handleNotesChange}
+            >
+            </lightning-textarea>
+          </span>
+        </c-sbr_3_0_modal-cmp>
+      </template>
+      <!-- Notes Change End-->
+
+      <template if:true={showCancelLineItemModal}>
+        <c-sbr_3_0_cancel-line-items-cmp
+          cancel-rows={cancelSelectedRows}
+          is-mobile={isMobile}
+          onhandleitemacancelction={handleCancelItemAction}
+          onhandlecancelaction={handleCancelAction}
+        >
+        </c-sbr_3_0_cancel-line-items-cmp>
+      </template>
+    </template>
+  </template>
+
+  <template if:true={isMobile}>
+    <div class={itemListDisplayClass}>
+      <!-- <template if:true={itemListDisplay}> -->
+      <template if:false={isPI}>
+        <template if:true={isQuoteOrOrder}>
+          <!-- is Quote/Order -->
+          <div style="overflow: auto" class={dynamicFooter}>
+            <!--Modified as a part of FRONT-8736-->
+            <lightning-accordion
+              class="accordionBorder"
+              allow-multiple-sections-open
+              active-section-name={activeSections}
+            >
+              <!-- Adding 'parent-record={parentRecord}' as part of FRONT-1931 -->
+              <!--Added hidesubtotalcolumn  as part of FRONT-9236, Modified for FRONT-9238-->
+              <!--Added is-read-only as part of FRONT-11422-->
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={rentalItemsDynamicLabel}
+                columns={rentalColumns}
+                records={rentalLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                onupdateparent={refreshRecordsForMobile}
+                props={dataForGrid}
+                customer-info={customerInfo}
+                oneventnotification={notificationFromSubstituteScreen}
+                hidesubtotalcolumn={hideSubtotalonRecordEdit}
+                parent-record={parentRecord}
+                is-read-only={isReadOnlyRecord}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+                onselectedcountevt={updateSelectedRecordsCount}
+                variant-type="Rental"
+                onshowloading={showLoading}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+              <!--Added hidesubtotalcolumn  as part of FRONT-9236, Modified for FRONT-9238-->
+              <!--Added is-read-only as part of FRONT-11422-->
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={salesMiscItemsDynamicLabel}
+                columns={salesColumns}
+                records={salesLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                onupdateparent={refreshRecordsForMobile}
+                props={dataForGrid}
+                hidesubtotalcolumn={hideSubtotalonRecordEdit}
+                parent-record={parentRecord}
+                is-read-only={isReadOnlyRecord}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+                onselectedcountevt={updateSelectedRecordsCount}
+                variant-type="Sales"
+                onshowloading={showLoading}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+              <template if:false={hideSubtotalonRecordEdit}
+                ><!--Added this as part of FRONT-9236, Modified for FRONT-9238-->
+                <!--Added is-read-only as part of FRONT-11422-->
+                <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                  object-api-name={objectApiName}
+                  record-id={recordId}
+                  is-mobile={isMobile}
+                  label={deliveryItemsDynamicLabel}
+                  columns={deliveryColumns}
+                  records={deliveryLineItems}
+                  draft-values={draftValues}
+                  draft-error={draftErrors}
+                  onhandlequantitysave={mobileQuantity}
+                  parent-record={parentRecord}
+                  is-read-only={isReadOnlyRecord}
+                  oncomponentload={handleCancelComponentLoad}
+                  onhandleclosecancelmodel={handleCloseCancelModel}
+                ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+                <!--Added is-read-only as part of FRONT-11422-->
+                <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                  object-api-name={objectApiName}
+                  record-id={recordId}
+                  is-mobile={isMobile}
+                  label={ancillaryItemsDynamicLabel}
+                  columns={ancillaryColumns}
+                  records={ancillaryLineItems}
+                  draft-values={draftValues}
+                  draft-error={draftErrors}
+                  onhandlequantitysave={mobileQuantity}
+                  parent-record={parentRecord}
+                  is-read-only={isReadOnlyRecord}
+                  oncomponentload={handleCancelComponentLoad}
+                  onhandleclosecancelmodel={handleCloseCancelModel}
+                ></c-sbr_3_0_line-items-grid-section-cmp-frontline> </template
+              ><!--Added this as part of FRONT-9236, Modified for FRONT-9238-->
+            </lightning-accordion>
+          </div>
+        </template>
+        <template if:false={isQuoteOrOrder}>
+          <!-- is Cart -->
+          <div style="height: 82vh; overflow: auto">
+            <lightning-accordion
+              class="accordionBorder"
+              allow-multiple-sections-open
+              active-section-name={activeSections}
+            >
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={rentalItemsDynamicLabel}
+                columns={rentalColumns}
+                records={rentalLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={salesMiscItemsDynamicLabel}
+                columns={salesColumns}
+                records={salesLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={deliveryItemsDynamicLabel}
+                columns={deliveryColumns}
+                records={deliveryLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+              <c-sbr_3_0_line-items-grid-section-cmp-frontline
+                object-api-name={objectApiName}
+                record-id={recordId}
+                is-mobile={isMobile}
+                label={ancillaryItemsDynamicLabel}
+                columns={ancillaryColumns}
+                records={ancillaryLineItems}
+                draft-values={draftValues}
+                draft-error={draftErrors}
+                onhandlequantitysave={mobileQuantity}
+                oncomponentload={handleCancelComponentLoad}
+                onhandleclosecancelmodel={handleCloseCancelModel}
+              ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+            </lightning-accordion>
+          </div>
+        </template>
+      </template>
+      <template if:true={isPI}>
+        <!--This is for Product Inquiry screen -->
+        <div style="height: 75vh; overflow: auto">
+          <!-- SAL-26014 // putting back 1 grid instead of 4 -->
+          <lightning-accordion
+            class="accordionBorder"
+            allow-multiple-sections-open
+            active-section-name={activeSections}
+          >
+            <c-sbr_3_0_line-items-grid-section-cmp-frontline
+              object-api-name={objectApiName}
+              record-id={recordId}
+              is-mobile={isMobile}
+              label={rentalLineItemsDynamicLabelForPI}
+              columns={columns}
+              records={lineItems}
+              draft-values={draftValues}
+              draft-error={draftErrors}
+              onupdateitemdata={updateLineItemGridData}
+              onhandlequantitysave={mobileQuantity}
+              onselectedcountevt={updateSelectedRecordsCount}
+              onremoveselectedrecordfrompievent={handleRemoveSelectedRecordFromPI}
+              variant-type="Rental"
+              hidesubtotalcolumn="true"
+            ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+            <!-- FRONT-11379 -->
+            <c-sbr_3_0_line-items-grid-section-cmp-frontline
+              object-api-name={objectApiName}
+              record-id={recordId}
+              is-mobile={isMobile}
+              label={salesItemsDynamicLabel}
+              columns={cartSalesColumns}
+              records={cartSalesLineItems}
+              draft-values={draftValues}
+              draft-error={draftErrors}
+              onhandlequantitysave={mobileQuantity}
+              oncomponentload={handleCancelComponentLoad}
+              onselectedcountevt={updateSelectedRecordsCount}
+              onremoveselectedrecordfrompievent={handleRemoveSelectedRecordFromPI}
+              onupdateitemdata={updateSalesLineItemGridData}
+              variant-type="Sales"
+            ></c-sbr_3_0_line-items-grid-section-cmp-frontline>
+            <!-- END : FRONT-11379-->
+          </lightning-accordion>
+        </div>
+      </template>
+      <template if:false={callCancel}>
+        <div class="sticky-footer">
+          <!-- FRONT-11379 -->
+          <template if:true={isPI}>
+            <template if:false={selectedRecordsCountCheck}>
+              <lightning-layout
+                horizontal-align="spread"
+                class="clear-cart-footer-element footer-section slds-p-vertical_small"
+              >
+                <lightning-layout-item
+                  size="6"
+                  class="slds-p-top_small slds-p-bottom_small"
+                >
+                  <lightning-button
+                    variant="Neutral"
+                    label="Clear Cart"
+                    onclick={handleClearCartOnMobile}
+                    class="clear-btn-config"
+                  ></lightning-button>
+                </lightning-layout-item>
+
+                <lightning-layout-item
+                  size="6"
+                  class="slds-p-top_small slds-p-bottom_small"
+                >
+                  <lightning-button
+                    variant="Brand"
+                    label="Edit Details"
+                    onclick={handleEditDetailsOnMobile}
+                    class="edit-btn-config"
+                  ></lightning-button>
+                </lightning-layout-item>
+              </lightning-layout>
+            </template>
+          </template>
+          <template if:false={hideSubtotalonRecordEdit}
+            ><!--Added as part of FRONT-9236, Modified for FRONT-9238-->
+            <lightning-layout
+              horizontal-align="space"
+              class="estimates-panel slds-p-horizontal_medium slds-p-vertical_small"
+            >
+              <!-- FRONT - 11379 -->
+              <lightning-layout-item size="3">
+                <div>Subtotal</div>
+                $<lightning-formatted-number
+                  value={subtotal}
+                ></lightning-formatted-number>
+              </lightning-layout-item>
+              <lightning-layout-item size="3">
+                <div>Delivery</div>
+                $<lightning-formatted-number
+                  value={charges}
+                ></lightning-formatted-number>
+              </lightning-layout-item>
+              <lightning-layout-item size="3">
+                <div>Ancillary Tax</div>
+                $<lightning-formatted-number
+                  value={tax}
+                ></lightning-formatted-number>
+              </lightning-layout-item>
+              <lightning-layout-item size="3" class="is-bold">
+                <div>TOTAL</div>
+                $<lightning-formatted-number
+                  value={total}
+                ></lightning-formatted-number>
+              </lightning-layout-item>
+            </lightning-layout> </template
+          ><!--Added as part of FRONT-, Modified for FRONT-9238-->
+        </div>
+      </template>
+    </div>
+
+    <div class={lineItemEditorDisplayClass}>
+      <div class="slds-size_12-of-12 slds-p-bottom_xx-large">
+        <lightning-layout-item flexibility="auto">
+          <c-sbr_3_0_line-item-editor-cmp-frontline
+            line-id={lineId}
+            record-id={recordId}
+            group-id={selectedItemGroup}
+          >
+          </c-sbr_3_0_line-item-editor-cmp-frontline>
+        </lightning-layout-item>
+      </div>
+    </div>
+
+    <c-sbr_3_0_modal-cmp
+      class="removeModal"
+      header="Remove Line Items"
+      cancel-btn-label="Cancel"
+      save-btn-label="Remove"
+      save-handler={removeItems}
+    >
+      <span slot="modalContent">
+        Are you sure you want to remove the selected items?
+      </span>
+    </c-sbr_3_0_modal-cmp>
+  </template>
+
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+  <!-- Start FRONT-1639-->
+  <template if:true={showSubstituteModal}>
+    <c-sbr_3_0_order-substitute-item
+      substitute-item={substituteItem}
+      record-id={recordId}
+      customer-info={customerInfo}
+      oneventnotification={notificationFromSubstituteScreen}
+    >
+    </c-sbr_3_0_order-substitute-item>
+  </template>
+  <!-- End FRONT-1639-->
+</template>

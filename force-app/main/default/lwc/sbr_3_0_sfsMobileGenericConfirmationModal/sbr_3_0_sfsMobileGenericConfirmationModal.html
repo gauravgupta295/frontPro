@@ -1,0 +1,145 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-12-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-modal-header label={headerText}></lightning-modal-header>
+    <lightning-modal-body>
+        <div style="font-size:14px" class="slds-grid slds-grid_align-center slds-wrap">
+            <template if:false={contentHide}>
+                {content}
+            </template>
+            <template if:true={contentHide}>
+             
+                <div if:true={disableSave} class="slds-col slds-size_1-of-1 slds-align_absolute-center slds-var-m-around_x-small">
+                    <span style="color : Red"><Strong>Something went Wrong {errorMessage}, Please try again.</Strong></span>
+                </div>
+                <table class="slds-table slds-table_cell-buffer slds-table_header-hidden" aria-label=" Example headless table of Opportunities with no borders ">
+                    <thead class="slds-assistive-text">
+                    <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                    <div class="slds-truncate" title="Name">Name</div>
+                    </th>
+                    <th class="" scope="col">
+                    <div class="slds-truncate" title="Name">Total</div>
+                    </th>
+                  
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Parts amount">
+                            <div class="slds-truncate" title="Parts amount">Parts amount</div>
+                        </td>
+                    <td data-label="Parts amount" style="text-align:end">
+                    <div title="Parts amount">${totalPartsAmt}</div>
+                    </td>
+                   
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Internal labor amount" >
+                            <div class="slds-truncate" title="Internal labor amount">Internal labor amount</div>
+                          </td>
+                    <td data-label={laborTotal} style="text-align:end">
+                    <div  title={laborTotal}>${laborTotal}</div>
+                    </td>
+                   
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Mileage amount">
+                            <div class="slds-truncate" title="Mileage amount">Mileage amount</div>
+                        </td>
+                    <td data-label="Mileage total amount" style="text-align:end">
+                    <div  title="Mileage total amount">${travelTotal}</div>
+                    </td>
+                    </tr>
+                    <tr class="slds-hint-parent">
+                        <td data-label="Miscellaneous charges">
+                            <div class="slds-truncate" title="Miscellaneous charges">Miscellaneous charges</div>
+                        </td>
+                        <td data-label="Miscellaneous charges" style="text-align:end">
+                            <div  title="Miscellaneous charges">${miscTotal}</div>
+                        </td>
+                    </tr>
+
+                    <!-- Commented as per SERV-19167-->
+                    <!-- <template if:true={workOrderTypeIsQuote}>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Miscellaneous charges">
+                                <div class="slds-truncate" title="Miscellaneous charges">Outside labor amount</div>
+                            </td>
+                            <td data-label="Miscellaneous charges" style="text-align:end">
+                                <div  title="Miscellaneous charges">${outSideLaborTotal}</div>
+                            </td>
+                        </tr>
+                    </template> -->
+                    <template if:true = {companyCode01}>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Miscellaneous charges">
+                                <div class="slds-truncate" title="Miscellaneous charges">Tax On Sales</div>
+                            </td>
+                            <td data-label="Miscellaneous charges" style="text-align:end">
+                                <div  title="Miscellaneous charges">${totalTaxOnSales}</div>
+                            </td>
+                        </tr>
+                    </template>
+                    <template if:false={companyCode01}>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Miscellaneous charges">
+                                <div class="slds-truncate" title="Miscellaneous charges">State tax Amount</div>
+                            </td>
+                            <td data-label="Miscellaneous charges" style="text-align:end">
+                                <div  title="Miscellaneous charges">${totalStatetaxAmount}</div>
+                            </td>
+                        </tr>
+                        <tr class="slds-hint-parent">
+                            <td data-label="Miscellaneous charges">
+                                <div class="slds-truncate" title="Miscellaneous charges">County Tax Amount</div>
+                            </td>
+                            <td data-label="Miscellaneous charges" style="text-align:end">
+                                <div  title="Miscellaneous charges">${totalCountyTaxAmount}</div>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr class="slds-hint-parent slds-border_top">
+                        <td data-label="Total Invoice amount">
+                            <div class="slds-truncate" title="Parts amount">Total Invoice amount</div>
+                        </td>
+                    <td data-label="Total" style="text-align:end">
+                    <div class="slds-truncate" title="Total">${totalinvoiceAmount}</div>
+                    </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </template>
+        </div>
+    </lightning-modal-body>
+   
+    <lightning-modal-footer>
+        <template if:true={contentHide}>
+            <div class="slds-grid slds-grid_align-center">
+                <button class="slds-button slds-button_outline-brand secondary-button" title="No" onclick={handleNo}>Cancel</button>&nbsp;&nbsp;
+                <template if:true={disableSave}>
+                    <button class="slds-button slds-button_success" title="Yes" onclick={handleYes} disabled>Save</button>&nbsp;&nbsp;
+                </template>
+                <template if:false={disableSave}>
+                    <button class="slds-button slds-button_success primary-button" title="Yes" onclick={handleYes}>Save</button>&nbsp;&nbsp;
+                </template>
+                <template if:true={showEstimatorButton}>
+                    <button class="slds-button slds-button_success primary-button" title="Yes" onclick={handleSaveDamageEstimator}>Create Estimator</button>
+                </template>
+            </div>
+        </template>
+        <template if:false={contentHide}>
+            <div class="slds-grid slds-grid_align-center">
+                <button class="slds-button slds-button_success" title="Yes" onclick={handleYes}>Yes</button>&nbsp;&nbsp;
+                <button class="slds-button slds-button_success" title="No" onclick={handleNo}>No</button>&nbsp;&nbsp;
+            </div>
+        </template>
+       
+    </lightning-modal-footer>
+    
+</template>

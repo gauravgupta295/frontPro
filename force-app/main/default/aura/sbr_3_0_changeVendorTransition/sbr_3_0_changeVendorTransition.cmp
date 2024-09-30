@@ -1,0 +1,23 @@
+<aura:component implements = "force:lightningQuickActionWithoutHeader,force:hasRecordId" access="global">  
+    <aura:html tag="style">
+    @media screen and (min-width: 601px) {
+        .slds-modal__container {
+            max-width : 50% !important;
+            width : 50%;
+            overflow-y: hidden !important;
+        }
+        .slds-modal__content{
+            height : 685px !important;
+            max-height: 800px !important;
+            overflow-y: hidden !important;
+        }
+    }
+    @media only screen and (max-width: 1000px) {
+        .slds-modal__content {
+            overflow-y: auto !important;
+        }
+    }
+    </aura:html>
+    <aura:handler name="init" value="{!this}" action="{!c.onInit}" />
+    <c:sbr_3_0_changeVendor recordId="{!v.recordId}" onclose="{!c.handleCloseModal}" />
+    </aura:component>

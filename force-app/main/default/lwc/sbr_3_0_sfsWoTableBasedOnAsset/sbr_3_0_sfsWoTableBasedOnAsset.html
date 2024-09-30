@@ -1,0 +1,51 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-grid slds-wrap">
+        <div class="slds-size_1-of-3"></div>
+        <div class="slds-size_1-of-3">
+            <p><label><span style="color:red">*</span> Equipment # </label></p>
+            <lightning-record-edit-form object-api-name="WorkOrder">
+                <lightning-input-field field-name="AssetId"  value={defaultRecordId} required onchange={handleOnChange} variant="label-hidden" disabled={isReadonly}></lightning-input-field>
+            </lightning-record-edit-form>
+        </div>
+        <div class="slds-size_1-of-3"></div>
+    </div>
+    <div style="padding-top: 2%;text-align: center;">
+        <span > <b>Note: If Equipment does not exist in Salesforce Then Navigate to the Accounts page to create a Customer-Owned Asset. </b></span>
+    </div>
+    <div class="slds-text-align_center  slds-var-m-top_xx-large slds-var-m-horizontal_x-small slds-var-m-bottom_x-small">
+        <template if:true={showTable}>
+            <div class="slds-box slds-box_x-small slds-text-align_center slds-var-m-around_x-small">
+                <div class={dynamicClass}>
+                    <lightning-datatable 
+                        show-row-number-column 
+                        key-field="id" 
+                        data={processedData} 
+                        columns={columns}
+                        hide-checkbox-column  
+                        enable-infinite-loading 
+                        load-more-offset=10 
+                        onloadmore={loadMoreData}
+                    ></lightning-datatable>
+                </div>
+            </div>
+        </template>
+        <template if:true={NoDataFound}>
+            <div class="slds-box slds-box_x-small slds-text-align_center slds-m-around_x-small">
+                <p style="text-align: center">No Open Work Order Record Found</p>
+            </div>
+        </template>
+    </div>
+    <div>
+        <c-sbr_3_0_sfs-desktop-flow-buttons 
+            call-from="Lwc" 
+            lable-next-button="Next" 
+            lable-cancel-button="Cancel" 
+            show-cancel-button=true 
+            show-next-button=true
+            onnext={handleNext}
+            oncancel={handleCancel}>
+
+        </c-sbr_3_0_sfs-desktop-flow-buttons>
+    </div>
+</template>

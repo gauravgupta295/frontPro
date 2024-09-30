@@ -1,0 +1,203 @@
+<template>
+    <template lwc:if={isDiv}>
+        <div
+        class="lookupInputContainerMobile"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        role="combobox">
+        <template if:true={hasSearch}>
+            <div class="searchfit">
+                <div class="searchfill">
+                    <div
+                        class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+                        role="none">
+                        <div
+                            class="searchBoxWrapper slds-show slds-p-bottom_small">
+                            <lightning-input
+                                data-name="searchBox"
+                                variant="label-hidden"
+                                type="search"
+                                pattern="[a-zA-Z0-9\-_ ]*"
+                                message-when-pattern-mismatch="Special Characters are not allowed"
+                                label="test test"
+                                placeholder="Search for Carrier"
+                                onkeypress={handleSearch}
+                                oncommit={handleClear}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <template if:false={noHeaderSection}>
+            <div class="slds-page-header" style="height:65px;background-color:lightgrey">
+                <div class="slds-grid slds-gutters_xx-small">
+                    <div class="slds-col slds-size_5-of-6 slds-p-horizontal_medium">
+                        <b class="slds-page-header__title slds-truncate">All
+                            {title}</b>
+                        <p style="padding-top:2px">{totalNoOfRecords}
+                            Results</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-6 slds-p-horizontal_medium">
+                        <template if:true={hasFilter}>
+                            <div class="filterfill">
+                                <template lwc:if={isVendorFilter}>
+                                    <c-sbr_3_0_changevendorfilter ongetsearchvalue={getSearchValue} onreset={handleReset}>
+                                    </c-sbr_3_0_changevendorfilter>
+                                </template>
+                                <template lwc:elseif={isPurchaseOrderFilter}>
+                                    <c-sbr_3_0_po-search-filter ongetsearchvalue={getSearchValue} onreset={handleReset}>
+                                    </c-sbr_3_0_po-search-filter>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </template>
+        <div class="slds-scrollable_y div-scroll">
+            <c-sbr_3_0_po-mobile-custom-data-table
+                record-list={recordList}
+                onselect={handleRecordSelect}
+                onmenuclick={handleMenuClick}
+                oncheckboxchange={handleCheckboxChange}
+                onedit={handleEdit}>
+            </c-sbr_3_0_po-mobile-custom-data-table>
+        </div>
+        <template if:false={hasRecords}>
+            <div
+                class="slds-illustration slds-illustration_medium"
+                aria-hidden="true">
+                <img
+                    class="slds-illustration__svg"
+                    alt
+                    src={noContentimageUrl} />
+                <div class="slds-text-color_weak">
+                    <h3 class="slds-text-heading_medium">No
+                        Results Found</h3>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>
+<template lwc:elseif={isModal}>
+<c-sbr_3_0_mobile-screen>
+    <section
+        role="dialog"
+        tabindex="-1"
+        aria-labelledby="modal-heading-01"
+        aria-modal="true"
+        aria-describedby="modal-content-id-1"
+        class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+
+            <template if:true={hasTitle}>
+                <div
+                    class="slds-page-header__controls title-header slds-p-vertical_small slds-align_absolute-center">
+                    <p
+                        class="title slds-align_absolute-center">
+                        {title} Search
+                    </p>
+                </div>
+            </template>
+            <div
+                class="slds-modal__content slds-p-around_medium"
+                id="modal-content-id-4">
+                <div
+                    class="lookupInputContainerMobile"
+                    aria-expanded="false"
+                    aria-haspopup="listbox"
+                    role="combobox">
+                    <template if:true={hasSearch}>
+                        <div class="searchfit">
+                            <div class="searchfill">
+                                <div
+                                    class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+                                    role="none">
+                                    <div
+                                        class="searchBoxWrapper slds-show slds-p-bottom_small">
+                                        <lightning-input
+                                            data-name="searchBox"
+                                            variant="label-hidden"
+                                            type="search"
+                                            pattern="[a-zA-Z0-9\-_ ]*"
+                                            message-when-pattern-mismatch="Special Characters are not allowed"
+                                            label="test test"
+                                            placeholder="Search for Carrier"
+                                            onkeypress={handleSearch}
+                                            oncommit={handleClear}>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="slds-page-header"
+                        style="height:65px;background-color:lightgrey">
+                        <div class="slds-grid slds-gutters_xx-small">
+                            <div
+                                class="slds-col slds-size_5-of-6 slds-p-horizontal_medium">
+                                <b
+                                    class="slds-page-header__title slds-truncate">All
+                                    {title}</b>
+                                <p
+                                    style="padding-top:2px">{totalNoOfRecords}
+                                    Results</p>
+                            </div>
+                            <div
+                                class="slds-col slds-size_1-of-6 slds-p-horizontal_medium">
+                                <template if:true={hasFilter}>
+                                    <div class="filterfill">
+                                        <template
+                                            lwc:if={isVendorFilter}>
+                                            <c-sbr_3_0_changevendorfilter
+                                                ongetsearchvalue={getSearchValue}>
+                                            </c-sbr_3_0_changevendorfilter>
+                                        </template>
+                                        <template
+                                            lwc:elseif={isPurchaseOrderFilter}>
+                                            <c-sbr_3_0_po-search-filter
+                                                ongetsearchvalue={getSearchValue}
+                                                onreset={handleReset}>
+                                            </c-sbr_3_0_po-search-filter>
+                                        </template>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+
+                    <c-sbr_3_0_po-mobile-custom-data-table
+                        record-list={recordList}
+                        onselect={handleRecordSelect}
+                        onmenuclick={handleMenuClick}>
+                    </c-sbr_3_0_po-mobile-custom-data-table>
+                    <template if:false={hasRecords}>
+                        <div
+                            class="slds-illustration slds-illustration_medium"
+                            aria-hidden="true">
+                            <img
+                                class="slds-illustration__svg"
+                                alt
+                                src={noContentimageUrl} />
+                            <div class="slds-text-color_weak">
+                                <h3 class="slds-text-heading_medium">No
+                                    Results Found</h3>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-modal__footer cancelBut">
+                <lightning-button
+                    class="neutral-button"
+                    label="Cancel"
+                    title="Back"
+                    onclick={handleCloseModal}></lightning-button>
+            </div>
+        </div>
+    </section>
+</c-sbr_3_0_mobile-screen>
+</template>
+</template>

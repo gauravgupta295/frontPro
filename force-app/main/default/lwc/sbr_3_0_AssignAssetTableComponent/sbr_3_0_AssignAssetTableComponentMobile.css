@@ -1,0 +1,78 @@
+.display-name {
+  font-weight: 700;
+  color: #25683e;
+  font-size: large;
+  margin: top 0%;
+}
+.accountDetails {
+  padding-bottom: 5px;
+  float: left !important;
+}
+/*Modified as part of FRONT-10330*/
+.item-box {
+  padding: 5% 5%;
+  border-top: 1px solid var(--foundation-gray-neutral-90, #e5e5e5);
+}
+.custom-label {
+  color: #25683e;
+}
+.data {
+  font-size: 0.8rem;
+}
+
+.brand-button {
+  --slds-c-button-brand-color-background: #25683e;
+  --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-color-border: #25683e;
+  --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+  --slds-c-button-brand-text-color-hover: #fff;
+}
+.remove-button {
+  --slds-c-button-outline-brand-color-border: #25683e;
+  /*slds-c-button-outline-brand-text-color:var(--lwc-paletteNeutral100); */
+}
+.neutral-button {
+  --slds-c-button-text-color: #25683e;
+  --slds-c-button-neutral-color-border: #25683e;
+  --slds-c-button-neutral-color-border-hover: #25683e;
+}
+/*Added as part of FRONT-10330*/
+
+.asset-item-description-class {
+  color: var(--text-weak, #444);
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+.asset-name-class {
+  color: var(--text-default, #181818);
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+}
+.slds-checkbox_faux {
+  width: 1rem;
+  height: 1rem;
+}
+.bgcolor {
+  background-color: white;
+}
+.fieldsTitle {
+  color: var(--text-default, #181818);
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 18px;
+}
+/* FRONT-10330 Ends here*/

@@ -1,0 +1,57 @@
+/* .tooltip-error {
+  position: absolute;
+  background-color: #ba0517 !important;
+  width: 450px;
+  padding: 10px;
+  top: -3rem;
+  left: -1rem;
+  white-space: pre-wrap;
+} */
+
+/* START FRONT-11845 */
+.tooltip-topToolTipError {
+  position: absolute;
+  background-color: #ba0517 !important;
+  width: 280px !important;
+  padding: 10px;
+  top: -3rem;
+  left: -0.6rem;
+  white-space: pre-wrap;
+  min-height: 50px !important;
+}
+.tooltip-rightToolTipError {
+  position: absolute;
+  background-color: #ba0517 !important;
+  width: 280px !important;
+  padding: 10px;
+  top: -0.3rem;
+  left: 2.3rem;
+  white-space: pre-wrap;
+  min-height: 50px !important;
+}
+
+.warningClass{
+  --sds-c-icon-color-foreground-default:#ba0517 !important;
+}
+/* END FRONT-11845 */
+
+/* START FRONT-1950 */
+.tooltip-topToolTip {
+  position: absolute;
+  width: 280px !important;
+  padding: 10px;
+  top: -3rem;
+  left: -0.6rem; /* FRONT-10473 */
+  white-space: pre-wrap;
+  min-height: 50px !important;
+}
+.tooltip-rightToolTip {
+  position: absolute;
+  width: 280px !important;
+  padding: 10px;
+  top: -0.3rem;
+  left: 2.3rem; /* FRONT-10473 */
+  white-space: pre-wrap;
+  min-height: 50px !important;
+}
+/* END FRONT-1950 */

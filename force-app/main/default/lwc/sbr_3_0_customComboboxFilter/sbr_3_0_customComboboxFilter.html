@@ -1,0 +1,275 @@
+<template>
+  <div class="slds-form-element" aria-label="FilterBox">
+    <div class={computedFilterCmpCSS}>
+      <div class="slds-combobox_container">
+        <div class="slds-combobox">
+          <!-- FRONT-12020 : Removed aria attributes and added it to the correct div-->
+          <!-- FRONT-11490 updated dom to reflect the sfdc combobox standards-->
+          <div
+            class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right setdivWidth"
+            role="none"
+          >
+            <!-- FRONT-12051 : Issue 1 Removed read-only attribute-->
+            <!-- FRONT-11490 updated attributes to match the sfdc combobox standards-->
+            <input
+              aria-haspopup="listbox"
+              role="combobox"
+              aria-label={comboBoxAria}
+              type="text"
+              class="slds-input slds-combobox__input slds-combobox__input-value combobox-input-class"
+              id="select-sobject-id"
+              autocomplete="off"
+              data-id="select-sobject-id"
+              aria-autocomplete="list"
+              aria-controls="listbox-id-11"
+              aria-expanded={openDropDown}
+              placeholder={placeholder}
+              title={filterLabel}
+              onkeyup={handleKeyUp}
+              onclick={handleInputClick}
+              onmousedown={handleInputClickProgramatically}
+              value={filterLabel}
+              disabled={disabled}
+            />
+            <!-- END : FRONT-12051-->
+            <lightning-icon
+              class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+              icon-name="utility:down"
+              size="x-small"
+            ></lightning-icon>
+          </div>
+          <div
+            id="listbox-id-11"
+            class={computedDropDownClasses}
+            style="overflow-y: auto"
+          >
+            <lightning-layout multiple-rows>
+              <lightning-layout-item padding="around-small" size="12">
+                <lightning-input
+                  placeholder="Search an Account Name"
+                  label="Account Name"
+                  name="Accountname"
+                  value={accName}
+                  maxlength="255"
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="Name"
+                  data-attribute="LIKE"
+                ></lightning-input>
+                <lightning-combobox
+                  name="AccountType"
+                  label="Account Type"
+                  value={accType}
+                  onchange={handleFilterChange}
+                  options={recordTypes}
+                  data-field-class="filterOption"
+                  data-id="Record_Type_Text__c"
+                  data-attribute="="
+                ></lightning-combobox>
+                <lightning-input
+                  placeholder="Search an Address"
+                  label="Billing Address"
+                  name="Address"
+                  value={accAdd}
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="BillingStreet"
+                  data-attribute="LIKE"
+                ></lightning-input>
+
+                <lightning-combobox
+                  name="country"
+                  label="Country"
+                  value={strCountry}
+                  onchange={handleFilterChange}
+                  options={countryOptions}
+                  data-field-class="filterOption"
+                  data-id="BillingCountryCode"
+                  data-attribute="="
+                ></lightning-combobox>
+                <!--FRONT-13453 Start-->
+                <lightning-input
+                  placeholder="Search for City"
+                  label="Billing City"
+                  name="Address"
+                  value={accCity}
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="BillingCity"
+                  data-attribute="="
+                ></lightning-input>
+                <lightning-combobox
+                  name="BillingState"
+                  placeholder="Select State or Province"
+                  value={blstate}
+                  dropdown-alignment="auto"
+                  onchange={handleFilterChange}
+                  label="Billing State"
+                  options={statecodeData}
+                  data-field-class="filterOption"
+                  data-id="BillingState"
+                  data-attribute="LIKE"
+                ></lightning-combobox>
+
+                <lightning-input
+                  placeholder="Search for Zipcode"
+                  label="Billing Zipcode"
+                  name="Address"
+                  value={accZip}
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="BillingPostalCode"
+                  data-attribute="="
+                ></lightning-input>
+                <!--FRONT-13453 End-->
+                <lightning-input
+                  placeholder="##########"
+                  label="Phone"
+                  type="Tel"
+                  name="phone"
+                  pattern="[0-9]+"
+                  value={phone}
+                  maxlength="10"
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="Phone"
+                  onblur={handlePhone}
+                  data-attribute="LIKE"
+                ></lightning-input>
+
+                <!--  <lightning-input name="state2" placeholder="Select state or province" value={selectedValue}
+                                    type='search' onchange={search} onfocus={showPicklistOptions} onblur={hidePicklistOptions} data-field-class="filterOption"
+                                    data-id="Driver_s_License_State__c" label="Driver's License State/Province"></lightning-input> -->
+
+                <!-- Commenting as this is not required-->
+                <!--<div class="slds-form-element">
+                  <label class="slds-form-element__label" for="text-input-id-46"
+                    >Driver's License State/Province</label
+                  >
+                  <div
+                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                  >
+                    <lightning-icon
+                      class="slds-icon slds-input__icon slds-icon-text-default"
+                      icon-name="utility:down"
+                      size="x-small"
+                    ></lightning-icon>
+                    <input
+                      type="search"
+                      placeholder="Select state or province code"
+                      class="slds-input"
+                      onchange={search}
+                      onfocus={showPicklistOptions}
+                      onblur={hidePicklistOptions}
+                      data-field-class="filterOption"
+                      data-id="Driver_s_License_State__c"
+                    />
+                  </div>
+                </div>-->
+                <div if:true={showSearchResults} role="listbox">
+                  <ul
+                    class="slds-listbox slds-listbox_vertical"
+                    role="presentation"
+                  >
+                    <template for:each={searchResults} for:item="searchResult">
+                      <li
+                        key={searchResult.value}
+                        role="presentation"
+                        class="slds-listbox__item"
+                      >
+                        <div
+                          class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small"
+                          role="option"
+                          data-value={searchResult.value}
+                          onclick={selectSearchResult}
+                        >
+                          <span class="slds-media__body">
+                            <span
+                              class="slds-truncate"
+                              title={searchResult.label}
+                            >
+                              {searchResult.label}
+                            </span>
+                          </span>
+                        </div>
+                      </li>
+                    </template>
+                  </ul>
+                </div>
+
+                <lightning-input
+                  placeholder="XXXXXX"
+                  label="D/L Number"
+                  name="LicenseNumber"
+                  type="text"
+                  value={driverLicenseNo}
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="Drivers_License__c"
+                ></lightning-input>
+                <lightning-input
+                  type="text"
+                  name="email"
+                  label="Email address"
+                  placeholder="example@sbr.com"
+                  value={email}
+                  onchange={handleFilterChange}
+                  data-field-class="filterOption"
+                  data-id="E_mail_Address__c"
+                ></lightning-input>
+                <lightning-combobox
+                  name="state"
+                  placeholder="Select State or Province"
+                  value={dlstate}
+                  dropdown-alignment="auto"
+                  onchange={handleFilterChange}
+                  label="D/L State or Province"
+                  options={statecodeData}
+                  data-field-class="filterOption"
+                  data-id="Driver_s_License_State__c"
+                  data-attribute="LIKE"
+                ></lightning-combobox>
+                <!-- added below aria-label attribute for FRONT-11596-->
+                <div class="slds-p-top_small">
+                  <lightning-button
+                    label="Apply"
+                    aria-label="Apply"
+                    variant="brand"
+                    onclick={applyFilters}
+                    class="slds-var-p-left_small brand-button"
+                  ></lightning-button>
+                  <div
+                    aria-live="assertive"
+                    class="slds-assistive-text"
+                    id="applyBtn"
+                    role="status"
+                  >
+                    {applyBtn}
+                  </div>
+                  <!-- added below aria-label attribute for FRONT-11596-->
+                  <lightning-button
+                    class="slds-p-left_medium"
+                    label="Reset All Filters"
+                    aria-label="Reset All Filters"
+                    variant="base"
+                    onclick={resetFilters}
+                  ></lightning-button>
+                  <div
+                    aria-live="assertive"
+                    class="slds-assistive-text"
+                    id="resetBtn"
+                    role="status"
+                  >
+                    {resetBtn}
+                  </div>
+                </div>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </div>
+      </div>
+
+      <!--/ Combobox Container -->
+    </div>
+  </div>
+</template>

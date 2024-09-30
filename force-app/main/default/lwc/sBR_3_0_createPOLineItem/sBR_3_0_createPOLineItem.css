@@ -1,0 +1,12 @@
+.slds-hyphenate{
+    text-align: left !important;
+}
+.hidden {
+    display: none;
+}
+.customIcon div{
+    vertical-align: top !important;
+}
+.quantity-lightning-input{
+    width: 70px;
+}

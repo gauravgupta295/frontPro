@@ -1,0 +1,33 @@
+<template>
+    <c-sbr_3_0_mobile-screen>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-03"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={handleGoBack}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" size="x-small" class="close-icn">
+                    </lightning-icon>
+                </button>
+                <div class="slds-modal__header">
+                    <div id="modal-heading-03" class="slds-modal__title slds-hyphenate">
+                        <h5 class="subHeader">Remove Item(s)</h5>
+                        <h5 class="subHeader2">Are you sure you wanted to remove the
+                            selected item(s)?</h5>
+                    </div>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <c-sbr_3_0_po-mobile-custom-wrapper data-id="removeItemCmp" title="" is-div="true" has-filter="false"
+                        is-purchase-order-filter="false" is-vendor-filter="false" no-header-section="true"
+                        record-list={recordList} oncheckboxchange={handleCheckboxChange}>
+                    </c-sbr_3_0_po-mobile-custom-wrapper>
+                </div>
+                <div class="slds-modal__footer">
+                    <lightning-button class="slds-p-left_medium neutral-button" label="Go Back" variant="neutral"
+                        onclick={handleGoBack}></lightning-button>
+                    <lightning-button label="Remove Item(s)" variant="brand" onclick={handleRemoveItems}
+                        class="slds-var-p-left_small brand-button"></lightning-button>
+                </div>
+            </div>
+        </section>
+    </c-sbr_3_0_mobile-screen>
+</template>

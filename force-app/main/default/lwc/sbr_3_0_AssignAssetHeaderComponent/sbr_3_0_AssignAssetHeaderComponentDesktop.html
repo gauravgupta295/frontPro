@@ -1,0 +1,156 @@
+<!-- FRONT-2186, FRONT-6226, FRONT-6227, FRONT-6228  -->
+<template>
+  <div class="slds-page-header">
+    <div class="slds-page-header__row">
+      <div class="slds-page-header__col-title">
+        <div class="slds-media media-wrapper">
+          <template lwc:if={isItemSearchAssetsTab}>
+            <div class="slds-media__figure">
+              <lightning-icon
+                icon-name="standard:product_item"
+                alternative-text="Assets"
+                size="medium"
+                title="assets"
+                class="assetListIcon"
+              ></lightning-icon>
+            </div>
+          </template>
+
+          <div class="slds-media__body slds-p-top_xx-small">
+            <div class="slds-page-header__name">
+              <div class="slds-page-header__name-title">
+                <h2>
+                  <span
+                    class="slds-page-header__title slds-truncate"
+                    title="Assets"
+                  >
+                    <template lwc:if={isItemSearchAssetsTab}> Assets </template>
+                    <template lwc:else> Inventory ({inventory}) </template>
+                  </span>
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="slds-page-header__col-actions slds-float_right">
+        <div class="slds-page-header__controls">
+          <template if:true={isOtherLocationActive}>
+            <div class="slds-page-header__control slds-m-horizontal_xx-small">
+              <lightning-input
+                class="otherLocationSearch"
+                type="search"
+                data-source="locationSearchInput"
+                data-source-2="locationInputField"
+                variant="label-hidden"
+                placeholder={otherLocationSearchPlaceholder}
+                onkeyup={searchLocations}
+                if:true={requiredlocation}
+                onchange={handleLocationSearchChange}
+                is-loading={isSearchLoading}
+                value={locationSearchKey}
+              >
+              </lightning-input>
+            </div>
+          </template>
+
+          <template lwc:if={isItemSearchAssetsTab}>
+            <div class="slds-page-header__control slds-m-horizontal_xx-small">
+              <lightning-input
+                class="slds-input-has-icon_right item-search-input"
+                type="search"
+                data-source="searchInputField"
+                variant="label-hidden"
+                placeholder="Search Asset Number"
+                onkeydown={searchItems}
+                onchange={handleSearchChange}
+                is-loading={isSearchLoading}
+                value={searchKey}
+              >
+              </lightning-input>
+              <!--FRONT-13026 change Asset # to Asset Number -->
+            </div>
+          </template>
+
+          <template lwc:else>
+            <div class="slds-page-header__control slds-m-horizontal_xx-small">
+              <lightning-input
+                class="slds-input-has-icon_right item-search-input"
+                type="search"
+                data-source="searchInputField"
+                variant="label-hidden"
+                placeholder={itemSearchPlaceholder}
+                onkeydown={searchItems}
+                onchange={handleSearchChange}
+                is-loading={isSearchLoading}
+                value={searchKey}
+              >
+              </lightning-input>
+            </div>
+          </template>
+
+          <!-- hiding location filter on Other Locations tab -->
+          <template if:false={isOtherLocationActive}>
+            <div class="slds-page-header__control slds-m-horizontal_x-small">
+              <lightning-combobox
+                name="location"
+                label=""
+                variant="label-hidden"
+                options={locationOptions}
+                onchange={handleChangeLocation}
+                value={selectedLocation}
+                placeholder="Location Criteria - All Market Branches"
+              >
+              </lightning-combobox>
+            </div>
+          </template>
+
+          <div class="slds-page-header__control slds-m-horizontal_x-small">
+            <template if:true={allListViewOptions}>
+              <c-sbr_3_0_multi-select-picklist
+                multi-select="true"
+                is-mobile={isMobile}
+                onselectoption={handleSelectOptionList}
+                options={allListViewOptions}
+                selected-values={selectedValueList}
+                is-show-selected-status-count="true"
+              ></c-sbr_3_0_multi-select-picklist>
+            </template>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template lwc:if={isItemSearchAssetsTab}>
+      <div class="slds-page-header__row">
+        <div class="slds-p-vertical_small">
+          <!-- Removed Paragraph FRONT-13026-->
+        </div>
+      </div>
+    </template>
+
+    <div class="slds-page-header__row">
+      <div class="pillsContainer">
+        <!-- hiding location filter pill on Other Locations tab -->
+        <template if:false={isOtherLocationActive}>
+          <span
+            class="customPills slds-pill slds-pill_pink slds-m-right_x-small"
+            onclick={focusLocationFilter}
+          >
+            <span class="slds-pill__label">{locationFilter}</span>
+          </span>
+        </template>
+        <template if:true={appliedStatusList}>
+          <template for:each={appliedStatusList} for:item="filter">
+            <lightning-pill
+              key={filter}
+              label={filter}
+              onremove={handlePillsRemove}
+              class="filterPills slds-p-right_x-small"
+            ></lightning-pill>
+          </template>
+        </template>
+      </div>
+    </div>
+  </div>
+</template>

@@ -1,0 +1,19 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName,lightning:actionOverride,lightning:isUrlAddressable,flexipage:availableForAllPageTypes"
+>
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+  <aura:handler name="change" value="{!v.pageReference}" action="{!c.doInit}" />
+  <aura:attribute name="recordIds" type="String" />
+  <aura:attribute name="sObjectNames" type="String" />
+  <aura:attribute name="callLWC" type="Boolean" />
+
+  <aura:if isTrue="{!v.callLWC}">
+    <c:sbr_3_0_dynamicFormEditActionDelegator
+      recordId="{!v.recordIds}"
+      objectApiName="{!v.sObjectNames}"
+      oncloseauraaction="{!c.handleCloseAction}"
+    >
+    </c:sbr_3_0_dynamicFormEditActionDelegator>
+    <aura:set attribute="else"> False </aura:set>
+  </aura:if>
+</aura:component>

@@ -1,0 +1,156 @@
+<template>
+  <template if:false={isMobile}>
+    <div
+      class="slds-panel slds-size_full slds-panel_docked slds-panel_docked-right slds-is-open bodycss"
+      aria-hidden="false"
+      style={spotlightHeightStyle}
+    >
+      <div class="slds-panel__header">
+        <h2
+          class="slds-panel__header-title slds-text-heading_small slds-truncate"
+          title={panelTitle}
+        >
+          {panelTitle}
+        </h2>
+        <div class="slds-panel__header-actions">
+          <template if:true={isBulkAddPanel}>
+            <a href="" onclick={removeSpotlighData}>Remove All</a>&nbsp;
+          </template>
+        </div>
+      </div>
+      <div class="slds-panel__body">
+        <div class={unselectedStateClass}>
+          <div class="slds-col slds-illustration slds-illustration_small">
+            <!-- FRONT-10863 Start -->
+            <c-sbr_3_0_illustration-cmp variant="noevent">
+            </c-sbr_3_0_illustration-cmp>
+            <!-- FRONT-10863 End -->
+          </div>
+        </div>
+        <div class={selectedStateClass}>
+          <template if:true={isDetailsPanel}>
+            <template if:false={isKit}>
+              <template if:false={isMiscProductType}>
+                <!--FRONT-29178(Issue 3) start-->
+                <c-sbr_3_0_product-details-cmp
+                  variant="desktopSalesTabDetailPanel"
+                  product-id={productId}
+                  is-contract-sales-tab={contractSalesTab}
+                >
+                </c-sbr_3_0_product-details-cmp
+                ><!--FRONT-29178 end-->
+
+                <c-sbr_3_0_item-search-sales-price-info
+                  cost-price={costPrice}
+                  sales-price={salesPrice}
+                  product-type={isMiscProductType}
+                ></c-sbr_3_0_item-search-sales-price-info>
+
+                <c-sbr_3_0_parts-and-merchandise-availability-cmp
+                  location-info={locationInfo}
+                  selected-product-ids={selectedProductIds}
+                  calling-from="spotlight"
+                ></c-sbr_3_0_parts-and-merchandise-availability-cmp>
+
+                    <div
+                      class="slds-section slds-is-close"
+                      data-id="Description"
+                    >
+                  <h3
+                    class="slds-section__title slds-theme_shade"
+                    data-buttonid="Description"
+                  >
+                    <button
+                      type="button"
+                      class="slds-button slds-section__title-action"
+                      data-buttonid="Description"
+                      onclick={toggleSection}
+                    >
+                      <lightning-icon
+                        icon-name="utility:switch"
+                        alternative-text="button icon"
+                        size="x-small"
+                        class="slds-section__title-action-icon slds-button__icon_left"
+                      ></lightning-icon>
+                      <span
+                        class="slds-truncate slds-p-horizontal_small"
+                        title="Description"
+                        >Description</span
+                      >
+                    </button>
+                  </h3>
+                  <div
+                    aria-hidden="false"
+                    class="slds-section__content slds-p-left_x-small slds-p-right_x-small"
+                  >
+                    <lightning-formatted-rich-text
+                      value={selectedProductDescription}
+                    >
+                    </lightning-formatted-rich-text>
+                  </div>
+                </div>
+                <!--below parameter contract sales tab added for FRONT-15258-->
+                <c-sbr_3_0_add-to-cart-cmp
+                  record-id={recordId}
+                  is-parent-add-to-cart={isParentAddToCart}
+                  object-api-name={objectApiName}
+                  company-code={companyCode}
+                  selected-item-panel={selectedProductWithRates}
+                  onparentitemqtychange={handleParentItemQtyChange}
+                  variant="consumableSalesAddOn"
+                  contract-sales-tab={contractSalesTab}
+                  selected-items-from-spotlight={selectedItems}
+                  cost-price={costPrice}
+                  is-misc-product-type={isMiscProductType}
+                ></c-sbr_3_0_add-to-cart-cmp>
+              </template>
+
+              <!--FRONT 14358 Starts-->
+              <template if:true={isMiscProductType}>
+                <div class="pricingDetails">
+                  <c-sbr_3_0_item-search-sales-price-info
+                    cost-price={costPrice}
+                    sales-price={salesPrice}
+                    product-type={isMiscProductType}
+                  ></c-sbr_3_0_item-search-sales-price-info>
+                  <!--FRONT 14358 Ends-->
+                  <!--below parameter contract sales tab added for FRONT-15258-->
+                  <c-sbr_3_0_add-to-cart-cmp
+                    record-id={recordId}
+                    is-parent-add-to-cart={isParentAddToCart}
+                    object-api-name={objectApiName}
+                    company-code={companyCode}
+                    selected-item-panel={selectedProductWithRates}
+                    onparentitemqtychange={handleParentItemQtyChange}
+                    variant="consumableSalesAddOn"
+                    contract-sales-tab={contractSalesTab}
+                    cost-price={costPrice}
+                    is-misc-product-type={isMiscProductType}
+                  ></c-sbr_3_0_add-to-cart-cmp>
+                </div>
+              </template>
+            </template>
+          </template>
+
+          <template if:true={isBulkAddPanel}>
+            <c-sbr_3_0_bulk-add-cmp
+              variant="consumableSalesAddOn"
+              product-id={productId}
+              product-type={isMiscProductType}
+              onitemselected={handleSelectedItem}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              passed-customer-number={passedCustomerNumber}
+              tabname={variant}
+              location-info={locationInfo}
+              company-code={companyCode}
+              data-comp-id="salesBulkAddPanel"
+              contract-sales-tab={contractSalesTab}
+            >
+            </c-sbr_3_0_bulk-add-cmp>
+          </template>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

@@ -1,0 +1,42 @@
+<aura:component implements="flexipage:availableForRecordHome,force:hasRecordId">
+
+    <!-- Custom attributes -->
+    <aura:attribute name="flowName" type="String"
+                    description="API name of the Flow to display."/>
+
+    <!-- Standard attributes for Lightning Data Service -->
+    <aura:attribute name="recordId" type="String"
+                    description="The ID of the record to be displayed. Provided by force:hasRecordId interface."/>
+
+    <aura:attribute name="record" type="Object"
+                    description="The record object to be displayed. Managed by force:recordData component."/>
+
+    <aura:attribute name="simpleRecord" type="Object"
+                    description="A simplified view record object to be displayed. Managed by force:recordData component."/>
+
+    <!-- we only use this for its 'recordUpdated' event mechanism so that flow can be started again with updated record field values-->
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      recordId="{!v.recordId}"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.simpleRecord}"
+                      recordUpdated="{!c.handleRecordUpdated}"
+                      mode="VIEW"/>
+
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+
+    <!-- Markup -->
+    <lightning:card >
+        <aura:if isTrue="{!not(empty(v.flowName))}">
+            <span aura:id="flowContainer"></span>
+            <lightning:flow aura:id="flow"/>
+            <aura:set attribute="else">
+                <div class="recordError">
+                    <ui:message title="Details could not be loaded.">
+                    </ui:message>
+                </div>
+            </aura:set>
+        </aura:if>
+    </lightning:card>
+
+</aura:component>

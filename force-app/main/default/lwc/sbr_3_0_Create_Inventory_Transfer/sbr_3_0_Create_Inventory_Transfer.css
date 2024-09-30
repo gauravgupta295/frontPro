@@ -1,0 +1,14 @@
+.branchpadding{
+    padding-top: 11px 
+}
+.transferStatusCombo{
+    margin: 1px;
+}
+/* Added for FRONT-17752 PC to PC Transfer */
+lightning-button.mobileButtonTextColor {	
+    --sds-c-button-text-color: #25683E;
+}
+
+lightning-button.mobileButtonBackgroundColor {
+	--sds-c-button-brand-color-background: #25683E; 
+}

@@ -1,0 +1,33 @@
+.no-records{
+	border: 1.5px solid #BA0517;
+	border-radius: 5px;
+}
+.item-search-input.focused {
+    border: 1.5px solid #25683e !important; 
+	border-radius: 5px;
+	box-shadow: 0 0 5px #25683e !important; 
+}
+::ng-deep .item-search-input {
+    outline: none;
+	border: none;
+	border-radius: 0px;
+}
+.search-container{
+	box-shadow:none;
+}
+
+.customTable{
+	border:1px solid lightgrey;
+	height:250px;
+
+}
+.successLink{
+	color: #25683e !important;
+}
+.border-bottom{
+	border-bottom: 1px solid #C9C9C9;
+}
+.search-border-mobile .slds-input:active,.search-border-mobile .slds-input:focus{
+    border-color:#25683E !important;
+    box-shadow: 0px 0px 5px #25683E  !important;
+}

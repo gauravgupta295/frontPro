@@ -1,0 +1,201 @@
+<template>
+    <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={deviceTypeDesktp}>
+        <header class="slds-modal__header"> 
+            <template if:true={deviceTypeDesktp}>
+                <h2 class="slds-text-heading_medium slds-hyphenate" id="modal-heading-010">{label.Manage_Website_Users_Title}</h2>
+            </template> 
+        </header>  
+    </template> 
+    <template if:true={ShowUserResults}>
+        <template if:true={deviceTypeMobile}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="height: 40rem;">
+                <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-small">
+                    <h2>{label.Manage_Website_Users_Heading}</h2>
+                </lightning-layout-item>
+                <br/>
+                <div class="slds-card__header">
+                    <header class="slds-media slds-media_center slds-has-flexi-truncate slds-p-bottom__medium">
+                        <lightning-input label="User's Email/Name" type="search" placeholder={label.Manage_Website_Users_Placeholder} onchange={filterSearchResults}></lightning-input>
+                    </header>
+                </div>   
+                <ul class="slds-dropdown_list">                    
+                    <template for:each={MWURecords} for:item="User" for:index="index">
+                        <li key={User.email} class="slds-box product-list" role="presentation" data-key={User.name} value={index}>
+                            <div class="slds-col slds-size_2-of-3 prod-text">
+                                <lightning-layout>
+                                   <lightning-layout-item size="12"  flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                        <p class="body-Class"><strong><lightning-formatted-text value={User.email}></lightning-formatted-text></strong></p>  
+                                    </lightning-layout-item>
+                                </lightning-layout> 
+                                <lightning-layout>
+                                     <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                        <p class="body-Class"><lightning-formatted-text value={User.name}></lightning-formatted-text></p> 
+                                    </lightning-layout-item>
+                                </lightning-layout>      
+                                
+                                <lightning-layout>
+                                   <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                        <p class="body-Class">Last Login: <lightning-formatted-date-time value={User.lastLoginDateTime} day="2-digit" month="2-digit" year="2-digit"></lightning-formatted-date-time></p>
+                                    </lightning-layout-item>
+                                </lightning-layout> 
+                            </div>
+                        </li>
+                    </template>
+                    
+                </ul>
+            </div> 
+        </template> 
+        <template if:true={deviceTypeDesktp}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2" style="height: 21rem;">
+                <h2>{label.Manage_Website_Users_Heading}</h2>
+                <br/>
+                <lightning-layout multiple-rows="true" class="slds-box slds-theme_shade">
+                    <lightning-layout-item  size="3" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                        <b>{label.Manage_Website_Users_Search}</b>
+                    </lightning-layout-item>
+                    <lightning-layout-item  size="5" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-left">
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-align_absolute-right">
+                        <lightning-input variant="label-hidden" type="search" placeholder={label.Manage_Website_Users_Placeholder} onchange={filterSearchResults}></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <lightning-datatable 
+                                key-field="Id" 
+                                data={MWURecords} 
+                                columns={MWUColumns} 
+                                show-row-number-column="true"
+                                sorted-by={sortBy}
+                                default-sort-direction={defaultSortDirection}
+                                sorted-direction={sortDirection}
+                                onsort={handleSortdata}
+                                hide-checkbox-column="true"
+                                load-more-offset="20"
+                                onloadmore={handleLoadMore}
+                                enable-infinite-loading = {LoadMore}>
+                </lightning-datatable>
+            </div>
+        </template>
+    </template>
+    <template if:true={deviceTypeMobile}>
+        <template if:true={ShowCreateUser}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3"  style="height: auto;">
+            <lightning-layout class="slds-grid_vertical-align-left">
+                    <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-small">
+                        <h2>{label.Manage_Website_Users_Create_Heading}</h2>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <br/>
+                <lightning-layout multiple-rows = "false">
+                    <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small">
+                        <lightning-input flexibility="auto" padding="around-small" type="text" data-name="FirstName"  label="First Name" value = {FirstName} required></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" flexibility="auto" padding="around-small">
+                        <lightning-input type="text" data-name="LastName"  label="Last Name" value = {LastName} required></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" flexibility="auto" padding="around-small">
+                        <lightning-input type="email" data-name="Email"  label="Email Address" value = {Email} required></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </template>
+    <template if:true={deviceTypeDesktp}>
+        <template if:true={ShowCreateUser}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-4"  style="height: auto;">
+            <lightning-layout class="slds-grid_vertical-align-left">
+                    <lightning-layout-item  size="6" flexibility="auto" padding="horizontal-small">
+                        <h2>{label.Manage_Website_Users_Create_Heading}</h2>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <br/>
+                <lightning-layout multiple-rows = "false">
+                    <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small">
+                        <lightning-input flexibility="auto" padding="around-small" type="text" data-name="FirstName"  label="First Name" value = {FirstName} required></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" flexibility="auto" padding="around-small">
+                        <lightning-input type="text" data-name="LastName"  label="Last Name" value = {LastName} required></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" flexibility="auto" padding="around-small">
+                        <lightning-input type="email" data-name="Email"  label="Email Address" value = {Email} required></lightning-input>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </template>
+    <template if:true={deviceTypeMobile}>
+        <template if:true={ShowUserConfrimationScreen}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5"  style="height: auto;">
+                <lightning-layout class="slds-grid_vertical-align-left">
+                    <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-small">
+                        <template if:true={UserTypeCredit}>
+                            <h2>{CreditComment}</h2>
+                        </template>
+                        <template if:true={UserTypeCash}>
+                            <div class="slds-notify custom-alert slds-alert_warning" role="alert">
+                                <span class="slds-assistive-text">warning</span>
+                                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Warning">
+                                    <span class="slds-icon_container slds-icon-utility-warning">
+                                        <lightning-icon icon-name="utility:warning" size="medium"></lightning-icon>
+                                    </span>
+                                </span>
+                                <div class="alert-content">
+                                    <h2>{CashCommentHeading}</h2>
+                                </div>
+                            </div>
+                            <br/>
+                            <h2 class="slds-align_absolute-left">{CashCommentBody}</h2>
+                            <br/>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </template>
+    <template if:true={deviceTypeDesktp}>
+        <template if:true={ShowUserConfrimationScreen}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-6"  style="height: auto;">
+                <lightning-layout class="slds-grid_vertical-align-left">
+                    <lightning-layout-item  size="12" flexibility="auto" padding="horizontal-small">
+                        <template if:true={UserTypeCredit}>
+                            <h2>{CreditComment}</h2>
+                        </template>
+                        <template if:true={UserTypeCash}>
+                            <div class="slds-notify custom-alert slds-alert_warning" role="alert">
+                                <span class="slds-assistive-text">warning</span>
+                                <span class="slds-icon_container slds-icon-utility-warning slds-m-right_x-small" title="Warning">
+                                    <span class="slds-icon_container slds-icon-utility-warning">
+                                        <lightning-icon icon-name="utility:warning" size="medium"></lightning-icon>
+                                    </span>
+                                </span>
+                                <div class="alert-content">
+                                    <h2>{CashCommentHeading}</h2>
+                                </div>
+                            </div>
+                            <br/>
+                            <h2 class="slds-align_absolute-left">{CashCommentBody}</h2>
+                            <br/>
+                        </template>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+    </template>
+    <footer class="slds-modal__footer">
+        <template if:true={ShowUserResults}>
+            <lightning-button class="slds-align_absolute-right slds-p-right_medium" label={label.Button_Invite_New_User} onclick={OpenUserCreationScreen} variant="brand"></lightning-button>
+        </template>
+        <template if:true={ShowCreateUser}>
+            <lightning-button class="slds-align_absolute-right slds-p-right_medium" label={label.Button_Previous} onclick={NavigateToUserResultsScreen} disabled={DisablePreviousButton} variant="brand-outline"></lightning-button>
+            <lightning-button class="slds-align_absolute-right slds-p-right_medium" label={label.Button_Next} onclick={CheckUserType} variant="brand"></lightning-button>
+        </template>
+        <template if:true={ShowUserConfrimationScreen}>
+            <lightning-button class="slds-align_absolute-right slds-p-right_medium" label={label.Button_Previous} onclick={NavigateToUserUserCreationScreen} variant="brand-outline"></lightning-button>
+            <lightning-button class="slds-align_absolute-right slds-p-right_medium" label={label.Button_Confirm} onclick={InviteNewUser} variant="brand"></lightning-button>
+        </template>
+    </footer>
+ </template>

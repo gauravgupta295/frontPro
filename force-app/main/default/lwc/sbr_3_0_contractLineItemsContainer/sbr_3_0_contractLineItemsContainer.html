@@ -1,0 +1,62 @@
+<template>
+  <lightning-accordion
+    allow-multiple-sections-open
+    active-section-name={activeSections}
+  >
+    <div>
+      <c-sbr_3_0_contract-line-items-grid-cmp
+        record-id={recordId}
+        object-api-name={objectApiName}
+        variant={rentalsVariant}
+        lwc:ref="Rentals"
+        onmultiselected={recordstoRemoveHandler}
+        oncancelclick={handleCancel}
+        show-remove-screen={showRemoveScreen}
+      ></c-sbr_3_0_contract-line-items-grid-cmp>
+    </div>
+    <div>
+      <c-sbr_3_0_contract-line-items-grid-cmp
+        record-id={recordId}
+        object-api-name={objectApiName}
+        variant={consumeablesVariant}
+        onmultiselected={recordstoRemoveHandler}
+        lwc:ref="Consumables"
+        show-remove-screen-sales={showRemoveScreenSales}
+        oncancelsalesclick={handleCancel}
+      ></c-sbr_3_0_contract-line-items-grid-cmp>
+    </div>
+    <c-sbr_3_0_contract-line-items-grid-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      variant={deliveryVariant}
+      lwc:ref="Delivery"
+    ></c-sbr_3_0_contract-line-items-grid-cmp>
+    <c-sbr_3_0_contract-line-items-grid-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      variant={ancillaryVariant}
+      lwc:ref="Ancillary"
+    ></c-sbr_3_0_contract-line-items-grid-cmp>
+  </lightning-accordion>
+  <!--added for FRONT-31384 - Mobile Change,FRONT-31386-->
+  <template lwc:if={showRemoveButton}>
+    <div class="slds-docked-form-footer slds-p-around_medium backgroundcolor">
+      <div class="slds-col topmargin">
+        <span class="itemSelected">Items Selected:{itemsSize}</span>
+      </div>
+      <div class="slds-col topmargin">
+        <span onclick={handleSelectAll} class="textInput">Select All</span>
+      </div>
+      <div class="slds-col">
+        <button
+          class="slds-button slds-button_neutral save-button"
+          value="Remove Item(s)"
+          onclick={removePopUp}
+        >
+          Remove Item(s)
+        </button>
+        <!-- <span><lightning-button variant="Brand" label="Remove Item(s)" title="removeitems" onclick={removePopUp} ></lightning-button></span>-->
+      </div>
+    </div>
+  </template>
+</template>

@@ -1,0 +1,30 @@
+.slds-modal__content {
+    flex: auto;
+    flex-direction: column;
+    width: 100%;
+  }
+.slds-modal__container {
+    margin: unset;
+    padding: unset;
+  }
+.neutral-button {
+    --slds-c-button-text-color: #25683e;
+    --slds-c-button-neutral-color-border: #aeaeae;
+    --slds-c-button-neutral-color-border-hover: #aeaeae;
+    --lwc-inputStaticFontWeight: normal;
+    
+  }
+.brand-button{
+    --slds-c-button-brand-color-background: #25683e;
+    padding-top:10px;
+}
+
+.title-header{
+    width: auto;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.my-radio-group {
+    --slds-c-radio-color-background:var(--slds-c-button-text-color);
+}

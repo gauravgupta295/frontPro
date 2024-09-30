@@ -1,0 +1,5 @@
+.cancel-button{
+    --slds-c-button-brand-text-color: white;
+    --slds-c-button-brand-color-background:  #25683e;
+    --slds-c-button-brand-font-weight: unset;
+}

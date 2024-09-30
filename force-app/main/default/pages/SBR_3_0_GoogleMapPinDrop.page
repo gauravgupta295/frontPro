@@ -1,0 +1,549 @@
+<!--
+  @description       : 
+  @author            : Kunal Patel
+  @group             : 
+  @last modified on  : 02-05-2024
+  @last modified by  : Kunal Patel
+-->
+<apex:page showHeader="false" controller="SBR_3_0_GoogleMapCmpController" action="{!setGoogleMapAPIKey}">
+    
+    <style type="text/css">
+        
+        html { height: 100%; }
+        body { height: 100%; margin: 0; }
+        .container, .container > div, .container > div #map {
+            height: inherit;
+        }
+
+        #search-location-div {
+            position: absolute;
+            /* Box */
+            box-sizing: border-box;
+            
+
+            /* Auto layout */
+
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            max-width: 314px;
+            width: 90%;
+            margin-top: 10px;
+            margin-left: 10px;
+
+            /* position: absolute; */
+            height: 32px;
+            left: 0px;
+            right: 12px;
+            top: 0px;
+            z-index: 99;
+
+            /* Foundation/Gray/Neutral-100 */
+
+            background: #FFFFFF;
+            /* Foundation/Gray/Neutral-80 */
+
+            border: 1px solid #C9C9C9;
+            /* 04 - Card / Default */
+
+            box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
+        #search-location-input {
+            /* Box */
+            box-sizing: border-box;
+
+            /* Auto layout */
+
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            padding: 8px 0px;
+            
+            
+            font-family: 'Segoe UI';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 13px;
+
+            /* position: absolute; */
+            height: 30px;
+            width: 100%;
+            left: 0px;
+            right: 12px;
+            top: 0px;
+            z-index: 99;
+
+            /* Foundation/Gray/Neutral-100 */
+
+            background: #FFFFFF;
+            /* Foundation/Gray/Neutral-80 */
+
+            border: 0px;
+
+            box-shadow: 0px 0px 0px 0px;
+            border-radius: 0px;
+        }
+        #search-location-input:focus {
+            outline-width: 0px;
+        }
+        #icon {
+            height: 28px;
+            width: 28px;
+            
+            padding: 2px 0px;
+            /* gap: 8px;
+            border-radius: 0px; */
+             /* Inside auto layout */
+
+            flex: none;
+            order: 0;
+            flex-grow: 0;
+            cursor: pointer;
+        }
+        #iconCurrentLocation {
+            height: 32px;
+            width: 100%;
+            cursor: pointer;
+        }
+        #currentLocationbutton {
+            max-width: 28x; 
+        }
+        .slds-button {
+            padding: 7px 16px;
+            background: #25683E;
+            border-radius: 4px;
+            color: #FFFFFF;
+            font-weight: normal;
+        }
+
+    </style>
+    
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <head>
+            <!-- 
+                This stylesheet contains specific styles for displaying the map on this page. Replace it with your own styles as described in the documentation:
+                https://developers.google.com/maps/documentation/javascript/tutorial 
+            -->
+            <link rel="stylesheet" href="//developers.google.com/maps/documentation/javascript/demos/demos.css"/>
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+
+        </head>
+        <body>
+            <div class="container">
+                
+                <div>
+                    
+                    <div id="search-location-div">
+                        <span class="slds-icon_container slds-icon-standard-search" title="Search location by address"> 
+                            <svg aria-hidden="true" class="slds-icon" id="icon"> 
+                              <use xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#search')}"></use>
+                            </svg> 
+                        </span>
+                        <input id="search-location-input" type="text" placeholder="Search by Street Address or City"></input>
+                    </div>
+                    
+
+                    <div id="map"></div>
+                </div>
+            </div>
+
+            <script src="/soap/ajax/53.0/connection.js" type="text/javascript"/>
+            <script src="/soap/ajax/53.0/apex.js" type="text/javascript"/>
+
+            <script>
+                // var pageURL = "{!$CurrentPage.URL}";
+                // var stringURL = pageURL.split('com');
+                // var lexOrigin = stringURL[0] + 'com';
+                
+                // var lexOrigin = "https://sunbeltrentals--dev3--c.sandbox.vf.force.com/";
+                // var lexOrigin = "https://{!$CurrentPage.parameters.baseURL}";
+                var lexOrigin = "{!$CurrentPage.parameters.lcHost}";
+                
+                //Data for Google map
+                var data;
+                var markers = [];
+                var tempMarker;
+                var infoWindow;
+
+                var pinDropLat;
+                var pinDropLng;
+                var pinDropStreet;
+                var pinDropCity;
+                var pinDropState;
+                var pinDropFullState;
+                var pinDropCountry;
+                var pinDropZip;
+                var pinDropZip_suffix;
+
+                const blankPin = "{!URLFOR($Resource.map_pins, 'map_pins/images/Blank.png')}";
+                
+                //Let LC know that VF page been loaded along with it"s URL
+                //LC will then send the data
+                //This is done because LC has no way to know that VF page in iFrame has been loaded, event listener set and ready for data
+                var vfHost = "{!LEFT($CurrentPage.URL,FIND('/',$CurrentPage.URL,9))}";
+                sendToLC({"request":"LOADED", "vfHost": vfHost});
+
+                buildIcon();
+                
+                //Send message to LC
+                function sendToLC(message) {
+                    console.log("sendToLC message ->", message);
+                    console.log("sendToLC lexOrigin ->", lexOrigin);
+                    
+                    if(typeof(lexOrigin) != "undefined"){
+                        parent.postMessage(message, lexOrigin);
+                    }
+                }
+
+                window.addEventListener('error', function(event) {
+                    console.log('ERROR OCCURRED -> ', event.message);
+                });
+                //Receive message from LC
+                window.addEventListener("message", function(event) {
+                    
+                    // Handle message
+                    console.log("Data Received by VF: ", event.data);
+                    if(typeof event.data !== 'object') {
+                        var lwcData = JSON.parse(event.data);
+                        console.log("Parsed Data: ", lwcData);
+                    }
+                    if(lwcData.loadGoogleMap == true) {
+                        //Load Google Map Script
+                        var script = document.createElement("script");
+
+                        const key = '{!apiKey}';
+                        console.log('apiKey -> ' + key);
+                        script.src = "https://maps.googleapis.com/maps/api/js?key=" + key + "&callback=initMap&libraries=places";
+
+                        document.getElementsByTagName("head")[0].appendChild(script);
+                        data = lwcData;
+                        data.mapOptionsCenter.lat = parseFloat(data.mapOptionsCenter.lat);
+                        data.mapOptionsCenter.lng = parseFloat(data.mapOptionsCenter.lng);
+                        console.log(JSON.stringify(data))
+                        // createPin(lwcData.mapOptionsCenter.lat, lwcData.mapOptionsCenter.lng);
+                    }
+                    else if(lwcData.markerType == 'recenter') {
+                        var position = lwcData.position;
+                        map.setCenter(position);
+                    }
+                    
+                }, false);
+
+                //Callback when Google Map is loaded
+                function initMap() {
+
+                    // Create new map
+                    map = new google.maps.Map(document.getElementById("map"), JSON.parse(data.mapOptions));
+
+                    // map click listener
+                    map.addListener("click", (mapsMouseEvent) => {
+                        // Create a new InfoWindow.
+                        console.log("mapsMouseEvent ", mapsMouseEvent);
+                        console.log("mapsMouseEvent.latLng ", mapsMouseEvent.latLng);
+                        console.log('infoWindow -> ', infoWindow);
+
+                        // replace the infoWindow's marker Icon as well
+                        if(tempMarker != undefined) {
+                            tempMarker.setMap(null);
+                        }
+                        // setMapData(data.mapData);
+
+                        if(infoWindow) {
+                            infoWindow.close();
+                            infoWindow = null; 
+                        } 
+                        else {
+
+                            infoWindow = new google.maps.InfoWindow({
+                                position: mapsMouseEvent.latLng,
+                            });
+                            infoWindow.setContent(
+                                "<button class=\"slds-button\" onclick=createPin(&quot;" + mapsMouseEvent.latLng.lat() + "&quot;,&quot;" + mapsMouseEvent.latLng.lng() + "&quot;)>Create Pin</button>"
+                            );
+                            infoWindow.open(map);
+
+                            markers.forEach((element) => {
+                                element.infoWindow.close();
+                            });
+                        }
+                    });
+
+                    // Set map center
+                    map.setCenter(data.mapOptionsCenter);
+
+                    // Move style options to top right
+                    map.setOptions( { 
+                        streetViewControl: false,
+                        fullscreenControl: false,
+                        mapTypeControl: false,
+                        gestureHandling: 'greedy'
+                    });
+
+                    // create current location control
+                    createCurrentLocationControl(map);
+
+                    createSearchControl(map); 
+                    if(data.dropPin) {
+                        createPin(parseFloat(data.mapOptionsCenter.lat), parseFloat(data.mapOptionsCenter.lng));
+                    }
+                }
+
+                function buildAddress(street, city, state, postal, country) {
+                    var addressArray = [street, city, state, postal, country];
+                    addressArray = addressArray.filter(element => element); // remove nulls, blanks, undefined
+                    var address = addressArray.join(', ');
+
+                    return address;
+                }
+
+                // create pin
+                function createPin(lat, lng) {
+                    console.log("create marker at lat,lng ->", lat, lng);
+
+                    var myLatlng = new google.maps.LatLng(lat, lng);
+                    const geocoder = new google.maps.Geocoder();
+
+                    pinDropLat = '';
+                    pinDropLng = '';
+                    pinDropStreet = '';
+                    pinDropCity = '';
+                    pinDropState = '';
+                    pinDropFullState = '';
+                    pinDropCountry = '';
+                    pinDropZip = '';
+                    pinDropZip_suffix = '';
+
+                    geocoder.geocode({ location: myLatlng })
+                    .then((response) => {
+                        if (response.results[0]) {
+                            
+                            //Add marker for each point
+                            if(tempMarker != null) {
+                                tempMarker.setMap(null);
+                            }
+
+                            tempMarker = new google.maps.Marker({
+                                position: myLatlng,
+                                map: map,
+                                anchorPoint: new google.maps.Point(0, -15),
+                                icon: blankPin
+                            });
+
+                            let address = response.results[0];
+
+
+                            // Rounded to 5 decimal added 03/21/23 - SF is not truncating values per field length limit
+                            pinDropLat = parseFloat(lat).toFixed(5);
+                            pinDropLng = parseFloat(lng).toFixed(5);
+
+
+                            console.log('addr length -> ' + address.address_components.length);
+
+                            var streetNum, streetName = '';
+
+                            for (var count = 0; count < address.address_components.length; count++) {
+                                let addr_cmp = address.address_components[count];
+                                console.log('count -> ' + count);
+                                console.log(addr_cmp);
+                                var addr_types = addr_cmp.types;
+                                console.log(addr_types);
+                                if(addr_types.includes('street_number')) {
+                                    streetNum = addr_cmp.long_name;
+                                }
+                                if(addr_types.includes('route')) {
+                                    streetName = addr_cmp.short_name;
+                                }
+                                if(addr_types.includes('locality')) {
+                                    pinDropCity = addr_cmp.long_name;
+                                }
+                                if(!pinDropCity && addr_types.includes('administrative_area_level_3')) {
+                                    pinDropCity = addr_cmp.long_name
+                                }
+                                if(!pinDropCity && addr_types.includes('sublocality')) {
+                                    pinDropCity = addr_cmp.long_name;
+                                }
+                                if(addr_types.includes('administrative_area_level_1')) {
+                                    pinDropState = addr_cmp.short_name;
+                                    pinDropFullState = addr_cmp.long_name;
+                                }
+                                if(addr_types.includes('postal_code')) {
+                                    pinDropZip = addr_cmp.long_name;
+                                }
+                                if(addr_types.includes('country')) {
+                                    pinDropCountry = addr_cmp.long_name;
+                                }
+                                if(addr_types.includes('postal_code_suffix')) {
+                                    pinDropZip_suffix = addr_cmp.long_name;
+                                }
+                            }
+
+                            if(streetNum) { pinDropStreet = streetNum + ' ';}
+                            if(streetName) { pinDropStreet += streetName};
+
+                            if(pinDropZip_suffix) { pinDropZip += ' ' + pinDropZip_suffix};
+
+                            var full_addr = response.results[0].formatted_address;
+
+                            if(!pinDropStreet) {
+                                pinDropStreet = full_addr.substring(0, full_addr.indexOf(","));
+                            }
+                            
+                            console.log('geocoder street -> ' + pinDropStreet);
+                            console.log('geocoder city -> ' + pinDropCity);
+                            console.log('geocoder state -> ' + pinDropState);
+                            console.log('geocoder pinDropFullState -> ' + pinDropFullState);
+                            console.log('geocoder zip -> ' + pinDropZip);
+                            console.log('geocoder country -> ' + pinDropCountry);
+                            console.log('geocoder lat -> ' + pinDropLat);
+                            console.log('geocoder lat -> ' + pinDropLng);
+
+                            var create_record = "<br/><button class=\"slds-button\" onclick=sendRecordActionToPanel(\'" + "create"+ "\')>Use this location</button>";
+
+                            tempMarker.infoWindow = new google.maps.InfoWindow({
+                                content: "<b>Save details from this location:</b><br/>"
+                                            + "Coord: (" + lat + ", " + lng + ")<br/>"
+                                            + "Address: " + full_addr + 
+                                            create_record
+                            });
+
+                            if(infoWindow){
+                                infoWindow.close();
+                            }
+                            markers.push(tempMarker);
+                            markers.forEach((element) => {
+                                element.infoWindow.close();
+                            });
+                            console.log('drop pin -> ',data.dropPin)
+                            if(!data.dropPin) {
+                                tempMarker.infoWindow.open(map, tempMarker);
+                            }
+                            
+                            data.dropPin = false;
+
+                            tempMarker.addListener("click", function() {
+                                if(infoWindow) {
+                                    infoWindow.close();
+                                }
+                                markers.forEach((element) => {
+                                    element.infoWindow.close();
+                                });
+                                console.log('tempMarker icon ->', tempMarker.getIcon());
+                                tempMarker.infoWindow.open(map, tempMarker);
+                            });
+
+                        } else {
+                            window.alert("No results found");
+                        }
+                    })
+                    .catch((e) => window.alert("Geocoder failed due to: " + e));
+                    
+                }
+
+                function createCurrentLocationControl(map) {
+
+                    console.log('creating current location control');
+                    const currentLocationControl = document.createElement("div");
+                    currentLocationControl.id = "currentLocationButton";
+                    currentLocationControl.style.marginRight = "15px";
+                    currentLocationControl.style.height = "32px";
+                    currentLocationControl.style.width = "32px";
+
+                    // Set CSS for the control border.
+                    const controlUI = document.createElement("div");
+                    
+                    controlUI.style.backgroundColor = "#fff";
+                    controlUI.style.border = "2px solid #fff";
+                    controlUI.style.borderRadius = "3px";
+                    controlUI.style.boxShadow = "0 2px 6px rgba(0,0,0,.3)";
+                    controlUI.style.cursor = "pointer";
+                    controlUI.title = "Get Current Location";
+                    currentLocationControl.appendChild(controlUI);
+
+                    // Set CSS for the control interior.
+                    const controlText = document.createElement("div");
+
+                    controlText.innerHTML = "<svg aria-hidden=\"true\" id=\"iconCurrentLocation\"> <use xlink:href=\"{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#choice')}\"></use> </svg>";
+                    controlUI.appendChild(controlText);
+
+                    map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(currentLocationControl);
+
+
+                    currentLocationControl.addEventListener("click", () => {
+                        goToCurrentLocation();
+                    });
+                }
+
+                function createSearchControl(map) {
+                    const input = document.getElementById("search-location-input");
+                    
+                    const options = {
+                        fields: ["formatted_address", "geometry", "name"],
+                    };
+                    const autocomplete = new google.maps.places.Autocomplete(input, options);
+                    
+                    //map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+
+                    autocomplete.addListener("place_changed", () => {
+                        const place = autocomplete.getPlace();
+                        console.log('place -> ', place);
+                        if (!place.geometry || !place.geometry.location) {
+                            // User entered the name of a Place that was not suggested and
+                            // pressed the Enter key, or the Place Details request failed.
+                            window.alert("No details available for input: '" + place.name + "'");
+                            return;
+                        }
+                        if (place.geometry.viewport) {
+                            map.fitBounds(place.geometry.viewport);
+                        } else {
+                            map.setCenter(place.geometry.location);
+                        }
+                        map.setZoom(15);
+                        console.log('location on search pin below');
+                        let geoLoc = place.geometry.location;
+                        
+                        createPin(geoLoc.lat(), geoLoc.lng());
+                    });
+                }
+
+                function clearMarkers() {
+                    for (var i = 0; i < markers.length; i++ ) {
+                        markers[i].setMap(null);
+                    }
+                    markers.length = 0;
+                }
+
+                function goToCurrentLocation() {
+                    sendToLC({"request":"goToCurrentLocation", "vfHost": vfHost});
+                }
+
+                function sendRecordActionToPanel(action, id, type, label) {
+                    if(action == 'create') {
+                        sendToLC({"request":"panelAction", "vfHost": vfHost, "action": action, 
+                                    "id": id, "type": type, "street": pinDropStreet, "city": pinDropCity, 
+                                    "state": pinDropState, "fullState": pinDropFullState, "zip": pinDropZip, "country": pinDropCountry,
+                                    "lat" : pinDropLat, "lng" : pinDropLng, "label" : label});
+                        tempMarker.infoWindow.close();
+                    }
+                    else {
+                        sendToLC({"request":"panelAction", "vfHost": vfHost, "action": action, "id": id, "type": type});
+                        hideOpenPanelControl();
+                    }
+                }
+
+                function buildIcon() {
+                    var icon = document.getElementById("icon");
+
+                    // icon click listener
+                    icon.addEventListener("click", () => {
+                        document.getElementById('search-location-input').focus();
+                    });
+                }
+                
+            </script>
+        </body>
+
+    </html>
+</apex:page>

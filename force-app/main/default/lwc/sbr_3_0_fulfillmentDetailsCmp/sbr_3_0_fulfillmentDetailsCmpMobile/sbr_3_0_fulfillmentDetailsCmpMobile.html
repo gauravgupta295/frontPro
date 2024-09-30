@@ -1,0 +1,71 @@
+<template>
+  <div class="defaultLocationContainer slds-m-vertical_x-small slds-m-horizontal_medium">
+    <lightning-breadcrumbs class="slds-m-bottom_large breadcrumb-fulfillment">
+      <lightning-breadcrumb label={label.DEFAULTLOCATION} onclick={handleNavigateToSourceBranchTable}>
+      </lightning-breadcrumb>
+      <lightning-breadcrumb> </lightning-breadcrumb>
+      <p class="disable-breadcrumb">{label.BRANCH_FULFILLMENT_BREADCRUMB}</p>
+    </lightning-breadcrumbs>
+
+    <div class="slds-m-bottom_small slds-list_horizontal">
+      <div class="slds-m-right_xx-large slds-text-align_left">
+        <p class="slds-text-title">{label.POTENTIAL_SOURCING_BRANCH}</p>
+        <h2 class="slds-m-vertical_small title-fulfillment">
+          {sourcingBranchValue}
+        </h2>
+      </div>
+      <div class="slds-m-left_xx-large slds-text-align_left">
+        <p class="slds-text-title">{label.FULFILLMENT}</p>
+        <h2 class="slds-m-vertical_small title-fulfillment">
+          {fulfillmentPercentage}
+        </h2>
+      </div>
+    </div>
+    <p class="slds-text-heading_small">{activeSectionMessage}</p>
+
+    <!-- <lightning-accordion
+      class="example-accordion slds-theme_shade white-border cat-class-accordion"
+      onsectiontoggle={handleToggleSection}
+      allow-multiple-sections-open
+      active-section-name=""
+    >
+      <template for:each={catClasses} for:item="catClass" for:index="index">
+        <lightning-accordion-section
+          key={catClass.index}
+          name={catClass.id}
+          label={catClass.label}
+        >
+          <p>This is the content area for section A.</p>
+          <p>.</p>
+          <p>.</p>
+          <p>.</p>
+          <p>The section height expands to fit your content.</p>
+        </lightning-accordion-section>
+      </template>
+    </lightning-accordion> -->
+
+    <lightning-accordion class="example-accordion slds-theme_shade white-border cat-class-accordion"
+      onsectiontoggle={handleToggleSection} allow-multiple-sections-open active-section-name="">
+      <template for:each={catClasses} for:item="catClass" for:index="index">
+        <lightning-accordion-section key={catClass.id} name={catClass.id} label={catClass.label}
+          class="slds-theme_shade"><template for:each={catClass.statusList} for:item="statusObj">
+            <lightning-accordion-section key={statusObj.name} name={catClass.name} label={statusObj.fullName}
+              class="slds-theme_default status-accordion">
+              <hr class="break-line" />
+              <template for:each={statusObj.listOfRecords} for:item="listOfRecord">
+                <lightning-accordion allow-multiple-sections-open key={listOfRecord.name}>
+                  <div class="details-section">
+                    <b>{listOfRecord.name}</b>
+                    <div>{listOfRecord.asset}</div>
+                    <div class="prevent-overflow">{listOfRecord.description}</div>
+                  </div>
+                  <br />
+                </lightning-accordion>
+              </template>
+            </lightning-accordion-section>
+          </template>
+        </lightning-accordion-section>
+      </template>
+    </lightning-accordion>
+  </div>
+</template>

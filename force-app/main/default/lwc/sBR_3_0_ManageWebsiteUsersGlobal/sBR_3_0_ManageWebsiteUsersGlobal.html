@@ -1,0 +1,301 @@
+<template>
+    <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={ShowSearchInput}>
+        <template if:true={deviceTypeMobile}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="height: 34rem;">
+                <lightning-input type="search" data-name="SearchString" placeholder={label.SBR_3_0_Manage_Website_Users_Placeholder_For_Global_Action} label="User's Email" onchange={handleSearchChange} value={searchEmailInputValue}></lightning-input>
+                <template if:true={ShowSearchEmailResults}>
+                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <template for:each={UsersWithName} for:item="User" for:index="index">
+                            <li key={User.email} data-item={User} data-id={User.email} data-name={User.email} data-value={User.email} role="presentation" class="slds-listbox__item">
+                                <div id={User.email} class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option" onclick={handleSearchEmailChange} data-value={User.email}>
+                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                        <span class="slds-icon_container slds-icon-standard-account">
+                                            <lightning-icon icon-name="standard:account" size="medium"></lightning-icon>
+                                        </span>
+                                    </span>
+                                    <span class="slds-media__body">
+                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                            <span>
+                                                <a>{User.email}</a>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </li>
+                        </template> 
+                        <template if:true={UsersWithSizeOver25}>
+                            25 + Too many results, refine your search
+                        </template>
+                    </ul>
+                </template> 
+                <template if:true={isResultEmpty}>
+                    <c-s-b-r_3_0_-error-message error-message={errorMessage}></c-s-b-r_3_0_-error-message>
+                </template>
+            </div>    
+        </template> 
+        <template if:true={deviceTypeDesktp}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2" style="height: 23rem;">
+                <lightning-input type="search" data-name="SearchString" placeholder={label.SBR_3_0_Manage_Website_Users_Placeholder_For_Global_Action} label="User's Email" onchange={handleSearchChange} value={searchEmailInputValue}></lightning-input>
+                <template if:true={ShowSearchEmailResults}>
+                    <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                        <template for:each={UsersWithName} for:item="User" for:index="index">
+                            <li key={User.email} data-item={User} data-id={User.email} data-name={User.email} data-value={User.email} role="presentation" class="slds-listbox__item">
+                                <div id={User.email} class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option" onclick={handleSearchEmailChange} data-value={User.email}>
+                                    <span class="slds-media__figure slds-listbox__option-icon">
+                                        <span class="slds-icon_container slds-icon-standard-account">
+                                            <lightning-icon icon-name="standard:account" size="medium"></lightning-icon>
+                                        </span>
+                                    </span>
+                                    <span class="slds-media__body">
+                                        <span class="slds-listbox__option-text slds-listbox__option-text_entity">
+                                            <span>
+                                                <a>{User.email}</a>
+                                            </span>
+                                        </span>
+                                    </span>
+                                </div>
+                            </li>
+                        </template> 
+                        <template if:true={UsersWithSizeOver25}>
+                            25 + Too many results, refine your search
+                        </template>
+                    </ul>
+                </template> 
+                <template if:true={isResultEmpty}>
+                    <c-s-b-r_3_0_-error-message error-message={errorMessage}></c-s-b-r_3_0_-error-message>
+                </template>
+            </div>    
+        </template> 
+    </template> 
+    <br/>
+    <template if:true={ShowSearchResultsHeader}>
+        <template if:true={deviceTypeMobile}>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3" style="height: 34rem;">
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                    <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class">Name</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="body-Class"><lightning-formatted-text value={AccountResponse.Name}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout> 
+                    </lightning-layout-item>
+                </lightning-layout>   
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                     <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class">Email</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="body-Class"><lightning-formatted-text value={AccountResponse.Email}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout> 
+                    </lightning-layout-item>
+                </lightning-layout>  
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                    <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class">Address</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="body-Class"><lightning-formatted-text value={AccountResponse.Address}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout> 
+                    </lightning-layout-item>
+                </lightning-layout>   
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                    <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class">Phone Number</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="body-Class"><lightning-formatted-text value={AccountResponse.PhoneNumber}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout> 
+                    </lightning-layout-item>
+                </lightning-layout>  
+                <template if:true={isCashProfile}>
+                    <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                        <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                            <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                                <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                    <p class="head-Class">Driver's License</p>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                    <p class="body-Class"><lightning-formatted-text value={AccountResponse.driverlicenseNumber}></lightning-formatted-text></p>
+                                </lightning-layout-item>
+                            </lightning-layout> 
+                        </lightning-layout-item>
+                    </lightning-layout>   
+                </template>
+                <br/>
+                <template if:false={isCashProfile}>
+                    <template if:true={ShowSearchResults}>
+                        <div class="slds-card__header slds-grid slds-theme_shade">
+                            <header class="slds-media slds-media_center slds-has-flexi-truncate slds-m-bottom_x-small">
+                                <div class="slds-media__figure">
+                                    <lightning-icon icon-name="standard:account" size="medium"></lightning-icon>
+                                </div>
+                                <div class="slds-media__body">
+                                    <h2 class="slds-card__header-title">
+                                        Accounts
+                                    </h2>
+                                </div>
+                            </header>
+                        </div>   
+                        <ul class="slds-dropdown_list">
+                            <template for:each={AccountResults} for:item="Account" for:index="index">
+                                <li key={Account.AccountName} class="slds-box product-list" role="presentation" data-key={Account.AccountName} value={index}>
+                                    <div class="slds-col slds-size_2-of-3 prod-text">
+                                        
+                                        <template if:true={Account.Id}>
+                                            <lightning-layout multiple-rows>
+                                                <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                    <p class="prod-name" data-id={Account.Id} onclick={openAccount}>{Account.AccountName}</p> 
+                                                </lightning-layout-item>
+                                            </lightning-layout>      
+                                        </template> 
+                                        <template if:false={Account.Id}>
+                                            <lightning-layout multiple-rows>
+                                                <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                    <p class="prod-name">{Account.AccountName}</p> 
+                                                </lightning-layout-item>
+                                            </lightning-layout>      
+                                        </template>  
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">Account Type</p> 
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">{Account.AccountType}</p>  
+                                            </lightning-layout-item>
+                                        </lightning-layout> 
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">Account Number</p>  
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">{Account.AccountNumber}</p>  
+                                            </lightning-layout-item>
+                                        </lightning-layout> 
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">Billing City</p>  
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">{Account.BillingCity}</p>  
+                                            </lightning-layout-item>
+                                        </lightning-layout> 
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="8" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">Billing State</p>  
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" flexibility="auto" padding="horizontal-small" class="slds-text-align_left slds-p-around_xx-small">
+                                                <p class="cat-class">{Account.BillingState}</p>  
+                                            </lightning-layout-item>
+                                        </lightning-layout> 
+                                    </div>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </template>     
+            </div>  
+        </template> 
+        <template if:true={deviceTypeDesktp}>
+            <div class="slds-modal__content" id="modal-content-id-4" style="height: 24rem;width: auto;">
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "true">
+                    <lightning-layout-item size="6" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class slds-p-around_xx-small">Name</p>
+                                <p class="body-Class slds-p-around_xx-small"><lightning-formatted-text value={AccountResponse.Name}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout>   
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class slds-p-around_xx-small">Email</p>
+                                <p class="body-Class slds-p-around_xx-small"><lightning-formatted-text value={AccountResponse.Email}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout>  
+                    </lightning-layout-item> 
+                </lightning-layout>   
+                <lightning-layout class="slds-p-around_xx-small" multiple-rows = "true">
+                    <lightning-layout-item size="6" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class slds-p-around_xx-small">Address</p>
+                                <p class="body-Class slds-p-around_xx-small"><lightning-formatted-text value={AccountResponse.Address}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout>   
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                        <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                            <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                <p class="head-Class slds-p-around_xx-small">Phone Number</p>
+                                <p class="body-Class slds-p-around_xx-small"><lightning-formatted-text value={AccountResponse.PhoneNumber}></lightning-formatted-text></p>
+                            </lightning-layout-item>
+                        </lightning-layout>  
+                    </lightning-layout-item> 
+                </lightning-layout>   
+                <template if:true={isCashProfile}>
+                    <lightning-layout class="slds-p-around_xx-small" multiple-rows = "true">
+                        <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                            <lightning-layout class="slds-p-around_xx-small" multiple-rows = "false">
+                                <lightning-layout-item size="12" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                                    <p class="head-Class slds-p-around_xx-small">Driver's License</p>
+                                    <p class="body-Class slds-p-around_xx-small"><lightning-formatted-text value={AccountResponse.driverlicenseNumber}></lightning-formatted-text></p>
+                                </lightning-layout-item>
+                            </lightning-layout>   
+                        </lightning-layout-item>
+                    </lightning-layout>   
+                </template>
+                <template if:false={isCashProfile}>
+                    <br/>
+                    <template if:true={deviceTypeDesktp}>
+                        <template if:true={ShowSearchResults}>
+                            <lightning-datatable 
+                                                key-field="Id" 
+                                                data={AccountResults} 
+                                                columns={AccountColumns} 
+                                                show-row-number-column="true"
+                                                sorted-by={sortBy}
+                                                default-sort-direction={defaultSortDirection}
+                                                sorted-direction={sortDirection}
+                                                onsort={handleSortdata}
+                                                hide-checkbox-column="true"
+                                                load-more-offset="20"
+                                                onloadmore={handleLoadMore}
+                                                fixed-layout = "true"
+                                                enable-infinite-loading = {LoadMore}>
+                            </lightning-datatable> 
+                        </template>    
+                    </template>      
+                </template> 
+            </div>
+        </template>     
+    </template>     
+    <footer class="slds-modal__footer">
+        <template if:true={ShowSearchInput}>
+            <lightning-button disabled = {isDisabled} label="Search" onkeypress={searchUserEmailWithName} onclick={searchUserEmailWithName} variant="brand"></lightning-button>
+        </template>
+        <template if:true={ShowSearchResultsHeader}>
+            <lightning-button label="Previous"  class="slds-p-right_medium" onclick={PreviousScreen} variant="brand-outline"></lightning-button>
+            <template if:false={deviceTypeMobile}>
+                <lightning-button label="Close" onclick={closeModal} variant="brand"></lightning-button>
+            </template>
+        </template> 
+    </footer>
+</template>

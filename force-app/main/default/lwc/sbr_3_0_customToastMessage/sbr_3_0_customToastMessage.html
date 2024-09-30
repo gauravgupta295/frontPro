@@ -1,0 +1,87 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 07-20-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <template if:true={displayErrorToast}>
+    <div class="slds-notify_container">
+      <div class="slds-notify slds-notify_toast slds-theme_error positionCss" role="status">
+          <span class="slds-assistive-text">error</span>
+         <lightning-icon class="iconColor sizeCss" icon-name="utility:error" size="small" > </lightning-icon>
+         <div class="styleText">
+          <div class="slds-notify__content">
+            <h2 class="slds-text-heading_small text">{errtitle}</h2>
+            <p>{errmsg}</p>
+          </div>
+          <div class="slds-notify__close">
+            <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onclick={closeToast}>
+              <lightning-icon class="iconColor" icon-name="utility:close" size="small" > </lightning-icon>
+              <span class="slds-assistive-text">Close</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      </div>
+    </template>
+    <template if:true={isWarning}>
+        <div class={warningMsgStyle} role="status">
+          <lightning-icon class="iconColor sizeCss" icon-name="utility:warning" size="small" > </lightning-icon>
+          <div class="styleText">
+            <div class="slds-notify__content">
+                <h2 class="slds-text-heading_small text">{errtitle}</h2>
+                <p style="font-size: small;" >{errmsg} <strong> {email} </strong>  {errmsg2} </p>
+            </div>
+          </div>
+         </div>
+         <template if:true={displayFullWidth}>
+          <div style="height: 5rem;">
+          </div>
+         </template>
+    </template>
+    <template if:true={displayWarningToast}>
+      <div class="slds-notify_container">
+        <div class="slds-notify slds-notify_toast slds-theme_warning positionCss" role="status">
+            <span class="slds-assistive-text">error</span>
+           <lightning-icon class="iconColor sizeCss" icon-name="utility:warning" size="small" > </lightning-icon>
+           <div class="styleText">
+            <div class="slds-notify__content">
+              <h2 class="slds-text-heading_small text">{errtitle}</h2>
+               <p>{errmsg}</p>
+            </div>
+            <div class="slds-notify__close">
+              <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onclick={closeToast}>
+                <lightning-icon class="iconColor" icon-name="utility:close" size="small" > </lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template if:true={showsuccess}>
+      <div class="slds-notify_container">
+          <div class="slds-notify slds-notify_toast slds-theme_success positionCss" role="status">
+            <span class="slds-assistive-text">success</span>
+           <lightning-icon class="iconColor sizeCss" icon-name="utility:success" size="small" > </lightning-icon>
+           <div class="styleText">
+            <div class="slds-notify__content">
+              <h2 class="slds-text-heading_small text">{successtitl}</h2>
+              
+                <!-- <p>{successmesg}</p>  -->
+                <lightning-formatted-rich-text value={successmesg}></lightning-formatted-rich-text>
+                
+            </div>
+            <div class="slds-notify__close">
+              <button class="slds-button slds-button_icon slds-button_icon-inverse" title="Close" onclick={closeToast}>
+                <lightning-icon class="iconColor" icon-name="utility:close" size="small" > </lightning-icon>
+                <span class="slds-assistive-text">Close</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        </div>
+      </template>
+</template>

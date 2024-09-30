@@ -1,0 +1,383 @@
+<template>
+  <div class="slds-page-header__name-title bgcolor">
+    <h2>
+      <span
+        class="slds-page-header__title slds-truncate slds-p-left_medium slds-p-bottom_small"
+        title="Assets"
+      >
+        <template lwc:if={isItemSearchAssetsTab}>
+          <span class="assetsTitle slds-p-top_small">Assets (50+)</span>
+        </template>
+
+        <template lwc:else> Inventory ({inventory}) </template></span
+      >
+    </h2>
+
+    <div
+      class="lookupInputContainerMobile"
+      aria-expanded="false"
+      aria-haspopup="listbox"
+      role="combobox"
+    >
+      <template if:true={isOtherLocationActive}>
+        <div class="slds-p-bottom_small slds-p-left_small slds-p-right_small">
+          <!--FRONT-8712 start-->
+          <!-- FRONT - 15209 : Issue1 fix added -->
+          <lightning-input
+            class="otherLocationSearch"
+            type="search"
+            data-source="locationSearchInput"
+            variant="label-hidden"
+            placeholder={otherLocationSearchPlaceholder}
+            onkeyup={searchLocations}
+            onchange={handleLocationSearchChange}
+            is-loading={isSearchLoading}
+          >
+          </lightning-input>
+          <!--FRONT-8712 end-->
+        </div>
+      </template>
+      <template if:false={showlocationfilter}>
+        <div class="searchfilt">
+          <div class="searcfl">
+            <div
+              class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+              role="none"
+            >
+              <div
+                class="searchBoxWrapper slds-show slds-p-bottom_small slds-p-left_small"
+              >
+                <lightning-input
+                  class="slds-input-has-icon_right item-search-input"
+                  type="search"
+                  onkeyup={handleEnterClickMobile}
+                  value={searchKeyVal}
+                  variant="label-hidden"
+                  placeholder={assetSearchTypePlaceholderFunc}
+                  data-source="searchInputField"
+                  oncommit={handleEmptyValueMobile}
+                ></lightning-input
+                ><!--oncommit={handleEmptyValueMobile}-->
+
+                <template if:false={isSerialOrAssetTab}>
+                  <div>
+                    <lightning-input
+                      class="slds-input-has-icon_right customSearchClass"
+                      type="search"
+                      variant="label-hidden"
+                      placeholder={itemListSearchPlaceholder}
+                      disabled
+                    ></lightning-input
+                    ><!--oncommit={handleEmptyValueMobile}-->
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+          <template if:false={isSerialOrAssetTab}>
+            <div>
+              <span
+                class="slds-media__figure slds-listbox__option-icon"
+                onclick={toggleFilter}
+              >
+                <span class="slds-icon_container slds-m-around_x-small">
+                  <lightning-icon
+                    icon-name="utility:filterList"
+                    size="small"
+                    alternative-text="icon"
+                  ></lightning-icon>
+                </span>
+              </span>
+            </div>
+          </template>
+        </div>
+      </template>
+      <template if:true={showlocationfilter}>
+        <c-sbr_3_0_mobile-screen
+          title="Filters"
+          show-cross-cancel-btn="true"
+          oncrossbtnclicked={cancelClick}
+        >
+          <div id="modal-content-id-2">
+            <template if:false={isOtherLocationActive}>
+              <template if:false={catClassDescriptionFilter}>
+                <div class="slds-page-header__control slds-p-around_small">
+                  <div class="slds-form-element">
+                    <label
+                      for="year"
+                      class="slds-form-element__label slds-no-flex"
+                    >
+                      Year
+                      <lightning-helptext
+                        class="tooltipstyle"
+                        icon-name="utility:info"
+                        content={LABELS.LAST2DIGIT_LABEL}
+                      ></lightning-helptext>
+                    </label>
+                    <div class="customColorYR">
+                      <lightning-input
+                        class="yr"
+                        type="search"
+                        label="searchYear"
+                        id="year"
+                        value={filterYear}
+                        name="year"
+                        maxlength="2"
+                        placeholder="YY"
+                        variant="label-hidden"
+                        onchange={handleYearChange}
+                        onfocus={onFocusMethod}
+                        onblur={onBlurMethod}
+                      ></lightning-input>
+                    </div>
+                  </div>
+                  <template if:true={showEqpLoc}>
+                    <div class="slds-form-element slds-p-top_small">
+                      <label
+                        for="Equipment Location"
+                        class="slds-form-element__label slds-no-flex"
+                      >
+                        Equipment Location
+                      </label>
+                      <div class="customColorEL">
+                        <lightning-input
+                          type="search"
+                          label="Equipment Location"
+                          variant="label-hidden"
+                          name="eqpLoc"
+                          value={eqpLocation}
+                          onchange={handleEquipmentLocChange}
+                          placeholder="Search a Branch"
+                          onfocus={onFocusMethod}
+                          onblur={onBlurMethod}
+                        ></lightning-input>
+                      </div>
+                    </div>
+                  </template>
+                  <div class="slds-form-element slds-p-top_small">
+                    <label
+                      for="status"
+                      class="slds-form-element__label slds-no-flex"
+                    >
+                      Status
+                    </label>
+                    <c-sbr_3_0_multi-select-picklist
+                      multi-select="true"
+                      is-mobile={isMobile}
+                      onselectoption={handleSelectOptionList}
+                      options={allListViewOptions}
+                      selected-values={selecetdStatusList}
+                      is-any-checked={isAnySelected}
+                    ></c-sbr_3_0_multi-select-picklist>
+                  </div>
+                  <div class="slds-form-element slds-p-top_small">
+                    <label
+                      for="Location Criteria"
+                      class="slds-form-element__label slds-no-flex"
+                    >
+                      Location Criteria
+                    </label>
+                    <lightning-combobox
+                      class="customColorLC"
+                      name="location"
+                      variant="label-hidden"
+                      label="Location Criteria"
+                      options={locationOptions}
+                      onchange={handleChangeLocation}
+                      value={selectedLocationFilterValue}
+                      onfocus={onFocusMethod}
+                      onblur={onBlurMethod}
+                    ></lightning-combobox>
+                  </div>
+                </div>
+              </template>
+            </template>
+
+            <template if:true={catClassDescriptionFilter}>
+              <div class="slds-page-header__control slds-p-around_small">
+                <div class="slds-form-element">
+                  <label
+                    for="Location Criteria"
+                    class="slds-form-element__label slds-no-flex"
+                  >
+                    Location Criteria
+                  </label>
+                  <lightning-combobox
+                    class="customColorLC"
+                    name="location"
+                    variant="label-hidden"
+                    label="Location Criteria"
+                    options={locationOptions}
+                    onchange={handleChangeLocation}
+                    value={selectedLocationFilterValue}
+                    onfocus={onFocusMethod}
+                    onblur={onBlurMethod}
+                  ></lightning-combobox>
+                </div>
+              </div>
+            </template>
+          </div>
+          <div slot="footer">
+            <lightning-layout
+              vertical-align="center"
+              horizontal-align="space"
+              pull-to-boundary="small"
+              size="12"
+            >
+              <lightning-layout-item size="3">
+                <lightning-button
+                  class="neutral-button"
+                  value="Cancel"
+                  onclick={cancelClick}
+                  label="Cancel"
+                >
+                </lightning-button>
+              </lightning-layout-item>
+              <lightning-layout-item size="6" class="slds-p-right_xx-large">
+                <!--FRONT-13026 Resolved UI Bug -->
+                <lightning-button
+                  class="reset-button"
+                  value="Reset All Filters"
+                  onclick={resetFilterPanel}
+                  label="Reset All Filters"
+                  variant="base"
+                >
+                </lightning-button>
+              </lightning-layout-item>
+              <lightning-layout-item size="3" class="">
+                <lightning-button
+                  class="brand-button"
+                  value="Apply"
+                  onclick={applyFilter}
+                  label="Apply"
+                  variant="brand"
+                >
+                </lightning-button>
+              </lightning-layout-item>
+            </lightning-layout>
+          </div>
+        </c-sbr_3_0_mobile-screen>
+      </template>
+    </div>
+    <template if:false={isSerialOrAssetTab}>
+      <div class="slds-page-header__row">
+        <div class="pillsContainer">
+          <!-- FRONT-29465-->
+          <template if:false={isOtherLocationActive}>
+            <span
+              class="customPills slds-pill slds-pill_pink slds-m-right_medium"
+            >
+              <span class="slds-pill__label"
+                >{selectedLocationFilterValue}</span
+              >
+            </span>
+          </template>
+          <template lwc:if={showPill}>
+            <lightning-pill
+              label={pillLabel}
+              class="filterPills slds-p-left_small slds-m-top_small slds-m-bottom_small"
+              onremove={handlePillRemoveClick}
+            ></lightning-pill>
+          </template>
+          <template if:true={appliedStatusList}>
+            <template for:each={appliedStatusList} for:item="filter">
+              <lightning-pill
+                key={filter}
+                label={filter}
+                class="filterPills slds-p-left_small slds-m-top_small slds-m-bottom_small"
+              ></lightning-pill>
+            </template>
+          </template>
+        </div>
+      </div>
+    </template>
+  </div>
+  <template if:true={filterDisplay}>
+    <c-sbr_3_0_mobile-screen title="Filters">
+      <div id="modal-content-id-1">
+        <template if:false={isOtherLocationActive}>
+          <div class="slds-page-header__control slds-p-around_small">
+            <lightning-combobox
+              name="location"
+              label=""
+              variant="label-hidden"
+              options={locationOptions}
+              onchange={handleComboboxClick}
+              onclick={handleComboboxClick}
+              value={selectedLocation}
+            ></lightning-combobox>
+          </div>
+        </template>
+        <div class="slds-page-header__control slds-p-around_small">
+          <template if:true={allListViewOptions}>
+            <c-sbr_3_0_multi-select-picklist
+              multi-select="true"
+              is-mobile={isMobile}
+              onselectoption={handleSelectOptionList}
+              options={allListViewOptions}
+              selected-values={selectedValueList}
+              is-any-checked={isAnySelected}
+            ></c-sbr_3_0_multi-select-picklist>
+          </template>
+        </div>
+      </div>
+      <div slot="footer">
+        <lightning-layout
+          vertical-align="center"
+          horizontal-align="space"
+          pull-to-boundary="small"
+          size="12"
+        >
+          <lightning-layout-item size="3">
+            <lightning-button
+              class="neutral-button"
+              value="Cancel"
+              onclick={toggleFilter}
+              label="Cancel"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="6" class="slds-p-right_xx-large">
+            <!--FRONT-13026 Resolved UI Bug -->
+            <lightning-button
+              class="reset-button"
+              value="Reset All Filters"
+              onclick={resetFilterPanel}
+              label="Reset All Filters"
+              variant="base"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+          <lightning-layout-item size="3" class="">
+            <lightning-button
+              class="brand-button"
+              value="Apply"
+              onclick={applyFilter}
+              label="Apply"
+              variant="brand"
+            >
+            </lightning-button>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+    </c-sbr_3_0_mobile-screen>
+    <!-- <section
+         role="dialog"
+         tabindex="-1"
+         aria-labelledby="modal-heading-01"
+         aria-modal="true"
+         aria-describedby="modal-content-id-1"
+         class="slds-modal slds-fade-in-open"
+       >
+         <div class="slds-modal__container">
+           <div
+             class="slds-page-header__controls customer-info-header slds-p-vertical_small slds-align_absolute-center"
+           >
+             <p class="customer-info-title slds-align_absolute-center">Filters</p>
+           </div>
+           
+          
+         </div>
+       </section>-->
+  </template>
+</template>

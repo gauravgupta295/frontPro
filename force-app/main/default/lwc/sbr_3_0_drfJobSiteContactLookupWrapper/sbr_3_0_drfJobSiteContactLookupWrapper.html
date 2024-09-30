@@ -1,0 +1,27 @@
+<template>
+  <!--c-s-b-r_3_0_required-custom-lookup-cmp
+    record-id={contactId}
+    label="Job Site Contact"
+    default-record={contactId}
+    fields-to-include="LastName, FirstName"
+    s-object-api-name="Contact"
+    placeholder="Search Contacts..."
+    icon-name="standard:contact"
+    value={contactId}
+  ></c-s-b-r_3_0_required-custom-lookup-cmp-->
+  <c-sbr_3_0_custom-lookup-cmp-frontline
+    record-id={contactId}
+    default-record={contactId}
+    label="Job Site Contact"
+    s-object-api-name="Contact"
+    placeholder="Search Contacts..."
+    icon-name="standard:contact"
+    value={contactId}
+    is-disabled=true
+    do-not-show-cancel=true
+    do-not-show-help-text=true
+    classes-to-add={classesToAdd}
+    label-classes-to-add={labelPaddingJobsite}
+    do-not-show-acc-screen=true
+  ></c-sbr_3_0_custom-lookup-cmp-frontline>
+</template>

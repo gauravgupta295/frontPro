@@ -1,0 +1,11 @@
+.sourcingScroller{
+    height: 350px;
+    display: block;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: clip;
+}
+.sourcingBorder{
+    border:1px solid lightgrey;
+   
+}

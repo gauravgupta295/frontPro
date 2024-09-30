@@ -1,0 +1,12 @@
+lightning-button.mobileButtonTextColor {
+  --sds-c-button-text-color: #25683e;
+}
+
+lightning-button.mobileButtonBackgroundColor {
+  --sds-c-button-brand-color-background: #25683e;
+}
+
+:host {
+  --slds-c-checkbox-color-background-checked: white;
+  --slds-c-checkbox-mark-color-foreground: green;
+}

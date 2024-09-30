@@ -1,0 +1,72 @@
+.atc-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #e5e5e5;
+  z-index: 2;
+}
+.mobile-atc-footer {
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #e5e5e5;
+  z-index: 2;
+}
+.atc-input {
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 0;
+  border-color: #c9c9c9;
+}
+.mobile-atc-input {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+
+  border-radius: 0;
+  border-color: #c9c9c9;
+
+  font-weight: 400;
+  font-size: 13px;
+}
+.mobile-atc {
+  height: 32px;
+  background-color: #24693e;
+  font-weight: 400;
+  font-size: 13px;
+}
+.mobile-atc-disabled {
+  height: 32px;
+  background-color: #24693e;
+  font-weight: 400;
+  font-size: 13px;
+}
+.mobile-atc-outline {
+  color: #24693e;
+  border: 1px solid #24693e;
+  font-weight: 400;
+  height: 32px;
+  font-size: 13px;
+}
+.mobile-atc-outline-disabled {
+  color: #c9c9c9;
+  border: 1px solid #c9c9c9;
+  font-weight: 400;
+  height: 32px;
+  font-size: 13px;
+}
+.quantity-input {
+  width: 3.5rem;
+}
+.disabled-icon {
+  --sds-c-icon-color-foreground-default: #c9c9c9;
+  --sds-c-icon-color-background: #ffffff;
+}
+.disabled-input {
+  background-color: #ffffff;
+  color: #c9c9c9;
+}

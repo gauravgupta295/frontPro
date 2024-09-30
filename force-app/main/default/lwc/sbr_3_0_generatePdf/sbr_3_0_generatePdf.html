@@ -1,0 +1,92 @@
+<template>
+    <div class="generate-pdf-container">
+        <section role="dialog" class="slds-modal slds-fade-in-open slds-modal_xx-small">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse slds-float_right"
+                    title="Close" onclick={closeModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{label.GeneratePdf}</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="pdf-container slds-col slds-size_1-of-2">
+                        <iframe src={pdfUrl} frameborder="0" width="100%" height="70%"></iframe>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <div
+                            class="pdf-details slds-col slds-grid slds-size_1-of-2 slds-m-right_xx-large slds-p-top_small">
+                            <div class="slds-col">
+                                <p id="doctype"><lightning-icon icon-name="doctype:pdf" size="small"
+                                        alternative-text="Pdf file" title="Pdf"></lightning-icon></p>
+                            </div>
+                            {pdfName}
+                            <div class="slds-col slds-size_1-of-3 slds-text-align_right">
+                                <!--added by sreekar removed previous icon and added anchor tag for download pdf -->
+                                <p> <a href={fileUrl} download><lightning-icon icon-name="utility:download" size="small"
+                                            alternative-text="download" title="download"></lightning-icon></a></p>
+                            </div>
+                        </div>
+                    </div>
+                    </br>
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                            <abbr title="required" class="slds-required">* </abbr> <label
+                                for="selectid">{label.SelectMethod}</label>
+                            <p class="error-message" if:true={showError}>{label.ErrorForScreen}</p>
+                            <lightning-input class="EmailClass" type="checkbox" checked={isCheckedEmail}
+                                onchange={handleEmailCheckboxChange} data-id="email"
+                                label={label.EmailCheck}></lightning-input>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{label.EmailMessage}</span>
+                        </div>
+                        <div class="slds-col slds-p-top_large">
+                            </br>
+                            <lightning-input type="checkbox" class="PrintClass" checked={isCheckedPrint}
+                                onchange={handlePrintCheckboxChange} label={label.Print}></lightning-input>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span>{label.PrintMessage}</span>
+                        </div>
+                    </div>
+                    </br>
+                    <template if:true={isEmail}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-p-top_large slds-size_1-of-2 slds-m-right_x-large">
+                                <b><label for="authid">{label.AuthorizedContact}</label></b></br></br>
+                                <abbr title="required" class="slds-required">* </abbr> <label
+                                    for="lookupField">{label.AuthContact}</label>
+                                <lightning-record-picker id="conid" class="conClass" object-api-name="Contact"
+                                    label={label.AuthContact} limit={limitValue} placeholder="Select a Contact"
+                                    value={initialContact} onchange={handleChange}
+                                    variant="label-hidden"></lightning-record-picker>
+                            </div>
+                            <div
+                                class="slds-col slds-p-top_large slds-size_1-of-2 slds-m-right-small slds-p-right_x-large">
+                                </br></br>
+                                <abbr title="required" class="slds-required">* </abbr> <label
+                                    for="Email">{label.Email}</label>
+                                <lightning-input type="Email" id="emailid" class="emailClass" variant="label-hidden"
+                                    value={initialEmail} onchange={handleEmailChange}></lightning-input>
+                            </div>
+                        </div>
+                        </br>
+                        <div class="slds-size_1-of-2">
+                            <lightning-textarea name="input1" label="Add Comment to Email"
+                                onchange={handleBodyChange}></lightning-textarea>
+                        </div>
+                        </br>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button type="cancel" label="Cancel" variant="neutral"
+                        onclick={closeModal}></lightning-button>
+                    <lightning-button style="padding-left: 14px" type="submit" label="Submit" variant="brand"
+                        onclick={handleSubmit}></lightning-button>
+                </footer>
+            </div>
+        </section>
+    </div>
+</template>

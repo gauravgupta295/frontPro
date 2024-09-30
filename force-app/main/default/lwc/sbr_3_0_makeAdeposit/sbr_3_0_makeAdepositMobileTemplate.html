@@ -1,0 +1,198 @@
+<template>
+    <template if:true={showSpinner}>
+        <div class="slds-modal__content slds-var-p-around_medium">
+            <div class="spinnermodal">
+                <div class="slds-spinner_container">
+                    <div role="status" class="slds-spinner slds-spinner_large">
+                        <span class="slds-assistive-text">Loading</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template if:false={submitReservation}>
+        <template if:false={showSpinner}>
+            <c-sbr_3_0_mobile-screen title={header}>
+                <template if:false={paymentProcessing}>
+                    <div class="slds-modal__container">
+
+                        <div class="slds-modal__content slds-p-around_small" style="font-size: 13px;">
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2 slds-p-top_large">
+                                    <span>{label.TotalEstimatedDeposit} </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-text-align_right slds-p-top_large">
+                                    <span>{totalAmountUI}</span>
+                                </div>
+                            </div>
+                            </br>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <span>{label.DepositPaid}</span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                    <span>{depositAmountUI}</span>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="slds-border_bottom">
+                            </div>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <span><b>{label.AdditionalDepositDue}</b></span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2 slds-text-align_right">
+                                    <span><b>{dueDepositUI}</b></span>
+                                </div>
+                            </div>
+                            </br>
+                            <template if:true={showRadioGroup}>
+                                <p class="mild-bold slds-p-top_large" style="font-size: 13px;">{label.SelectionMessage}</p>
+                                <br />
+                                <lightning-input type="radio" name="paymentOption" label={label.PreviousPaymentMethod}
+                                    value="option1" onchange={handleRadioChange}
+                                    checked={isOption1Checked}></lightning-input>
+
+                                <lightning-input type="radio" name="paymentOption2" label={label.NewPaymentMethod}
+                                    value="option2" onchange={handleRadioChange}
+                                    checked={isOption2Checked} style="margin-left: 0;"></lightning-input>
+                                <br />
+                            </template>
+                            <div class="slds-grid slds-wrap">
+                                </br>
+                                <div class="slds-size_1-of-1">
+                                    <template if:true={isComboboxVisible}>
+                                        <abbr title="required" class="slds-required">* </abbr> <label
+                                            for="payid">{label.PaymentMethod}</label>
+                                        <lightning-combobox id="paymentId" class="paymentClass"
+                                            value={paymentOptionSelected} options={paymentOptions}
+                                            variant="label-hidden" onchange={handlePaymentMethod}
+                                            required></lightning-combobox>
+                                    </template>
+                                    <template if:false={isComboboxVisible}>
+                                        <label for="payid">{label.PaymentMethod}</label>
+                                        <br />
+                                        <p class="slds-text-title_bold">{paymentLabel}</p>
+                                    </template>
+                                    </br>
+                                </div>
+                                <template if:true={isPaymentCash}>
+                                    <div class="slds-size_3-of-3">
+                                        <abbr title="required" class="slds-required">* </abbr><label
+                                            for="cashid">{label.CashReceived}</label>
+                                        <lightning-input id="cashid" type="number" formatter="currency" step=".01"
+                                            class="cashReceivedClass" value={cashReceivedValue} variant="label-hidden"
+                                            required onblur={handleCashChange}></lightning-input>
+                                        </br>
+                                    </div>
+                                </template>
+                                <div class="slds-size_3-of-3">
+                                    <abbr title="required" class="slds-required">* </abbr><label
+                                        for="depid">{amount}</label>
+                                    <lightning-input id="depid" type="number" formatter="currency"
+                                        class="depositAmountClass" value={depositAmountValue} variant="label-hidden"
+                                        data-recid="amountCollected" disabled={isPaymentOnReturn}
+                                        onchange={handleAmountChange} step=".01" required></lightning-input>
+                                    </br>
+                                    <template if:true={isPaymentCash}>
+                                        <div class="slds-border_bottom"></div>
+                                    </br>
+                                    </template>
+                                </div>
+                                <template if:true={isTerminalVisible}>
+                                    <div class="slds-size_4-of-4">
+                                        <abbr title="required" class="slds-required">* </abbr><label
+                                            for="terminalId">{label.Terminal}</label>
+                                        <lightning-combobox id="terminalId" class="terminalClass" value={terminalValue}
+                                            options={terminalOptions} variant="label-hidden" onchange={handleTerminal}
+                                            required></lightning-combobox>
+                                    </div>
+                                    </br>
+                                </template>
+                                <template if:true={isUncollectedReasonVisible}>
+                                    <div class="slds-size_4-of-4">
+                                        <abbr title="required" class="slds-required">* </abbr><label
+                                            for="UncollectedReasonId">{label.ReasonForUncollected}</label>
+                                        <lightning-combobox id="UncollectedReasonId" class="UncollectedReasonClass"
+                                            value={UncollectedReasonValue} options={UncollectedReasonOptions}
+                                            variant="label-hidden" onchange={handleUncollectedReason}
+                                            required></lightning-combobox>
+                                    </div>
+                                    </br>
+                                </template>
+                                <template if:true={isOtherReasonVisible}>
+                                    <div class="slds-size_6-of-6"> </br>
+                                        <abbr title="required" class="slds-required">* </abbr><label
+                                            for="depid">{label.OtherReason}</label>
+                                        <lightning-input id="reasonid" type="text" class="otherReasonClass"
+                                            value={otherReasonValue} variant="label-hidden" data-recid="otherReason"
+                                            onchange={handleOtherReasonChange} maxlength="100"
+                                            required></lightning-input>
+                                        </br>
+                                    </div>
+                                </template>
+                                <template if:true={isPaymentCash}>
+                                    <div class="slds-size_6-of-6">
+                                        <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-2 slds-p-top_x-small">
+                                                <span><b><label for="changeDueId">{label.ChangeDue}</label></b></span>
+                                            </div>
+                                            <div
+                                                class="slds-col slds-size_1-of-2 slds-text-align_right slds-text-heading_medium">
+                                                <span><b>{cashDueValue}</b></span>
+                                            </div>
+                                        </div>
+                                        </br>
+                                    </div>
+                                </template>
+                                <template if:true={isPaymentCheck}>
+                                    <div class="slds-size_6-of-6">
+                                        <abbr title="required" class="slds-required">* </abbr><label
+                                            for="CheckId">{label.CheckNumber}</label>
+                                        <lightning-input id="CheckId" class="checkClass" pattern="^[A-Za-z0-9]{1,9}$"
+                                            message-when-pattern-mismatch="Please specify valid check number"
+                                            maxlength="9" value={checkValue} variant="label-hidden"
+                                            onchange={handleCheckChange} required></lightning-input>
+                                        </br>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <footer class="slds-modal__footer slds-p-bottom_medium">
+                            <lightning-button type="cancel" label="Cancel" variant="brand" onclick={closeModal}
+                                class="cancel-button slds-float_left"></lightning-button>
+
+                            <lightning-button type="submit" label="Confirm" variant="brand" onclick={handleSubmit}
+                                class="button success-button slds-float_right">
+                            </lightning-button>
+                        </footer>
+                    </div>
+                </template>
+            </c-sbr_3_0_mobile-screen>
+        </template>
+
+        <template if:true={paymentProcessing}>
+            <c-sbr_3_0_payment-processing recid={recordId} paymentonreturn={isPaymentOnReturn}
+            paymentprocessing={ispaymentProcessing} payment-method={paymentOptionSelected}
+            deposit-amount={depositAmountValue} terminal-value={terminalValue}
+            payment-method-related-data={paymentMethodRelatedData}
+            transaction-id={transactionId} error-message={errorMessage}
+            record-details={rec} is-api-call-complete={isApiCallComplete}></c-sbr_3_0_payment-processing>
+        </template>
+    </template>
+
+    <div if:true={submitReservation}>
+        <c-sbr_3_0_submit-reservation record-id={recordId} record-details={rec} message={message} source={source}
+            deposit-amount={depositAmountValue} terminal-value={terminalValue}></c-sbr_3_0_submit-reservation>
+    </div>
+
+    <template if:true={createReservation}> <!--added for FRONT-23924-->
+            <c-sbr_3_0_dynamic-record-form-collector record-id={recordId} record-details={rec}
+                object-api-name={sObjectName} action-name="save" is-headless="true"
+                create-reservation={createReservation} payment-method-related-data={paymentMethodRelatedData}></c-sbr_3_0_dynamic-record-form-collector>
+    </template>
+
+</template>

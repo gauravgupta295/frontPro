@@ -1,0 +1,59 @@
+<template>
+    <!-- Modal/Popup Box LWC starts here -->
+    <lightning-modal-header label="Create Sales Quote"> </lightning-modal-header>
+    <!-- Modal/Popup Box LWC body starts here -->
+    <lightning-modal-body class="slds-modal_small">
+      <template lwc:if={recordTypePage}>
+        <c-sbr_3_0_select-sales-quote-record-type
+          record-id={recordId}
+          object-api-name={objectApiName}
+          default-record-type={recordType}
+          onrecordtypechange={handleRecordTypeChange}
+        >
+        </c-sbr_3_0_select-sales-quote-record-type>
+      </template>
+      <template lwc:if={customerInfoPage}> 
+          
+          <c-sbr_3_0_create-quote-from-account-company-info 
+              record-id={recordId}
+              account-name={accountName}
+              onaccountchange={handleAccountChange}
+              onorderedbychange={handleOrderedByChange}>
+          </c-sbr_3_0_create-quote-from-account-company-info>
+          <template lwc:if={accountIdMissing}> 
+            <div class="error_message">Please select an Account<br></div>
+          </template>
+          <template lwc:if={orderedByMissing}> 
+            <div class="error_message">Please select an Ordered By Contact</div>
+            
+          </template>
+      </template>
+    </lightning-modal-body>
+    <!-- Modal/Popup Box LWC footer starts here -->
+    <footer class="slds-modal__footer footer-spacing">
+      <template lwc:if={customerInfoPage} >
+      <lightning-button
+        label="Previous"
+        onclick={goBackToRecordType}
+        class="slds-p-around_x-small sbrSourcingBorder"
+      ></lightning-button>
+    </template>
+      <template lwc:if={recordTypePage}>
+        <lightning-button
+          label="Next"
+          variant="brand"
+          onclick={closeRecordTypePage}
+          class="sbrSourcingBorder"
+        ></lightning-button>
+      </template>
+  
+      <template lwc:if={customerInfoPage}>
+        <lightning-button
+          label="Next"
+          variant="brand"
+          onclick={closeCustomerInfoPage}
+          class="sbrSourcingBorder"
+        ></lightning-button>
+      </template>
+    </footer>
+  </template>

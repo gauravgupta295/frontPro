@@ -1,0 +1,17 @@
+<template>
+    <div class="lwcBackgroundColor">
+            <lightning-layout>
+                <lightning-layout-item class="padded">
+                    <lightning-badge label={recordType} class={recordTypeName}></lightning-badge>
+                </lightning-layout-item>
+                <lightning-layout-item class="padded">
+                    <lightning-badge label={status} class={statusClass}></lightning-badge>
+                </lightning-layout-item>
+                <lightning-layout-item class="padded">
+                    <template if:true={weekError}>
+                        <lightning-badge label="Week Error(s)" class="statusDenied"></lightning-badge>
+                    </template>
+                </lightning-layout-item>
+            </lightning-layout>
+    </div>
+</template>

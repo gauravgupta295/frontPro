@@ -1,0 +1,13 @@
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId" >
+    <aura:html tag="style">
+    .slds-modal__content{ height:unset !important; max-height:unset !important;
+    }.slds-modal__content.slds-p-around--medium { padding: 0rem !important;
+    }.cuf-content { padding: 0 0rem !important; }
+    .modal-container.slds-modal__container{ width: 45% !important; max-width:
+    80rem !important; }
+    button[title^='Close this window'] {
+        /*display: none !important;*/
+	}
+  </aura:html>
+    <c:sbr_3_0_convertProspectToNonCreditAccount aura:id="convertRecordType" recordId="{!v.recordId}" onclose="{!c.closeModal}" variant="plain"></c:sbr_3_0_convertProspectToNonCreditAccount>
+</aura:component>

@@ -1,0 +1,13 @@
+<template>
+  <template lwc:if={inputCmp}>
+    <lightning-input
+      type={type}
+      value={fieldValue}
+      disabled={field.isReadOnly}
+      data-field-id={field.externalId}
+      data-field-name={field.apiName}
+      data-field-label={field.label}
+      label={field.label}
+    ></lightning-input>
+  </template>
+</template>

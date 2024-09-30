@@ -1,0 +1,16 @@
+<template>
+	<template lwc:if={isMobile}>
+		<c-sbr_3_0_custom-mobile-account-search-cmp onclosemodal={closeMobileAccountSearch} onhideresults={hideResults}
+			onlookupupdate={resultFromMobileCmp} parentcmp="accountsearchscreen">
+		</c-sbr_3_0_custom-mobile-account-search-cmp>
+	</template>
+	<template lwc:else>
+		<c-sbr_3_0_custom-account-list-view-cmp search-key={searchKey} onhideresults={hideResults}
+			parentcmp="accountsearchscreen" onshowaccountcreationmodal={showAccountCreationModal}>
+		</c-sbr_3_0_custom-account-list-view-cmp>
+		<template if:true={isModalOpen}>
+			<c-sbr_3_0_custom-modal-cmp is-modal-open={isModalOpen} onclosemodal={closeModal}
+				onhideresults={hideResults} parentcmp="Account"></c-sbr_3_0_custom-modal-cmp>
+		</template>
+	</template>
+</template>

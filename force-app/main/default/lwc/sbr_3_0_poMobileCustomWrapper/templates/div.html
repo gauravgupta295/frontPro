@@ -1,0 +1,86 @@
+<template>
+    <div
+        class="lookupInputContainerMobile"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        role="combobox">
+        <template if:true={hasSearch}>
+            <div class="searchfit">
+                <div class="searchfill">
+                    <div
+                        class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right focus-styling"
+                        role="none">
+                        <div
+                            class="searchBoxWrapper slds-show slds-p-bottom_small">
+                            <lightning-input
+                                data-name="searchBox"
+                                variant="label-hidden"
+                                type="search"
+                                pattern="[a-zA-Z0-9\-_ ]*"
+                                message-when-pattern-mismatch="Special Characters are not allowed"
+                                label="test test"
+                                placeholder="Search for Carrier"
+                                onkeypress={handleSearch}
+                                oncommit={handleClear}>
+                            </lightning-input>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <div class="slds-page-header"
+            style="height:65px;background-color:lightgrey">
+            <div class="slds-grid slds-gutters_xx-small">
+                <div
+                    class="slds-col slds-size_5-of-6 slds-p-horizontal_medium">
+                    <b
+                        class="slds-page-header__title slds-truncate">All
+                        {title}</b>
+                    <p
+                        style="padding-top:2px">{totalNoOfRecords}
+                        Results</p>
+                </div>
+                <div
+                    class="slds-col slds-size_1-of-6 slds-p-horizontal_medium">
+                    <template if:true={hasFilter}>
+                        <div class="filterfill">
+                            <template lwc:if={isVendorFilter}>
+                                <c-sbr_3_0_changevendorfilter
+                                    ongetsearchvalue={getSearchValue}>
+                                </c-sbr_3_0_changevendorfilter>
+                            </template>
+                            <template
+                                lwc:elseif={isPurchaseOrderFilter}>
+                                <c-sbr_3_0_po-search-filter
+                                    ongetsearchvalue={getSearchValue}
+                                    onreset={handleReset}>
+                                </c-sbr_3_0_po-search-filter>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div class="slds-scrollable_y div-scroll">
+            <c-sbr_3_0_po-mobile-custom-data-table
+                record-list={recordList}
+                onselect={handleRecordSelect}>
+            </c-sbr_3_0_po-mobile-custom-data-table>
+        </div>
+        <template if:false={hasRecords}>
+            <div
+                class="slds-illustration slds-illustration_medium"
+                aria-hidden="true">
+                <img
+                    class="slds-illustration__svg"
+                    alt
+                    src={noContentimageUrl} />
+                <div class="slds-text-color_weak">
+                    <h3 class="slds-text-heading_medium">No
+                        Results Found</h3>
+                </div>
+            </div>
+        </template>
+    </div>
+</template>

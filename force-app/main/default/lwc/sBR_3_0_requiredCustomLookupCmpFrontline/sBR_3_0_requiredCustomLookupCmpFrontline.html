@@ -1,0 +1,330 @@
+<template>
+  <div
+    class="slds-form-element"
+    onmouseleave={toggleResult}
+    data-source="lookupContainer"
+  >
+    <div class="slds-combobox_container slds-has-selection">
+      <label class={labelPropertyClasses} for="combobox-id-1">
+        <abbr class="slds-required" title="required">*</abbr>{label}
+        <!-- FRONT-30881 : non breaking spaces should only work for Desktop  -->
+        <template lwc:if={isDesktop}>&nbsp;&nbsp;</template>
+        <!-- FRONT-8351 start -->
+        <lightning-helptext class="customHelpText" content={helpTextContent}>
+        </lightning-helptext>
+        <!-- FRONT-8351 end -->
+      </label>
+      <div
+        class="lookupInputContainer slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        role="combobox"
+      >
+        <div
+          class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+          role="none"
+        >
+          <div class="searchBoxWrapper slds-show">
+            <!-- FRONT-8351 start-->
+            <!--FRONT-11444 area-label added in lightning-input start--><!--added onkeyup,data-actiontype FRONT-11447-->
+            <!--Lookup Input Field-->
+            <lightning-input
+              class="slds-input-has-icon_right"
+              type="search"
+              data-source="searchInputField"
+              onclick={toggleResult}
+              onchange={handleKeyChange}
+              is-loading={isSearchLoading}
+              value={searchKey}
+              variant="label-hidden"
+              placeholder={placeholder}
+              required={hasRequired}
+              aria-label={label}
+              onkeyup={handleKeyUp}
+              data-actiontype="searchCustomer"
+            ></lightning-input>
+            <!-- FRONT-8351 end -->
+            <!--FRONT-11444 end--><!--end FRONT-11447-->
+          </div>
+
+          <!--Lookup Selected record pill container start-->
+          <div class="pillDiv slds-hide">
+            <!-- FRONT-30881 : added selectedIconContainerClasses for different icon properties on devices -->
+            <span class={selectedIconContainerClasses}>
+              <lightning-icon
+                icon-name={iconName}
+                size="x-small"
+                alternative-text="icon"
+              ></lightning-icon>
+            </span>
+
+            <!-- FRONT-30881 : added selectedInputPillClasses for different pill properties on devices -->
+            <input
+              type="text"
+              id="combobox-id-1"
+              value={selectedRecordName}
+              class={selectedInputPillClasses}
+              readonly
+            />
+
+            <button
+              type="button"
+              class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+              title="Clear Selection"
+            >
+                <lightning-icon
+                  icon-name="utility:close"
+                  size="x-small"
+                  alternative-text="close icon"
+                  onclick={handleRemove}
+                ></lightning-icon>
+            </button>
+          </div>
+        </div>
+
+        <!-- lookup search result part start-->
+        <div
+          style="margin-top: 0px"
+          id="listbox-id-5"
+          class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+          role="listbox"
+        >
+          <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+            <li
+              key={showAllResults}
+              role="presentation"
+              class="slds-listbox__item"
+              onclick={showAllResults}
+            >
+              <!--FRONT-11447- Added tabindex data-actiontype and onkeyup in below div-->
+              <div
+                tabindex="0"
+                data-actiontype="showAllResults"
+                onkeyup={handleKeyUp}
+                data-recid="showAllResults"
+                class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                role="option"
+              >
+                <!--FRONT-11447-->
+                <span
+                  style="pointer-events: none"
+                  class="slds-media__figure slds-listbox__option-icon"
+                >
+                  <span class="slds-icon_container">
+                    <lightning-icon
+                      icon-name={searchIconName}
+                      size="x-small"
+                      alternative-text="icon"
+                    ></lightning-icon>
+                  </span>
+                </span>
+                <span
+                  style="pointer-events: none; margin-top: 0.25rem"
+                  class="slds-media__body"
+                >
+                  <span
+                    class="slds-listbox__option-text slds-listbox__option-text_entity"
+                    >Show All / Filter Results</span
+                  >
+                </span>
+              </div>
+            </li>
+            <li key={newAccount} role="presentation" class="slds-listbox__item">
+              <!--FRONT-11447- Added tabindex data-actiontype and onkeyup in below div-->
+              <div
+                tabindex="0"
+                data-actiontype="newAccount"
+                onkeyup={handleKeyUp}
+                data-recid="newAccount"
+                onclick={createNewAccount}
+                class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                role="option"
+              >
+                <!--FRONT-11447-->
+                <span
+                  style="pointer-events: none"
+                  class="slds-media__figure slds-listbox__option-icon"
+                >
+                  <span class="slds-icon_container">
+                    <lightning-icon
+                      icon-name={addIconName}
+                      size="x-small"
+                      alternative-text="icon"
+                    ></lightning-icon>
+                  </span>
+                </span>
+                <span
+                  style="pointer-events: none; margin-top: 0.25rem"
+                  class="slds-media__body"
+                >
+                  <span
+                    class="slds-listbox__option-text slds-listbox__option-text_entity"
+                    >New Account</span
+                  >
+                </span>
+              </div>
+            </li>
+            <div
+              class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+              role="option"
+            >
+              <span
+                style="pointer-events: none; margin-top: 0.25rem"
+                class="slds-media__body"
+              >
+                <span
+                  class="slds-listbox__option-text slds-listbox__option-text_entity"
+                  >My Recent Accounts</span
+                >
+              </span>
+            </div>
+
+            <template for:each={lstResult} for:item="obj">
+              <li key={obj.Id} role="presentation" class="slds-listbox__item">
+                <!--FRONT-11447- Added tabindex data-actiontype and onkeyup in below div-->
+                <div
+                  tabindex="0"
+                  data-actiontype="handleRecordSelection"
+                  onkeyup={handleKeyUp}
+                  data-recid={obj.Id}
+                  onclick={handleSelectedRecord}
+                  class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                  role="option"
+                >
+                  <!--FRONT-11447-->
+                  <span
+                    style="pointer-events: none"
+                    class="slds-media__figure slds-listbox__option-icon"
+                  >
+                    <span class="slds-icon_container">
+                      <lightning-icon
+                        icon-name={iconName}
+                        size="small"
+                        alternative-text="icon"
+                      ></lightning-icon>
+                    </span>
+                  </span>
+                  <span style="pointer-events: none" class="slds-media__body">
+                    <span
+                      class="slds-listbox__option-text slds-listbox__option-text_entity"
+                      style="font-weight: bold"
+                      >{obj.DisplayName}</span
+                    >
+                    <!-- <template if:true={isAccountLookup}>
+                      <template if:true={doesRMNumberExist}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line1}</span
+                        >
+                      </template>
+                      <template if:true={doesAddressExist}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line2}</span
+                        >
+                      </template>
+                    </template>
+                    <template if:true={displayLocationDetails}>
+                      <span
+                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                        >{obj.Line1}</span
+                      >
+                      <span
+                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                        >{obj.Line2}</span
+                      >
+                    </template> -->
+                    <!-- <template if:true={validateSObjectLabelDisplay}> -->
+                    <span
+                      class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                      >{obj.Record_Type_Text__c}</span
+                    >
+                    <!--FRONT-2139-->
+                    <!-- </template> -->
+                  </span>
+                </div>
+              </li>
+            </template>
+
+            <!--ERROR msg, if there is no records..-->
+            <template if:false={hasRecords}>
+              <li
+                class="slds-listbox__item"
+                style="text-align: center; font-weight: bold"
+              >
+                No Records Found....
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- START::FRONT-2445,2442,2439,16849,20803 -->
+  <template if:true={searchAccountMobile}>
+    <c-sbr_3_0_mobile-screen>
+      <c-sbr_3_0_custom-mobile-account-search-cmp
+        where-clause={whereClause}
+        onlookupupdate={resultFromMobileCmp}
+        onclosemodal={closeAccountSearchMobile}
+        onhideresults={hideResults}
+        parentcmp={parentcmp}
+        iscontract={isContract}
+        record-type-name={recordTypeName}
+      ></c-sbr_3_0_custom-mobile-account-search-cmp>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <!-- END::FRONT-2445,2442,2439 -->
+  <template if:true={isModalOpen}>
+    <c-sbr_3_0_custom-modal-cmp
+      is-modal-open={isModalOpen}
+      onclosemodal={closeModal}
+      onhideresults={hideResults}
+      parentcmp={parentcmp}
+    ></c-sbr_3_0_custom-modal-cmp>
+  </template>
+  <!--START:: Commenting out as a prt of FRONT-2439-->
+  <!--template if:true={displayToast}>
+    <c-sbr_3_0_custom-toast-message
+      errtitle={errorTitle}
+      errmsg={errorMsg}
+      showsuccess={displayToast}
+      onclosetoast={closeToast}
+      successtitl={successTitle}
+      successmesg={successMsg}
+    ></c-sbr_3_0_custom-toast-message>
+  </template-->
+  <!--END:: Commenting out as a prt of FRONT-2439-->
+  <template if:true={showAllResultsFlag}>
+    <!--fix for FRONT-17277,17285,16849,20803-->
+    <template lwc:if={isMobile}>
+      <c-sbr_3_0_custom-mobile-account-search-cmp
+        where-clause={whereClause}
+        onlookupupdate={resultFromMobileCmp}
+        onclosemodal={closeAccountSearchMobile}
+        onhideresults={hideResults}
+        parentcmp={parentcmp}
+        iscontract={isContract}
+        record-type-name={recordTypeName}
+        show-results={showResults}
+        search-key={searchKey}
+        onshowaccountcreationmodal={showAccountCreationModal}
+      >
+      </c-sbr_3_0_custom-mobile-account-search-cmp>
+    </template>
+    <!--fix for FRONT-17277,17285-->
+    <!--Front-14007-->
+    <template lwc:else>
+      <!--Added for Front-20803-->
+      <c-sbr_3_0_custom-account-list-view-cmp
+        show-results={showResults}
+        onhideresults={hideResults}
+        search-key={searchKey}
+        parentcmp={parentcmp}
+        onshowaccountcreationmodal={showAccountCreationModal}
+        is-contract={isContract}
+        record-type-name={recordTypeName}
+      ></c-sbr_3_0_custom-account-list-view-cmp>
+    </template>
+  </template>
+</template>

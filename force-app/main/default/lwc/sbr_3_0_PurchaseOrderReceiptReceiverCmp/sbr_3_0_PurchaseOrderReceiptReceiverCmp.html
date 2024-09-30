@@ -1,0 +1,77 @@
+<template>
+	<lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}
+		active-section-name={activeSections}>
+		<lightning-accordion-section name="Receiver #" label={receiverLabel}>
+			<div class="slds-grid slds-page-header slds-wrap slds-m-top_small" style="background-color:lightgrey;">
+				<div class="slds-col slds-size_8-of-12">
+					<lightning-icon class="slds-m-bottom_small" icon-name="standard:orders" size="medium"
+						alternative-text="Indicates approval">
+					</lightning-icon>
+                    <span class="HeadlineCSS slds-p-bottom_small slds-p-left_small"><b>{receiverLabel2}</b></span>
+				</div>
+                <div class="slds-col slds-size_2-of-12">
+					<lightning-button variant="brand" label="Print Receiver" title="Print Receiver"
+						></lightning-button>
+				</div>
+				<div class="slds-col slds-size_2-of-12">
+					<lightning-button variant="neutral" label="Make Adjustments" title="Make Adjustments"
+						onclick={handleClick} disabled={isDisabled}></lightning-button>
+				</div>
+				<!--Nikhil-->
+				<div class="slds-col slds-size_2-of-12">                        
+                    <div style="margin-right:40px;">
+						<template if:true={showModalOnMakeAdj}>
+							<c-s-b-r_3_0_receipt-adjustment-modal onclosereceiptadjustment={handleCloseReceiptModal} onproceedreceiptadjustment={handleReceiptAdjust}></c-s-b-r_3_0_receipt-adjustment-modal>
+                        </template>
+						
+						<template if:true={nextModal}>
+						<section aria-modal="true" class="slds-modal slds-fade-in-open slds-align-absolute_center slds-modal_small">
+							<div class="slds-modal__container">
+								<div class="slds-modal__header">
+									<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleClose}>
+										<lightning-icon icon-name="utility:close"
+											alternative-text="close"
+											variant="inverse"
+											size="small" ></lightning-icon>
+										<span class="slds-assistive-text">Close</span>
+									</button>
+									<h1 id="modal-heading-02" class="slds-modal__title slds-align_absolute-center slds-hyphenate">Receipt Adjustment</h1> 
+								</div>
+								<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+									<p>Make the necessary edits to the line items below and then hit Submit Adjustment.</p></br>
+									<div class="hideFirstColTable">
+										<lightning-datatable key-field="comboId" data-id="receiptAdjustment" draft-values={draftValues} data={dataReceiptAdj} columns={columnsReceiptAdj} hide-checkbox-column hide suppress-bottom-bar>
+										</lightning-datatable>
+									</div>
+								</div>
+								<div class="slds-modal__footer">
+									<lightning-button label="Back" onclick={handleBack} class="slds-p-left_small"></lightning-button>
+									<lightning-button label="Submit Adjustment" onclick={handleSave} variant="brand" style="padding-left: 10px"></lightning-button>
+								</div>
+							</div>
+						</section>
+						<div class="slds-backdrop slds-backdrop_open"></div>
+						</template>
+					</div>
+				</div>
+			</div>
+
+            <div>
+			<lightning-datatable class="slds-wrap" key-field="Id" data={receiverRec} columns={columnsReceiver} selected-rows={selectedRowIds} onrowselection={handleSelection}>
+			</lightning-datatable>
+            </div>
+            <div class="slds-grid slds-wrap totalCSS slds-p-top_small slds-p-bottom_small">
+                <div class="slds-col slds-size_10-of-12 slds-align_center" >
+                    <div style="margin-left:10px">
+                            <p>Totals</p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_2-of-12 slds-align_right">
+                    <div>
+                        <p>Total: {totalCost}</p>
+                    </div>
+                </div>
+            </div>
+		</lightning-accordion-section>
+	</lightning-accordion>
+</template>

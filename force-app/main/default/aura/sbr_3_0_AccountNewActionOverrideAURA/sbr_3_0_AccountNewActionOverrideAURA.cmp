@@ -1,0 +1,7 @@
+<aura:component implements="lightning:actionOverride,force:hasSObjectName">
+  <lightning:workspaceAPI aura:id="workspaceAPI"></lightning:workspaceAPI>
+  <c:sbr_3_0_AccountNewActionOverrideDelegator
+    onclosetab="{!c.handleCloseTab}"
+    aura:id="delegator"
+  ></c:sbr_3_0_AccountNewActionOverrideDelegator>
+</aura:component>

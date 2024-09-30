@@ -1,0 +1,50 @@
+<template>
+  <lightning-modal-header label="Convert to Rental"> </lightning-modal-header>
+  <template lwc:if={showSpinner}>
+    <div class="slds-is-relative spiner-container">
+      <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </div>
+  </template>
+  <template lwc:else>
+    <template lwc:if={showError}>
+      <c-sbr_3_0_inline-error-card
+        title={labels.CONVERT_TO_RENTAL_ERROR_TITLE}
+        variant="Error"
+      ></c-sbr_3_0_inline-error-card>
+      <div
+        class="slds-text-body_small slds-p-top_medium slds-p-bottom_large slds-p-horizontal_xx-large"
+      >
+        {labels.CONVERT_TO_RENTAL_ERROR_MESSAGE}
+      </div>
+    </template>
+    <template lwc:else>
+      <c-sbr_3_0_convert-to-rental-merch
+        record-id={recordId}
+        object-api-name={objectApiName}
+        rental-product={rentalProduct}
+      ></c-sbr_3_0_convert-to-rental-merch>
+    </template>
+    <footer class="slds-modal__footer footer-spacing">
+      <template lwc:if={showError}>
+        <lightning-button
+          label="Go Back"
+          onclick={handleCancel}
+          class="slds-m-right_small"
+        ></lightning-button>
+      </template>
+      <template lwc:else>
+        <lightning-button
+          label="Cancel"
+          onclick={handleCancel}
+          class="slds-m-right_small"
+        ></lightning-button>
+        <lightning-button
+          label="Submit"
+          variant="brand"
+          onclick={handleSubmit}
+          class="sbrSourcingBorder"
+        ></lightning-button>
+      </template>
+    </footer>
+  </template>
+</template>

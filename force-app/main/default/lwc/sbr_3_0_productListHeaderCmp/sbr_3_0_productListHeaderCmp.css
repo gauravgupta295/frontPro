@@ -1,0 +1,229 @@
+.slds-icon-standard-lead-list {
+    background-color: var(--lwc-brandPrimary, #3fa665);
+}
+
+.slds-dropdown_left {
+    margin-top: 5px;
+    max-height: 50vh;
+    overflow-y: auto;
+    text-overflow: ellipsis;
+    min-width: 320px;
+}
+
+.cart-button-container {
+    position: relative;
+}
+
+.cart-count {
+    background-color: #008400;
+    border-radius: 11px;
+    color: #ffffff;
+    font-size: 8px;
+    padding: 1px 4.5px;
+    position: absolute;
+    top: -6px;
+    right: -5px;
+}
+
+.all-items-mob-ctr {
+    background: #ffffff;
+}
+
+.item-search-input {
+
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    width: 271px;
+    height: 28px;
+    border-radius: 6px;
+    flex: none;
+    order: 0;
+    flex-grow: 1;
+
+}
+
+.all-items {
+    background: #ffffff;
+}
+
+.list-view {
+    display: none;
+}
+
+.list-view-options {
+    background: #FFFFFF;
+    padding: 0;
+    margin: 0;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 21px;
+}
+
+.list-view-span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    /* width: 375px; */
+    width: 94%;
+    color: #444444;
+}
+
+
+.list-view.show {
+    display: block;
+}
+
+.selected-btn {
+    color: #25683E;
+    font-weight: 400;
+    border-bottom: #E5E5E5;
+}
+
+.back-item-search-group {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+}
+
+.back-item-search-group .slds-button {
+    width: 100%;
+    border: #EAEAEB;
+}
+
+.header-mob {
+    background-color: #FAFAF9;
+    /*width: 100vw;*/
+    border-width: 1px;
+    border-color: #E5E5E5;
+    border-style: solid;
+}
+
+.header-mob-hide {
+    display: none;
+}
+
+
+.header-mob-show {
+    display: block;
+}
+
+.item-filter-details {
+    width: 311px;
+    height: 18px;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    overflow-wrap: break-word;
+}
+
+.all-items {
+    /*min-height: 100px;
+    overflow: hidden;
+    width: 480px;
+    word-wrap: break-word;*/
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #181818;
+}
+
+.back-item-ctr {
+    border-width: 1px;
+    border-color: #E5E5E5;
+    border-style: solid;
+    background-color: #FAFAF9;
+}
+
+.back-button-icon {
+    --lwc-colorTextIconDefault: #25683E;
+}
+
+.active-state {
+    color: #25683E;
+    background: #EDF6EF;
+    font-weight: 400;
+    border: none;
+}
+
+.selected-btn {
+    color: #25683E;
+    font-weight: 400;
+    border: none;
+    background: #FAFAF9;
+}
+
+.list-view-search-header {
+    background: #FAFAF9;
+}
+
+.add-user-icon {
+    right: 0px;
+    float: right;
+    padding-right: 16px;
+}
+
+.active-icon-state {
+    --lwc-colorTextIconDefault: #25683E;
+}
+
+.all-items-txt {
+    font-style: normal;
+    line-height: 21px;
+}
+
+.product-filter {
+    display: none;
+}
+
+.product-filter.show {
+    display: block;
+}
+
+.add-customer {
+    display: none;
+}
+
+.add-customer.show {
+    display: block;
+}
+
+.record-page {
+    display: none;
+}
+
+.record-page.show {
+    display: block;
+}
+
+.on-select {
+    --lwc-brandAccessibleActive: #25683E;
+}
+
+.cust-added {
+    top: -44px;
+    right: -5px;
+    height: 5px;
+    width: 5px;
+    left: 27px;
+    border-radius: 50%;
+    display: inline-flex;
+    position: relative;
+
+    /* SBR Brand Color Palette/25683E */
+
+    background: #25683E;
+}
+
+.cust-icon {
+    display: none;
+}
+
+.cust-icon.show {
+     display: block;
+}

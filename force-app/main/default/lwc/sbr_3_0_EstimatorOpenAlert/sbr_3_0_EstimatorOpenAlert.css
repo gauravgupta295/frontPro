@@ -1,0 +1,13 @@
+.blackTextColor {
+    color: black;
+    width: 100%;
+}
+
+.pillCustomCss {
+    /* background-color: #f5cb1f; */
+    width: 100%;
+}
+
+.blackIcon {
+    --sds-c-icon-color-foreground-default: black;
+}

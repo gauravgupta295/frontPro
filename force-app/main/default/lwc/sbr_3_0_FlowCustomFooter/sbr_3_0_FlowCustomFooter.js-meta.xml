@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="showNextButton" label="Show Next Button" type="Boolean" role="inputOnly" />
+            <property name="lableNextButton" label="Label For Next Button" type="String" role="inputOnly" />
+            <property name="showPreviousButton" label="Show Previous Button" type="Boolean" role="inputOnly" />
+            <property name="lablePreviousButton" label="Label For Previous Button" type="String" role="inputOnly" />
+            <property name="showCancelButton" label="Show Cancel Button" type="Boolean" role="inputOnly" />
+            <property name="lableCancelButton" label="Label For Cancel Button" type="String" role="inputOnly" />
+            <property name="showSaveButton" label="Show Save Button" type="Boolean" role="inputOnly" />
+            <property name="lableSaveButton" label="Label For Save Button" type="String" role="inputOnly" />
+            <property name="recordId" label="RecordId to redirect" type="String" role="inputOnly" />
+            <property name="object" label="Object on which flow is configured" type="String" role="inputOnly" />
+            <property name="isRedirectToURL" label="Redirect Using URL" type="Boolean" role="inputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

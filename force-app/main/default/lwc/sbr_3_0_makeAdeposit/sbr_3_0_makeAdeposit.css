@@ -1,0 +1,41 @@
+/* CSS for styling the 'slds-border_top' class with the 'line' modifier */
+.slds-border_top.line {
+  color: #f0f0f0;
+}
+
+/* CSS for styling the 'mild-bold' class */
+.mild-bold {
+  font-weight: 500;
+}
+
+/* CSS for styling the 'slds-border_bottom' class */
+.slds-border_bottom {
+  color: grey;
+  width: 100%;
+}
+
+/* CSS for styling the 'text' class */
+.text {
+  position: relative;
+  padding-left: 20px;
+}
+
+/* CSS for styling the 'currency' class */
+.currency {
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  content: '$';
+}
+
+/* CSS for styling the 'slds-modal__container' class */
+.slds-modal__container {
+  max-width: 35rem;
+  min-width: 35rem;
+}
+
+/* CSS for styling the 'spinnermodal' class */
+.spinnermodal {
+  height: 35rem;
+  position: relative
+}

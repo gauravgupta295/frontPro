@@ -1,0 +1,45 @@
+:host {
+    --slds-c-radio-mark-color-foreground: #25683E;
+    --slds-c-radio-color-background-checked: #FFFFFF;
+}
+.asset-info {
+  font-size: 14px;
+  padding-top: 10px;
+  margin-top: 0;
+}
+.asset-label {
+  font-size: 14px;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.item-class {
+  border-top-width: 1px;
+  border-top-style: double;
+  border-top-color: #c9c9c9;
+  margin-bottom: 10px;
+}
+.display-name {
+  font-weight: 700;
+  color: #25683e;
+  font-size: large;
+  margin: top 0%;
+}
+
+input[type="radio"] {
+  margin-right: 10px;
+  accent-color: #25683e;
+}
+.successLink {
+  color: #25683e !important;
+}
+
+.removeButtonStyling {
+  border: none !important;
+  color: #25683e;
+  padding: 0;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+}

@@ -1,0 +1,307 @@
+<template>
+   <!-- FRONT-7656 Added Mobile Screen-->
+   <c-sbr_3_0_mobile-screen props={mobileProps} title="Cancel Items">
+      <template if:false={showCancelScreen}>
+         <!-- FRONT-9344: Added div -->
+         <div id="cancel-content">
+            <!-- Added visibility condition for FRONT-7656 -->
+            <!-- Added class in template for FRONT-9344 -->
+            <template if:false={allRecordsSelected}>
+               <lightning-layout horizontal-align="space" class="textAlignment">
+                  <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+                     <h2 class="attribute-label">{label.CANCEL_PROMPT}</h2>
+                  </lightning-layout-item>
+               </lightning-layout>
+            </template>
+            <!-- End FRONT-7656 -->
+            <!-- Start FRONT-7656 -->
+            <template if:true={allRecordsSelected}>
+               <lightning-layout
+                  horizontal-align="space"
+                  class="textAlignment msgAlignment bannerColor">
+                  <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+                     <div class="custom-container">
+                        <div class="icon-container">
+                           <lightning-icon
+                              icon-name="utility:warning"
+                              size="small"
+                              class="iconClass"
+                              ></lightning-icon>
+                        </div>
+                        <div class="text-container">
+                           <h3 class="heading1">{label.CANCEL_ITEMS_WARNING_ONE}</h3>
+                           <h1 class="heading2">{label.CANCEL_ITEMS_WARNING_TWO}</h1>
+                        </div>
+                     </div>
+                  </lightning-layout-item>
+               </lightning-layout>
+            </template>
+         </div>
+         <!-- End FRONT-9344 -->
+         <!-- End FRONT-7656 -->
+         <!-- Start FRONT-9344 -->
+         <div class="slds-grid slds-grid_align-spread  slds-var-p-horizontal_small" slot="footer">
+            <template if:false={showCancelResButton}>
+               <lightning-button
+                  label={label.NOBUTTON}
+                  onclick={closeModal}
+                  class="neutral-button-old"
+                  ></lightning-button>
+               <lightning-button
+                  label={label.CANCEL_SELECTED_ITEMS}
+                  onclick={handleCancelClick}
+                  variant="brand"
+                  class="brand-button-old"
+                  disabled={singleItemCancel}
+                  ></lightning-button>
+            </template>
+            <template if:true={showCancelResButton}>
+               <!-- End FRONT-9344 -->
+               <!-- Start FRONT-7656 -->
+               <template if:true={isRental}>
+                  <!-- Removed template condition for FRONT-9344 -->
+                  <lightning-button
+                     label="Cancel Reservation"
+                     title="Successful action"
+                     onclick={cancelReservation}
+                     class="neutral-button"
+                     disabled={allnotCheckd}
+                     ></lightning-button>
+               </template>
+               <!-- End FRONT-7656 -->
+               <lightning-button
+                  label={label.NOBUTTON}
+                  onclick={closeModal}
+                  class="neutral-button"
+                  ></lightning-button>
+               <!-- Added disabled for FRONT-7656 -->
+               <lightning-button
+                  label={label.CANCEL_SELECTED_ITEMS}
+                  onclick={handleCancelClick}
+                  variant="brand"
+                  class="brand-button"
+                  disabled={singleItemCancel}
+                  ></lightning-button>
+            </template>
+         </div>
+      </template>
+      <!--START: FRONT-7654-->
+      <template if:true={showCancelScreen}>
+         <lightning-layout slot="title" class="white-color-bg">
+            <lightning-layout-item size="12">
+               <div class="back-item-ctr">
+                  <lightning-button
+                     label={label.GO_BACK}
+                     onclick={closeModal}
+                     class="neutral-button-old"
+                     ></lightning-button>
+                  <lightning-button
+                     label={label.CANCEL_SELECTED_ITEMS}
+                     onclick={getAllSelectedRecord}
+                     variant="brand"
+                     class="brand-button-old"
+                     ></lightning-button>
+               </div>
+            </lightning-layout-item>
+         </lightning-layout>
+         <!-- FRONT-9344: Updated div class -->
+         <div id="multiplecancel-content">
+            <!-- Added visibility condition for FRONT-7656 -->
+            <template if:false={allRecordsSelected}>
+               <lightning-layout
+                  horizontal-align="space"
+                  class="textAlignment"
+                  slot="title"
+                  >
+                  <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+                     <h2 class="attribute-label">{label.CANCEL_PROMPT}</h2>
+                  </lightning-layout-item>
+               </lightning-layout>
+            </template>
+            <!-- End FRONT-7656 -->
+            <!-- Start FRONT-7656 -->
+            <template if:true={allRecordsSelected}>
+               <lightning-layout
+                  horizontal-align="space"
+                  class="textAlignment msgAlignment bannerColor"
+                  >
+                  <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+                     <div class="custom-container">
+                        <div class="icon-container">
+                           <lightning-icon
+                              icon-name="utility:warning"
+                              size="small"
+                              class="iconClass"
+                              ></lightning-icon>
+                        </div>
+                        <div class="text-container">
+                           <h3 class="heading1">{label.CANCEL_ITEMS_WARNING_ONE}</h3>
+                           <h1 class="heading2">{label.CANCEL_ITEMS_WARNING_TWO}</h1>
+                        </div>
+                     </div>
+                  </lightning-layout-item>
+               </lightning-layout>
+            </template>
+            <!-- End FRONT-7656 -->
+            <template if:true={cancelRows}>
+               <template for:each={cancelRows} for:item="lineItem" for:index="index">
+                  <div class="border-class" key={lineItem.Id}>
+                     <div class="slds-form-element__control checkboxAlignment">
+                        <lightning-input
+                           type="checkbox"
+                           checked
+                           label={lineItem.Name}
+                           name={lineItem.Name}
+                           id={lineItem.Id}
+                           value={lineItem.Id}
+                           data-key="firstColumnCheckbox"
+                           onchange={handleCheckboxSelect}
+                           class="textInput"
+                           >
+                           <!-- Changed onchange menthod for FRONT-7656 -->
+                        </lightning-input>
+                     </div>
+                     <div class="slds-grid slds-gutters slds-wrap">
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.ITEM_QUANTITY}</span>
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Quantity}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.CAT_CLASS}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.CatClass}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.MIN_RATE}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Min_Rate}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.DAY_RATE}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Daily_Rate}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.WEEK_RATE}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Weekly_Rate}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.FOUR_WEEK_RATE}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Monthly_Rate}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                           >
+                           <span class="slds-text-title textBold rowAlignment"
+                              >{label.SUBTOTAL}</span
+                              >
+                        </div>
+                        <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                           <span class="slds-text-title">{lineItem.Item_Subtotal}</span>
+                        </div>
+                        <div
+                           class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small notes-class"
+                           >
+                           <span class="slds-text-title fake-link rowAlignment"
+                              >View Notes</span
+                              >
+                        </div>
+                     </div>
+                  </div>
+               </template>
+            </template>
+         </div>
+         <!-- Start FRONT-9344 -->
+         <template if:false={showCancelResButton}>
+            <span> here are the cancel footer buttons</span>
+            <div class="slds-grid slds-grid_align-space slds-var-p-horizontal_small" slot="footer">
+               <lightning-button
+                  label={label.GO_BACK}
+                  onclick={closeModal}
+                  class="neutral-button-old"
+                  ></lightning-button>
+               <lightning-button
+                  label={label.CANCEL_SELECTED_ITEMS}
+                  onclick={getAllSelectedRecord}
+                  variant="brand"
+                  class="brand-button-old"
+                  ></lightning-button>
+            </div>
+         </template>
+         <template if:true={showCancelResButton}>
+            <!-- End FRONT-9344 -->
+            <div class="slds-grid slds-grid_align-space slds-var-p-horizontal_small" slot="footer">
+               <!-- Start FRONT-7656 -->
+               <template if:true={isRental}>
+                  <!-- Removed template condition for FRONT-9344 -->
+                  <lightning-button
+                     label="Cancel Reservation"
+                     title="Successful action"
+                     onclick={cancelReservation}
+                     class="neutral-button"
+                     disabled={allnotCheckd}
+                     ></lightning-button>
+               </template>
+               <!-- End FRONT-7656 -->
+               <lightning-button
+                  label={label.GO_BACK}
+                  onclick={closeModal}
+                  class="neutral-button"
+                  ></lightning-button>
+               <!-- Added disabled for FRONT-7656 -->
+               <lightning-button
+                  label={label.CANCEL_SELECTED_ITEMS}
+                  onclick={getAllSelectedRecord}
+                  variant="brand"
+                  class="brand-button"
+                  disabled={allChecked}
+                  ></lightning-button>
+            </div>
+         </template>
+      </template>
+      <!--END: FRONT-7654-->
+      <!-- Start FRONT-7656 -->
+      <template if:true={callCancelCmp}>
+         <div class="dexter">
+            <c-sbr_3_0_order-cancel-cmp
+               order-id={recordId}
+               onclosemodal={handleCloseCancel}
+               >
+            </c-sbr_3_0_order-cancel-cmp>
+         </div>
+      </template>
+      <!-- End FRONT-7656 -->
+   </c-sbr_3_0_mobile-screen>
+</template>

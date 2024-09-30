@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="initialLookupValue" label="Record ID" type="String"/>
+            <property name="selectedContract" type="@salesforce/schema/SM_PS_Equipment_Contract_History__c" label="Selected Contract"/>
+            <property name="contractJobLocation" type="String" label="Contract Location"/>
+            <property name="contractJobNumber" type="String" label="Contract Number"/>
+            <property name="customer" type="String" label="Customer Name Number"/>
+            <property name="driver_state" type="String" label="Customer Name Number"/>
+            <property name="contractId" type="String" label="WO Contract Id"/>
+            <property name="applyRPP" type="Boolean" label="Apply RPP Coverage"/>
+            <property name="isRequired" type="Boolean" label="Is Required Field"/>
+            <property name="customerPONumber" type="String" label="Customer PO Number"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

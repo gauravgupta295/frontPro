@@ -1,0 +1,27 @@
+.dummy{
+	color : black;
+}
+
+.asset-info {
+    font-size: 14px;
+    padding-top: 10px;
+    margin-top: 0;
+  }
+  .asset-label {
+    font-size: 14px;
+    font-weight: bold;
+    padding-top: 10px;
+  }
+  .custom-label {
+    color: green;
+  }
+
+  .item-class{
+    border-top-width: 1px;
+    border-top-style: double;
+    border-top-color: #808080;
+    margin-bottom: 10px;
+  }
+  .slds-accordion__content div{
+    height: inherit;
+  }

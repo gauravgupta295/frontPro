@@ -1,0 +1,32 @@
+/* Set fixed width for modal container */
+.slds-modal__container {
+    max-width: 30rem;
+    min-width: 30rem;
+}
+
+/* Center align items in slds columns */
+.slds-col {
+    align-items: center;
+}
+
+/* Hide button labels in elements with class 'no-label' */
+.no-label .slds-button__label {
+    display: none;
+}
+
+/* Add margin to top of elements with class 'seperatorClass' */
+.seperatorClass {
+    margin-top: 27px;
+}
+
+/* Add padding to the left of elements with class 'alignButtonLeft' */
+.alignButtonLeft {
+    padding-left: 14px;
+}
+
+/* Add padding to modal content */
+.slds-modal__content {
+    padding-left: 25px;
+    padding-bottom: 25px;
+    padding-top: 25px;
+}

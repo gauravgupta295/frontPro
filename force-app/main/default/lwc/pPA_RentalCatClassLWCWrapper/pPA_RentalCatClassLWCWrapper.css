@@ -1,0 +1,33 @@
+:host {
+    --slds-c-accordion-heading-text-color: black;
+    --slds-c-accordion-heading-font-size: 1.2rem;
+    --slds-c-accordion-heading-font-weight: bold;
+}
+
+.datatable-zoom {
+    zoom: 75%;
+}
+
+.fixedHeader th{ 
+    position: fixed;
+    top: 0;
+}
+
+.record-container {
+    height: 300px;
+    overflow: auto;
+}
+
+.displayCard {
+    display: block;
+}
+.htmltable {
+    display: block;
+    height: 300px;
+    overflow-y: auto;
+    zoom: 85%;
+}
+
+.customwidth {
+    min-width: 160px;
+}

@@ -1,0 +1,42 @@
+ul:not(.browser-default) li {
+    list-style-type: disc;
+}
+
+.alert-margin{
+    margin-top: 11%;
+}
+
+.my-card {
+    display: block;
+}
+
+.sbr-radio-button {
+    margin-left: 2%;
+    margin-right: 1%;
+}
+
+.sbr-details {
+    margin-left: 3%;
+}
+
+.sbr-list-item{
+    overflow-y: auto;
+    width: 100%;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    right: 0;
+    height: 75vh;
+}
+
+.user-div{
+    border-bottom: 1px solid gray;
+    margin-top:4%;
+    padding-bottom:4%;
+    font-size: 13px;
+}
+
+.parent-container {
+    position: relative;
+    height: 80vh;
+  }

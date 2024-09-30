@@ -1,0 +1,70 @@
+<template>
+  <section
+    role="dialog"
+    aria-labelledby="dup-heading"
+    aria-modal="true"
+    aria-describedby="dup-content"
+    class="slds-modal slds-fade-in-open"
+  >
+    <div class="slds-modal__container large-modal-content">
+      <header class="slds-modal__header">
+        <!-- sldsValidatorIgnoreNextLine -->
+        <button
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          title="Close"
+          onclick={handleCloseModal}
+        >
+          <lightning-icon
+            icon-name="utility:close"
+            alternative-text="close"
+            variant="inverse"
+            size="small"
+          ></lightning-icon>
+          <span class="slds-assistive-text">Close</span>
+        </button>
+        <h2 id="dup-heading" class="slds-text-heading_medium slds-hyphenate">
+          {header}
+        </h2>
+      </header>
+      <div class="slds-modal__content" id="dup-content">
+        <div lwc:if={isLoading} class="spinner">
+          <lightning-spinner
+            class="spins"
+            variant="brand"
+            alternative-text="Loading"
+          ></lightning-spinner>
+        </div>
+
+        <lightning-layout
+          horizontal-align="space"
+          class="slds-var-p-around_large"
+          multiple-rows
+        >
+          <lightning-layout-item size="12">
+            <h2 class="sub-heading">{totalDuplicateSubHeading}</h2>
+          </lightning-layout-item>
+          <lightning-layout-item size="12" class="slds-var-p-vertical_small">
+            {duplicateRecordMessage}
+          </lightning-layout-item>
+          <lightning-layout-item size="12" class="slds-var-p-bottom_medium">
+            <h2 class="attribute-label">{ProceedLabelAction}</h2>
+          </lightning-layout-item>
+        </lightning-layout>
+      </div>
+      <footer class="slds-modal__footer">
+        <lightning-button
+          label="No"
+          onclick={handleCloseModal}
+          class="neutral-button"
+        ></lightning-button>
+        <lightning-button
+          label="Yes"
+          onclick={handleYesClick}
+          variant="brand"
+          class="slds-var-p-left_small brand-button"
+        ></lightning-button>
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

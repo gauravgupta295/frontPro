@@ -1,0 +1,20 @@
+<template>
+
+    <lightning-card>
+        <p class="slds-p-horizontal_small">
+            <lightning-record-form
+                record-id={recordId}
+                object-api-name={objectApiName}
+                record-type-id={recordTypeId}
+                fields={objectFields}
+                layout-type={layoutType}
+                columns={columns}
+                onsubmit={handleSubmit}
+                onsuccess={handleSuccess}
+                onerror={handleError}
+                oncancel={handleCancel}
+            ></lightning-record-form>
+        </p>
+    </lightning-card>
+
+</template>

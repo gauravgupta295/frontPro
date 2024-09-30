@@ -1,0 +1,15 @@
+.outerItmSection {
+    border-bottom: 1px solid #A0A0A0;
+    padding: 8px 12px;
+}
+
+.reservationHeaderClass {
+    color: var(--sbr-brand-color-palette-25683-e, #24693E);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+}
+
+.rowItmClass {
+    line-break: normal;
+}

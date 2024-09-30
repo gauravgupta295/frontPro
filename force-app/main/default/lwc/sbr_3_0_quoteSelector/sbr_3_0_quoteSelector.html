@@ -1,0 +1,45 @@
+<!-- sldsValidatorIgnore -->
+<template>
+
+    <!-- <lightning-button label="Select Template" onclick={showModalBox}></lightning-button> -->
+    <!-- <c-sbr_3_0_modal-cmp header="Template Selection"> -->
+        <lightning-quick-action-panel header="Generate Document">
+       <!--  <span slot="modalContent"> -->
+        <div style={modalStyle}>
+            <lightning-spinner alternative-text="Loading" size="medium" if:true={spinner}></lightning-spinner>
+            <div if:false={spinner}>
+                <span if:true={showTemplateCondition} class="slds-align_absolute-center">Select a template you wish to use.</span> 
+                <lightning-combobox value={value} placeholder="Select a template" options={templates} onchange={handleChange} if:true={showTemplateCondition}></lightning-combobox>
+                <span if:true={showFileNameCondition}>
+                    <div class="slds-m-top_small">
+                    </br>
+                        <h6>Document will be saved as '{fileName}.pdf'</h6>
+                    </br>
+                        <lightning-input type="checkbox" label="Do you want to specify a different file name for the generated document.?" onchange={handleChecked} > </lightning-input>
+                            <div if:true={isChangeFileName} class="slds-p-around_medium lgc-bg">
+                                <lightning-input class="inputFileName" type="text" value ={fileName} label="Enter the File Name" onchange={handleFileNameChange} placeholder="Enter file name..." message-when-value-missing="File Name is required." required></lightning-input>
+                            </div>
+                    </div>
+                </span>
+                <!-- <lightning-button label="Submit" class="slds-align_absolute-center slds-p-top_small" onclick={submitTemplate} disabled={disableSubmitButton} if:true={showTemplateCondition}></lightning-button> -->
+                <span if:true={showGetFileCondition}>The PDF is still being generated, please click the 'Get File' button when its available.</span>
+                <lightning-button label="Get File" class="slds-align_absolute-center slds-p-top_small" onclick={getFlie} disabled={disableGetFileButton} if:true={showGetFileCondition}></lightning-button>
+                <span if:true={fileRetrieved} class="slds-align_absolute-center"> File retrieved and saved to 'Files' section under Related tab.!
+                    <!-- <div>
+                        <lightning-button variant="success" label="Save to Salesforce Files" icon-name="doctype:pdf" class="slds-align_absolute-center slds-p-top_small" title="Save to Salesforce Files" if:true={fileRetrieved} disabled={fileSaved}  onclick={saveFile} ></lightning-button>
+                    </div>   -->                  
+                </span>
+                <div id="adobe-dc-view"></div>
+            </div>
+        </div>
+        <div slot="footer">
+          
+        <button class="slds-button slds-m-left_x-small slds-button_text-destructive cancel-button" onclick={handleCancel}>Cancel</button>
+  
+        <button class="slds-button slds-button_success slds-m-left_x-small submit-button" onclick={submitTemplate} if:true={showTemplateCondition}>Submit</button>
+
+        </div>
+       <!--  </span> -->
+    </lightning-quick-action-panel>
+    <!-- </c-sbr_3_0_modal-cmp> -->
+</template>

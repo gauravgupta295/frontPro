@@ -1,0 +1,6 @@
+<template>
+    <span>{rowItem}</span>
+    <div if:true={branchLocation} class="location slds-text-body_small slds-text-color_weak">{location.City__c}, {location.State__c} {location.Zip_Code__c}</div>
+    <div if:true={branchLocationChronos} class="location slds-text-body_small slds-text-color_weak">{localLocation.city}, {localLocation.state} {localLocation.zip}</div>
+    <div if:true={showBranchDetails} class="location slds-text-body_small slds-text-color_weak">{branchLocationObj.city}, {branchLocationObj.state} {branchLocationObj.zipcode}</div>
+</template>

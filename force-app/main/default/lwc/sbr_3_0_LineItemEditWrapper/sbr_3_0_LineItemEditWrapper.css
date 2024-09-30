@@ -1,0 +1,19 @@
+.slds-modal {
+    height:100% !important;
+    width:100%;
+}
+:host {
+    --slds-c-tabs-item-color-border-active: orange;
+}
+.sti{
+  position: fixed;
+        top: 50px;
+}
+
+.availability-hide{
+    display: none;
+}
+
+.ratematrix.show{
+    display: block;
+}

@@ -1,0 +1,16 @@
+<apex:page standardController="Account_Relationship__c" recordSetVar="acctRels" extensions="SBR_3_0_ModifyAcctRelFlowController">
+    <!--<flow:interview name="SBR_3_0_Update_Account_Relationship" />-->
+    <apex:includeLightning />
+    <div id="lightning" />
+    <script>
+     $Lightning.use("c:SBR_3_0_ModifyAcctRelFlowAuraCmpApp", function() {
+         $Lightning.createComponent("c:SBR_3_0_ModifyAcctRelFlowAuraCmp",
+             {arIds:{!arIds}},
+             "lightning",
+             function(cmp) {
+          		console.log("c:SBR_3_0_ModifyAcctRelFlowAuraCmp loaded successfully in VF page");
+             }
+         );
+     });
+  </script>
+</apex:page>

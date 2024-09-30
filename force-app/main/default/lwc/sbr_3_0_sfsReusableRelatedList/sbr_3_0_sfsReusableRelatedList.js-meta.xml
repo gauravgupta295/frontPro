@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+    <targetConfigs>
+    <targetConfig targets="lightning__RecordPage">
+        <property name="title" type="String" label="Title" required="true"/>
+        <property name="icon" type="String" label="Icon"/>
+        <property name="iconulternativeText" type="String" label="Icon Ulternative Text"/>
+        <property name="relatedListObjectName" type="String" label="Related List Object Field API Name"/>
+        <property name="coloumnLableList" type="String" label="Coloumn Label List(comma seprated)" required="true"/>
+        <property name="fieldApiNamesWithType" type="String" label="Field Api Names With Field Type(Check Example Formate)" required="true"/>
+        <property name="fieldApiNamesWithoutType" type="String" label="Field Api Names(Check Example Formate)" required="true"/>
+        <property name="relatedObjectApiName" type="String" label="Object Api Name" required="true"/>
+        <property name="parentFieldApiName" type="String" label="Parent Field Api Name" required="true"/>
+        <property name="sortFieldName" type="String" label="Sort Field Name" required="true"/> 
+        <property name="parentObjectAPIName" type="String" label="Parent Object API Name" required="true"/> 
+        <property name="recordSize" type="String" label="Total No of records" /> 
+    </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

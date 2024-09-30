@@ -1,0 +1,44 @@
+.rates-variant-group {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.rates-variant-group .slds-button {
+  width: 100%;
+}
+.illustration-error {
+  display: none;
+}
+.illustration-error.show {
+  display: block;
+}
+.refresh-button {
+  --slds-c-button-brand-text-color: blue;
+}
+.rates-grid {
+  display: none;
+}
+.rates-grid.show {
+  display: block;
+}
+.rates-btn-brand {
+  height: 32px;
+  background-color: #24693e;
+  font-weight: 400;
+  font-size: 13px;
+  border: 1px solid #f3f3f3;
+}
+.rates-btn-neutral {
+  color: #24693e;
+  background: #e5e5e5;
+  border-color: #ffffff;
+  font-weight: 400;
+  height: 32px;
+  font-size: 13px;
+}
+.refresh-button-mobile {
+  --slds-c-button-line-height: 2rem;
+  font-size: 13px;
+  font-weight: 400;
+}

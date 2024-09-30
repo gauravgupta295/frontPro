@@ -1,0 +1,66 @@
+.input-address lightning-lookup-address {
+	margin-top: -30px;
+}
+
+input[type="date"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	min-height: 1.2em;
+	min-width: 95%;
+}
+
+input[name="country"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	line-height: 2em;
+}
+
+input[name="province"] {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	line-height: 2em;
+}
+
+input[name="AccountName"] {
+	background-color: #c9c9c9 !important;
+	color: black !important;
+	opacity: 1;
+	text-decoration-color: black;
+}
+
+input[name="dateofbirth"] {
+	-webkit-date-and-time-value: none;
+	text-align: left;
+}
+
+input[name="Name"] {
+	background-color: #c9c9c9 !important;
+	color: black !important;
+	opacity: 1;
+	text-decoration-color: black;
+}
+
+.accordion-section-border-bottom-class .slds-accordion__list-item .slds-accordion__section .slds-accordion__summary .slds-accordion__summary-heading .slds-button {
+	border-bottom: 1px solid #E5E5E5;
+}
+
+/*FRONT-30881*/
+.required-label-padding-class .slds-required {
+	padding-right: 5px;
+}
+
+.custom-disabled-input input[name="AccountId"] {
+	background-color: #E5E5E5 !important;
+	color: #747474 !important;
+	opacity: 1;
+	border: 1px solid #c9c9c9 !important;
+}
+
+/*FRONT-10323 : Fix to address search text box which gets hidden due to search results : making position sticky as important*/
+.input-address-search-create-class .slds-listbox {
+	position: sticky !important;
+}    
+/* Added as part of FRONT-31867*/ 
+input::-webkit-date-and-time-value{
+	text-align: left;
+}

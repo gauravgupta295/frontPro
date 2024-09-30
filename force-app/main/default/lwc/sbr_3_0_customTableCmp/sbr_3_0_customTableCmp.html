@@ -1,0 +1,21 @@
+<template>
+    <div class="header-row">
+        <template for:each={columns} for:item="cols">
+            <div key={cols.label} class="columns slds-text-color_weak">
+                {cols.label}
+            </div>
+        </template>
+    </div>
+    <div class="row-container">
+        <template for:each={rows} for:item="row">
+            <div key={row.id} class="row">
+                <template for:each={columns} for:item="cols">
+                    <div key={cols.fieldName} class="columns">
+                        <c-sbr_3_0_custom-table-row-item-cmp row-data={row} row-key={cols.fieldName}>
+                        </c-sbr_3_0_custom-table-row-item-cmp>
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</template>

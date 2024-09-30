@@ -1,0 +1,210 @@
+<template>
+  <div class="cardHeight">
+    <lightning-card class="bottomPadding card-padding">
+      <div class="slds-card__body card-body">
+        <div class="slds-scrollable auto-margin card-body">
+          <div class="slds-card__header card-header auto-margin auto-padding">
+            <div
+              class="slds-page-header page-header-padding card-header auto-padding auto-margin"
+            >
+              <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                  <div class="slds-media media-wrapper media-padding">
+                    <div class="slds-media__figure">
+                      <lightning-icon
+                        icon-name="standard:product_item"
+                        alternative-text="Line Item(s)"
+                        size="medium"
+                        title="Line Item(s)"
+                        class="slds-icon-standard-product-item"
+                      ></lightning-icon>
+                    </div>
+
+                    <div class="slds-media__body auto-margin auto-padding">
+                      <div class="slds-page-header__name">
+                        <div class="slds-page-header__name-title">
+                          <h1>
+                            <span
+                              class="slds-page-header__title slds-truncate"
+                              title="Product Inquiry"
+                              >Line Item(s)</span
+                            >
+                          </h1>
+                          <p>
+                            <span
+                              class="slds-truncate subtext"
+                              title="Product Inquiry"
+                              >{subText}</span
+                            >
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <ul class="slds-accordion">
+            <li class="slds-accordion__list-item">
+              <section class={accordianClassRental}>
+                <div class="slds-accordion__summary">
+                  <h2
+                    class="slds-accordion__summary-heading accordian-bg"
+                    onclick={accordianActive}
+                    data-accordian-name="rental"
+                  >
+                    <button
+                      class="slds-button slds-button_reset slds-accordion__summary-action"
+                      aria-controls="referenceId-45"
+                      aria-expanded="true"
+                      title="Accordion summary"
+                    >
+                      <template lwc:if={isRentalAccordianIsActive}>
+                        <lightning-icon
+                          icon-name="utility:chevrondown"
+                          alternative-text="Connected"
+                          size="x-small"
+                          class="icon"
+                        ></lightning-icon>
+                      </template>
+                      <template lwc:else>
+                        <lightning-icon
+                          icon-name="utility:chevronright"
+                          alternative-text="Connected"
+                          size="x-small"
+                          class="icon"
+                        ></lightning-icon>
+                      </template>
+
+                      <span class="slds-accordion__summary-content"
+                        >Rental Items ({inventoryNumber})</span
+                      >
+                    </button>
+                  </h2>
+                </div>
+                <div class="slds-accordion__content" id="referenceId-40">
+                  <div class="slds-card__body auto-margin auto-padding">
+                    <lightning-card>
+                      <div
+                        class="slds-card__header slds-grid auto-padding"
+                      ></div>
+                      <c-sbr_3_0_convert-to-contract-header
+                        is-rental={trueVar}
+                        inventory-label="Rental Items"
+                      ></c-sbr_3_0_convert-to-contract-header>
+                      <div class="tablebg">
+                        <c-sbr_3_0_custom-data-table-cmp
+                          key-field="Id"
+                          columns={rentalColumns}
+                          data={rentalData}
+                          wrap-text-max-lines="2"
+                          class="custom-datatable"
+                          selected-rows={preSelectedRows}
+                          resize-column-disabled
+                        >
+                        </c-sbr_3_0_custom-data-table-cmp>
+                      </div>
+                      <button class="slds-button slds-button_neutral view-more">
+                        View All
+                      </button>
+                    </lightning-card>
+                  </div>
+                </div>
+              </section>
+            </li>
+          </ul>
+          <ul class="slds-accordion">
+            <li class="slds-accordion__list-item">
+              <section class={accordianClassSales}>
+                <div class="slds-accordion__summary">
+                  <h2
+                    class="slds-accordion__summary-heading accordian-bg"
+                    onclick={accordianActive}
+                    data-accordian-name="sales"
+                  >
+                    <button
+                      class="slds-button slds-button_reset slds-accordion__summary-action"
+                      aria-controls="referenceId-45"
+                      aria-expanded="true"
+                      title="Accordion summary"
+                    >
+                      <template lwc:if={isSalesAccordianIsActive}>
+                        <lightning-icon
+                          icon-name="utility:chevrondown"
+                          alternative-text="Connected"
+                          size="x-small"
+                          class="icon"
+                        ></lightning-icon>
+                      </template>
+                      <template lwc:else>
+                        <lightning-icon
+                          icon-name="utility:chevronright"
+                          alternative-text="Connected"
+                          size="x-small"
+                          class="icon"
+                        ></lightning-icon>
+                      </template>
+
+                      <span class="slds-accordion__summary-content"
+                        >Sales/Misc Items ({inventoryNumber})</span
+                      >
+                    </button>
+                  </h2>
+                </div>
+                <div class="slds-accordion__content" id="referenceId-45">
+                  <div class="slds-card__body auto-margin bottomPadding">
+                    <lightning-card class="bottomPadding">
+                      <div
+                        class="slds-card__header auto-padding slds-grid"
+                      ></div>
+                      <c-sbr_3_0_convert-to-contract-header
+                        inventory-label="Sales/Misc Items"
+                      ></c-sbr_3_0_convert-to-contract-header>
+                      <div class="tablebg">
+                        <c-sbr_3_0_custom-data-table-cmp
+                          key-field="Id"
+                          columns={salesColumns}
+                          data={salesData}
+                          wrap-text-max-lines="2"
+                          class="custom-datatable"
+                          selected-rows={preSelectedRows}
+                          resize-column-disabled
+                        >
+                        </c-sbr_3_0_custom-data-table-cmp>
+                      </div>
+                      <button class="slds-button slds-button_neutral view-more">
+                        View All
+                      </button>
+                    </lightning-card>
+                  </div>
+                </div>
+              </section>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </lightning-card>
+  </div>
+  <div class="slds-docked-form-footer stickyFooter bottomfooter">
+    <div>
+      <lightning-button
+        class="neutral-button footerButton"
+        title="Cancel"
+        label="Cancel"
+      >
+      </lightning-button>
+    </div>
+    <div>
+      <lightning-button
+        class="brand-button footerButton"
+        disabled
+        variant="brand"
+        title="Confirm"
+        label="Confirm"
+      >
+      </lightning-button>
+    </div>
+  </div>
+</template>

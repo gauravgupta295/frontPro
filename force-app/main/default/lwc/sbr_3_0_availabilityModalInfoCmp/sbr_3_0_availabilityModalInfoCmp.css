@@ -1,0 +1,72 @@
+.asset {
+  color: #008545;
+  font-size: small;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.order-link {
+  color: #25683e;
+  font-weight: 700;
+}
+
+@media (max-width: 480px) {
+  .tab-button-container {
+    background-color: #fff;
+    border-bottom: 1px solid #e5e5e5;
+    height: 40px;
+    width: 100%;
+  }
+  .tab-button {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: #444444;
+    font-size: 13px;
+    font-weight: 400;
+    height: 32px;
+    width: 40%;
+  }
+
+  .active-state {
+    background: #25683e;
+    color: #fff;
+  }
+
+  .open {
+    display: block;
+  }
+  .closed {
+    display: none;
+  }
+
+  .slds-section__title-action {
+    background: transparent;
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .slds-section__content {
+    padding-top: unset !important;
+  }
+
+  .asset {
+    color: #24693e;
+  }
+
+  .reservation-item {
+    border-bottom: 1px solid #e5e5e5;
+    padding: 8px 16px;
+  }
+
+  .order-link {
+    font-size: 14px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+  }
+
+  .reservation-text {
+    font-size: 12px;
+    margin: 4px 0;
+  }
+}

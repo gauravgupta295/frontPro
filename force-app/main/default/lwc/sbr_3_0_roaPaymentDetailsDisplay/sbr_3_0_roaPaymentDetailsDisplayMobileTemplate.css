@@ -1,0 +1,15 @@
+.Details {
+    background-color: white !important;
+}
+.headrer-bgc {
+    background-color: #F2F2F2 !important;
+}
+.InvoiceComment {
+    clear: both;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.amountValue{
+    padding-left: 50px;
+}

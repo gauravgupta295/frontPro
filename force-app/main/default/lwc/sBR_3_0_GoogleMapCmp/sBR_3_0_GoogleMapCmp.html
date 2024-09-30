@@ -1,0 +1,74 @@
+<template>
+    <lightning-card title="Maps" icon-name="action:map">
+
+        <template if:true={showSpinner}>
+            <lightning-spinner alternative-text="Loading"></lightning-spinner>
+        </template>
+
+
+
+        <lightning-layout multiple-rows>
+
+            <lightning-layout-item size="12" large-device-size="5" medium-device-size="12" small-device-size="12" padding="around-small">
+                <div class="slds-m-around_medium">
+                    <table>
+                        <thead>
+                            <th>
+                                Account Name
+                            </th>
+                            <th>
+                                Customer Account Number 
+                            </th>
+                            <th>
+                                Type 
+                            </th>
+                        </thead>
+                        <tbody>
+                            <template for:each={accounts} for:item="item" for:index="indexVar">
+                                <tr key={item.Id} class="slds-hint-parent">
+                                    <td class="slds-size_1-of-6">
+                                        <div>
+                                            {item.Name}
+                                        </div>
+                                    </td>
+                                    <td class="slds-size_1-of-6">
+                                        <div>
+                                            {item.Customer_Account_Number__c}
+                                        </div>
+                                    </td>
+                                    <td class="slds-size_1-of-6">
+                                        <div>
+                                            {item.RecordType.Name}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                        
+                    </table>
+                </div>
+
+            </lightning-layout-item>
+
+            <lightning-layout-item size="12" large-device-size="7" medium-device-size="12" small-device-size="12" padding="around-small">
+
+                <div class="slds-m-around_medium">
+
+                    <iframe height="435px" width="100%" src={iFrameURL} allow="geolocation"></iframe>
+
+                    <br/>
+
+                    <div class="slds-m-top_small slds-float_right">
+                        <lightning-button-group>
+                            <lightning-button variant="brand" 
+                                label="Get Current Location"
+                                onclick={handleClick}>
+                            </lightning-button>
+                        </lightning-button-group>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </lightning-card>
+    
+</template>

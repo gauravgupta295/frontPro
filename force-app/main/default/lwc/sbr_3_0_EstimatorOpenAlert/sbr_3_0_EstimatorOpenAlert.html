@@ -1,0 +1,14 @@
+<template>
+    <template if:true={showAlert}>
+        <span class="slds-pill pillCustomCss" style={backgroundStyle}>
+            <span>
+                <span class="slds-pill__icon_container">
+                    <slot>
+                        <lightning-icon class="blackIcon slds-var-m-top_xx-small slds-var-p-left_small" icon-name="utility:warning"></lightning-icon>
+                    </slot>
+                </span>
+            </span>
+            <span class="slds-pill__label blackTextColor slds-var-m-bottom_xx-small">{label}</span>
+        </span>            
+    </template>
+</template>

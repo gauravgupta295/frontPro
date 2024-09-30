@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <description>This is a component is for Refund Deposit.</description>
+	<targets>
+		<target>lightning__RecordPage</target>
+		<target>lightning__AppPage</target>
+		<target>lightning__HomePage</target>
+		<target>lightning__RecordAction</target>
+		<target>lightning__FlowScreen</target>
+	</targets>
+	<targetConfigs>
+		<targetConfig targets="lightning__FlowScreen">
+            <property name="recordId" type="String" label="Record Id" description="Record Id"/>
+            <property name="message" type="String" role="outputOnly"/>
+            <property name="source" type="String" label="Flow Source"/>
+        </targetConfig>
+		<targetConfig targets="lightning__RecordAction">
+			<actionType>ScreenAction</actionType>
+		</targetConfig>
+ </targetConfigs>
+</LightningComponentBundle>

@@ -1,0 +1,113 @@
+.iconBorder {
+  border: none !important;
+}
+
+:host ::slotted(.slds-combobox) {
+  display: block;
+  text-align: center;
+}
+.header-mob {
+  background-color: #fafaf9 !important;
+  border-width: 1px;
+  border-color: #e5e5e5;
+  border-style: solid;
+}
+.slds-is-absolute {
+  height: -webkit-fill-available;
+}
+
+.list-view {
+  display: none;
+}
+
+.list-view.show {
+  display: block;
+}
+
+.bgcolor {
+  background-color: white;
+}
+
+.on-select {
+  --lwc-brandAccessibleActive: #25683e;
+}
+/*Added as part of Front-12029*/
+.customPills {
+  margin-bottom: 0.5rem;
+  /* left:0.75rem;
+    padding-top: 0.125rem;
+      padding-bottom: 0.125rem;
+      padding-right: 0.255rem; 
+      border-width: 0.09rem;
+      border-style: solid;
+      border-radius: 0.25rem;*/
+  cursor: pointer;
+
+  color: #25683e !important;
+}
+.filterPills {
+  cursor: pointer !important;
+  color: #25683e !important;
+}
+.customheight {
+  display: flex;
+  gap: 10px;
+}
+
+.pillsContainer {
+  padding-top: 15px;
+}
+
+.customheight {
+  --lwc-heightInput: 62px;
+  width: 40%;
+  padding-left: 12px;
+}
+.iconstyle {
+  margin-left: 10px;
+}
+
+/* Style the select element */
+/*select {
+ 
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  
+}*/
+select {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: white;
+  margin-right: 0;
+  appearance: none; /* Remove default appearance */
+  -webkit-appearance: none; /* For older versions of Safari */
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="black" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>'); /* Black down arrow icon */
+  background-repeat: no-repeat;
+  background-position: right 8px center; /* Adjust space between text and icon */
+  padding-right: 30px; /* Add padding to create space */
+}
+
+/* Style the options inside the dropdown */
+option {
+  background-color: white;
+  color: #333;
+}
+.inputclass {
+  margin-left: 0;
+  width: 100%;
+}
+
+.headerInline {
+  display: inline;
+}
+
+/*Front-12029 ends*/
+
+.zeroBorderRadius {
+  border-radius: 0px;
+}

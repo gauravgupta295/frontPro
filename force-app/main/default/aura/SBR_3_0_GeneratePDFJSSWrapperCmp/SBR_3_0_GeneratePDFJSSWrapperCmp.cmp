@@ -1,0 +1,12 @@
+<!--
+  @description       : 
+  @author            : Shreenivas Adapur
+  @group             : 
+  @last modified on  : 01-26-2024
+  @last modified by  : Shreenivas Adapur
+-->
+<aura:component implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,force:hasSObjectName">
+    <aura:attribute name="isAuraCmp" type="Boolean" default="true"/>        
+    
+    <c:sbr_3_0_GenerateJSSPDF recordId="{!v.recordId}" isAuraCmp="{!v.isAuraCmp}" aura:id="sbr_3_0_GenerateJSSPDF" onvaluechange="{!c.getValueFromLwc}"></c:sbr_3_0_GenerateJSSPDF>
+ </aura:component>

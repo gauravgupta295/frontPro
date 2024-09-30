@@ -1,0 +1,38 @@
+.sub-heading {
+    font-weight: bold;
+}
+.duplicate-record-list-layout-item {
+    border: 1px solid #aeaeae;
+  }
+  
+  .duplicate-record-list-header {
+    background-color: #e5e5e5;
+    font-weight: 700;
+  }
+  
+  .large-modal-content {
+    width: 65%;
+    max-width: 65%;
+  }
+
+  .color-boxes {
+    display: inline-block;
+    border-radius: 4px;
+    color: white;
+    padding: 4px;
+  }
+  .greenColor {
+    background-color: #008545;
+  }
+  .greyColor {
+    background-color: #a0a0a0;
+  }
+  .orangeColor {
+    background-color: #ffaa05;
+  }
+  .redColor {
+    background-color: #ba0517;
+  }
+  .action-cell {
+    width: 5%;
+  }

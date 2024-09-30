@@ -1,0 +1,9 @@
+.header-button{
+    /* --sds-c-icon-color-foreground-default: #d9b302; */
+    --sds-c-button-success-color-background: #008545;;
+    --slds-c-button-color-background: #008545;
+    --slds-c-button-brand-color-background:  #008545;
+    --slds-c-button-brand-color-border:  #008545;
+    --slds-c-button-brand-color-border-hover:  #008545;
+    --slds-c-button-brand-color-background-hover:  #008545 !important;
+}

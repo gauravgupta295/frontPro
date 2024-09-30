@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="fieldLabel" label="Field Label" type="String" description="Input Label" />
+            <property name="fieldValueText" label="Field Value for text type input" type="String" description="Input Text Value." />
+            <property name="fieldValueNumber" label="Field Value for number type input" type="Integer" description="Input Integer Value." />
+            <property name="fieldValueBoolean" label="Field Value for boolean type input" type="Boolean" description="Input Boolean Value." />
+            <property name="fieldType" label="Input DataType" type="String" description="Valid input types are: checkbox, toggle, tel, number, date, datetime, time, email, password, url, text(default)." />
+            <property name="numberFormatter" label="Number Input Formatter" type="String" description="Valid input types are: decimal, currency." />
+            <property name="fieldLevelHelp" label="Field Level help" type="String" description="Help Text" />
+            <property name="isDisabled" label="Disabled" type="Boolean" description="Determine if the input is disabled" />
+            <property name="isRequired" label="Required" type="Boolean" description="Determine if the input is required" />
+            <property name="calledFrom" label="Called From?" type="String" description="Valid value: Flow, LWC" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

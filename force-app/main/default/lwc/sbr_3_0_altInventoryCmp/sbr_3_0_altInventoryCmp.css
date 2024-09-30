@@ -1,0 +1,10 @@
+.no-inventory.active{
+    display: block;
+}
+.no-inventory{
+    display: none;
+}
+.description-no-inventory{
+    font-weight: 400;
+    font-size: 14px;
+}

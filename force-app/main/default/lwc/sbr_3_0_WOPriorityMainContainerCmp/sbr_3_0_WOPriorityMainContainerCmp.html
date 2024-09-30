@@ -1,0 +1,68 @@
+<!--
+  @description       : Work Order Priority Main Component
+  @author            : Chhavi Singhal, Ritesh Mohapatra
+  @createdDate       : 26-Dec-2023 
+-->
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-page-header page-header-padding">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media media-wrapper">
+                        <div class="slds-media__figure">
+                            <lightning-icon 
+                                icon-name="standard:work_order"
+                                alternative-text="Work Order Priority"
+                                title="Work Order Priority" 
+                                class="custom-workorder"></lightning-icon>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span class="slds-page-header__title slds-truncate"
+                                            title="Work Order Priority">
+                                            Work Order Priority
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+       <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+                <div class="list-header-container">
+                    <c-sbr_3_0_-w-o-Priority-Header-Cmp onlevelchange={handleLevelChangeEvent} 
+                                                        onstandardfilterchange ={handleStandardFilterChangeEvent}
+                                                        ontoggleassetfilter={handleToggleAssetFilter} 
+                                                        onsearchfilterchange={handleSearchFilterChange} 
+                                                        ontogglewofilter ={handleToggleWOFilter}>
+                    </c-sbr_3_0_-w-o-Priority-Header-Cmp>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <lightning-layout>
+                    <lightning-layout-item size="12">
+                        <div class="scrollable-list-container">
+                            <c-sbr_3_0_-w-o-Priority-Asset-Filter-Cmp onapplyassetattributefilter={handleApplyAssetAttributeFilterEvent}>
+                            </c-sbr_3_0_-w-o-Priority-Asset-Filter-Cmp>
+
+                            <c-sbr_3_0_-w-o-Priority-w-o-Filter-Cmp onapplywoattributefilter={handleApplyWOAttributeFilterEvent}>
+                            </c-sbr_3_0_-w-o-Priority-w-o-Filter-Cmp>
+                        
+                            <c-sbr_3_0_-w-o-Priority-w-o-List-Cmp onsearchfilterfieldsetevent={handleSearchFieldSetEvent}>
+                            </c-sbr_3_0_-w-o-Priority-w-o-List-Cmp>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-layout-item>
+        </lightning-layout> 
+    </template>
+    
+    <template if:true={isMobile}>
+        <!-- Mobile component to be incorporated here -->
+    </template>
+</template>

@@ -1,0 +1,311 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 07-31-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+  @last modified on  : 04-09-2024
+  @last modified by  : Pankaj Meshram - changed slds class for search icon 
+-->
+<template>
+    <div
+      class="slds-form-element"
+      
+      data-source="lookupContainer"
+    >  <!--onmouseleave={toggleResult}-->
+      <div class="slds-combobox_container slds-has-selection">
+        <label class="slds-form-element__label label-padding" for="combobox-id-1">
+          <abbr class="slds-required" title="required">*</abbr>{label}
+        </label>
+        <div
+          class="lookupInputContainer slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+          aria-expanded="false"
+          aria-haspopup="listbox"
+          role="combobox"
+        >
+          <div
+            class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+            role="none"
+          >
+            <div class="searchBoxWrapper slds-show">
+             
+              <template if:true={isMobile}>
+                <div class="slds-form-element">
+                  <div
+                    class="slds-form-element__control slds-form_horizontal slds-input-has-icon slds-input-has-icon_right"
+                  >
+                    <lightning-icon
+                      size="x-small"
+                      class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+                      icon-name="utility:search"
+                    ></lightning-icon>
+                    <lightning-input
+                      class="inputMobile slds-input-has-icon_left"
+                      data-id="check-input-validity"
+                      type="text"
+                      data-source="searchInputField"
+                      onclick={toggleResult}
+                      onkeypress={handleKeyPress}
+                      onchange={handleKeyChange}
+                      is-loading={isSearchLoading}
+                      value={searchKey}
+                      variant="label-hidden"
+                      placeholder={placeholder}
+                      onblur={showRequiredFieldError}
+                    ></lightning-input>
+                  </div>
+                </div>
+              </template>
+  
+              <template if:false={isMobile}>
+                <lightning-input
+                  data-id="check-input-validity"
+                  onblur={showRequiredFieldError}
+                  class="inputDesktop slds-input-has-icon_right"
+                  type="search"
+                  data-source="searchInputField"
+                  onkeypress={handleKeyPress}
+                  onclick={toggleResult}
+                  onchange={handleKeyChange}
+                  is-loading={isSearchLoading}
+                  value={searchKey}
+                  variant="label-hidden"
+                  placeholder={placeholder}
+                ></lightning-input>
+              </template>
+            </div>
+  
+            <!--Lookup Selected record pill container start-->
+            <div class="pillDiv slds-hide">
+              <span class="slds-icon_container slds-combobox__input-entity-icon">
+                <lightning-icon
+                  icon-name={iconName}
+                  size="x-small"
+                  alternative-text="icon"
+                ></lightning-icon>
+              </span>
+  
+              <input
+                type="text"
+                id="combobox-id-1"
+                value={selectedRecordName}
+                class="slds-input slds-combobox__input slds-combobox__input-value"
+                readonly
+              />
+  
+              <button
+                type="button"
+                class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                title="Clear Selection"
+              >
+                <lightning-icon
+                  icon-name="utility:close"
+                  size="x-small"
+                  alternative-text="close icon"
+                  onclick={handleRemove}
+                ></lightning-icon>
+              </button>
+            </div>
+          </div>
+  
+          <!-- lookup search result part start-->
+          <div
+            style="margin-top: 0px"
+            id="listbox-id-5"
+            class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+            role="listbox"
+          >
+            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+              <template if:true={spinnerShow}>
+                <div class={spinnerCss}>
+                  <lightning-spinner
+                    alternative-text="Loading"
+                    size="small"
+                  ></lightning-spinner>
+                </div>
+              </template>
+  
+              <template for:each={lstResult} for:item="obj">
+                <li key={obj.Id} role="presentation" class="slds-listbox__item">
+                  <div
+                    data-recid={obj.Id}
+                    onclick={handleSelectedRecord}
+                    class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                    role="option"
+                  >
+                    <span
+                      style="pointer-events: none"
+                      class="slds-media__figure slds-listbox__option-icon"
+                    >
+                      <span class="slds-icon_container">
+                        <lightning-icon
+                          icon-name={iconName}
+                          size="small"
+                          alternative-text="icon"
+                        ></lightning-icon>
+                      </span>
+                    </span>
+                    <span style="pointer-events: none" class="slds-media__body">
+                      <span
+                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                        style="font-weight: bold"
+                        >{obj.DisplayName}</span
+                      >
+                      <template if:true={isLocationLookup}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Branch_Location_Number__c}</span
+                        >
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Analysis_Region_Name__c}</span
+                        >
+                      </template>
+                      <template if:true={isAccountLookup}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line1}</span
+                        >
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line2}</span
+                        >
+                        <span
+                          class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                          >{obj.recordTypeName}</span
+                        >
+                      </template>
+                      <template if:true={isContactLookup}>
+                        <template if:true={obj.hasPhone}>
+                          <span
+                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                            >{obj.Line1}</span
+                          >
+                        </template>
+                        <template if:true={obj.hasMobile}>
+                          <span
+                            class="slds-listbox__option-text slds-listbox__option-text_entity"
+                            >{obj.Line2}</span
+                          >
+                        </template>
+                      </template>
+                      <template if:true={displayLocationDetails}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line1}</span
+                        >
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Line2}</span
+                        >
+                      </template>
+                      <template if:true={isJobSite}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.Name__c}</span
+                        >
+                      </template>
+                      <template if:true={validateSObjectLabelDisplay}>
+                        <template if:false={isAccountLookup}>
+                          <span
+                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                            >{sObjectApiName}</span
+                          >
+                        </template>
+                      </template>
+                    </span>
+                  </div>
+                </li>
+              </template>
+             
+              <!--template if:true={showNewContactButton}>
+                <li
+                  key={newContact}
+                  role="presentation"
+                  class="slds-listbox__item"
+                >
+                  <div
+                    data-recid="newContact"
+                    onclick={createNewContact}
+                    class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                    role="option"
+                  >
+                    <span
+                      style="pointer-events: none"
+                      class="slds-media__figure slds-listbox__option-icon"
+                    >
+                      <span class="slds-icon_container">
+                        <lightning-icon
+                          icon-name={addIconName}
+                          size="x-small"
+                          alternative-text="icon"
+                        ></lightning-icon>
+                      </span>
+                    </span>
+                    
+                    <template if:true={isJobSiteContactCreation}>
+                      <span
+                        style="pointer-events: none; margin-top: 0.25rem"
+                        class="slds-media__body"
+                      >
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >New Job Site Contact</span
+                        >
+                      </span>
+                    </template>
+                    
+                    <template if:false={isJobSiteContactCreation}>
+                      <span
+                        style="pointer-events: none; margin-top: 0.25rem"
+                        class="slds-media__body"
+                      >
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >New Contact</span
+                        >
+                       
+                      </span>
+                    </template>
+                  </div>
+                </li>
+              </template-->
+              <br />
+              <!-- FRONT-1644 End-->
+              <!--ERROR msg, if there is no records..-->
+              <template if:false={hasRecords}>
+                <li
+                  class="slds-listbox__item"
+                  style="text-align: center; font-weight: bold"
+                >
+                  No Records Found....
+                </li>
+              </template>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--FRONT-1644 Start-->
+  
+    <!--template if:true={isContactModalOpen}>
+      <template if:true={isMobile}>
+        <c-sbr_3_0_mobile-screen>
+          <c-sbr_3_0_custom-contact-component
+            account-id={accId}
+            onclosemodal={closeContactModal}
+            onsave={handleSaveContact}
+          ></c-sbr_3_0_custom-contact-component>
+        </c-sbr_3_0_mobile-screen>
+      </template>
+      <template if:false={isMobile}>
+        <c-sbr_3_0_custom-contact-component
+          account-id={accId}
+          onclosemodal={closeContactModal}
+          onsave={handleSaveContact}
+        ></c-sbr_3_0_custom-contact-component>
+      </template>
+      
+    </template-->
+    <!--FRONT-1644 End-->
+  </template>

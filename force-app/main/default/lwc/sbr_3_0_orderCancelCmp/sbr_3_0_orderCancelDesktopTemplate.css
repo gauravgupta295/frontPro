@@ -1,0 +1,39 @@
+.contClass {
+  bottom: -22.5px !important;
+  min-width: 30%; /*FRONT_1946*/
+  display: block;
+}
+.spins {
+  position: fixed;
+  /* Start for FRONT-1946*/
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  z-index: 99999 !important;
+  /*Ended for FRONT-1946*/
+}
+.outerPara {
+  text-align: center;
+  font-size: 18px;
+  margin-top: 4px;
+}
+.InnerPara {
+  text-align: center;
+  font-size: 15px;
+  margin-top: 8px;
+  margin-bottom: 6px;
+}
+.yesButton {
+  margin-left: 20px;
+}
+.clClass {
+  box-shadow: none;
+}
+/* FRONT-1946 start*/
+.custom {
+  min-width: 100vw !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+/*FRONT-1946 ended*/

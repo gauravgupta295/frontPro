@@ -1,0 +1,58 @@
+<template>
+    <c-sbr_3_0_mobile-screen title="ROA Payments">        
+        <div class="card-bgc slds-text-align_center slds-border_bottom">
+            <br/>
+                <div class="card-bgc slds-text-align_center"> <h2 slot="title">{label.RoaPayments}</h2></div>
+            <br/>
+        </div>
+        
+        
+        <div class="slds-grid slds-border_bottom slds-p-left_small slds-p-bottom_medium slds-p-top_medium slds-media slds-media_center">   
+            <br/>
+                <div class="slds-col slds-p-left_small" style="width:100px">
+                    <label for="payid">From</label>
+                    <lightning-input label="From" style="width:100px" placeholder="From" type="date" variant="label-hidden" value={fromDate} max={maxFromDate}
+                        onchange={handleFromDateChange}>
+                    </lightning-input>
+                    <!-- <lightning-input type="date" class="startdate" label="Start Date" value={start_date} onchange={handleDateChange} required ></lightning-input> --> 
+                </div>    
+                <div class="slds-col slds-p-left_small">
+                    <label for="payid">Until</label>
+                    <lightning-input label="Until"  placeholder="Until" type="date" variant="label-hidden" value={untilDate} min={minUntilDate}
+                        onchange={handleUntilDateChange}>
+                    </lightning-input>
+                </div>
+            <br/>
+        </div>
+
+        <template for:each={roaPaymentData} for:item="row">
+            <!--<lightning-card  variant="Narrow" key={row.Id} >
+            <div class=" paymentNumber slds-text-align_left slds-p-top_small slds-p-bottom_small slds-p-left_x-small"> <h1 slot="title"><b>{row.name}</b></h1></div>-->
+                <!--<div class=" paymentNumber slds-text-align_left slds-p-top_small slds-p-bottom_small slds-p-left_x-small" style="color: green" ><lightning-formatted-url class="paymentNumber" style="color: green" value={row.eventUrl} label={row.name} target="_blank" ></lightning-formatted-url></div>-->
+                <div class="slds-p-top_small" key={row.Id}>
+                <span class="HeaderLinkClass slds-text-align_left slds-p-left_small" style="color: #25683E">
+                    <a class="slds-button slds-m-left_small" href={row.eventUrl} style="color: #25683E">{row.name}</a>
+                </span>
+                <div class="slds-tile__detail slds-border_bottom slds-p-left_large">
+                    <dl class="slds-list_horizontal slds-wrap">
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small" title="First Label"><b>Type</b></dt>
+                      <dd class="slds-item_detail slds-truncate slds-p-bottom_x-small" title="Description for first label">{row.type}</dd>
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small" title="Second Label"><b>Location</b></dt>
+                      <dd class="slds-item_detail slds-truncate slds-p-bottom_x-small" title="Description for second label">{row.location}</dd>
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small slds-p-top_x-small" title="Second Label"><b>Amount</b></dt>
+                      <dd class="slds-item_detail slds-truncate slds-p-bottom_x-small slds-p-top_x-small" title="Description for second label">${row.depositAmount}</dd>
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small" title="Second Label"><b>User</b></dt>
+                      <dd class="slds-item_detail slds-truncate slds-p-bottom_x-small" title="Description for second label">{row.user}</dd>
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small" title="Second Label"><b>Date</b></dt>
+                      <dd class="slds-item_detail slds-truncate slds-p-bottom_x-small" title="Description for second label">{row.date}</dd>
+                      <dt class="slds-item_label slds-text-color_weak slds-truncate slds-p-right_small" title="Second Label"><b>Time</b></dt>
+                      <dd class="slds-item_detail slds-truncate" title="Description for second label">{row.time}</dd>
+                    </dl>
+                    <br/>
+                </div>
+            </div>
+            <!--</lightning-card>-->
+        </template>
+    </c-sbr_3_0_mobile-screen>
+
+</template>

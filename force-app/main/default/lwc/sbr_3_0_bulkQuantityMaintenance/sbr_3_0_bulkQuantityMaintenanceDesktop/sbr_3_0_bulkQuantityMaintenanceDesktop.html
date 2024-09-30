@@ -1,0 +1,162 @@
+<template>
+  <template lwc:if={showSpinner}>
+    <lightning-modal-body class="slds-modal_small sbr_inline-error">
+      <div class="sbr_min-height">
+        <lightning-spinner
+          variant="brand"
+          size="medium"
+          alternative-text="loading..."
+        ></lightning-spinner>
+      </div>
+    </lightning-modal-body>
+  </template>
+  <template lwc:else>
+    <lightning-modal-header label={label.BULK_QUANTITY_MAINTENANCE}>
+    </lightning-modal-header>
+    <template lwc:if={showError}>
+      <c-sbr_3_0_inline-error-card
+        title="The change quantity cannot be greater than the actual quantity."
+        message="Please adjust and submit again."
+        variant="Error"
+      ></c-sbr_3_0_inline-error-card>
+    </template>
+    <lightning-modal-body class="slds-modal_small slds-is-relative">
+      <div class="slds-p-horizontal_large slds-p-vertical_small">
+        <div class="slds-m-bottom_medium slds-list_horizontal">
+          <div
+            class="slds-m-right_xx-large slds-p-right_xx-large slds-text-align_left"
+          >
+            <p class="slds-text-title">{label.RSV_ITEM_NUM}</p>
+            <h2 class="slds-m-vertical_small">{rsvItemNum}</h2>
+          </div>
+          <div
+            class="slds-m-left_xx-large slds-p-left_xx-large slds-text-align_left"
+          >
+            <p class="slds-text-title">{label.LOCATION}</p>
+            <h2 class="slds-m-vertical_small">{locationName}</h2>
+          </div>
+        </div>
+        <div class="slds-m-bottom_medium slds-list_horizontal">
+          <div class="slds-m-right_xx-large slds-text-align_left">
+            <p class="slds-text-title">{label.TOTAL_OWNED}</p>
+            <h2 class="slds-m-vertical_small">{totalOwned}</h2>
+          </div>
+        </div>
+
+        <!-- modal content specified in LightningModal component -->
+        <!-- Status data table -->
+        <table
+          class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right sbr_bulk-quantity-table"
+          aria-label="Product Items and their Statuses And Quantities"
+        >
+          <thead>
+            <tr class="slds-line-height_reset">
+              <th class="" scope="col">
+                <div class="slds-truncate" title="Status">Status</div>
+              </th>
+              <th class="" scope="col">
+                <div class="slds-truncate" title="Quantity">Quantity</div>
+              </th>
+              <th class="" scope="col">
+                <div class="slds-truncate" title="New Quantity">
+                  New Quantity
+                </div>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <template iterator:it={statuses}>
+              <tr key={it.value.Id} class="slds-hint-parent">
+                <th data-label="Status" scope="row">
+                  <div class="slds-truncate" title="Available">
+                    {it.value.Label}
+                  </div>
+                </th>
+                <td data-label="Available Quantity">
+                  <div class="slds-truncate" title="availableQuantity">
+                    {it.value.Quantity}
+                  </div>
+                </td>
+                <td data-label="New Quantity">
+                  <div class="slds-truncate" title="newQuantity">
+                    {it.value.NewQuantity}
+                  </div>
+                </td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+        <template lwc:if={showEditLayout}>
+          <form id="status_update_form">
+            <lightning-layout
+              horizontal-align="spread"
+              class="slds-m-top_large"
+            >
+              <!-- Quantity Input form -->
+              <lightning-layout-item size="5">
+                <lightning-combobox
+                  name="move_from_status"
+                  label="Move from"
+                  value={moveFrom}
+                  placeholder="Select Progress"
+                  options={moveFromDropdown}
+                  onchange={handleMoveFrom}
+                ></lightning-combobox>
+              </lightning-layout-item>
+              <lightning-layout-item size="5">
+                <lightning-combobox
+                  name="move_to_status"
+                  label="Move to"
+                  value={moveTo}
+                  placeholder="Select Progress"
+                  options={moveToDropdown}
+                  onchange={handleMoveTo}
+                ></lightning-combobox>
+              </lightning-layout-item>
+              <lightning-layout-item size="1">
+                <lightning-input
+                  type="number"
+                  name="quantity_input"
+                  label="Quantity"
+                  value={newQuantity}
+                  onchange={handleUpdateQuantity}
+                ></lightning-input>
+              </lightning-layout-item>
+            </lightning-layout>
+          </form>
+        </template>
+      </div>
+    </lightning-modal-body>
+    <!-- Modal/Popup Box LWC footer starts here -->
+    <footer class="slds-modal__footer">
+      <template lwc:if={showEditLayout}>
+        <lightning-button
+          label={label.CANCEL}
+          onclick={closeModal}
+          class="slds-m-right_small sbrSourcingBorder"
+        ></lightning-button>
+        <lightning-button
+          label={label.NEXT}
+          variant="brand"
+          onclick={handleNext}
+          disabled={isNextDisabled}
+          class="sbrSourcingBorder"
+        ></lightning-button>
+      </template>
+      <template lwc:else>
+        <lightning-button
+          label={label.PREVIOUS}
+          onclick={handlePrevious}
+          class="slds-m-right_small sbrSourcingBorder"
+        ></lightning-button>
+        <lightning-button
+          label={label.SUBMIT}
+          variant="brand"
+          onclick={handleSubmit}
+          disabled={isDisabled}
+          class="sbrSourcingBorder"
+        ></lightning-button>
+      </template>
+    </footer>
+  </template>
+</template>

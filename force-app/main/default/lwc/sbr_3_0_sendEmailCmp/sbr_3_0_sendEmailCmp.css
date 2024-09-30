@@ -1,0 +1,26 @@
+.form {
+    background: white;
+}
+
+.spinner-container {
+    min-height: 250px;
+    background: white;
+}
+
+.popover {
+    left: -145px;
+    bottom: 52px;
+}
+.custom-card {
+    border-radius: 4px;
+}
+
+.custom-card__header {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.action-container {
+    padding-top: 0;
+    width: 100%;
+}

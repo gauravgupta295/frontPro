@@ -1,0 +1,21 @@
+.container-card {
+  height: 26rem;
+  width: 102%;
+  margin: -0.75rem; /*removes left top space around map but leaves space on right and bottom*/
+}
+
+.customSpacingColum1 {
+  padding-right: 1.5rem;
+}
+
+.customSpacingColum2 {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+  .mobile-map {
+    min-height: 650px;
+  }
+}

@@ -1,0 +1,81 @@
+<template>
+  <!-- FRONT-15255 : changes made for cross button on header  -->
+  <c-sbr_3_0_mobile-screen
+    title="Product Filter"
+    show-cross-cancel-btn="true"
+    oncrossbtnclicked={handleCancelFilter}
+  >
+    <lightning-layout multiple-rows>
+      <lightning-layout-item padding="around-small" size="12">
+        <div class="slds-form-element">
+          <lightning-combobox
+            name="filteroptions"
+            label="Location Criteria"
+            value={selectedLocationFilter}
+            options={locationOptions}
+            onchange={handleLocationChange}
+            class="small-width"
+          ></lightning-combobox>
+        </div>
+        <div style="padding-top: 5px">
+          <label class="slds-form-element__label"
+            >{labels.QUANTITY_LABEL}</label
+          >
+
+          <lightning-input
+            type="checkbox"
+            label={availableCheckboxLabel}
+            name="quantity"
+            checked={availableOnly}
+            onchange={handleChange}
+            class="remove-height-class"
+          ></lightning-input>
+        </div>
+        <lightning-input
+          type="search"
+          label={labels.STOCK_VENDOR_LABEL}
+          name="stockvendor"
+          onchange={handleChange}
+          value={stockVendorValue}
+          placeholder="Search a Stock/Vendor"
+          class="small-width"
+        ></lightning-input>
+
+        <lightning-input
+          type="text"
+          label={labels.MANUFACTURER_LABEL}
+          onchange={handleChange}
+          value={manufacturerValue}
+          class="small-width"
+        ></lightning-input>
+      </lightning-layout-item>
+    </lightning-layout>
+
+    <div slot="footer" class="slds-grid slds-grid_align-spread">
+      <div class="buttons">
+        <lightning-button
+          label="Cancel"
+          onclick={handleCancelFilter}
+          variant="neutral"
+          class="neutralbuttonmobilefilter"
+        >
+        </lightning-button>
+        <lightning-button
+          label="Reset All Filters"
+          onclick={handleResetFilter}
+          class="neutralbuttonmobilefilter"
+          variant="base"
+          style="padding-left: 5px"
+        >
+        </lightning-button>
+      </div>
+      <div>
+        <lightning-button
+          label="Apply"
+          onclick={handleAppyFilter}
+          variant="brand"
+          class="brandbuttonmobilefilter"
+        ></lightning-button>
+      </div></div
+  ></c-sbr_3_0_mobile-screen>
+</template>

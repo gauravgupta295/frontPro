@@ -1,0 +1,54 @@
+<template>
+    <template if:false={isMobileView}>
+        <div class="slds-grid slds-wrap" onclick={handleDivClick}>
+            <div class="slds-col slds-size_2-of-6 slds-p-right_small"
+                onclick={handleNoAction}
+                style="z-index: 2; width: 330px;">
+                <c-sbr_3_0_po-search-filter ongetsearchvalue={getSearchValue}
+                    onreset={handleReset}>
+                </c-sbr_3_0_po-search-filter>
+            </div>
+            <div
+                class="slds-col slds-size_1-of-1 slds-p-right_small slds-p-top_small">
+                <div class="slds-page-header"
+                    style="height:90px; padding:20px 20px; background-color:lightgrey;">
+                    <b class="slds-page-header__title slds-truncate">Purchase
+                        Orders</b>
+                    <p style="padding-top:10px;">{totalNoOfRecords} results</p>
+                </div>
+                <div class="record-container">
+                    <lightning-datatable hide-checkbox-column key-field="Id"
+                        data={allRecords} columns={columns} sorted-by={sortBy}
+                        sorted-direction={sortDirection} onsort={handleSorting}>
+                    </lightning-datatable>
+                </div>
+            </div>
+        </div>
+    </template>
+    <template if:true={isMobileView}>
+        <div class="slds-grid slds-wrap">
+            <div class="slds-col slds-size_1-of-1 slds-p-right_small slds-p-top_small">
+                <c-sbr_3_0_po-mobile-custom-wrapper
+                    title="Purchase Order"
+                    is-div="true"
+                    has-filter="true"
+                    is-purchase-order-filter="true"
+                    record-list={recordList}
+                    onfilter={getSearchValue}
+                    oneditpo={handleEditPO}
+                    onreset={handleReset}>
+            </c-sbr_3_0_po-mobile-custom-wrapper>
+            </div>
+        </div>
+        <!-- <c-sbr_3_0_po-mobile-custom-wrapper
+            title="Purchase Order"
+            has-filter="true"
+            is-purchase-order-filter="true"
+            record-list={recordList}
+            onfilter={getSearchValue}
+            oneditpo={handleEditPO}
+            onreset={handleReset}
+            has-close="false">
+        </c-sbr_3_0_po-mobile-custom-wrapper> -->
+    </template>
+</template>

@@ -1,0 +1,410 @@
+<template>
+  <template lwc:if={showComponent}>
+    <template if:false={isMobileDevice}>
+      <lightning-modal-header label={label.CONVERT_TO_RENTAL_HEADING}>
+      </lightning-modal-header>
+      <template lwc:if={isError}>
+        <c-sbr_3_0_inline-error-card
+          title={label.CONVERT_TO_RENTAL_ASSET_ERROR_TITLE}
+          variant="Error"
+        ></c-sbr_3_0_inline-error-card>
+        <lightning-modal-body>
+          <div class="slds-m-horizontal_medium slds-m-vertical_x-small">
+            <p class="slds-m-bottom_medium">{label.PLEASE_SEE_ERRORS_BELOW}</p>
+            <table
+              class="slds-table slds-table_cell-buffer slds-table_bordered slds-border_left slds-border_right"
+              aria-label="Table of errors that pertain to this asset conversion"
+            >
+              <thead>
+                <tr class="slds-line-height_reset">
+                  <th class="" scope="col">
+                    <div class="slds-truncate" title="Field">Field</div>
+                  </th>
+                  <th class="" scope="col">
+                    <div class="slds-truncate" title="Current Value">
+                      Current Value
+                    </div>
+                  </th>
+                  <th class="" scope="col">
+                    <div class="slds-truncate" title="Error Message">
+                      Error Message
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <template for:each={errors} for:item="error">
+                  <tr key={error.id} class="slds-hint-parent">
+                    <th data-label="Field Name" scope="row">
+                      <div
+                        class="slds-truncate slds-cell-wrap slds-p-vertical_x-small"
+                        title="Asset Current Location"
+                      >
+                        {error.field}
+                      </div>
+                    </th>
+                    <td data-label="Current Value">
+                      <div
+                        class="slds-truncate slds-p-vertical_x-small"
+                        title="currentValue"
+                      >
+                        {error.currentValue}
+                      </div>
+                    </td>
+                    <td data-label="Error Message">
+                      <div
+                        class="slds-truncate slds-text-color_error slds-cell-wrap slds-p-vertical_x-small"
+                        title="Error Message"
+                      >
+                        {error.errorMessage}
+                      </div>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+            <p class="slds-m-top_medium">{label.SEEK_SUPERVISOR_ASSISTANCE}</p>
+          </div>
+        </lightning-modal-body>
+      </template>
+      <template if:false={isError}>
+        <lightning-modal-body>
+          <p class="slds-m-left_x-large slds-m-bottom_large">
+            Review information and select Submit to confirm.
+          </p>
+          <lightning-record-view-form
+            object-api-name={objectApiName}
+            record-id={recordId}
+            fields={fields}
+          >
+            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+              <div class="slds-size_1-of-2">
+                <div class="slds-m-left_x-large">
+                  <label class="slds-form-element__label">Description</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Miscellaneous_Options__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Stock Class</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Stock_Class__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label"
+                    >Cat/Class Description</label
+                  >
+                  <lightning-output-field
+                    field-name="SM_PS_Cat_Class_Description__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Category</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Category__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Subcategory</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Subcategory__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Equipment #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Equipment_Number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Make</label>
+                  <Strong
+                    ><lightning-output-field
+                      field-name="SM_PS_Make__c"
+                      variant="label-hidden"
+                    >
+                    </lightning-output-field></Strong
+                  ><br />
+                  <label class="slds-form-element__label">Model Year</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Model_Year__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field>
+                </div>
+              </div>
+              <div class="slds-size_1-of-2">
+                <div class="slds-m-left_x-large">
+                  <label class="slds-form-element__label">Item #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Item_number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label"
+                    >Current Location</label
+                  ><br />
+                  <lightning-formatted-text
+                    value={currLocationName}
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <label class="slds-form-element__label">RSV Item #</label
+                  ><br />
+                  <lightning-formatted-text
+                    value={rsvNumber}
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <!-- <lightning-output-field field-name="SM_PS_Item_Product__r.itemNumberUsedByReservationsRentalOut__c" variant="label-hidden"> </lightning-output-field><br>   -->
+                  <label class="slds-form-element__label">Class</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Class__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Date acquired</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Date_Acquired__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Serial #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Serial_Number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Model</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Model__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field>
+                </div>
+              </div>
+            </div>
+            <p class="slds-m-left_x-large slds-m-top_large">
+              <b>Equipment Type</b>
+            </p>
+            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+              <div class="slds-size_1-of-2">
+                <div class="slds-m-left_x-large">
+                  <label class="slds-form-element__label">From</label><br />
+                  <lightning-formatted-text
+                    value="N (New)"
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <label class="slds-form-element__label">Cost</label><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Original_Cost__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field>
+                  <!-- <lightning-formatted-text value={cost}> </lightning-formatted-text><br>   -->
+                </div>
+              </div>
+              <div class="slds-size_1-of-2">
+                <div class="slds-m-left_x-large">
+                  <label class="slds-form-element__label">To</label><br />
+                  <lightning-formatted-text
+                    value="R (Rental)"
+                  ></lightning-formatted-text
+                  ><br /><br /><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Replacement_Value__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field>
+                  <!-- <lightning-formatted-text value={replacementCost}> </lightning-formatted-text><br>  -->
+                </div>
+              </div>
+            </div>
+          </lightning-record-view-form>
+        </lightning-modal-body>
+      </template>
+      <footer class="slds-modal__footer footer-spacing">
+        <template lwc:if={isError}>
+          <lightning-button
+            label={label.GO_BACK}
+            onclick={handleCancel}
+            class="slds-m-right_small"
+          ></lightning-button>
+        </template>
+        <template if:false={isError}>
+          <lightning-button
+            label="Cancel"
+            onclick={handleCancel}
+            class="slds-m-right_small"
+          ></lightning-button>
+          <lightning-button
+            label="Submit"
+            variant="brand"
+            onclick={handleSave}
+            class="sbrSourcingBorder"
+          ></lightning-button>
+        </template>
+      </footer>
+    </template>
+    <!-- for mobile  -->
+    <template if:true={isMobileDevice}>
+      <div class="slds-scrollable slds-modal slds-fade-in-open slds-modal_full">
+        <lightning-modal-header
+          label="Convert to Rental"
+        ></lightning-modal-header>
+        <lightning-modal-body>
+          <lightning-record-view-form
+            object-api-name={objectApiName}
+            record-id={recordId}
+            fields={fields}
+          >
+            <p class="slds-m-left_small slds-m-bottom_large">
+              Review information and select Submit to confirm.
+            </p>
+            <div class="demo-only demo-only--sizing slds-grid slds-wrap">
+              <div class="slds-size_1-of-1">
+                <div class="slds-m-left_small">
+                  <label class="slds-form-element__label">Description</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Miscellaneous_Options__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Item #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Item_number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <lightning-output-field field-name="SM_PS_Stock_Class__c">
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label"
+                    >Current Location</label
+                  ><br />
+                  <lightning-formatted-text
+                    value={currLocationName}
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <label class="slds-form-element__label"
+                    >Cat/Class Description</label
+                  ><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Cat_Class_Description__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">RSV Item #</label
+                  ><br />
+                  <lightning-formatted-text
+                    value={rsvNumber}
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <lightning-output-field field-name="SM_PS_Category__c">
+                  </lightning-output-field
+                  ><br />
+                  <lightning-output-field field-name="SM_PS_Class__c">
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Subcategory</label
+                  ><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Subcategory__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Date acquired</label
+                  ><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Date_Acquired__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Equipment #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Equipment_Number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <label class="slds-form-element__label">Serial #</label>
+                  <lightning-output-field
+                    field-name="SM_PS_Serial_Number__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field
+                  ><br />
+                  <lightning-output-field field-name="SM_PS_Make__c">
+                  </lightning-output-field
+                  ><br />
+                  <lightning-output-field field-name="SM_PS_Model__c">
+                  </lightning-output-field
+                  ><br />
+                  <lightning-output-field field-name="SM_PS_Model_Year__c">
+                  </lightning-output-field>
+                  <p class="slds-m-top_large"><b>Equipment Type</b></p>
+                  <label class="slds-form-element__label">From</label><br />
+                  <lightning-formatted-text
+                    value="N (New)"
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <label class="slds-form-element__label">To</label><br />
+                  <lightning-formatted-text
+                    value="R (Rental)"
+                  ></lightning-formatted-text
+                  ><br /><br />
+                  <label class="slds-form-element__label">Cost</label><br />
+                  <lightning-output-field
+                    field-name="SM_PS_Original_Cost__c"
+                    variant="label-hidden"
+                  >
+                  </lightning-output-field>
+                  <!-- <lightning-formatted-text value={cost}></lightning-formatted-text><br>   -->
+                  <!-- <lightning-formatted-text value={replacementCost}></lightning-formatted-text><br>          -->
+                </div>
+              </div>
+            </div>
+          </lightning-record-view-form>
+        </lightning-modal-body>
+        <footer class="slds-modal__footer footer-spacing">
+          <lightning-button
+            label="Cancel"
+            onclick={handleCancel}
+            class="slds-float_left slds-m-right_small mobileButtonTextColor"
+          ></lightning-button>
+          <lightning-button
+            label="Submit"
+            variant="brand"
+            onclick={handleSave}
+            class="mobileButtonBackgroundColor"
+          ></lightning-button>
+        </footer>
+      </div>
+    </template>
+  </template>
+  <template lwc:else>
+    <template lwc:if={showSpinner}>
+      <div class="sbr_min-height">
+        <lightning-spinner
+          variant="brand"
+          size="medium"
+          alternative-text="loading..."
+        ></lightning-spinner>
+      </div>
+    </template>
+  </template>
+</template>

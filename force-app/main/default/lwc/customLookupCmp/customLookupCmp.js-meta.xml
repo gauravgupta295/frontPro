@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+     <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="initialLookupValue" label="Record ID" type="String"/>
+            <property name="where" label="WHERE CLAUSE" type="String" />
+            <property name="displayLabelField" label="Fields To Include" type="String" />
+            <property name="fieldToSearchWith" label="Fields to search with" type="String" />
+            <property name="labelForComponent" label="Label for component" type="String" />
+            <property name="objectAPIName" label="sObjectApiName" type="String" />
+            <property name="iconName" label="Icon Name" type="String" />
+            <property name="placeHolder" label="Placeholder" type="String" />
+            <property name="newProfileBranch" label="New Profile Branch" type="String" role="outputOnly"></property>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

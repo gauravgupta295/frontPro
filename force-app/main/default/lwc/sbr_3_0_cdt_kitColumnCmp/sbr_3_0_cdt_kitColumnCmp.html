@@ -1,0 +1,40 @@
+<template>
+    <template if:true={isKit}>
+        <lightning-button-icon icon-name="utility:chevronright" onclick={toggleKitModal} variant="bare" alternative-text="Show Kit Components" title="Kit Components"></lightning-button-icon>
+
+        <c-sbr_3_0_modal-cmp header={kits.packageName} variant="wide" cancel-btn-label="Cancel">
+            <span slot="modalContent">
+
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered"
+                    aria-label="Kit Components">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Item Name">Item Name</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="Item Quantity">Item Quantity</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={kitItems} for:item="kit">
+                            <tr key={kit.Id} class="slds-hint-parent">
+                                <td data-label="Account Name">
+                                    <div class="slds-truncate" title="Name">{kit.Name}</div>
+                                </td>
+                                <td data-label="Account Name">
+                                    <div class="slds-truncate" title="Quantity">{kit.SBQQ__Quantity__c}</div>
+                                </td>
+
+                            </tr>    
+                        </template>
+                    </tbody>
+                </table>
+
+            </span>
+        </c-sbr_3_0_modal-cmp>
+
+    </template>
+</template>

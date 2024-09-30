@@ -1,0 +1,209 @@
+<template>
+    <div class="slds-panel slds-size_full slds-panel_docked slds-panel_docked-right filter-panel" aria-hidden="false">
+        <div class="slds-panel__header filter-header">
+            <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Product Filter">
+                Product Filter</h2>
+            <div class="slds-panel__header-actions">
+                <lightning-button-icon icon-name="utility:close" onclick={togglePanel} variant="bare" size="large"
+                    alternative-text="Close Filter" title="Close Filter" class="on-select"></lightning-button-icon>
+            </div>
+        </div>
+        <div class="slds-panel__body">
+            <div class="slds-p-bottom_small">
+                <template iterator:option={selectedFilterOptions} for:index={option.index}>
+                    <lightning-pill key={option.value} label={option.value} class="slds-truncate category-pill"
+                        data-label={option.value} onremove={handleRemovePill}></lightning-pill>
+                </template>
+            </div>
+            <div class="body_action">
+                <template iterator:cat={filterOptions} for:index={cat.index}>
+                    <lightning-layout key={cat.value.Id} class="slds-border_top" vertical-align="top">
+                        <template if:true={isMobile}>
+                            <lightning-layout-item size="1" class="slds-p-left_medium slds-p-vertical_small">
+                                <lightning-input type="checkbox" label="" data-name={cat.value.attributeName} data-id={cat.value.Id}
+                                    data-type="cat" data-elementid={cat.index} onchange={handleCheckboxUpdate}
+                                    class="cat-box" checked={cat.value.isSelected}></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="10" class="slds-p-left_small slds-p-right_xx-large slds-p-vertical_small cat-label">
+                                <strong>{cat.value.Name}
+                                    <template if:true={cat.value.showCount}>
+                                        <span> ({cat.value.selectedSubcatCount})</span>
+                                    </template>
+                                </strong>
+                            </lightning-layout-item>
+                        </template>
+                        <template if:false={isMobile}>
+                            <lightning-layout-item size="1" class="slds-p-vertical_small">
+                                <lightning-input type="checkbox" label="" data-name={cat.value.attributeName} data-id={cat.value.Id}
+                                    data-type="cat" data-elementid={cat.index} onchange={handleCheckboxUpdate}
+                                    checked={cat.value.isSelected}>
+                                </lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="10" class="slds-p-vertical_small">
+                                <strong>{cat.value.Name}
+                                    <template if:true={cat.value.showCount}>
+                                        <span> ({cat.value.selectedSubcatCount})</span>
+                                    </template>
+                                </strong>
+                            </lightning-layout-item>
+                        </template>
+                        <lightning-layout-item size="1">
+                            <template if:true={isMobile}>
+                                <div class="slds-grid slds-grid_vertical-align-center slds-float_right">
+
+                                    <button class={resetTxtClass} data-id={cat.index} value="Reset"
+                                        onclick={resetCategory}>Reset</button>
+                                    <template if:true={cat.value.hasSubCategory}>
+                                        <template if:true={cat.value.isSubCatOpen}>
+                                            <template if:true={isMobile}>
+                                                <lightning-icon icon-name="utility:chevronup"
+                                                    data-catname={cat.value.attributeName} data-chevronid={cat.index}
+                                                    onclick={handleToggleSubCatSection} size="x-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                            <template if:false={isMobile}>
+                                                <lightning-icon icon-name="utility:chevrondown"
+                                                    data-catname={cat.value.attributeName}
+                                                    onclick={handleToggleSubCatSection} size="xx-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                        </template>
+                                        <template if:false={cat.value.isSubCatOpen}>
+                                            <template if:true={isMobile}>
+                                                <lightning-icon icon-name="utility:chevrondown"
+                                                    data-catname={cat.value.attributeName} data-chevronid={cat.index}
+                                                    onclick={handleToggleSubCatSection} size="x-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                            <template if:false={isMobile}>
+                                                <lightning-icon icon-name="utility:chevronright"
+                                                    data-catname={cat.value.attributeName}
+                                                    onclick={handleToggleSubCatSection} size="xx-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </div>
+                            </template>
+                            <template if:false={isMobile}>
+                                <div class="slds-p-vertical_x-small slds-grid slds-grid_vertical-align-center slds-float_right">
+
+                                    <button class={resetTxtClass} data-id={cat.index} value="Reset"
+                                        onclick={resetCategory}>Reset</button>
+                                    <template if:true={cat.value.hasSubCategory}>
+                                        <template if:true={cat.value.isSubCatOpen}>
+                                            <template if:true={isMobile}>
+                                                <lightning-icon icon-name="utility:chevronup"
+                                                    data-catname={cat.value.attributeName} data-chevronid={cat.index}
+                                                    onclick={handleToggleSubCatSection} size="x-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                            <template if:false={isMobile}>
+                                                <lightning-icon icon-name="utility:chevrondown"
+                                                    data-catname={cat.value.attributeName}
+                                                    onclick={handleToggleSubCatSection} size="xx-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                        </template>
+                                        <template if:false={cat.value.isSubCatOpen}>
+                                            <template if:true={isMobile}>
+                                                <lightning-icon icon-name="utility:chevrondown"
+                                                    data-catname={cat.value.attributeName} data-chevronid={cat.index}
+                                                    onclick={handleToggleSubCatSection} size="x-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                            <template if:false={isMobile}>
+                                                <lightning-icon icon-name="utility:chevronright"
+                                                    data-catname={cat.value.attributeName}
+                                                    onclick={handleToggleSubCatSection} size="xx-small"
+                                                    class="icon-class">
+                                                </lightning-icon>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </div>
+                            </template>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <template if:true={cat.value.hasSubCategory}>
+                        <div key={cat.value.Id} data-subcatsection={cat.value.attributeName} class="slds-is-collapsed">
+                            <template iterator:subcat={cat.value.subCategories}>
+                                <lightning-layout key={subcat.value.attributeName} vertical-align="top">
+                                    <template if:false={isMobile}>
+                                        <lightning-layout-item size="1" class="slds-p-bottom_small">
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:true={isMobile}>
+                                        <lightning-layout-item size="1" class="slds-p-left_medium slds-p-bottom_small">
+                                            <lightning-input type="checkbox" label="" data-id={subcat.value.Id}
+                                                data-name={subcat.value.attributeName} data-type="subcat"
+                                                data-elementid={cat.index} onchange={handleCheckboxUpdate}
+                                                class="cat-box"></lightning-input>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:false={isMobile}>
+                                        <lightning-layout-item size="1" class="slds-p-bottom_small">
+                                            <lightning-input type="checkbox" label="" data-id={subcat.value.Id}
+                                                data-name={subcat.value.attributeName} data-type="subcat"
+                                                data-elementid={cat.index} onchange={handleCheckboxUpdate}>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:true={isMobile}>
+                                        <lightning-layout-item size="10" class="slds-p-left_small subcat-value-class">
+                                            {subcat.value.Name}
+                                        </lightning-layout-item>
+                                    </template>
+                                    <template if:false={isMobile}>
+                                        <lightning-layout-item size="10" class="slds-p-bottom_small">
+                                            {subcat.value.Name}
+                                        </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+                            </template>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </div>
+        <div class="filter-footer">
+            <template if:true={isMobile}>
+                <lightning-layout vertical-align="center" horizontal-align="space" pull-to-boundary="small">
+                    <lightning-layout-item padding="around-small">
+                        <button class={cancelBtnClass} value="Cancel" onclick={togglePanel}>Cancel</button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <button class={resetBtnClass} value="Reset All Filters" onclick={resetFilterPanel}>Reset All
+                            Filters</button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <button class={applyBtnClass} value="Apply" onclick={applyFilter}>Apply</button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+            <template if:false={isMobile}>
+                <lightning-layout vertical-align="center" horizontal-align="space" pull-to-boundary="small">
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button label="Cancel" title="Cancel" onclick={togglePanel}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="base" label="Reset All Filters" title="Reset All Filters"
+                            onclick={resetFilterPanel}></lightning-button>
+                    </lightning-layout-item>
+                    <lightning-layout-item padding="around-small">
+                        <lightning-button variant="brand" label="Apply" title="Apply" onclick={applyFilter}>
+                        </lightning-button>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+        </div>
+    </div>
+</template>

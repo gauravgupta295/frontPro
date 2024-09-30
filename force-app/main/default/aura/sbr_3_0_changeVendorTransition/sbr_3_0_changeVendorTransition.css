@@ -1,0 +1,31 @@
+@media screen and (min-width: 601px) {
+	.THIS .slds-modal__container { 
+        max-width : 50% !important;
+        width : 50%;
+        overflow-y: hidden !important;
+    }
+    .THIS .slds-modal__content{
+        height : 685px !important;
+        max-height: 800px !important;
+        overflow-y: hidden !important;
+	}    
+}
+
+@media screen and (max-width: 600px) {
+    .THIS .slds-modal__container {
+        width:100%;
+        max-width: 600px;
+        min-width: fit-content;
+		margin-left: -0.1rem;        
+    }
+
+    .THIS .slds-notify_toast {
+        min-width: auto;
+    }
+}
+
+@media only screen and (max-width: 1000px) {
+    .THIS .slds-modal__content {
+        overflow-y: auto !important;
+    }
+}

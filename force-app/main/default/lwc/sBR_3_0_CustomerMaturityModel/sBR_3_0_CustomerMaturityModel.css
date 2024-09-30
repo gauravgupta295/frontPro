@@ -1,0 +1,29 @@
+.TitleTabs{
+    font-size: 16px;
+}
+.slds-icon_container {
+    margin-top: -10px;
+}
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip-content {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #f9f9f9;
+    color: #333;
+    padding: 10px;
+    border-radius: 4px;
+    z-index: 1;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    min-width: 200px;
+}
+
+.tooltip-container:hover .tooltip-content {
+    display: block;
+}

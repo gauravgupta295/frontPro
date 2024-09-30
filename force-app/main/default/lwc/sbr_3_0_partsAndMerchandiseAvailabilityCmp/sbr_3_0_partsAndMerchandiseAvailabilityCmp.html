@@ -1,0 +1,366 @@
+<template>
+  <div lwc:if={isLoading}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+      variant="brand"
+    ></lightning-spinner>
+  </div>
+  <div class="slds-section slds-is-close" data-id="Availability">
+    <div if:false={isMobile}>
+      <h3
+        class="slds-section__title slds-theme_shade"
+        if:false={isInModal}
+        data-buttonid="Availability"
+      >
+        <button
+          type="button"
+          class="slds-button slds-section__title-action"
+          data-buttonid="Availability"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span
+            class="slds-truncate slds-p-horizontal_small"
+            title="Availability"
+            >Availability</span
+          >
+        </button>
+      </h3>
+    </div>
+    <div if:true={isMobile}>
+      <h3
+        class="slds-section__title"
+        if:false={isInModal}
+        data-buttonid="Availability"
+      >
+        <button
+          type="button"
+          class="slds-button action-title-mobile"
+          data-buttonid="Availability"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span
+            class="slds-truncate slds-p-horizontal_small custom-button"
+            title="Availability"
+            >Availability</span
+          >
+        </button>
+      </h3>
+    </div>
+    <div class="availabilityDetails slds-hide">
+      <c-sbr_3_0_parts-and-merchandise-availability-table
+        calling-from="spotlight"
+        columns={consumableSpotlightAvailabilityColumns}
+        rows={consumableSpotlightAvailabilityRows}
+        onopenavailabilitymodal={openAvailabilityModal}
+      >
+      </c-sbr_3_0_parts-and-merchandise-availability-table>
+    </div>
+  </div>
+
+  <div if:false={isMobile}>
+    <c-sbr_3_0_modal-cmp
+      variant="large"
+      class="availabilityModalClass"
+      header={modalHeaderText}
+      cancel-btn-label={modalCancelButtonLabel}
+      cancel-handler={handleCancelClick}
+    >
+      <span slot="modalContent">
+        <template lwc:if={showBreadCrumbContainer}>
+          <lightning-breadcrumbs>
+            <lightning-breadcrumb label="Availability"> </lightning-breadcrumb>
+            <lightning-breadcrumb label={branchLabel}> </lightning-breadcrumb>
+          </lightning-breadcrumbs>
+
+          <lightning-tabset
+            class="ItemAndReservedTabSetClass"
+            active-tab-value={activeReservedTab}
+          >
+            <lightning-tab
+              label="Items"
+              value="Items"
+              title="Items"
+              onactive={handleTabChange}
+            >
+            </lightning-tab>
+            <lightning-tab
+              label="Reserved"
+              value="Reserved"
+              title="Reserved"
+              onactive={handleTabChange}
+            >
+              <c-sbr_3_0_parts-and-merchandise-availability-reserved-tab-container-cmp
+                reservation-items={reservedItems}
+              ></c-sbr_3_0_parts-and-merchandise-availability-reserved-tab-container-cmp>
+            </lightning-tab>
+          </lightning-tabset>
+        </template>
+        <!-- FRONT-15982 : Added topPaddingRemoverClass class-->
+        <template lwc:else>
+          <lightning-tabset
+            class="tabsetMobile topPaddingRemoverClass"
+            active-tab-value={activeTabName}
+          >
+            <div lwc:if={isLoading}>
+              <lightning-spinner
+                alternative-text="Loading"
+                size="small"
+                variant="base"
+              ></lightning-spinner>
+            </div>
+            <lightning-tab
+              label={branchLabel}
+              value="Branch"
+              title="Branch"
+              onactive={handleAvailabilityTabChange}
+            >
+              <lightning-tabset
+                class="ItemAndReservedTabSetClass"
+                active-tab-value={activeItemTab}
+              >
+                <lightning-tab
+                  label="Items"
+                  value="Items"
+                  title="Items"
+                  onactive={handleTabChange}
+                >
+                  <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+                    variant="Branch"
+                    search-placeholder-label=""
+                    container-subtitle={branchLabel}
+                  >
+                    <span slot="containerContent">
+                      <c-sbr_3_0_parts-and-merchandise-availability-table
+                        calling-from="modal"
+                        columns={availabilityCols}
+                        rows={availabilityData}
+                        onopenavailabilitymodal={openAvailabilityModal}
+                      >
+                      </c-sbr_3_0_parts-and-merchandise-availability-table>
+                    </span>
+                  </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+                </lightning-tab>
+                <lightning-tab
+                  label="Reserved"
+                  value="Reserved"
+                  title="Reserved"
+                  onactive={handleTabChange}
+                >
+                </lightning-tab>
+              </lightning-tabset>
+            </lightning-tab>
+            <lightning-tab
+              label="District"
+              value="District"
+              title="District"
+              onactive={handleAvailabilityTabChange}
+            >
+              <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+                variant="District"
+                search-placeholder-label={districtPlaceholderValues}
+                container-subtitle={districtLabel}
+                onsearchboxchangeevt={handleSearchParameterEntered}
+              >
+                <span slot="containerContent">
+                  <c-sbr_3_0_parts-and-merchandise-availability-table
+                    calling-from="modal"
+                    columns={availabilityCols}
+                    rows={availabilityData}
+                    onopenavailabilitymodal={openAvailabilityModal}
+                  >
+                  </c-sbr_3_0_parts-and-merchandise-availability-table>
+                </span>
+              </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+            </lightning-tab>
+            <lightning-tab
+              label="Region"
+              value="Region"
+              title="Region"
+              onactive={handleAvailabilityTabChange}
+            >
+              <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+                variant="Region"
+                search-placeholder-label={regionPlaceholderValues}
+                container-subtitle={regionLabel}
+                onsearchboxchangeevt={handleSearchParameterEntered}
+              >
+                <span slot="containerContent">
+                  <c-sbr_3_0_parts-and-merchandise-availability-table
+                    calling-from="modal"
+                    columns={availabilityCols}
+                    rows={availabilityData}
+                    onopenavailabilitymodal={openAvailabilityModal}
+                  >
+                  </c-sbr_3_0_parts-and-merchandise-availability-table>
+                </span>
+              </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+            </lightning-tab>
+            <lightning-tab
+              label="Company"
+              value="Company"
+              title="Company"
+              onactive={handleAvailabilityTabChange}
+            >
+              <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+                variant="Company"
+                search-placeholder-label={companyPlaceholderValues}
+                container-subtitle={companyLabel}
+                onsearchboxchangeevt={handleSearchParameterEntered}
+              >
+                <span slot="containerContent">
+                  <c-sbr_3_0_parts-and-merchandise-availability-table
+                    calling-from="modal"
+                    columns={availabilityCols}
+                    rows={availabilityData}
+                    onopenavailabilitymodal={openAvailabilityModal}
+                  >
+                  </c-sbr_3_0_parts-and-merchandise-availability-table>
+                </span>
+              </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+            </lightning-tab>
+          </lightning-tabset>
+        </template>
+      </span>
+    </c-sbr_3_0_modal-cmp>
+  </div>
+  <div if:true={isMobile}>
+    <template if:true={isAvailabilityScreen}>
+      <c-sbr_3_0_mobile-screen props={mobileProps} title="Availability">
+        <lightning-tabset
+          class="consumables-tab"
+          active-tab-value={activeTabName}
+        >
+          <lightning-tab
+            label={branchLabel}
+            value="Branch"
+            title="Branch"
+            onactive={handleAvailabilityTabChange}
+          >
+            <lightning-tabset class="consumables-tab consumables-sub-tab">
+              <lightning-tab label="Items" value="Items" title="Items">
+                <div class="separator"></div>
+                <template if:true={availabilityData}>
+                  <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+                    variant="Branch"
+                    search-placeholder-label=""
+                    container-subtitle={branchLabel}
+                  >
+                    <span slot="containerContent">
+                      <c-sbr_3_0_parts-and-merchandise-availability-table
+                        calling-from="modal"
+                        columns={availabilityCols}
+                        rows={availabilityData}
+                        onopenavailabilitymodal={openAvailabilityModal}
+                      >
+                      </c-sbr_3_0_parts-and-merchandise-availability-table>
+                    </span>
+                  </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+                </template>
+              </lightning-tab>
+              <lightning-tab label="Reserved" value="Reserved" title="Reserved">
+                <div class="separator"></div>
+                <c-sbr_3_0_parts-and-merchandise-availability-reserved-tab-container-cmp
+                  reservation-items={reservedItems}
+                ></c-sbr_3_0_parts-and-merchandise-availability-reserved-tab-container-cmp>
+              </lightning-tab>
+            </lightning-tabset>
+          </lightning-tab>
+          <lightning-tab
+            label="District"
+            value="District"
+            title="District"
+            onactive={handleAvailabilityTabChange}
+          >
+            <div class="separator"></div>
+            <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+              variant="District"
+              search-placeholder-label={districtPlaceholderValues}
+              container-subtitle={districtLabel}
+              onsearchboxchangeevt={handleSearchParameterEntered}
+            >
+              <span slot="containerContent">
+                <c-sbr_3_0_parts-and-merchandise-availability-table
+                  calling-from="modal"
+                  columns={availabilityCols}
+                  rows={availabilityData}
+                  onopenavailabilitymodal={openAvailabilityModal}
+                >
+                </c-sbr_3_0_parts-and-merchandise-availability-table>
+              </span>
+            </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+          </lightning-tab>
+          <lightning-tab
+            label="Region"
+            value="Region"
+            title="Region"
+            onactive={handleAvailabilityTabChange}
+          >
+            <div class="separator"></div>
+            <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+              variant="Region"
+              search-placeholder-label={regionPlaceholderValues}
+              container-subtitle={regionLabel}
+              onsearchboxchangeevt={handleSearchParameterEntered}
+            >
+              <span slot="containerContent">
+                <c-sbr_3_0_parts-and-merchandise-availability-table
+                  calling-from="modal"
+                  columns={availabilityCols}
+                  rows={availabilityData}
+                  onopenavailabilitymodal={openAvailabilityModal}
+                >
+                </c-sbr_3_0_parts-and-merchandise-availability-table>
+              </span>
+            </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+          </lightning-tab>
+          <lightning-tab
+            label="Company"
+            value="Company"
+            title="Company"
+            onactive={handleAvailabilityTabChange}
+          >
+            <div class="separator"></div>
+            <c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp
+              variant="Company"
+              search-placeholder-label={companyPlaceholderValues}
+              container-subtitle={companyLabel}
+              onsearchboxchangeevt={handleSearchParameterEntered}
+            >
+              <span slot="containerContent">
+                <c-sbr_3_0_parts-and-merchandise-availability-table
+                  calling-from="modal"
+                  columns={availabilityCols}
+                  rows={availabilityData}
+                  onopenavailabilitymodal={openAvailabilityModal}
+                >
+                </c-sbr_3_0_parts-and-merchandise-availability-table>
+              </span>
+            </c-sbr_3_0_parts-and-merchandise-availability-tab-container-cmp>
+          </lightning-tab>
+        </lightning-tabset>
+
+        <div slot="footer">
+          <button
+            class="slds-button custom-button-green slds-button_neutral"
+            onclick={handleBackClick}
+          >
+            Back
+          </button>
+        </div>
+      </c-sbr_3_0_mobile-screen>
+    </template>
+  </div>
+</template>

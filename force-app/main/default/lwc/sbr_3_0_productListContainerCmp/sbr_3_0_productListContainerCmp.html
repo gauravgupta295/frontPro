@@ -1,0 +1,57 @@
+<template>
+  <template if:false={isMobile}>
+    <lightning-layout multiple-rows>
+      <lightning-layout-item size="12">
+        <div class="list-header-container">
+          <c-sbr_3_0_product-list-header-cmp
+            onviewcart={handleViewCart}
+            onitemsearchupdate={handleItemSearch}
+            onlistviewupdate={handleListViewChange}
+            record-id={recordId}
+            total-line-items={totalLineCount}
+            object-api-name={objectApiName}
+          ></c-sbr_3_0_product-list-header-cmp>
+        </div>
+      </lightning-layout-item>
+      <lightning-layout-item size="12">
+        <div class="scrollable-list-container">
+          <c-sbr_3_0_product-list-cmp
+            list-height={listHeight}
+            onrowsselected={handleSelectedRows}
+            onsearchcomplete={handleSearchCompletion}
+             ontotalcount={handleTotalLineCount}
+            max-row-selection={maxRowSelection}
+           
+          ></c-sbr_3_0_product-list-cmp>
+        </div>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+  <template if:true={isMobile}>
+    <lightning-layout>
+      <lightning-layout-item size="12">
+        <div class="product-panel">
+          <c-sbr_3_0_product-list-header-cmp
+            onitemsearchupdate={handleItemSearch}
+            onlistviewupdate={handleListViewChange}
+            ontoggleprodinqmobilestate={handleToggleProdInqMobileState}
+            record-id={recordId}
+            object-api-name={objectApiName}
+            is-customer-added={isCustomerAdded}
+            sync-customer-name={syncCustomerName}
+          ></c-sbr_3_0_product-list-header-cmp>
+          <div class={productListClass}>
+            <c-sbr_3_0_product-list-cmp
+              list-height={listHeight}
+              onrowsselected={handleSelectedRows}
+              onsearchcomplete={handleSearchCompletion}
+              show-radio-buttons={showRadioButtons}
+              ><!--FRONT-8793-->
+              ></c-sbr_3_0_product-list-cmp
+            >
+          </div>
+        </div>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+</template>

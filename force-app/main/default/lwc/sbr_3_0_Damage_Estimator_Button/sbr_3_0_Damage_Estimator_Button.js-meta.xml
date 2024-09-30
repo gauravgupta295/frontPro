@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>58.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="closedWithoutBillingReason" type="String" label="Close Without Billing Reason"/>
+            <property name="relatedStatus" type="String" label="Damage Estimator Status"/>
+            <property name="invoiceDescription" type="String" label="Invoice Description"/>
+            <property name="totalRetailAmount" type="Integer" label="Total Retail Estimated"/>
+            <property name="isRetailSectionVisible" type="Boolean" label="Is Retail Section Visible"/>
+            <property name="buttonName" type="String" label="Name of the button"/>
+            <property name="displayBilltoCustomer" type="Boolean" label="Show Bill To Customer"/>
+            <property name="displayCloseUnbilled" type="Boolean" label="Show Close Unbilled"/>
+            <!-- <property name="damageEstimatorId" type="String" label="Invoice Description"/> -->
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

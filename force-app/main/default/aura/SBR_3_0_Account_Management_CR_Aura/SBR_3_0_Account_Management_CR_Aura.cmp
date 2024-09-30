@@ -1,0 +1,6 @@
+<aura:component implements="force:appHostable" >
+    <aura:handler event="force:refreshView" action="{!c.doInit}"/> <!-- This Event fires when refresh function is called -->
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/> <!-- This Event fires first when the component loads -->
+    <lightning:workspaceAPI aura:id="workspace"/>
+	<c:sBR_3_0_AccountManagementCRCustomListView/>
+</aura:component>

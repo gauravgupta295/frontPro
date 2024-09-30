@@ -1,0 +1,82 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-25-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-layout-item flexibility="auto" padding="around-small">
+        <div>
+            <h1>
+                Product Selection
+                <br>
+                --------------------------------
+                <br>
+            </h1>
+            <div>
+                <lightning-input type="search" label="Search" value={searchKey}
+                    onchange={handleSearchFilterChange}></lightning-input>
+            </div>
+        </div>
+    </lightning-layout-item>
+    <lightning-layout-item>
+        <div>
+            <br>
+        </div>
+        <div class="slds-scrollable--y" style="max-height : 350px;">
+            <c-sbr_3_0_custom-data-table-cmp key-field="Id" columns={columns} data={recordsToDisplay}
+                default-sort-direction={defaultSortDirection} sorted-direction={sortDirection} sorted-by={sortedBy}
+                onsort={onHandleSort} onrowselection={handleProductRowSelection}>
+            </c-sbr_3_0_custom-data-table-cmp>
+        </div>
+        <template if:true={disablePagination}>
+            <div class="slds-grid slds-grid_align-spread slds-p-vertical_medium" style="height:5rem">
+                <!--RECORDS PER PAGE-->
+                <div class="slds-col">
+                    <div class="slds-list_inline slds-p-bottom_xx-small">
+                        <label class="slds-text-color_weak slds-p-horizontal_x-small" for="recordsPerPage">
+                            Page Size:
+                        </label>
+                        <div class="slds-select_container">
+                            <select class="slds-select" id="recordsPerPage" onchange={handleRecordsPerPage}>
+                                <template for:each={pageSizeOptions} for:item="option">
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col">
+                    <!--PAGE NAVIGATION-->
+                    <lightning-button disabled={disableFirst} icon-name="utility:jump_to_left" label="First"
+                        class="slds-p-horizontal_x-small" alternative-text="first page" onclick={goToFirstPage}>
+                    </lightning-button>
+    
+                    <lightning-button disabled={disableFirst} icon-name="utility:chevronleft" label="Previous"
+                        alternative-text="Previous" onclick={goToPreviousPage}>
+                    </lightning-button>
+    
+                    &nbsp;
+                    <span class="slds-badge">
+                        Showing {pageNumber} &nbsp;of&nbsp; {totalPages} &nbsp;&nbsp;Page(s)
+                    </span>
+       
+                    <lightning-button disabled={disableLast} icon-name="utility:chevronright" label="Next"
+                        alternative-text="Next" onclick={goToNextPage} class="slds-p-horizontal_x-small"
+                        icon-position="right">
+                    </lightning-button>
+    
+                    <lightning-button disabled={disableLast} icon-name="utility:jump_to_right" label="Last"
+                        alternative-text="last page" onclick={goToLastPage} icon-position="right">
+                </lightning-button>
+                </div>
+                <div class="slds-col slds-p-right_x-small">
+                    Total Records : <span class="totalrecordsbox">{totalRecords}</span>
+                </div>
+            </div>
+        </template>
+    </lightning-layout-item>
+</template>

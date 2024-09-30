@@ -1,0 +1,10 @@
+.jobSiteContainer {
+  padding-top: 0.5rem;
+  padding-inline: 1.5rem;
+}
+
+.relativePosition {
+  position: relative;
+  left: 50%;
+  top: 50%;
+}

@@ -1,0 +1,216 @@
+<template>
+  <!-- <lightning-record-edit-form object-api-name="SBQQ__Quote__c">
+    <div class="slds-section slds-is-open">
+      <div aria-hidden="false" class="slds-section__content">
+        <lightning-layout-item
+          size="12"
+          medium-device-size="6"
+          large-device-size="6"
+          class=""
+        >
+          <div class="slds-form-element slds-form-element_stacked">
+            <template if:true={showFrontlineComponents}>
+              <c-s-b-r_3_0_required-custom-lookup-cmp-frontline
+                record-id={accountId}
+                label="Customer Info"
+                default-record={accountId}
+                s-object-api-name="Account"
+                placeholder="Acct Name. Phone, Email"
+                icon-name="standard:account"
+                fields-to-include={frontlineDefaultFilteringFields}
+                onlookupupdate={handleAccountChange}
+                where-clause={accountWhere}
+                value={accountId}
+                parentcmp={parentComp}
+                is-account-lookup
+              ></c-s-b-r_3_0_required-custom-lookup-cmp-frontline>
+            </template>
+            <template if:false={showFrontlineComponents}>
+              <c-s-b-r_3_0_required-custom-lookup-cmp
+                record-id={accountId}
+                label="Account"
+                default-record={accountId}
+                s-object-api-name="Account"
+                placeholder="Search Accounts..."
+                icon-name="standard:account"
+                fields-to-include="RM_Account_Number_Display__c, RM_Account_Number__c, Status__c, ShippingPostalCode, ShippingCity, ShippingState, Phone"
+                onlookupupdate={handleAccountChange}
+                where-clause={accountWhere}
+                value={accountId}
+                is-account-lookup
+              ></c-s-b-r_3_0_required-custom-lookup-cmp>
+            </template>
+          </div>
+        </lightning-layout-item>
+        <template if:true={isAccountSelected}>
+          <template lwc:if={showFrontlineComponents}>
+            <template if:true={showExternalOffice}>
+              <lightning-layout-item
+                size="12"
+                medium-device-size="6"
+                large-device-size="6"
+                class=""
+              >
+                <div class="office slds-form-element slds-form-element_stacked">
+                  <c-s-b-r_3_0_custom-lookup-cmp
+                    record-id={officeAccountId}
+                    default-record={officeAccountId}
+                    label="Office Account"
+                    s-object-api-name="Account"
+                    placeholder="Search Office Accounts..."
+                    icon-name="standard:account"
+                    onlookupupdate={handleOfficeAccountChange}
+                    where-clause={officeWhereClause}
+                    value={officeAccountId}
+                  ></c-s-b-r_3_0_custom-lookup-cmp>
+                </div>
+              </lightning-layout-item>
+            </template>
+
+            <lightning-layout-item
+              size="12"
+              medium-device-size="6"
+              large-device-size="6"
+              class=""
+            >
+              <div class="office slds-form-element slds-form-element_stacked">
+                <c-s-b-r_3_0_required-custom-lookup-cmp
+                  record-id={orderedBy}
+                  label="Ordered By"
+                  default-record={orderedBy}
+                  fields-to-include="LastName, FirstName"
+                  s-object-api-name="Contact"
+                  placeholder="Search Contacts..."
+                  icon-name="standard:contact"
+                  onlookupupdate={handleOrderedByChange}
+                  where-clause={orderedByWhere}
+                  value={orderedBy}
+                  app-name={appName}
+                  acc-id={accountId}
+                ></c-s-b-r_3_0_required-custom-lookup-cmp>
+              </div>
+            </lightning-layout-item>
+          </template>
+          <template lwc:else>
+            <div>
+              <lightning-layout-item
+                size="12"
+                medium-device-size="6"
+                large-device-size="6"
+                class=""
+              >
+                <div class="office slds-form-element slds-form-element_stacked">
+                  <c-s-b-r_3_0_custom-lookup-cmp
+                    record-id={officeAccountId}
+                    default-record={officeAccountId}
+                    label="Office Account"
+                    fields-to-include="RM_Account_Number_Display__c, RM_Account_Number__c, Status__c, ShippingPostalCode, ShippingCity, ShippingState, Phone"
+                    s-object-api-name="Account"
+                    placeholder="Search Office Accounts..."
+                    icon-name="standard:account"
+                    onlookupupdate={handleOfficeAccountChange}
+                    where-clause={officeWhereClause}
+                    value={officeAccountId}
+                    parent-name={accountName}
+                  ></c-s-b-r_3_0_custom-lookup-cmp>
+                </div>
+              </lightning-layout-item>
+
+              <lightning-layout-item
+                size="12"
+                medium-device-size="6"
+                large-device-size="6"
+                class=""
+              >
+                <div class="office slds-form-element slds-form-element_stacked">
+                  <c-s-b-r_3_0_required-custom-lookup-cmp
+                    record-id={orderedBy}
+                    label="Ordered By"
+                    default-record={orderedBy}
+                    fields-to-include="LastName, FirstName"
+                    s-object-api-name="Contact"
+                    placeholder="Search Contacts..."
+                    icon-name="standard:contact"
+                    onlookupupdate={handleOrderedByChange}
+                    where-clause={orderedByWhere}
+                    value={orderedBy}
+                    parent-name={accountName}
+                  ></c-s-b-r_3_0_required-custom-lookup-cmp>
+                </div>
+              </lightning-layout-item>
+            </div>
+            <template if:true={showExternalUsedTools}>
+              <lightning-input
+                data-id="externalToolCheckbox"
+                type="checkbox"
+                label="External Tool Used"
+                onchange={handleChecked}
+                checked={externalToolCheckbox}
+              ></lightning-input>
+              <template if:false={externalQuote}>
+                <lightning-helptext
+                  content="If selected, Job Site becomes optional"
+                ></lightning-helptext>
+              </template>
+
+              <template if:true={externalQuote}>
+                <lightning-input
+                  data-id="jobSiteCheckbox"
+                  type="checkbox"
+                  label="Use Job Site?"
+                  onchange={handleUseJobsite}
+                  checked={jobSiteCheckbox}
+                ></lightning-input>
+              </template>
+            </template>
+          </template>
+        </template>
+
+        <template lwc:if={showFrontlineComponents}>
+          <template if:true={showExternalOffice}>
+            <lightning-input
+              data-id="externalToolCheckbox"
+              type="checkbox"
+              label="External Tool Used"
+              onchange={handleChecked}
+              checked={externalToolCheckbox}
+            ></lightning-input>
+          </template>
+
+          <template if:false={externalQuote}>
+            <template if:true={showExternalOffice}>
+              <lightning-helptext
+                content="If selected, Job Site becomes optional"
+              ></lightning-helptext>
+            </template>
+          </template>
+
+          <template if:true={externalQuote}>
+            <lightning-input
+              data-id="jobSiteCheckbox"
+              type="checkbox"
+              label="Use Job Site?"
+              onchange={handleUseJobsite}
+              checked={jobSiteCheckbox}
+            ></lightning-input>
+          </template>
+        </template>
+      </div>
+    </div>
+  </lightning-record-edit-form> -->
+  <!-- <div class="slds-card__footer actionButtonBar slds-grid slds-grid_align-spread slds-p-horizontal_small">
+      <lightning-button label="Test" variant="brand" onclick={handleNext}></lightning-button>
+  </div> -->
+  <!-- <div class="slds-grid slds-grid_align-spread customfooter">
+    <div class="slds-border_top customline" style={customLineStyle}></div>
+    <div class="actionsLeft slds-grid slds-m-right_xx-small"></div>
+    <div class="actionsRight slds-grid slds-p-top_small">
+      <lightning-button
+        label="Next"
+        variant="brand"
+        onclick={handleNext}
+        disabled={isOrderedByButtonDisabled}
+      ></lightning-button>
+    </div>
+  </div> -->
+</template>

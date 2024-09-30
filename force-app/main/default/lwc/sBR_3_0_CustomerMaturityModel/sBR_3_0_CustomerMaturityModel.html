@@ -1,0 +1,73 @@
+<template>
+    <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+    </template>
+    <div class="TitleTabs">
+        <div class="slds-tabs_default">
+            <ul class="slds-tabs_default__nav" role="tablist">
+                <li class="slds-tabs_default__item slds-is-active power-summary" title={label.Power_Of_Sunbelt_Summary_Title} role="presentation">
+                    <a class="slds-tabs_default__link" role="tab" aria-selected="true" aria-controls="tab-default-1" id="tab-default-1__item" onclick={ShowPowerOfSunbeltSummary}>
+                        <template if:true={isOfficeAccount}>
+                            <span class="slds-icon_container slds-m-right_x-small slds-align-middle">
+                                <lightning-helptext content={AccountDetails}></lightning-helptext>
+                            </span>
+                        </template>
+                        {label.Power_Of_Sunbelt_Summary_Title}
+                    </a>
+                </li>
+                <li class="slds-tabs_default__item recommendations" title={label.Recommendations_Title} role="presentation">
+                    <a class="slds-tabs_default__link" role="tab" aria-selected="true" aria-controls="tab-default-2" id="tab-default-2__item" onclick={ShowRecommendation}>
+                        {label.Recommendations_Title}
+                    </a>
+                </li>
+            </ul>
+            <div id="tab-default-1" class="slds-tabs_default__content" role="tabpanel" aria-labelledby="tab-default-1__item">
+                <template if:true={ShowPowerOfSunbeltSummaryTab}>
+                    <c-s-b-r_3_0_-power_-of_-sunbelt_-summary   current-l-o-b-used = {CurrentLOBUsed}
+                                                                no-of-products-rented = {NoOfProductsRented}
+                                                                current-t-t-m-spent = {CurrentTTMSpent}
+                                                                potential-l-o-b-used = {PotentialLOBUsed}
+                                                                current-l-o-b = {CurrentLOB}
+                                                                potential-l-o-b = {PotentialLOB}
+                                                                is-potential-l-o-b-n-u-l-l = {isPotentialLOBNULL}
+                                                                is-current-l-o-b-n-u-l-l = {isCurrentLOBNULL}
+                                                                custom-labels-map = {CustomLabelsMap}
+                                                                is-server-down = {isServerDown}
+                                                                error-message = {errorMessage}
+                                                                is-server-up-with-error = {isServerUpWithError}
+                                                                onrefreshmodel={handleModalRefresh}
+                                                                tilecurrentlob = {Tile_Current_LOB_Used}
+                                                                tilettmspend = {Tile_TTM_Spend}
+                                                                tilenoofproductsrented = {Tile_No_of_Products_Rented}
+                                                                tilepotentiallob = {Tile_Potential_LOB}
+                                                                titlecurrentlineofbusiness = {Title_Current_Lines_of_Business_LOB}
+                                                                titlepotentiallineofbusiness = {Title_Additional_Potential_Lines}
+                    ></c-s-b-r_3_0_-power_-of_-sunbelt_-summary>
+                </template>
+                <template if:true={ShowRecommendationTab}>
+                    <c-s-b-r_3_0_-recommendations       up-sell-response = {UpSellResponse}
+                                                        cross-sell-response = {CrossSellResponse}
+                                                        is-upsell-n-u-l-l = {isUpsellNULL}
+                                                        is-crosssell-n-u-l-l = {isCrosssellNULL}
+                                                        is-server-down = {isServerDown}
+                                                        account-rec = {accountRec}
+                                                        error-message = {errorMessage}
+                                                        is-server-up-with-error = {isServerUpWithError}
+                                                        onrefreshmodel={handleModalRefresh}
+                                                        error-message-rec = {errorMessageRec}
+                                                        titleselectthumbsupthumbsdown = {Title_Select_thumbs_up_thumbs_down}
+                                                        tabletitleupsell = {Table_Title_Upsell}
+                                                        tabletitlecrosssell = {Table_Title_Cross_Sell}
+                                                        tablecolumncatclass = {Table_Column_Cat_Class}
+                                                        tablecolumndescription = {Table_Column_Description}
+                                                        tablecolumnfeedback = {Table_Column_Feedback}
+                                                        buttonsubmitfeedback = {Button_Submit_Feedback}
+                                                        pleaseprovideanycomments = {Please_provide_any_comments_on_the_recom}
+                    ></c-s-b-r_3_0_-recommendations>
+                </template>
+            </div>
+        </div>
+    </div>
+</template>

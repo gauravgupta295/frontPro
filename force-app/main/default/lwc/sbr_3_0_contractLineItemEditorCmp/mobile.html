@@ -1,0 +1,131 @@
+<template>
+  <!-- FRONT-15261 START -->
+  <template if:true={isLoading}>
+    <lightning-spinner class="spins" size="medium"></lightning-spinner>
+  </template>
+
+  <!-- Part/Item # -->
+  <lightning-layout multiple-rows>
+    <template lwc:if={itemData}>
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <div class="input-label">Part/Item #</div>
+        <div class="custom-box slds-p-top_small input-value">
+          {itemData.partOrItemNumber}
+        </div>
+      </lightning-layout-item>
+
+      <!-- Stock/Vendor -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <div class="input-label">Stock/Vendor</div>
+        <div class="custom-box slds-p-top_small input-value">
+          {itemData.stockOrVendor}
+        </div>
+      </lightning-layout-item>
+
+      <!-- quantity -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="quantity"
+          type="number"
+          label="Quantity"
+          value={itemData.quantity}
+          onchange={handleFieldChange}
+        ></lightning-input>
+        <label
+          class="slds-form-element__label available-quantity"
+          if:false={isMiscProduct}
+        >
+          Available : {itemData.availabileQty}</label
+        >
+      </lightning-layout-item>
+
+      <!-- Unit of Measure -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <template if:false={isMiscProduct}>
+          <div class="input-label slds-p-top_xx-small">Unit of Measure</div>
+          <div class="custom-box slds-p-top_small input-value">
+            {itemData.unitOfMeasure}
+          </div>
+        </template>
+      </lightning-layout-item>
+
+      <!-- Sales/Misc Price -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+        class="label"
+      >
+        <lightning-input
+          data-field-key="salesOrMiscPrice"
+          field-level-help={salesOrMiscPriceFieldLevelHelp}
+          type="number"
+          label={price}
+          value={itemData.salesOrMiscPrice}
+          step=".01"
+          onchange={handleFieldChange}
+          class="layout-item help-text-icon-padding-top-remove-on-input"
+        >
+        </lightning-input>
+      </lightning-layout-item>
+
+      <!-- No Charge Flag -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+        class="checkbox"
+      >
+        <lightning-input
+          data-field-key="noChargeFlag"
+          type="checkbox"
+          label="No Charge"
+          name="noChargeCheckBox"
+          value={itemData.noChargeFlag}
+          onchange={handleFieldChange}
+          class="slds-p-top_x-large"
+          checked={itemData.noChargeFlag}
+        ></lightning-input>
+      </lightning-layout-item>
+
+      <!-- LineItem Notes -->
+      <lightning-layout-item size="12" padding="around-small">
+        <lightning-textarea
+          data-field-key="lineItemNotes"
+          label="Line Item Notes"
+          value={itemData.lineItemNotes}
+          onchange={handleFieldChange}
+        ></lightning-textarea>
+      </lightning-layout-item>
+    </template>
+  </lightning-layout>
+  <!-- FRONT-15261 END -->
+</template>

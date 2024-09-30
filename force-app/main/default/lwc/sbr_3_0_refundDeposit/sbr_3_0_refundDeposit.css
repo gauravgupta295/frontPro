@@ -1,0 +1,46 @@
+.Error_Message{
+    background: #5C5C5C;
+    height: 100px;
+    color:#FFFFFF;
+    Font : SF Pro Text;
+    Size :16px;
+    padding-left: 15px;
+}
+.Cancel_Message{
+    background: #5C5C5C;
+    height: 86px;
+    color:#FFFFFF;
+    Font : SF Pro Text;
+    padding-top: 12px;
+}
+.my-icon {
+    --sds-c-icon-color-foreground-default: white;
+}
+.warningbackground{
+    background: #FE9339;
+    align-items: flex-start;
+}
+.errorbackground{
+    background: #BA0517;
+}
+.exceptionfont{
+    font-size: 20px;
+}
+.warningfont{
+    font-size: 16px;
+}
+.slds-modal__container{
+ max-width: 35rem;
+ min-width: 35rem;
+}
+.spinnermodal{
+    height:35rem;
+    position:relative
+}
+
+.cardlabel{
+    padding-left: 40px;
+}
+.mild-bold {
+    font-weight: 500;
+  }

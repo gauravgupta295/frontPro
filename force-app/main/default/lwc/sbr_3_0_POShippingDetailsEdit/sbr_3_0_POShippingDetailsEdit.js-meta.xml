@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__Tab</target>
+        
+    </targets>
+    <targetConfigs>
+        <targetConfig
+            targets="lightning__FlowScreen">
+            <property name="source" label="Source" type="String" default="Page" role="inputOnly" />
+            <property name="vendorId" label="Vendor Account Id" type="String" default="None" role="inputOnly" />
+            <property name="branchLocId" label="Profile Location Id" type="String" role="inputOnly" default="None" />
+            <property name="branchShipToName" label="Profile Ship To Name" type="String" role="inputOnly" default="None" />
+            <property name="branchLocNum" label="Profile Branch Location Number" type="String" role="inputOnly" default="None" />
+            <property name="branchAdd1" label="Profile Branch Address 1" type="String" role="inputOnly" default="None" />
+            <property name="branchAdd2" label="Profile Branch Address 2" type="String" role="inputOnly" default="None" />
+            <property name="branchPhone" label="Profile Branch Phone" type="String" role="inputOnly" default="None" />
+            <property name="recordTypeId" label="Record Type Id" type="String" role="inputOnly" default="None" />
+            <property name="recordIdName" label="Record Type Name" type="String" role="inputOnly" default="None" />          
+            <property name="branchCity" label="Profile Branch City" type="String" role="inputOnly" default="None" />
+            <property name="branchState" label="Profile Branch State" type="String" role="inputOnly" default="None" />
+            <property name="branchZip" label="Profile Branch Zip Code" type="String" role="inputOnly" default="None" />
+            <property name="addressLine1" label="Address Line 1" type="String" role="outputOnly" />
+            <property name="addressLine2" label="Address Line 2" type="String" role="outputOnly" />
+            <property name="phoneNumber" label="Phone Number" type="String" role="outputOnly" />
+            <property name="shipToCity" label="City" type="String" role="outputOnly" />
+            <property name="shipToState" label="State/Province" type="String" role="outputOnly" />
+            <property name="shipToZip" label="Postal Code" type="String" role="outputOnly" />
+            <property name="orderedFor" label="Ordered For" type="String" role="outputOnly" />
+            <property name="requestedDate" label="Requested Date" type="String" role="outputOnly" />
+            <property name="shipDate" label="Ship Date" type="String" role="outputOnly" />
+            <property name="orderedFrom" label="Ordered From" type="String" role="outputOnly" />
+            <property name="shipToName" label="Ship To Name" type="String" role="outputOnly" />
+            <property name="shipToLoc" label="Ship To Location" type="String" role="outputOnly" />
+            <property name="shipToType" label="Ship To Type" type="String" role="outputOnly" />
+            <property name="carrierId" label="Carrier Id" type="String" role="outputOnly" />
+            <property name="shipTo" label="Ship To" type="String" role="outputOnly" />
+            <property name="customerNumber" label="Customer Number" type="String" role="outputOnly" />
+            <property name="carrierNum" label="carrierNum" type="String" role="outputOnly" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

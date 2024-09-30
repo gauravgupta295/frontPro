@@ -1,0 +1,16 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-29-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span if:false={branchLocation}>
+        {rowItem}
+    </span>
+    <div if:true={branchLocation} 
+        class="location slds-text-body_small slds-text-color_weak">
+        {location.City__c}, {location.State__c} {location.Zip_Code__c}
+    </div>
+</template>

@@ -1,0 +1,44 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-08-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={isMobile}>
+        <div class="slds-panel slds-size_full " aria-hidden="false" style="width: 935px; height: 1200px;">
+            <div class="slds-panel__header">
+                <h2 class="slds-panel__header-title slds-text-heading_small " title={panelTitle} style="width: auto" >{panelTitle}</h2>
+                    <div style= "margin-left: auto; margin-right: 0;">  
+                       <lightning-input type="search" label="Search" onchange={searchAssetList} ></lightning-input>
+                    </div>
+            </div>
+            <div class="slds-panel__body">
+                <div class="slds-is-absolute pl-inner-container" style="width: 915px; height: auto;">
+                    <template if:true={showTable}>
+                        
+                        <c-sbr_3_0_custom-data-table-cmp key-field="Id" columns={columns} data={data}
+                            default-sort-direction={defaultSortDirection} sorted-direction={sortDirection} sorted-by={sortedBy}
+                            onsort={onHandleSort} hide-checkbox-column="true"
+                            show-row-number-column="true" 
+                            enable-infinite-loading onloadmore={loadMoreItems} onrowselection={updateSelectedRows}>
+                        </c-sbr_3_0_custom-data-table-cmp>
+                         
+                    </template>
+                </div>
+            </div>
+        </div>
+    </template>
+    
+    <template if:true={isMobile}>
+        <lightning-layout multiple-rows="true" class="slds-p-around_small">
+            <lightning-layout-item size="12">
+                <span class="panel-title slds-text-title_bold slds-p-around_x-small">{panelTitle}</span>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <p>Render assets which match selected cat class values here</p>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+</template>

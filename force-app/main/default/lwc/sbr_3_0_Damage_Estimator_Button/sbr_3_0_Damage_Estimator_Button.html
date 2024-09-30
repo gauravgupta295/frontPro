@@ -1,0 +1,27 @@
+<template>
+    <div class="slds-clearfix">
+        <div class="slds-float_right">
+            <template if:true={displayBilltoCustomer}>
+                <button class="slds-button slds-button_brand primary-button" aria-label="Bill Customer" onclick={showBillToCustomer}>Bill Customer</button>
+            </template>
+            <template if:true={displayCloseUnbilled}>
+                <button class="slds-button slds-button_inverse secondary-button" aria-label="Close Estimator Unbilled" onclick={showModalBox}>Close Estimator Unbilled</button>
+            </template>
+        </div>
+    </div>
+    <template if:true={isShowMessageBox}>
+        <!-- Warning/Error message box -->
+        <div class="slds-box slds-border_left">
+            <p class="slds-text-heading_medium slds-text-color_error">{errorDescription}</p>
+            <p class="slds-text-body_small slds-text-title_bold">
+                <lightning-formatted-text value={validationErrorMessage}></lightning-formatted-text>
+            </p>
+        </div>
+    </template>
+    <template if:true={isShowModal}>
+        <c-sbr_3_0_-close_-estimator_-unbilled_-popup oncancel_unbilled={hideModalBox} onsave_unbilled={handleSaveUnbilled} reason-code={closedWithoutBillingReason}></c-sbr_3_0_-close_-estimator_-unbilled_-popup>
+    </template>
+    <template if:true={isShowBillToCustomer}>
+        <c-sbr_3_0_-damage_-estimator_-bill_-to_-customer oncancel_billed={hideBillToCustomer} onsave_billed={handleBillToCustomerYes}></c-sbr_3_0_-damage_-estimator_-bill_-to_-customer>
+    </template>
+</template>

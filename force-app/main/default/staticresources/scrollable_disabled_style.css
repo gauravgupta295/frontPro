@@ -1,0 +1,5 @@
+.slds-scrollable_y {
+    max-height: 100%;
+    overflow: unset;
+    overflow-y: visible;
+}

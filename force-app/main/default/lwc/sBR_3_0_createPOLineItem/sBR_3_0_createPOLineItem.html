@@ -1,0 +1,349 @@
+<template>
+	<!-- ************************* code for DESKTOP view STARTS *************************  -->
+	<template if:false={isMobileView}>
+		<template if:true={openModal}>
+			<section aria-modal="true" class="slds-modal slds-fade-in-open slds-align-absolute_center">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<h1 id="modal-heading-01" class="slds-modal__title slds-align_absolute-center slds-hyphenate">
+							Create
+							New Item</h1>
+					</div>
+					<div class="slds-modal__content slds-hyphenate slds-p-around_medium" id="modal-content-id-1">
+						<div class="slds-m-top_medium slds-m-bottom_x-large">
+							<h2 class="slds-text-heading_medium slds-p-around_small" style="background-color:lightgrey">
+								General
+							</h2>
+							<div class="slds-grid slds-wrap slds-p-around_medium">
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-input type="text" label="Item Number" required
+										onchange={handleNumberChange} value={itemNumber} maxlength="30">
+									</lightning-input>
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+								</div>
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-input type="text" label="Item Description" required
+										onchange={handleDescriptionChange} value={description} maxlength="80">
+									</lightning-input>
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+								</div>
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-input type="text" label="Stock Class" required
+										onchange={handleClassChange} value={stockClass} maxlength="5"></lightning-input>
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+								</div>
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-combobox label="P/M Code" value={typeValue} options={options} required
+										onchange={handleTypeChange}
+										field-level-help="To create an equipment or misc item, reach out to the Fleet Team at fltops@sunbeltrentals.com.">
+									</lightning-combobox>
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+								</div>
+							</div>
+							<h2 class="slds-text-heading_medium slds-p-around_small" style="background-color:lightgrey">
+								Pricing Info
+							</h2>
+							<div class="slds-grid slds-wrap slds-p-around_medium">
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-input type="number" step="0.001" label="Item Cost"
+										onchange={handleCostChange} required value={unitCost} data-name="Itemcost"
+										data-field="Itemcost" data-validation="true">
+									</lightning-input>
+								</div>
+								<div class="slds-col slds-size_1-of-12">
+								</div>
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-combobox label="U/M Code" value={POunit} options={unitMeasure} required
+										onchange={handlePickListChange}>
+									</lightning-combobox>
+								</div>
+								<div class="slds-col slds-size_5-of-12">
+									<lightning-input type="text" label="Regular Price" disabled value={regularPrice}>
+									</lightning-input>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="slds-modal__footer">
+						<lightning-button label="Cancel" max-row-selection="1" onclick={handleCancel}
+							class="slds-p-left_small">
+						</lightning-button>
+						<lightning-button label="Next" onclick={handleNext} variant="brand" style="padding-left: 10px"
+							disabled={disableSave}>
+						</lightning-button>
+					</div>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</template>
+
+		<template if:true={nextModal}>
+			<section aria-modal="true"
+				class="slds-modal slds-fade-in-open slds-align-absolute_center slds-modal_medium">
+				<div class="slds-modal__container">
+					<div class="slds-modal__header">
+						<h1 id="modal-heading-02" class="slds-modal__title slds-align_absolute-center slds-hyphenate">
+							Create
+							New Item</h1>
+						<template if:true={showSpinner}>
+							<lightning-spinner size="medium" alternative-text="Processing..."></lightning-spinner>
+						</template>
+					</div>
+					<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+						<p class="slds-text-title_bold slds-hyphenate">There are other items that closely match your new
+							item details. Please review, select and item, and update the quantity if any match your
+							criteria. If none match, simply update the quantity and add the new item to the purchase
+							order.
+						</p></br></br>
+
+						<h2 id="modal-heading-03" class="slds-modal__title slds-hyphenate slds-p-bottom_small">Suggested
+							Items</h2>
+
+						<lightning-datatable data={poData} data-id="Id" columns={columns} key-field="Id"
+							max-row-selection="1" onrowselection={handleProduct}>
+						</lightning-datatable>
+
+					</div>
+					<div class="slds-modal__footer">
+						<div class="slds-grid">
+							<div>
+								<lightning-button-icon icon-name="utility:dash" variant="border-filled"
+									alternative-text="decreaseQuantity" title="decreaseQuantity"
+									onclick={decreaseQuantity}>
+								</lightning-button-icon>
+							</div>
+							<div>
+								<lightning-input class="slds-p-left_xx-small quantity-lightning-input" type="number"
+									onchange={changeQuantity} name="inputQuantity" label="Qty" min="1"
+									message-when-range-underflow="Enter a valid value" variant="label-hidden"
+									value={quantity} step="0.01"
+									message-when-step-mismatch="Maximum of 2 decimal places allowed" required>
+								</lightning-input>
+							</div>
+							<div class="slds-col_bump-right slds-p-left_xx-small">
+								<lightning-button-icon icon-name="utility:add" variant="border-filled"
+									alternative-text="increaseQuantity" title="increaseQuantity"
+									onclick={increaseQuantity}>
+								</lightning-button-icon>
+							</div>
+							<div>
+								<lightning-button label="Back" onclick={handleBack} class="slds-p-left_small">
+								</lightning-button>
+								<lightning-button label="Add to Purchase Order" onclick={handleSave} variant="brand"
+									class="slds-p-left_x-small">
+								</lightning-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+			<div class="slds-backdrop slds-backdrop_open">
+			</div>
+		</template>
+	</template>
+	<!-- ************************* code for DESKTOP view ENDS *************************  -->
+
+	<!-- ************************* code for MOBILE view STARTS *************************  -->
+	<template if:true={isMobileView}>
+		<!-- ------------------------------ CODE of Create New Item SCREEN-1 #STARTS ------------------------------  -->
+		<template if:true={openModal}>
+			<div class="slds-modal slds-fade-in-open slds-modal_full">
+				<div class="slds-modal__container">
+					<div class="slds-grid slds-grid_align-spread slds-border_bottom">
+						<div class="slds-col slds-m-bottom_small slds-p-left_small">
+							<h4>Create New Item</h4>
+						</div>
+						<div class="slds-col slds-p-right_small" style="margin-top: -12px;">
+							<lightning-button variant="base" slot="actions" icon-name="utility:close"
+								onclick={handleCancel}>
+							</lightning-button>
+						</div>
+					</div>
+					<div class="slds-modal__content">
+						<b>
+							<h2 class="slds-p-around_small slds-border_bottom">
+								General
+							</h2>
+						</b>
+						<div class="slds-p-horizontal_medium">
+							<lightning-input class="slds-p-top_x-small" type="text" label="Item Number" required
+								onchange={handleNumberChange} value={itemNumber} maxlength="30">
+							</lightning-input>
+							<lightning-input class="slds-p-top_small" type="text" label="Item Description" required
+								onchange={handleDescriptionChange} value={description} maxlength="80">
+							</lightning-input>
+							<lightning-input class="slds-p-top_small" type="text" label="Stock Class" required
+								onchange={handleClassChange} value={stockClass} maxlength="5">
+							</lightning-input>
+							<lightning-combobox class="slds-p-top_small slds-p-bottom_large mobileheight" label="P/M Code"
+								value={typeValue} options={options} required onchange={handleTypeChange}
+								field-level-help="To create an equipment or misc item, reach out to the Fleet Team at fltops@sunbeltrentals.com.">
+							</lightning-combobox>
+						</div>
+						<b>
+							<h2 class="slds-p-around_small slds-p-top_large slds-border_top slds-border_bottom">
+								Pricing Info
+							</h2>
+						</b>
+						<div class="slds-p-horizontal_medium">
+							<lightning-input class="slds-p-top_x-small" type="number" step="0.001" label="Item Cost"
+								onchange={handleCostChange} required value={unitCost} data-name="Itemcost"
+								data-field="Itemcost" data-validation="true">
+							</lightning-input>
+							<lightning-combobox class="slds-p-top_small mobileheight" label="U/M Code" value={POunit}
+								options={unitMeasure} required onchange={handlePickListChange}>
+							</lightning-combobox>
+							<lightning-input class="slds-p-top_small slds-p-bottom_medium" type="text" label="Regular Price"
+								disabled value={regularPrice}>
+							</lightning-input>
+						</div>
+					</div>
+					<div class="slds-modal__footer">
+						<div class="slds-grid slds-grid_align-spread">
+							<div class="slds-col slds-col_bump-right">
+								<lightning-button max-row-selection="1" label="Cancel" variant="neutral"
+									onclick={handleCancel} class="neutral-button">
+								</lightning-button>
+							</div>
+							<div class="slds-col">
+								<lightning-button label="Next" variant="brand" onclick={handleNext}
+									disabled={disableSave} class="brand-button">
+								</lightning-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</template>
+		<!-- ------------------------------ CODE of Create New Item SCREEN-1 #ENDS ------------------------------  -->
+
+		<!-- ------------------------------ CODE of Create New Item SCREEN-2 #STARTS ------------------------------  -->
+		<template if:true={nextModal}>
+			<div class="slds-modal slds-fade-in-open slds-modal_full">
+				<div class="slds-modal__container">
+					<div class="slds-grid slds-grid_align-spread slds-border_bottom">
+						<div class="slds-col slds-m-bottom_small slds-p-left_small">
+							<h4>Create New Item</h4>
+						</div>
+						<div class="slds-col slds-p-right_small" style="margin-top: -12px;">
+							<lightning-button variant="base" slot="actions" icon-name="utility:close"
+								onclick={handleCancel}>
+							</lightning-button>
+						</div>
+					</div>
+
+					<div class="slds-modal__content slds-p-around_medium">
+						<p class="slds-text-title_bold slds-hyphenate">
+							There are other items that closely match your new item details. Please review, select and item, and update the quantity if any match your criteria. If none match, simply update the quantity and add the new item to the purchase order.
+						</p>
+						</br></br>
+
+						<h2 
+							id="modal-heading-06" 
+							class="slds-modal__title slds-hyphenate slds-p-bottom_small">
+							Suggested Items
+						</h2>
+
+						<template for:each={poData} for:item="data">
+							<li key={data.Id} style="list-style-type:none !important"
+								class="slds-border_bottom slds-p-bottom_medium">
+								<div class="slds-grid slds-grid_vertical slds-m-top_medium lgc-bg" size="12">
+									<div class="slds-col slds-size_1-of-1">
+										<input type="radio" name="Radiobutton"  id={index} value={index}
+										onchange={handleRadioButtonChange} data-id={data.Id} data-name={data.Name}
+										data-cost={data.Last_Cost__c}
+										 style="margin-right: 5px;" >
+										<b>Part/Item#: {data.Item_Number__c}</b>
+									</div>
+									<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+										<label>Stock/Vendor:</label> {data.Stock_class__c}
+									</div>
+									<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+										<label>PME: </label> {data.Product_Type__c}
+									</div>
+									<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+										<label>Item Description: </label>
+										{data.Name}
+									</div>
+									<div class="slds-col slds-size_1-of-1 slds-m-left_medium">
+										<label>Search Word: </label>
+										{data.Search_Word__c}
+									</div>
+									<div class="slds-col slds-size_1-of-1 slds-m-left_medium"><label>Vendor: </label>
+										{data.Vendor_Number1__c}
+									</div>
+								</div>
+							</li>
+						</template>
+					</div>
+					<div class="slds-modal__footer">
+						<div class="slds-grid slds-p-bottom_small slds-border_bottom">
+							<div class="slds-button-group" role="group">
+							<div class="slds-col">
+								<lightning-button-icon 
+									icon-name="utility:dash" 
+									variant="border-filled"
+									alternative-text="decreaseQuantity" 
+									title="decreaseQuantity"
+									onclick={decreaseQuantity}>
+								</lightning-button-icon>
+							</div>
+							<div class="slds-col slds-p-left_xx-small">
+								<lightning-input 
+									class="quantity-lightning-input" 
+									type="number" 
+									onchange={changeQuantity} 
+									name="inputQuantity" 
+									label="Qty" 
+									min="1"
+									message-when-range-underflow="Enter a valid value" 
+									variant="label-hidden" 
+									value={quantity} 
+									step="0.01" 
+									message-when-step-mismatch="Maximum of 2 decimal places allowed" 
+									required>
+								</lightning-input>
+							</div>
+							<div class="slds-col slds-p-left_xx-small">
+								<lightning-button-icon 
+									icon-name="utility:add" 
+									variant="border-filled"
+									alternative-text="increaseQuantity" 
+									title="increaseQuantity"
+									onclick={increaseQuantity}>
+								</lightning-button-icon>
+							</div>
+							</div>
+						</div>
+
+						<div class="slds-grid slds-grid_align-spread slds-p-top_small">
+							<div class="slds-col slds-col_bump-right">
+								<lightning-button 
+									label="Back" 
+									onclick={handleBack}
+									variant="neutral"
+									class="neutral-button">
+								</lightning-button>
+							</div>
+							<div class="slds-col">
+								<lightning-button 
+									label="Add to Purchase Order" 
+									onclick={handleSaveMobile}
+									variant="brand" 
+									class="brand-button">
+								</lightning-button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="slds-backdrop slds-backdrop_open"></div>
+		</template>
+		<!-- ------------------------------ CODE of Create New Item SCREEN-2 #ENDS ------------------------------  -->
+	</template>
+	<!-- ************************* code for MOBILE view ENDS *************************  -->
+</template>

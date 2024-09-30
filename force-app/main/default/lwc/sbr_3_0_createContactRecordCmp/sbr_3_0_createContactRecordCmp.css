@@ -1,0 +1,56 @@
+.my-button {
+  --sds-c-button-text-color: #25683e;
+}
+
+.grey-background {
+  background-color: #fafaf9;
+}
+
+.green-text {
+  color: #25683e;
+}
+
+.title-text {
+  font-weight: bold;
+}
+.flex-header {
+  display: flex;
+  justify-content: space-between;
+  /*padding: 5px;*/
+}
+.mrg-bottom {
+  margin-bottom: 12px;
+}
+.mob-header {
+  margin: 20px 0 0 0;
+}
+
+.mobile-style {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  margin: 0;
+}
+
+:host {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.down-icon {
+  display: inline-block;
+  margin-left: 0.2rem;
+  font-size: 28px;
+  padding: 0 0 10px 0;
+}
+
+.slds-hide {
+  display: none;
+}
+
+.form-header {
+  font-weight: bold;
+}

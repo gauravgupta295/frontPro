@@ -1,0 +1,91 @@
+<template>
+  <article class="slds-card">
+    <div class="slds-p-around_medium" style="background-color: var(--slds-g-color-neutral-base-95,#f3f3f3);">
+      <header class="slds-media slds-media_center slds-has-flexi-truncate">
+        <div class="slds-media__figure">
+          <span class="slds-icon_container slds-icon-standard-contact" title="contact">
+            <lightning-icon
+            icon-name="standard:contact"
+            size="medium"
+            alternative-text="Contact"
+            aria-hidden="true"
+          ></lightning-icon>
+          </span>
+        </div>
+        <div class="slds-media__body">
+          <h2 class="slds-card__header-title">
+            <!-- <a href="#" class="slds-card__header-link slds-truncate" title="Contacts (3)"> -->
+              <span>Contacts ({copyContactList.length})</span>
+            <!-- </a> -->
+          </h2>
+        </div>
+      
+      </header>
+    </div>
+    <div class="slds-card__body_inner slds-p-horizontal_medium slds-p-bottom_xx-large">
+      <ul class="slds-grid slds-wrap slds-grid_pull-padded">
+        <li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3 slds-border_bottom slds-border_top slds-p-vertical_small">
+          <div class="slds-grid slds-has-flexi-truncate">
+            <div class="slds-media__figure">
+              <span class="slds-icon_container slds-icon-utility-contact" title="Add New Contact">
+                <lightning-icon   
+                icon-name="utility:add"
+                size="small"
+                alternative-text="Contact"
+                aria-hidden="true"
+              ></lightning-icon>
+              </span>
+            </div>
+            <h3 class="slds-tile__title slds-truncate" title="Add Contact">
+              New Contact
+            </h3>
+
+          </div>
+        </li>
+        <template for:each={copyContactList} for:item="contact">
+          <li class="slds-p-horizontal_small slds-size_1-of-1 slds-medium-size_1-of-3 slds-border_bottom slds-p-vertical_small" key={contact.id}
+            onclick={selectSearchResult} data-value={contact.id}>
+            <div class="slds-tile slds-media slds-card__tile slds-hint-parent">
+              <div class="slds-media__figure">
+                <span class="slds-icon_container slds-icon-standard-contact" title={contact.name}>
+                  <lightning-icon
+                  icon-name="standard:contact"
+                  size="small"
+                  alternative-text="Contact"
+                  aria-hidden="true"
+                ></lightning-icon>
+                </span>
+              </div>
+              <div class="slds-media__body">
+                <div class="slds-grid slds-grid_align-spread slds-has-flexi-truncate">
+                  <h3 class="slds-text-heading_small" title={contact.name}>
+                    {contact.name}
+                  </h3>
+           
+                </div>
+                <div class="slds-tile__detail">
+                  <dl class="slds-list_horizontal slds-wrap slds-grid">
+                    <div class="slds-col slds-size_1-of-1">
+                      <dt class="slds-text-color_weak slds-truncate slds-col slds-p-top_x-small" title="Email">Email:</dt>
+                      <dd class="slds-item_detail slds-truncate slds-col" title={contact.Email}>{contact.Email}</dd>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1">
+                    <dt class="slds-text-color_weak slds-truncate slds-p-top_x-small" title="Phone">Phone:</dt>
+                    <dd class="slds-item_detail slds-truncate slds-col" title={contact.Phone}>{contact.Phone}</dd>
+                    </div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </li>
+        </template>
+  
+      </ul>
+    </div>
+  
+    <div class="slds-docked-form-footer stickyFooter bottomfooter">
+      <lightning-button class="brand-button cancel-button" label="Cancel" title="Back" variant="brand" onclick={closeContactSearch}>
+      </lightning-button>
+    </div>
+  </article>
+</template>

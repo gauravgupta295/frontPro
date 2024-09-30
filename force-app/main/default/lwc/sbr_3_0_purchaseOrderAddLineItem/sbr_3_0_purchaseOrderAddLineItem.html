@@ -1,0 +1,145 @@
+<template>
+    <!-- ************************* code for DESKTOP view STARTS *************************  -->
+    <template if:false={isMobileView}>
+        <lightning-button label="+ Add Line Item" onclick={handleAddLineItem}></lightning-button>
+        <div class="container">
+            <template if:true={showLineItemFields}>
+                <div class="box">
+                    <lightning-input label="Item Number" value={itemNumber} placeholder="Enter Part/Item#,Stock Class"
+                        onchange={handleItemNumberChange} onblur={handleItemNumberBlur}>
+                        <span slot="label">
+                        <lightning-icon icon-name="utility:search" size="x-small"></lightning-icon>
+                        </span>
+                    </lightning-input>
+                </div>
+
+                <div class="box">
+                    <lightning-input label="Quantity" data-id='Quantity Field' placeholder="Enter Quantity"
+                        onchange={handleQtyChange} value={qty} type="number" step="0.01">
+                    </lightning-input>
+                </div>
+                <div class="box">
+                    <lightning-input label="Unit Cost" placeholder="Enter Unit Cost" onchange={handleUnitCostChange}
+                        value={unitcost}></lightning-input>
+                </div>
+                <div if:true={fieldError} class="error-message">{errorMessage}</div>
+                <template if:true={addLineItemfailedModal}>
+                    <c-sbr_3_0_add-line-item-failed-pop-up onhandlemodalclose={handleFailedModal} onhandlesaveporeload={handleSavePoReload} record-id={recordId}>
+                    </c-sbr_3_0_add-line-item-failed-pop-up>
+                </template>
+                <div class="button-group slds-m-bottom_medium">
+                    <lightning-button label="Cancel" onclick={handleCancel}></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleSave} disabled={disableSaveButton}></lightning-button>
+                </div>
+            </template>
+            <lightning-spinner if:true={isLineItemLoaded} variant="brand" size="large"> </lightning-spinner>
+        </div>
+    </template>
+    <!-- ************************* code for DESKTOP view ENDS *************************  -->
+
+    <!-- ************************* code for MOBILE view STARTS *************************  -->
+    <template if:true={isMobileView}>
+        <template if:false={isAddLineItemInputsVisibile}>
+            <div size="12" class="slds-m-horizontal_small">
+                <button
+                    class="add-button"
+                    onclick={handleAddLineItemMobile}>
+                    <div class="slds-float_left">
+                        <lightning-icon 
+                            icon-name="utility:add" 
+                            alternative-text="Add" 
+                            title="Add"
+                            size="xx-small"
+                            class="slds-p-right_x-small slds-button__icon slds-button__icon_left icon-green-color">
+                        </lightning-icon>
+                        <span class="slds-m-top-small text-green-color">
+                            Add Line Item
+                        </span>
+                    </div>
+                </button>
+            </div>
+        </template>
+
+        <template if:true={isAddLineItemInputsVisibile}>
+			<div class="slds-modal slds-fade-in-open modal-bgcolor">
+                <lightning-card>
+                     <div class="slds-grid slds-grid_align-spread slds-border_bottom">
+                         <div class="slds-col slds-m-top_x-small slds-p-left_medium">
+                             <h4>Add Line Item</h4>
+                         </div>
+                         <div class="slds-col slds-m-bottom_x-small slds-p-right_medium">
+                             <lightning-button 
+                                variant="base" 
+                                slot="actions" 
+                                icon-name="utility:close" 
+                                onclick={handleCancelMobile}>
+                            </lightning-button>
+                         </div>
+                     </div>
+                        
+                    <div class="slds-p-horizontal_medium">
+                        <lightning-input 
+                            class="slds-p-top_small"
+                            label="Item Number" 
+                            value={itemNumber} 
+                            placeholder="Enter Part/Item#,Stock Class"
+                            onchange={handleItemNumberChange} 
+                            onblur={handleItemNumberBlur}>
+                            <span slot="label">
+                                <lightning-icon 
+                                    icon-name="utility:search" 
+                                    size="x-small">
+                                </lightning-icon>
+                            </span>
+                        </lightning-input>
+                        <lightning-input 
+                            class="slds-p-top_small"
+                            label="Quantity" 
+                            data-id='Quantity Field' 
+                            placeholder="Enter Quantity"
+                            onchange={handleQtyChange} 
+                            value={qty}>
+                        </lightning-input>
+                        <lightning-input 
+                            class="slds-p-top_small"
+                            label="Unit Cost" 
+                            placeholder="Enter Unit Cost" 
+                            onchange={handleUnitCostChange}
+                            value={unitcost}>
+                        </lightning-input>
+                        <div if:true={fieldError} class="slds-p-top_small slds-text-color_error">{errorMessage}</div>
+                        <template if:true={addLineItemfailedModal}>
+                            <c-sbr_3_0_add-line-item-failed-pop-up 
+                                onhandlemodalclose={handleFailedModal}
+                                onhandlesaveporeload={handleSavePoReload} 
+                                record-id={recordId}>
+                            </c-sbr_3_0_add-line-item-failed-pop-up>
+                        </template>
+                    </div>
+
+                    <div class="slds-grid slds-grid_align-spread slds-docked-form-footer">
+                        <div class="slds-col slds-p-left_medium slds-col_bump-right">
+                            <lightning-button 
+                                label="Cancel" 
+                                variant="neutral" 
+                                onclick={handleCancelMobile}
+                                class="neutral-button">
+                            </lightning-button>
+                        </div>
+                        <div class="slds-col slds-p-right_medium">
+                            <lightning-button label="Save" 
+                                variant="brand" 
+                                onclick={handleSave} 
+                                disabled={disableSaveButton}
+                                class="brand-button">
+                            </lightning-button>
+                        </div>
+                    </div>
+				</lightning-card>
+			</div>
+		</template>
+        <lightning-spinner if:true={isLineItemLoaded} variant="brand" size="large"> </lightning-spinner>
+
+    </template>
+    <!-- ************************* code for MOBILE view ENDS *************************  -->
+</template>

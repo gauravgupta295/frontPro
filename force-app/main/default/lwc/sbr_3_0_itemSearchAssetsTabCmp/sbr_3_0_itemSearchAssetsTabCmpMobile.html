@@ -1,0 +1,91 @@
+<template>
+  <lightning-tabset class="consumables-tab" active-tab-value={activeTab}>
+    <!--FRONT-19273 Starts-->
+
+    <lightning-tab
+      label={catClassDescTab}
+      value="Cat Class Description"
+      onactive={tabChangeHandler}
+    >
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        object-api-name={objectApiName}
+        onswitchtocatclass={handleViewAsset}
+        view-name="Cat Class Description"
+      ></c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+
+    <!-- FRONT-19120 -->
+    <!--FRONT-19119 Starts-->
+
+    <!--FRONT-19120 Ends-->
+
+    <!--Modified as part of FRONT-18174-->
+    <lightning-tab
+      label="Cat Class"
+      value="CatClass"
+      onactive={tabChangeHandler}
+    >
+      <c-sbr_3_0_item-search-assets-container
+        lwc:ref="catClass"
+        active-tab={activeTab}
+        record-id={recordId}
+        data-id="CatClassContainer"
+        onswitchtocatclass={handleViewAsset}
+        view-name="CatClass"
+      ></c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+    <!--FRONT-1911 Starts-->
+    <lightning-tab label="Asset #" value="Asset" onactive={tabChangeHandler}>
+      <hr />
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        data-id="Asset"
+        onswitchtodescription={handleSwitchToDescription}
+        onswitchtocatclass={handleViewAsset}
+        view-name="Asset"
+      ></c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+
+    <lightning-tab
+      active-tab={activeTab}
+      label="Serial #"
+      value="Serial"
+      onactive={tabChangeHandler}
+    >
+      <hr />
+      <c-sbr_3_0_item-search-assets-container
+        active-tab={activeTab}
+        record-id={recordId}
+        data-id="Serial"
+        onswitchtodescription={handleSwitchToDescription}
+        onswitchtocatclass={handleViewAsset}
+        view-name="Serial"
+      ></c-sbr_3_0_item-search-assets-container>
+    </lightning-tab>
+    <!--FRONT-1911 Ends-->
+
+    <!--FRONT-19273 Ends-->
+  </lightning-tabset>
+
+  <!--<template if:true={showInventory}>
+   
+		<c-sbr_3_0_item-search-assets-container
+          active-tab={activeTab}
+          record-id={recordId}
+          data-id="CatClassContainer"
+          onswitchtodescription={handleSwitchToDescription}
+          onswitchtocatclass={handleViewAsset}
+        ></c-sbr_3_0_item-search-assets-container>
+	</template>-->
+
+  <!--<template if:true={showAssets}>
+    <c-sbr_3_0_item-search-assets-sub-tab
+          active-tab={activeTab}
+         
+        ></c-sbr_3_0_item-search-assets-sub-tab>
+
+  </template>-->
+</template>

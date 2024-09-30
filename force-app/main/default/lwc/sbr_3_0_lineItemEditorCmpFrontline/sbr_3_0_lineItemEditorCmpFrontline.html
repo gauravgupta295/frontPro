@@ -1,0 +1,172 @@
+<template>
+
+  <template if:true={isLoading}>
+    <lightning-spinner class="spins" size="large"></lightning-spinner>
+  </template>
+  <!--11907-->
+  <template if:true={isRentalQuoteSubRecType}>
+    <div class="slds-text-color_destructive">{rentalQuoteSubMessage}</div>
+  </template>
+  <div if:true={showCustomerPricingAlert}>
+    <div class={alertClass} role="alert">
+      <lightning-icon icon-name="utility:warning" alternative-text="Utility info" size="x-small"
+        class="slds-p-right_small info"></lightning-icon>
+      <h2>{customerPricingAlert}</h2>
+    </div>
+  </div>
+  <lightning-layout multiple-rows="true" horizontal-align="spread" vertical-align="center" if:true={lineItem}>
+    <lightning-layout-item if:true={hasSeasonalMultiplier} size="12" small-device-size="12" medium-device-size="6"
+      large-device-size="6" flexibility="auto" padding="around-small">
+      <lightning-input type="number" label="Seasonal Multiplier" data-my-id="seasonal-multiplier"
+        value={seasonalMultiplier} onchange={handleValueChange}></lightning-input>
+    </lightning-layout-item>
+
+    <lightning-layout-item if:true={hasShifting} size="12" small-device-size="12" medium-device-size="6"
+      large-device-size="6" flexibility="auto" padding="around-small">
+      <lightning-combobox label="Shift Duration" data-my-id="shift-duration"
+        placeholder={lineItem.Shift_Differential__c} options={shiftOptions} onchange={handleValueChange}
+        value={lineItem.Shift_Differential__c} field-level-help="Please enter the desired rate before applying Shift Rates. Single Shift = 8 hrs/day, 
+            40 hrs/week, 160 hrs/month, 1x Rate; Double Shift = 9-16 hrs/day, 41-80 hrs/week, 161-320 hrs+/month, 1.5x Rate; 
+            Triple Shift = 17+ hrs/day, 81+ hrs/week, 321+ hr/month; 2x Rate"></lightning-combobox>
+    </lightning-layout-item>
+
+    <lightning-layout-item if:true={hasContingencyPlan} size="12" small-device-size="12" medium-device-size="6"
+      large-device-size="6" flexibility="auto" padding="around-small">
+      <lightning-input type="number" step=".01" formatter="currency" data-my-id="contingency-cost"
+        label="Contingency Cost" value={lineItem.Contingency_Cost__c} disabled={disableCC}
+        onchange={handleValueChange}></lightning-input>
+    </lightning-layout-item>
+
+    <!--lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6" flexibility="auto" padding="around-small">
+            <lightning-input type=number step=.01 formatter=currency label="Minimum Rate" data-my-id="minimum-rate-id" value={lineItem.Min_Rate__c} disabled={ratesDisabled} max={doNotExceedMinRate}></lightning-input>
+        </lightning-layout-item-->
+    <!-- start FRONT-12303 -->
+    <template if:false={rentalItems}>
+      <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+        flexibility="auto" padding="around-small">
+        <lightning-input type="number" step=".01" formatter="currency" data-my-id="sales-misc-Price"
+          data-my-field="Sale_Price" label="Sales/Misc Price" onchange={handleValueChange}
+          value={salesMiscPrice}></lightning-input>
+      </lightning-layout-item>
+    </template>
+    <!-- end FRONT-12303 -->
+    <!-- 11909 Item Quantity -->
+    <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+      flexibility="auto" padding="around-small">
+      <lightning-input type="number" data-my-id="item-quantity" label="Item Quantity" onchange={handleValueChange}
+        value={itemQuantity}></lightning-input>
+    </lightning-layout-item>
+
+    <!-- 11909 Item Quantity -->
+    <!--Added for FRONT-1906,1670-->
+    <template if:true={showFrontlineComponents}>
+      <!-- start FRONT-12303 -->
+      <template if:true={rentalItems}>
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+          flexibility="auto" padding="around-small">
+          <!-- FRONT - 9231 : changed label and added tooltip help-->
+          <!-- FRONT-9131: removed step and added onblur,min attribute -->
+          <lightning-input type="number" formatter="currency" label="Min Rate" step="0.01" data-my-id="minimum-rate-id"
+            data-my-field="Min_Rate" value={lineItem.Min_Rate__c} field-level-help="Floor Rate: 100.00"
+            onchange={handleValueChange}></lightning-input>
+          <!--END : FRONT - 9231-->
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+          flexibility="auto" padding="around-small">
+          <!-- FRONT - 9231 : changed label and added tooltip help-->
+          <lightning-input type="number" step=".01" formatter="currency" label="Day" data-my-id="daily-rate-id"
+            data-my-field="Daily_Rate" value={lineItem.Daily_Rate__c} disabled={ratesDisabled}
+            max={doNotExceedDailyRate} field-level-help="Floor Rate: 100.00"
+            onchange={handleValueChange}></lightning-input>
+          <!--END : FRONT - 9231-->
+          <!--Suggested : ${suggestedDailyRate}-->
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+          flexibility="auto" padding="around-small">
+          <!-- FRONT - 9231 : changed label and added tooltip help-->
+          <lightning-input type="number" step=".01" formatter="currency" label="Week" data-my-id="weekly-rate-id"
+            data-my-field="Weekly_Rate" value={lineItem.Weekly_Rate__c} disabled={ratesDisabled}
+            max={doNotExceedWeeklyRate} field-level-help="Floor Rate: 200.00"
+            onchange={handleValueChange}></lightning-input>
+          <!--END : FRONT - 9231-->
+          <!--Suggested : ${suggestedWeeklyRate}-->
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+          flexibility="auto" padding="around-small">
+          <!-- FRONT - 9231 : changed label and added tooltip help-->
+          <lightning-input type="number" step=".01" formatter="currency" label="4 Week" class="monthlyRates"
+            data-my-id="monthly-rate-id" data-my-field="Monthly_Rate" value={lineItem.Monthly_Rate__c}
+            disabled={ratesDisabled} max={doNotExceedMonthlyRate} field-level-help="Floor Rate: 800.00"
+            onchange={handleValueChange}></lightning-input>
+          <!--END : FRONT - 9231-->
+          <!--Suggested : ${suggestedMonthlyRate}-->
+        </lightning-layout-item>
+
+        <!-- FRONT - 9231 : Rate Discount Field-->
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+          flexibility="auto" padding="around-small">
+          <lightning-input type="number" formatter="percent-fixed" label="Rate Discount %" data-my-id="discount-rate-id"
+            data-my-field="Discount_Percentage" value={lineItem.Discount_Percentage__c}
+            field-level-help="Discount applied to chosen rate." min="0" max="100" step="0.01"
+            message-when-range-overflow="Rate Discount % cannot be greater than 100%"
+            onchange={handleValueChange}></lightning-input>
+        </lightning-layout-item>
+      </template>
+      <!-- end FRONT-12303 -->
+    </template>
+    <!--END : FRONT - 9231-->
+
+    <!--lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6" flexibility="auto" padding="around-small">
+            <lightning-input type=date label="Start Date" data-my-id="start-date-id" value={startDate} disabled></lightning-input>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6" flexibility="auto" padding="around-small">
+            <lightning-input type=date label="End Date" data-my-id="end-date-id" value={endDate} disabled></lightning-input>
+        </lightning-layout-item-->
+
+    <lightning-layout-item size="12" small-device-size="12" medium-device-size="12" large-device-size="12"
+      flexibility="auto" padding="around-small">
+      <lightning-textarea label="Line Item Notes" data-my-id="line-item-notes" onchange={changeLineItemNotes}
+        value={lineItemNotes}></lightning-textarea>
+
+      <div lwc:if={showApiErrorMessage} class="slds-text-color_error slds-var-p-top_small">
+        {apiErrorMessage}
+      </div>
+      <!-- FRONT 9205, 1950, 1958 Start-->
+      <template if:true={showFrontlineComponents} class="slds-p-bottom_small">
+        <template if:true={isPartiallyFilledOrder}>
+          <template if:true={isRental}>
+            <hr />
+            <span><b>Total Requested Quantity: </b>{totalRequestedQuantity}</span><br />
+            <span><b>Filled Quantity: </b>{filledQuantity}</span><br />
+            <span><b>Remaining Quantity: </b>{remainingQuantity}</span>
+          </template>
+          <template if:true={isRentalForDesktop}>
+            <hr />
+            <span><b>Total Requested Quantity: </b>{totalRequestedQuantity}</span><br />
+            <span><b>Filled Quantity: </b>{filledQuantity}</span><br />
+            <span><b>Remaining Quantity: </b>{remainingQuantity}</span>
+          </template>
+        </template>
+      </template>
+      <!-- FRONT 9205, 1950, 1958 End-->
+    </lightning-layout-item>
+
+    <lightning-layout-item if:true={hasStandbyRates} size="12" small-device-size="12" medium-device-size="6"
+      large-device-size="6" flexibility="auto" padding="around-small">
+      <lightning-input type="checkbox" data-my-id="apply-standby-rates" label="Apply Standby Rates"
+        onchange={changeApplyStandByRate} value={applyStandbyRates}></lightning-input>
+    </lightning-layout-item>
+
+    <!-- 11909 Override Discount onchange={changeOverrideDiscount} -->
+    <lightning-layout-item if:true={displayOverrideDiscount} size="12" small-device-size="12" medium-device-size="6"
+      large-device-size="6" flexibility="auto" padding="around-small">
+      <lightning-input type="checkbox" data-my-id="override-discount" label="Override Discount"
+        onchange={changeOverrideDiscount} value="false"></lightning-input>
+      <!--value={isOverrideDiscount}-->
+    </lightning-layout-item>
+  </lightning-layout>
+</template>

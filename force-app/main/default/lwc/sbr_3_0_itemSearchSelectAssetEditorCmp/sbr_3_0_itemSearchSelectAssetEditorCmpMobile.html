@@ -1,0 +1,243 @@
+<template>
+  <template lwc:if={isLoading}>
+    <div class="spinnerContainer">
+      <lightning-spinner
+        alternative-text="Loading"
+        size="medium"
+      >
+      </lightning-spinner>
+    </div>
+  </template>
+  <template lwc:else>
+    <lightning-layout multiple-rows if:true={selectedAsset}>
+      <!-- CatClass -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <div class="cc-label labelFontCL">Cat Class</div>
+        <br />
+        <div class="custom-box readOnlyClass">{assetData.catClass}</div>
+      </lightning-layout-item>
+      <!-- CatClassDescription -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <div class="cc-label labelFontCL">Cat Class Description</div>
+        <br />
+        <div class="custom-box readOnlyClass">
+          {assetData.catClassDescription}
+        </div>
+      </lightning-layout-item>
+      <!-- ItemQuantity -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="itemQty"
+          type="number"
+          label="Item Quantity"
+          value={assetData.itemQty}
+          onchange={handleFieldChange}
+          disabled={isNotBulkItem}
+          class="disableClass"
+          data-available-quantity={assetData.quantityAvailable}
+          onkeypress={handleKeyPress}
+        ></lightning-input>
+        <template if:false={isNotBulkItem}>
+          <div class="cc-label labelClass">
+            Available: {assetData.quantityAvailable}
+          </div>
+        </template>
+      </lightning-layout-item>
+
+      <!-- HourMeterReading -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+        if:true={hourMeterFieldVisibility}
+      >
+        <!--Modified if for FRONT-31381-->
+        <lightning-input
+          data-field-key="HourMeterReading"
+          type="number"
+          name="HourMeterReading"
+          label="Hours/Miles"
+          value={assetData.hourMeterReading}
+          onchange={handleFieldChange}
+          step=".001"
+        ></lightning-input>
+      </lightning-layout-item>
+      <lightning-layout-item size="12" padding="around-small">
+        <lightning-input
+          data-field-key="noCharge"
+          type="checkbox"
+          label="No Charge"
+          name="noChargeCheckBox"
+          value={assetData.noCharge}
+          onchange={handleFieldChange}
+          checked={assetData.noCharge}
+        ></lightning-input>
+      </lightning-layout-item>
+      <!-- MinRate -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="minRate"
+          field-level-help={rateHelpText.minRate}
+          type="number"
+          label="Min Rate"
+          value={assetData.minRate}
+          step=".01"
+          class="help-text-icon-padding-top-remove-on-input"
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+      <!-- Day -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="day"
+          field-level-help={rateHelpText.day}
+          type="number"
+          label="Day"
+          value={assetData.day}
+          step=".01"
+          class="help-text-icon-padding-top-remove-on-input"
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+      <!-- Week -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="week"
+          field-level-help={rateHelpText.week}
+          type="number"
+          label="Week"
+          value={assetData.week}
+          step=".01"
+          class="help-text-icon-padding-top-remove-on-input"
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+      <!-- 4Week -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="fourWeek"
+          field-level-help={rateHelpText.fourWeek}
+          type="number"
+          label="4 Week"
+          value={assetData.fourWeek}
+          step=".01"
+          class="help-text-icon-padding-top-remove-on-input"
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+      <!-- RiskDiscount% -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="rateDiscount"
+          field-level-help={labels.RATE_HELP_TEXT}
+          type="number"
+          label="Rate Discount %"
+          value={assetData.rateDiscount}
+          class="help-text-icon-padding-top-remove-on-input"
+          onchange={handleFieldChange}
+          step=".01"
+        >
+        </lightning-input>
+      </lightning-layout-item>
+      <!-- RequestedCatClass -->
+      <lightning-layout-item
+        size="12"
+        padding="around-small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="requestedCatClass"
+          type="Search"
+          label="Requested Cat Class"
+          placeholder={reqCatClassPlaceholder}
+          value={assetData.requestedCatClass}
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+
+      <lightning-layout-item
+        size="12"
+        class="slds-var-p-left_medium slds-var-p-right_small"
+        small-device-size="12"
+        medium-device-size="6"
+        large-device-size="6"
+      >
+        <lightning-input
+          data-field-key="dateOutVarMobile"
+          type="DateTime"
+          label="Date Out"
+          value={assetData.dateOutVarMobile}
+          onchange={handleFieldChange}
+        >
+        </lightning-input>
+      </lightning-layout-item>
+
+      <!-- LineItemNotes -->
+      <lightning-layout-item size="12" padding="around-small">
+        <lightning-textarea
+          data-field-key="lineItemNotes"
+          label="Line Item Notes"
+          value={assetData.lineItemNotes}
+          onchange={handleFieldChange}
+        ></lightning-textarea>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+</template>

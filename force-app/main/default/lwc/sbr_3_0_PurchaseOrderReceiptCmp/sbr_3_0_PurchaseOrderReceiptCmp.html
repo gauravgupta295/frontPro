@@ -1,0 +1,35 @@
+<template>
+	<template if:true={isRender}>
+	<lightning-accordion allow-multiple-sections-open onsectiontoggle={handleSectionToggle}
+		active-section-name={activeSections}>
+		<lightning-accordion-section name="Receiver Comments" label={receiverLabel}>
+			<div class="slds-grid slds-page-header slds-wrap slds-m-top_small" style="background-color:lightgrey">
+				<div class="slds-col slds-size_10-of-12">
+					<lightning-icon class="slds-m-bottom_small" icon-name="standard:lead_list" size="medium"
+						alternative-text="Indicates approval">
+					</lightning-icon>
+					<span class="HeadlineCSS slds-p-bottom_small slds-p-left_small" style="padding-top:20px;"><b>Receiver Comments</b></span>
+				</div>
+			</div>
+			<lightning-datatable key-field="Id" data={receiptRec} columns={columnsReceiverComment} hide-checkbox-column>
+			</lightning-datatable>
+		</lightning-accordion-section>
+	</lightning-accordion>
+	<template for:each={receiptRcvRec} for:item="rec">
+		<c-sbr_3_0_-purchase-order-receipt-receiver-cmp key={rec} record-id={recordId} receipt-rec={rec} onrefresh={handleRefresh}>
+		</c-sbr_3_0_-purchase-order-receipt-receiver-cmp>
+	</template>
+	<div class="slds-grid slds-wrap totalCSS slds-p-top_small slds-p-bottom_small">
+		<div class="slds-col slds-size_10-of-12 slds-align_center">
+			<div style="margin-left:10px">
+				<p>PO Total</p>
+			</div>
+		</div>
+		<div class="slds-col slds-size_2-of-12 slds-align_right">
+			<div>
+				<p>Total: {totalCost}</p>
+			</div>
+		</div>
+	</div>
+	</template>
+</template>

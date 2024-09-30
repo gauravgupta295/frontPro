@@ -1,0 +1,17 @@
+<template>
+  <div class="defaultLocationContainer slds-m-vertical_x-small">
+    <div class="slds-m-bottom_large slds-m-horizontal_medium">
+      <p class="slds-text-title">{label.CURRENTSOURCINGBRANCHLABEL}</p>
+      <h2 class="slds-m-vertical_small">{sourcingBranchValue}</h2>
+    </div>
+    <div>
+      <c-sbr_3_0_-generic-data-table-mobile
+        columns={tableColumns}
+        records={tableData}
+        onrowselection={getSelectedName}
+        ontablebuttonevent={handleRowActionMobile}
+      >
+      </c-sbr_3_0_-generic-data-table-mobile>
+    </div>
+  </div>
+</template>

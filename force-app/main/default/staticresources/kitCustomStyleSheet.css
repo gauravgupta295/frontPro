@@ -1,0 +1,4 @@
+.kitTextColour .slds-button{
+    color:black;
+    pointer-events: none;
+}

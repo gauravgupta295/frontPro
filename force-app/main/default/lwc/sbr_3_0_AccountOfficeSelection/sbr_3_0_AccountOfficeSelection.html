@@ -1,0 +1,58 @@
+<template>
+    <lightning-record-edit-form object-api-name="Order">
+        <div class="slds-section slds-is-open">
+            <div aria-hidden="false" class="slds-section__content">
+                <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="">
+                    <div class="slds-form-element slds-form-element_stacked">
+                        <!-- <label class="slds-form-element__label">
+                            <abbr class="slds-required" title="required">*</abbr> Account
+                        </label> -->
+                        <c-s-b-r_3_0_required-custom-lookup-cmp  
+                            record-id={accountId} 
+                            label="Account" 
+                            default-record={accountId}
+                            s-object-api-name="Account" 
+                            placeholder="Search Accounts..." 
+                            icon-name="standard:account" 
+                            fields-to-include='RM_Account_Number__c, Status__c, ShippingPostalCode, ShippingCity, ShippingState, Phone'
+                            onlookupupdate={handleAccountChange} 
+                            value={accountId} 
+                            is-account-lookup>
+                        </c-s-b-r_3_0_required-custom-lookup-cmp >
+                    </div>
+                </lightning-layout-item>
+                <!-- <template if:true={isAccountSelected}> -->
+                    <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="">
+                        <div class="office slds-form-element slds-form-element_stacked">
+                            <c-s-b-r_3_0_custom-lookup-cmp  
+                                record-id={officeAccountId} 
+                                default-record={officeAccountId} 
+                                label="Office Account" 
+                                s-object-api-name="Account" 
+                                placeholder="Search Office Accounts..." 
+                                icon-name="standard:account"
+                                onlookupupdate={handleOfficeAccount} 
+                                where-clause={officeWhere} 
+                                value={officeAccountId}>
+                            </c-s-b-r_3_0_custom-lookup-cmp>
+                        </div>
+                    </lightning-layout-item>
+                <!-- </template> -->
+                <lightning-layout-item size="12" medium-device-size="6" large-device-size="6" class="">
+                    <div class="office slds-form-element slds-form-element_stacked">
+                        <c-s-b-r_3_0_required-custom-lookup-cmp record-id={orderedBy} label="Ordered By" default-record={orderedBy} fields-to-include='LastName, FirstName'
+                        s-object-api-name="Contact" placeholder="Search Contacts..." icon-name="standard:contact"
+                        onlookupupdate={handleOrderedByChange} where-clause={orderedByWhere} value={orderedBy}></c-s-b-r_3_0_required-custom-lookup-cmp>
+                    </div>
+                </lightning-layout-item>
+            </div>
+        </div>
+    </lightning-record-edit-form>
+<!-- 
+    <div class="slds-grid slds-grid_align-spread customfooter">
+        <div class="slds-border_top customline" style={customLineStyle}></div>
+        <div class="actionsLeft slds-grid slds-m-right_xx-small"></div>
+        <div class="actionsRight slds-grid slds-p-top_small">
+        </div>
+    </div> -->
+</template>

@@ -1,0 +1,26 @@
+.heading {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 24px;
+    font-style: Roboto;
+    color: #25683e;
+  }
+  
+  .panel-title {
+    padding-left: 0;
+    padding-right: 3rem;
+    text-align: center;
+  }
+  
+  .panel-content {
+    position: fixed !important;
+  }
+  /*Added as part of FRONT-15703*/
+  .tooltip-container {
+    position: absolute;
+    left: 55%;
+  }
+  /* FRONT-27955 */
+  .slds-panel__header {
+    background-color: #ffffff;
+  }

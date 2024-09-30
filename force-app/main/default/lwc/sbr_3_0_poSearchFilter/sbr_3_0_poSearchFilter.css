@@ -1,0 +1,215 @@
+:host {
+    z-index: 10000;
+    position: relative;
+    width: 30%;
+  }
+  
+  .brand-button {
+    --slds-c-button-brand-color-background: #25683e;
+    --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-color-border: #25683e;
+    --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+    --slds-c-button-brand-text-color-hover: #fff;
+  }
+  .setCss {
+    top: 50px;
+  }
+  .filter-options {
+    visibility: hidden;
+    opacity: 0;
+    top: 100%;
+    transition: opacity var(--lwc-durationQuickly, 0.3s) linear,
+      visibility var(--lwc-durationQuickly, 0.3s) linear;
+  }
+  .is-filter-open {
+    display: block;
+    opacity: 1;
+    top: 100%;    
+    visibility: visible;
+    opacity: 1;
+    transition: opacity var(--lwc-durationQuickly, 0.3s) linear,
+    visibility var(--lwc-durationQuickly, 0.3s) linear;
+  }
+  
+  .filter-element-quote {
+    padding-top: 20px;
+  }
+
+  .slds-dropdown_fluid {
+    min-width: var(--lwc-sizeMedium, 12rem);
+  }
+
+  @media only screen and (max-width: 1000px) {
+    .slds-modal__content {
+      flex: auto;
+      flex-direction: column;
+      width: 100%;
+    }
+  
+    .slds-modal__container {
+      margin: unset;
+      padding: unset;
+    }
+  
+    .slds-assistive-text {
+      position: relative !important;
+      float: left;
+      margin: 1%;
+      height: unset !important;
+      width: unset !important;
+      ;
+      padding: unset !important;
+      ;
+    }
+  
+    .slds-dropdown_length-with-icon-7 {
+      max-height: unset;
+    }
+  
+    .search-account-input {
+      display: inline-block;
+      width: 100%;
+      padding: 0 5% 0 0;
+      /* We don't need to set the font size in mobile. It causes zoom issues on iOS devices. */
+      /* font-size: 13px !important; */
+    }
+  
+    .lookupInputContainerMobile {
+      position: relative;
+    }
+  
+    .lookup-search-results {
+      position: absolute;
+      top: env();
+      padding: 3% 0;
+    }
+  
+    .filters {
+      position: relative;
+      padding: 1%;
+    }
+  
+    .close-btn-class {
+      font-weight: 400;
+      color: #25683e;
+      text-align: left;
+    }
+  
+    .customer-info-title {
+      font-weight: 400;
+    }
+  
+    .customer-info-header {
+      background-color: #ffffff;
+      display: flex;
+      /*flex-direction: row;*/
+      justify-content: space-evenly;
+      align-items: center;
+      border-width: 1px;
+      border-color: #d9d9d9;
+      border-style: solid;
+      width: 100vw;
+    }
+  
+    .filter-icon {
+      padding: 10% 0 0 0;
+    }
+  
+    .accounts-header {
+      background-color: #F2F2F2;
+      padding: 3% 3% 3% 6%;
+      margin-left: -4%;
+      width: 100vw;
+    }
+  
+    .accounts-header-text {
+      font-weight: bold;
+      margin-left: 3%;
+      font-size: 1.1rem;
+    }
+  
+    .new-account-bar {
+      padding: 5% 5% 5% 3%;
+    }
+  
+    .new-account-text {
+      margin-left: 3%;
+      font-size: 1rem;
+    }
+  
+    .my-recent-accounts-bar {
+      font-size: 1rem;
+      border-top: 1px solid #F2F2F2;
+      padding: 10px;
+  
+    }
+  
+    .filters-info-header {
+  
+      background-color: #FFFFFF;
+  
+      /*flex-direction: row;
+          justify-content: space-evenly;*/
+      align-items: left;
+      text-align: left;
+      border-width: 1px;
+      border-color: #D9D9D9;
+      border-style: solid;
+      width: 100vw;
+      padding: 8px 6px 6px 6px;
+    }
+  
+    .brand-button {
+      --slds-c-button-brand-color-background: #25683E;
+      --slds-c-button-brand-color-background-hover: rgb(25, 78, 45, 1);
+      --slds-c-button-brand-color-border: #25683E;
+      --slds-c-button-brand-color-border-hover: rgb(25, 78, 45, 1);
+      --slds-c-button-brand-text-color-hover: #fff;
+    }
+  
+    .neutral-button {
+      --slds-c-button-text-color: #25683E;
+      --slds-c-button-neutral-color-border: #AEAEAE;
+      --slds-c-button-neutral-color-border-hover: #AEAEAE;
+  
+    }
+  
+    .reset-button {
+      --slds-c-button-text-color: #25683E;
+    }
+  
+    .close-icn {
+      --sds-c-icon-color-foreground-default: grey;
+    }
+  
+    lightning-pill-container {
+      color: #25683e;
+    }
+  
+    lightning-input {
+      --slds-c-input-color-border-focus: #25683E !important;
+  
+    }
+  
+    .demo {
+      padding: 0px !important;
+      float: left !important;
+  
+    }
+  
+    .searchfilt {
+      width: 100%;
+      margin: auto;
+      display: flex;
+      align-items: baseline;
+    }
+  
+    .searcfl {
+      width: 90%;
+    }
+  
+    .cancelBut {
+      text-align: center !important;
+    }
+  
+  }

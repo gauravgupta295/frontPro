@@ -1,0 +1,16 @@
+:host {
+    --slds-c-accordion-summary-color-background : rgb(243, 243, 243);    
+    --slds-c-accordion-heading-font-size : 0.95rem;
+  }
+
+.HeadlineCSS{
+    text-decoration: solid;
+    font-size: large;
+    font-weight: bold;
+}
+
+.totalCSS{
+    background-color: lightgrey;
+    font-size: larger;
+    font-weight: bold;
+}

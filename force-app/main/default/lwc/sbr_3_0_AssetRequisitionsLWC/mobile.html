@@ -1,0 +1,97 @@
+<template>
+	<lightning-layout>
+		<lightning-layout-item size="12" style="padding-right:0px">
+			<lightning-layout>
+				<lightning-layout-item size="12">
+					<lightning-card>						
+						<!--<div class="slds-page-header" style="background-color:lightgrey">-->
+						<lightning-input data-name="searchBox" class ="page"  variant="label-hidden" type="search" label="test test"
+							placeholder="Search Requisition # , Item #" onkeypress={handleSearch}>
+						</lightning-input>						
+						<!--</div>-->
+					</lightning-card>
+				</lightning-layout-item>
+			</lightning-layout>
+			<!-- <hr/> -->
+			<lightning-card>
+				<div class="slds-border_bottom slds-border_top slds-p-bottom_small slds-p-top_small">
+					<lightning-layout>
+						<lightning-layout-item size="12">
+							<b class="slds-page-header__title slds-truncate">
+										All Items
+						</b>
+						</lightning-layout-item><br>
+				</lightning-layout>
+						<!--<p>{totalNoOfRecords} Items, filtered by Location {sortByLocation}, filtered by Vendor {sortByVendor}, filtered by Status {sortByStatus} </p>-->
+						<p>{totalNoOfRecords} Items
+						</p>
+				</div>
+			</lightning-card>
+             <lightning-card>
+			<template for:each={data} for:item="data">
+				<li key={data.Id} style="list-style-type:none !important"
+					class="slds-border_bottom slds-m-top_medium slds-p-bottom_medium">
+					<div class="slds-grid">
+						<div class="slds-col slds-size_8-of-12">
+							<div class="slds-grid slds-grid_vertical">
+								<div class="slds-col slds-size_1-of-1">
+									<b>{data.Requisition_Num__c}</b>
+								</div>
+								<div class="slds-col slds-size_1-of-1">
+									<lable>Quantity:</lable> {data.Quantity__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1">
+									<lable>Item #: </lable> {data.Item_Number__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Rqs Date: </label>
+									<lightning-formatted-date-time 
+										value={data.Requisition_Date__c} 
+										month="numeric"
+										day="numeric"
+										year="numeric">
+									</lightning-formatted-date-time>	
+								</div>
+								<div class="slds-col slds-size_1-of-1" ><label>Due Date: </label>
+									<lightning-formatted-date-time 
+										value={data.Due_Date__c} 
+										month="numeric"
+										day="numeric"
+										year="numeric">
+									</lightning-formatted-date-time>
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Employee: </label>
+									{data.Added_By__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Type: </label>
+									{data.Requisition_Type__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Contract: </label>
+									{data.Contract_Num__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Approval: </label>
+									{data.Approval_Level__c}
+								</div>
+								<div class="slds-col slds-size_1-of-1"><label>Maint By: </label>
+									{data.Maintained_By__c}
+								</div>
+							</div>
+						</div>
+						<div class="slds-col slds-size_4-of-12">
+							<div>
+								
+								<!-- <lightning-button variant="Brand" label="Select" class="slds-float_right brand-button"
+									onclick={handleClick} onrowaction={handleRowAction}>
+								</lightning-button> -->
+								 <lightning-button variant="Brand" label="Select" class="slds-float_right brand-button"
+					 onclick={handleSelect} data-id={data.Id}>
+								</lightning-button>
+							</div>
+						</div>
+					</div>
+				</li>
+			</template>
+			</lightning-card>
+		</lightning-layout-item>
+
+	</lightning-layout>
+</template>

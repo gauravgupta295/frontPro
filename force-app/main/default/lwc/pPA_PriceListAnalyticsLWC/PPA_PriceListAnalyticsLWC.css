@@ -1,0 +1,9 @@
+.container{
+    height: 400px;
+     overflow: auto;
+}
+
+.total-container{
+    text-align: right;
+    font-weight: bold;
+}

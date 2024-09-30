@@ -1,0 +1,44 @@
+<template>
+        <section aria-modal="true" class="slds-modal slds-fade-in-open slds-align-absolute_center slds-modal_medium">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-02" class="slds-modal__title slds-align_absolute-center slds-hyphenate">
+                        Receive Item(s)</h1>
+                </div>
+                <!--Error Message-->
+                <template if:true={showErrorMessage}>
+                    <div class="slds-theme_error slds-p-around_xxx-small">
+                        <lightning-icon icon-name="utility:error" variant="inverse" size="xx-small"></lightning-icon>
+                        <span class="slds-p-left_xx-small">{errorMessage}</span>
+                    </div>
+                </template>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                        <p class="slds-text-title_bold slds-hyphenate">{receiveItemsMessage}</p></br>
+                        <template if:true={showTable}>
+                            <div class="table-height">
+                                <lightning-datatable hide-checkbox-column slds-table_bordered suppress-bottom-bar data={receiveItemsDraft} columns={columns} 
+                                    draft-values={draftValues} key-field="Id" sorted-by={sortBy} 
+                                    sorted-direction={sortDirection} onsort={handleSorting}>
+                                </lightning-datatable>
+                            </div>                        
+                        </template>
+                        <template if:true={showSpinner}>
+                            <lightning-spinner size="medium"></lightning-spinner>
+                        </template>
+                        <lightning-textarea class="slds-m-top_x-large" label="Receiver Comments" value={receiverComments} maxlength="1999" placeholder="Enter comments..." onchange={handleCommentChange}></lightning-textarea>
+                    </div>
+                <div class="slds-modal__footer"> 
+                    <div class="slds-grid slds-wrap slds-grid_reverse">
+                        <div class="slds-col slds-size_6-of-12">
+                            <lightning-button class="slds-button_neutral" label="Cancel"
+                                onclick={handleCancel}></lightning-button>
+                            <lightning-button variant="Brand" label="Receive Item(s)" class="slds-m-left--xx-small"
+                                onclick={handleReceiveItems} disabled={isDisabled}></lightning-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open">
+        </div>
+</template>

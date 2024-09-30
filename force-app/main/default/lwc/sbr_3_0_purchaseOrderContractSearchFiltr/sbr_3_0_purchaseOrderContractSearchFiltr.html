@@ -1,0 +1,109 @@
+<template>
+	<div class="slds-form-element">
+		<div class={computedFilterCmpCSS}>
+			<div class="slds-combobox_container">
+				<div class="slds-combobox" aria-expanded="true" aria-haspopup="listbox" role="combobox">
+					<div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right setdivWidth"
+						role="none">
+						<input type="text"
+              class="slds-input slds-combobox__input slds-combobox__input-value combobox-input-class"
+              id="select-sobject-id" autocomplete="off"
+              data-id="select-sobject-id" aria-autocomplete="list"
+              aria-controls="listbox-id-11" role="textbox"
+              placeholder={placeholder} title={filterLabel}
+              onclick={handleInputClick} value={filterLabel} readonly
+              disabled={disabled} />
+						<lightning-icon class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default"
+							icon-name="utility:down" size="x-small"></lightning-icon>
+					</div>
+					<div id="listbox-id-11" class={computedDropDownClasses} style="overflow-y:auto;">
+
+						<lightning-layout multiple-rows="true">
+							<lightning-layout-item padding="around-small" size="12">
+
+								<!-- 1. Contract Number  -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<lightning-input class="footer-title" placeholder="Enter a Contract Number"
+										type="text" label="Contract Number" name="ContractId"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={contrNum} maxlength="255" onchange={handleFilterChange}
+										data-field-class="filterOption" data-id="Name" data-attribute="LIKE">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 2. Account Name  -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<lightning-input class="footer-title" placeholder="Enter an Account Name"
+										type="text" label="Account Name" name="AccountId" pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={accName} maxlength="255" onchange={handleFilterChange}
+										data-field-class="filterOption" data-id="Number" data-attribute="LIKE">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 3. Account Number-->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<lightning-input class="footer-title" placeholder="Enter an Account Number "
+										type="text" label="Account Number" name="AccountNumber"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={accNum} onchange={handleFilterChange} data-field-class="filterOption"
+										data-id="Accnumber" data-attribute="=">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 4.  Status -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<!-- <lightning-input class="footer-title" label="Status" name="Status"
+										pattern="[a-zA-Z0-9\-_ ]*"
+										message-when-pattern-mismatch="Special Characters are not allowed"
+										value={ordStatus} onchange={handleFilterChange} placeholder="Select a Status" data-field-class="filterOption"
+										data-id="Orderstatus" data-attribute="=">
+									</lightning-input> -->
+
+									<lightning-combobox class="footer-title" label="Status" value={ordStatusValue}
+										options={orderStatuses} data-field-class="filterOption"
+										dropdown-alignment="top-right" name="ContractStatus" data-id="OrderStatus"
+										onchange={handleFilterChange} placeholder="Select a Status"
+										data-attribute="=">
+									</lightning-combobox>
+
+
+								</lightning-layout-item>
+
+								<!-- 5. Contract Start Date -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<lightning-input class="footer-title" label="Contract Start Date" date-style="short" placeholder="Select a Start Date"
+										type="date" name="contractStartDate" value={ordStartdate}
+										onchange={handleFilterChange} data-field-class="filterOption1">
+									</lightning-input>
+								</lightning-layout-item>
+
+								<!-- 6.  Contract End Date -->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 0.5rem;">
+									<lightning-input class="footer-title" label="Contract End Date" date-style="short" placeholder="Select an End Date"
+										type="date" name="contractEndDate" value={ordendDate}
+										onchange={handleFilterChange} data-field-class="filterOption1"
+										style="table-layout: fixed;">
+									</lightning-input>
+								</lightning-layout-item></br>
+
+								<!-- Buttons "Apply" & "Reset All Filters"-->
+								<lightning-layout-item padding="around-small" size="12" style="margin-top: 10px;">
+									<div class="slds-p-top_small slds-float_left">
+										<lightning-button label="Apply" variant="brand" onclick={handleApply}
+											class="slds-var-p-left_small brand-button"></lightning-button>
+										<lightning-button class="slds-p-left_medium" label="Reset All Filters"
+											variant="base" onclick={handleReset}></lightning-button>
+									</div>
+								</lightning-layout-item>
+
+							</lightning-layout-item>
+						</lightning-layout>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</template>

@@ -1,0 +1,77 @@
+<template lwc:render-mode="light">
+  <template lwc:if={isMobileSingleSectionViewMode}>
+    <lightning-layout multiple-rows class={layoutClasses}>
+      <template for:each={section.fields} for:item="field">
+        <lightning-layout-item
+          key={field.externalId}
+          size="12"
+          medium-device-size={mediumDeviceSize}
+          large-device-size={largeDeviceSize}
+          small-device-size={smallDeviceSize}
+          class={layoutItemClasses}
+          data-layout-item-id={field.externalId}
+        >
+          <c-sbr_3_0_dynamic-record-form-element
+            field={field}
+            record-id={recordId}
+            object-api-name={objectApiName}
+            data-field-id={field.externalId}
+          ></c-sbr_3_0_dynamic-record-form-element>
+        </lightning-layout-item>
+      </template>
+    </lightning-layout>
+  </template>
+  <template lwc:else>
+    <lightning-accordion-section
+      name={section.externalId}
+      label={section.label}
+      class={accordionSectionClasses}
+      data-accordion-section-id={section.externalId}
+    >
+      <lightning-layout multiple-rows class={layoutClasses}>
+        <template for:each={section.fields} for:item="field">
+          <lightning-layout-item
+            key={field.externalId}
+            size="12"
+            medium-device-size={mediumDeviceSize}
+            large-device-size={largeDeviceSize}
+            small-device-size={smallDeviceSize}
+            class={layoutItemClasses}
+            data-layout-item-id={field.externalId}
+          >
+            <c-sbr_3_0_dynamic-record-form-element
+              field={field}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              data-field-id={field.externalId}
+            ></c-sbr_3_0_dynamic-record-form-element>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+
+      <!-- <template lwc:else>
+      <lightning-layout class={layoutClasses}>
+        <template for:each={section.fields} for:item="field">
+          <lightning-layout-item
+            key={field.externalId}
+            size="12"
+            medium-device-size="12"
+            large-device-size="12"
+            small-device-size="12"
+            class={layoutItemClasses}
+            data-layout-item-id={field.externalId}
+          >
+            <c-sbr_3_0_dynamic-record-form-element
+              field={field}
+              record-id={recordId}
+              object-api-name={objectApiName}
+              onfieldset={handleFieldValueSet}
+              data-field-id={field.externalId}
+            ></c-sbr_3_0_dynamic-record-form-element>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template> -->
+    </lightning-accordion-section>
+  </template>
+</template>

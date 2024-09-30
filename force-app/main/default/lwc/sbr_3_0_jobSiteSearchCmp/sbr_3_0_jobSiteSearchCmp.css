@@ -1,0 +1,16 @@
+.customErrorStyle {
+    color: #ba0517;
+    font-size: 0.75rem;
+    margin-top: 0.125rem;
+    display: block;
+}
+
+.has-custom-error {
+    border-color: #ba0517;
+    border-width: 2px;
+    ;
+}
+.slds-has-focus {
+    border-color:#008545 !important;
+    border-width: 2px;
+}

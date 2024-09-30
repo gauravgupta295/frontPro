@@ -1,0 +1,216 @@
+<template>
+  <div class="item-list-ctr">
+    <template if:true={isRentals}>
+      <template
+        for:each={lineItemsToRemove}
+        for:item="lineItem"
+        for:index="index"
+      >
+        <div class="line-item slds-p-top_small" key={lineItem.Id}>
+          <div
+            class="line-item-header slds-grid slds-grid_align-spread textInput"
+          >
+            <lightning-input
+              type="checkbox"
+              label={lineItem.AssetHeader}
+              name={lineItem.AssetHeader}
+              id={lineItem.Id}
+              data-id={lineItem.Id}
+              checked={lineItem.isSelected}
+              onchange={handleRemoveAction}
+              value={lineItem}
+              class="textInput isChecked"
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-p-left_x-large">
+            <div class="slds-grid slds-gutters slds-wrap">
+              <div
+                class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+              >
+                <span class="slds-text-title textBold"
+                  >Cat Class Description</span
+                >
+              </div>
+              <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                <span class="slds-text-title">{lineItem.Name}</span>
+              </div>
+              <div
+                class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+              >
+                <span class="slds-text-title textBold">Qty</span>
+              </div>
+              <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                <span class="slds-text-title">{lineItem.Quantity}</span>
+              </div>
+              <template if:false={lineItem.isBulkAsset}>
+                <template lwc:if={lineItem.Current_MiHr}>
+                  <div
+                    class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                  >
+                    <span class="slds-text-title textBold">Hr/Mi</span>
+                  </div>
+                  <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                    <span class="slds-text-title">{lineItem.Current_MiHr}</span>
+                  </div>
+                </template>
+              </template>
+              <template lwc:if={lineItem.ViewMore}>
+                <div
+                  class="toggle-text sbrGreenColor slds-p-left_small slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                  data-line-item-id={lineItem.Id}
+                  data-toggle-type="ViewMore"
+                  onclick={toggleViewContent}
+                >
+                  {LABELS.VIEW_LESS}
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Cat Class</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.CatClass}</span>
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Min Rate</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <!-- <span class="slds-text-title">{lineItem.Min_Rate}</span> -->
+                  <lightning-formatted-number
+                    class="slds-text-title"
+                    format-style="currency"
+                    value={lineItem.Min_Rate}
+                  ></lightning-formatted-number>
+                </div>
+
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Day</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <!-- <span class="slds-text-title">{lineItem.Daily_Rate}</span> -->
+                  <lightning-formatted-number
+                    class="slds-text-title"
+                    format-style="currency"
+                    value={lineItem.Daily_Rate}
+                  ></lightning-formatted-number>
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Week</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <!-- <span class="slds-text-title">{lineItem.Weekly_Rate}</span> -->
+                  <lightning-formatted-number
+                    class="slds-text-title"
+                    format-style="currency"
+                    value={lineItem.Weekly_Rate}
+                  ></lightning-formatted-number>
+                </div>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">4 Week</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <lightning-formatted-number
+                    class="slds-text-title"
+                    format-style="currency"
+                    value={lineItem.Monthly_Rate}
+                  ></lightning-formatted-number>
+                  <!-- <span class="slds-text-title">{lineItem.Monthly_Rate}</span> -->
+                </div>
+              </template>
+              <template lwc:else>
+                <div
+                  class="toggle-text sbrGreenColor slds-p-left_small slds-col slds-size_2-of-2 slds-p-bottom_x-small"
+                  data-line-item-id={lineItem.Id}
+                  data-toggle-type="ViewMore"
+                  onclick={toggleViewContent}
+                >
+                  {LABELS.VIEW_MORE}
+                </div>
+              </template>
+            </div>
+          </div>
+        </div>
+      </template>
+    </template>
+    <!--FRONT-29023-->
+    <template if:true={isSales}>
+      <template
+        for:each={lineItemsToRemove}
+        for:item="lineItem"
+        for:index="index"
+      >
+        <div class="line-item slds-p-top_small" key={lineItem.Id}>
+          <div
+            class="line-item-header slds-grid slds-grid_align-spread textInput"
+          >
+            <lightning-input
+              type="checkbox"
+              label={lineItem.Name}
+              name={lineItem.Name}
+              id={lineItem.Id}
+              data-id={lineItem.Id}
+              value={lineItem.Id}
+              class="textInput isChecked"
+              onchange={handleRemoveAction}
+              checked={lineItem.isSelected}
+            >
+            </lightning-input>
+          </div>
+          <div class="slds-p-left_x-large slds-p-right_xx-large">
+            <div class="slds-grid slds-gutters slds-wrap">
+              <div
+                class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+              >
+                <span class="slds-text-title textBold">Part/Item #</span>
+              </div>
+              <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                <span class="slds-text-title">{lineItem.itemNumber}</span>
+              </div>
+
+              <div
+                class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+              >
+                <span class="slds-text-title textBold">Qty</span>
+              </div>
+              <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                <span class="slds-text-title">{lineItem.Quantity}</span>
+              </div>
+              <template lwc:if={lineItem.isSalesItem}>
+                <div
+                  class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+                >
+                  <span class="slds-text-title textBold">Unit of Measure</span>
+                </div>
+                <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                  <span class="slds-text-title">{lineItem.unitOfMeasure}</span>
+                </div>
+              </template>
+              <div
+                class="slds-col slds-size_1-of-2 is-bold slds-p-bottom_x-small"
+              >
+                <span class="slds-text-title textBold">Price</span>
+              </div>
+              <div class="slds-col slds-size_1-of-2 slds-p-bottom_x-small">
+                <!-- <span class="slds-text-title">{lineItem.salesMiscPrice}</span>-->
+                <lightning-formatted-number
+                  class="slds-text-title"
+                  format-style="currency"
+                  value={lineItem.salesMiscPrice}
+                ></lightning-formatted-number>
+              </div>
+            </div>
+          </div>
+        </div>
+      </template>
+    </template>
+  </div>
+</template>

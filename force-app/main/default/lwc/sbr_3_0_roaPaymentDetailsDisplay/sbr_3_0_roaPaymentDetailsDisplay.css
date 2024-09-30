@@ -1,0 +1,9 @@
+.changeCardBachground{
+    --sds-c-card-color-background: #F2F2F2;
+}
+.slds-has-dividers_bottom-space{
+    border-bottom : white
+}
+.mild-bold {
+    font-weight: inherit;
+  }

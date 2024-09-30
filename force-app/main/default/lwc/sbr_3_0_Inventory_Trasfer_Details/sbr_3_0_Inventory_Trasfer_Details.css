@@ -1,0 +1,13 @@
+.bold-text {
+    font-weight: bold;
+}
+.field-container1{
+    padding-top: 4px;
+    padding-bottom: 80px;
+}
+.white-background{
+    background-color: white;
+}
+.full-width-container{
+    width: 100%;
+}

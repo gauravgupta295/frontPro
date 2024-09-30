@@ -1,0 +1,56 @@
+<template>
+	<template if:true={openModal}>
+		<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+			aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open" style="width: 120%; max-width: 120%; height: 110%; max-height: 110%;">
+			<div class="slds-modal__container " style="width: 100%; max-width: 100%;">
+				<header class="slds-modal__header">
+					<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleCancel}>
+								<lightning-icon icon-name="utility:close"
+								alternative-text="close"
+								variant="inverse"
+								size="medium" ></lightning-icon>
+								<span class="slds-assistive-text">Close</span>
+					</button>
+					<h2 class="slds-text-heading_medium slds-hyphenate">Transfer Search</h2>
+					<div class="slds-grid slds-wrap">
+					 <div class="slds-col slds-size_4-of-12 slds-p-right_small slds-p-top_small slds-p-left_small">
+                                        <p>Transfer Info</p>
+							<lightning-input data-name="searchBox" variant="label-hidden" type="search"
+								pattern="[a-zA-Z0-9\-_ ]*"
+								message-when-pattern-mismatch="Special Characters are not allowed" label="test test"
+								placeholder="Search for Transfer" onkeypress={handleSearch} oncommit={handleClear}>
+							</lightning-input>
+						</div>
+                        <div class="slds-col slds-size_5-of-12 slds-p-right_small">
+							<p style="padding-top:18px"></p>
+							<c-sbr_3_0_-transfer-search-filter ongetsearchvalue={getSearchValue}>  
+							</c-sbr_3_0_-transfer-search-filter>
+						</div>
+					</div>
+				</header>
+				<!-- modal body start -->
+				<div class="slds-col slds-size_5-of-12">
+				</div>
+				<div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+					<div class="slds-page-header" style="height:55px;background-color:lightgrey">
+						<b class="slds-page-header__title slds-truncate">Transfers</b>
+						<p style="padding-top:2px">{totalNoOfRecords} Results</p>
+					</div>
+					<div class="record-container">
+						<lightning-datatable hide-checkbox-column=hidecheckbox key-field="Id" data={data}
+							resize-column-disabled columns={columns} sorted-by={sortBy} sorted-direction={sortDirection}
+							onsort={handleSorting} onrowaction={handleRowAction}>
+						</lightning-datatable>
+					</div>
+				</div>
+				<!-- modal footer start-->
+				<footer class="slds-modal__footer">
+					<lightning-button label="Cancel" title="Cancel" onclick={handleCancel}
+						class="slds-m-left_x-small slds-align_right">
+					</lightning-button>
+				</footer>
+			</div>
+		</section>
+		<!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+	</template>
+</template>

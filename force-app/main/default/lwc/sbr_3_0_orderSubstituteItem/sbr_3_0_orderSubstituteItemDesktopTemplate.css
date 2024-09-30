@@ -1,0 +1,8 @@
+.dummy {
+  width: 100%;
+}
+.modal-container {
+  max-width: none !important;
+  min-width: none !important;
+  width: 85%;
+}

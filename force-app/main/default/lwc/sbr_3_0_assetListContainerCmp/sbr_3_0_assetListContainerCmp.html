@@ -1,0 +1,21 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-02-2023
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="12">
+            <div class="list-header-container">
+                <c-sbr_3_0_asset-list-header-cmp  onitemsearchupdate={handleItemSearch} onlistviewupdate={handleListViewChange} onlocationselected={handledselectedlocation}></c-sbr_3_0_asset-list-header-cmp>
+            </div>
+            <lightning-layout-item size="12">
+                <div class="scrollable-list-container">
+                    <c-sbr_3_0_asset-list-cmp list-height={listHeight} onrowsselected={handleSelectedRows} onsearchcomplete={handleSearchCompletion} onassetselected={handleassetselectednew}></c-sbr_3_0_asset-list-cmp>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

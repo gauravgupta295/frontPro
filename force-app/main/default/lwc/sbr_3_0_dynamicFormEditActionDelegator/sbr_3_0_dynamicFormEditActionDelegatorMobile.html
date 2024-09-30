@@ -1,0 +1,56 @@
+<template>
+  <template lwc:if={isReadView}>
+    <c-sbr_3_0_mobile-screen 
+      ><c-sbr_3_0_dynamic-form-edit-action
+        record-id={recordId}
+        object-api-name={objectApiName}
+        oncloseauraaction={handleCloseAction}
+        is-edit-in-progress={editInProgress}
+        is-current-user={editBycurrentUser}
+      >
+      </c-sbr_3_0_dynamic-form-edit-action>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+
+  <template lwc:else>
+    <!--below isOrder condition added as a part of 22308-->
+    <template lwc:if={isShowDynamicRecordForm}> 
+      <c-sbr_3_0_mobile-screen title={screenHeading} props={mobileProps}>
+        <template if:true={isOpenOrderCancelCmp}>
+          <c-sbr_3_0_order-cancel-cmp
+            props={props}
+            object-api-name={objectApiName}
+            record-id={recordId}
+            onclosemodal={closeOrderCancelCmp}
+          >
+          </c-sbr_3_0_order-cancel-cmp>
+        </template>
+        <c-sbr_3_0_dynamic-record-form
+          record-id={recordId}
+          object-api-name={objectApiName}
+          config={config}
+          show-page-label
+          onhideupdatetotals={handleHideUpdatetotals}     
+          onupdatetotalerror={handleUpdateTotalError}
+      >  <!-- FRONT - 13994-->
+        </c-sbr_3_0_dynamic-record-form>
+        <div slot="footer">
+        <c-sbr_3_0_dynamic-record-form-collector
+          record-id={recordId}
+          object-api-name={objectApiName}
+          oncloseauraaction={handleCloseAction}
+          ondeleterecord={handleDeleteRecord}
+          show-update-totals-footer={showUpdateTotalsFooter}
+          onretry={handleRetry}
+              oncloseupdatetotals={handleCloseUpdateTotals}
+              oncloseeditactiondelegator={hideEditActionDelegator}>
+            </c-sbr_3_0_dynamic-record-form-collector>
+        </div>
+      </c-sbr_3_0_mobile-screen>
+    </template>
+    <template lwc:else>
+      <c-sbr_3_0_make-adeposit record-id={recordId} s-object-name={objectApiName} is-create-reservation={isCreateReservation} >
+      </c-sbr_3_0_make-adeposit>
+    </template>
+  </template>
+</template>

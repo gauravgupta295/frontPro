@@ -1,0 +1,283 @@
+<template>
+	<template if:false={isMobileView}>
+		<div class="slds-page-header slds-page-header_record-home">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+						</div>
+						<div class="slds-media__body" style="line-height: 13px;">
+							<span>Purchase Order Summary</span>
+							<span class="slds-page-header__title slds-truncate" title="recName">{recName}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div>
+			<lightning-record-view-form record-id={recordId} object-api-name="Purchase_Order__c">
+				<div class="slds-grid slds-wrap slds-p-around_medium">
+					<div class="slds-col slds-size_2-of-12">Vendor</br>
+						<lightning-output-field field-name="Vendor__c" variant="label-hidden"> </lightning-output-field>
+					</div>
+					<div class="slds-col slds-size_2-of-12">Ordered Date</br>
+						<lightning-output-field field-name="Issue_Date__c" variant="label-hidden">
+						</lightning-output-field>
+					</div>
+					<div class="slds-col slds-size_2-of-12">Shipping Address</br>
+						<lightning-output-field field-name="Complete_Shipping_Address__c" variant="label-hidden">
+						</lightning-output-field>
+					</div>
+					<div class="slds-col slds-size_2-of-12"> Phone Number</br>
+						<lightning-output-field field-name="Phone_Number__c" variant="label-hidden">
+						</lightning-output-field>
+					</div>
+				</div>
+			</lightning-record-view-form>
+		</div>
+
+		<div class="slds-page-header slds-page-header_record-home">
+			<div class="slds-page-header__row">
+				<div class="slds-page-header__col-title">
+					<div class="slds-media">
+						<div class="slds-media__figure">
+							<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+						</div>
+						<div class="slds-media__body" style="line-height: 13px;">
+							<span class="slds-page-header__title slds-truncate" title="Totals">Totals</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="rightAlignCols">
+			<lightning-datatable key-field="Id" data={totallineItems} columns={columns} hide-checkbox-column>
+			</lightning-datatable>
+		</div>
+
+		<div class="slds-grid slds-wrap totalCSS">
+			<div class="slds-col slds-size_4-of-6 slds-align_center">
+				<div style="margin-left:10px">
+					<p>Totals</p>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-6 slds-align_left">
+				<div style="margin-left:-140px">
+					<p>Qty: {totalSalesQty}</p>
+				</div>
+			</div>
+			<div class="slds-col slds-size_1-of-6 slds-align_left">
+				<div style="margin-left:100px">
+					<p>Total: {totalSalesCost}</p>
+				</div>
+			</div>
+		</div>
+
+		<div style="padding-top:20px;">
+			<div class="slds-page-header slds-page-header_record-home">
+				<div class="slds-page-header__row">
+					<div class="slds-page-header__col-title">
+						<div class="slds-media">
+							<div class="slds-media__figure">
+								<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+							</div>
+							<div class="slds-media__body" style="line-height: 13px;">
+								<span class="slds-page-header__title slds-truncate" title="Purchase Order Comments">Purchase Order Comments</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; border-radius: 0.25rem; ">
+			<lightning-card>
+				<span  title="Purchase Order Comments" style="font-size: larger; margin: 0 15px;">Purchase Order Comments</span>
+				<div class="slds-card "
+					style="border: 1px solid #d8dde6; border-radius: 0.25rem; background-color: lightgrey; margin: 0 15px; ">
+					<lightning-record-view-form record-id={recordId} object-api-name="Purchase_Order__c">
+						<div class="slds-col slds-size_12-of-12" style=" margin-left: 5px; margin-top: -15px;"></br>
+							<lightning-output-field field-name="PO_Comments__c" variant="label-hidden">
+							</lightning-output-field>
+						</div>
+					</lightning-record-view-form>
+				</div>
+			</lightning-card>
+		</div>
+	</template>
+	<!--Harshal for mobile starts-->
+	<template if:true={isMobileView}>
+		<div class="slds-modal__container">
+			<div class="slds-modal__content">
+				<lightning-card>
+					<div class="slds-border_bottom">
+						<div class="slds-page-header slds-page-header_record-home">
+							<div class="slds-page-header__row">
+								<div class="slds-page-header__col-title">
+									<div class="slds-media">
+										<div class="slds-media__figure">
+											<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+										</div>
+										<div class="slds-media__body" style="line-height: 13px;">
+											<span>Purchase Order Summary</span>
+											<span class="slds-page-header__title slds-truncate" title="recName">{recName}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				
+					<div class="slds-border_bottom">
+						<lightning-record-view-form record-id={recordId} object-api-name="Purchase_Order__c">
+							<div class="slds-grid slds-wrap slds-p-around_medium">
+								<div class="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_2-of-12">
+									<div class="slds-grid">
+										<div class="slds-col slds-size_5-of-12">
+											<p class="slds-text-title_bold">Vendor</p>
+										</div>
+										<div class="slds-col slds-size_7-of-12">
+											<lightning-output-field field-name="Vendor__c" variant="label-hidden">
+											</lightning-output-field>
+										</div>
+									</div>
+								</div>
+				
+				
+								<div class="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_2-of-12">
+									<div class="slds-grid">
+										<div class="slds-col slds-size_5-of-12">
+				
+											<p class="slds-text-title_bold">Ordered Date</p>
+				
+										</div>
+				
+										<div class="slds-col slds-size_7-of-12">
+											<lightning-output-field field-name="Issue_Date__c" variant="label-hidden">
+											</lightning-output-field>
+				
+										</div>
+									</div>
+				
+								</div>
+								<div class="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_2-of-12">
+									<div class="slds-grid">
+										<div class="slds-grid slds-wrap">
+											<div class="slds-col slds-size_5-of-12">
+				
+												<p class="slds-text-title_bold">Shipping Address</p>
+											</div>
+											<div class="slds-col slds-size_7-of-12">
+												<lightning-output-field field-name="Complete_Shipping_Address__c"
+													variant="label-hidden">
+												</lightning-output-field>
+											</div>
+										</div>
+									</div>
+				
+								</div>
+								<div class="slds-size_12-of-12 slds-medium-size_6-of-12 slds-large-size_2-of-12">
+									<div class="slds-grid">
+										<div class="slds-col slds-size_5-of-12">
+				
+											<p class="slds-text-title_bold">Phone Number</p>
+										</div>
+				
+										<div class="slds-col slds-size_7-of-12">
+											<lightning-output-field field-name="Phone_Number__c" variant="label-hidden">
+											</lightning-output-field>
+										</div>
+									</div>
+				
+								</div>
+							</div>
+						</lightning-record-view-form>
+					</div>
+				</lightning-card>
+				<lightning-card>
+					<div class="slds-border_bottom">
+						<div style="padding-top:20px;">
+							<div class="slds-page-header slds-page-header_record-home">
+								<div class="slds-page-header__row">
+									<div class="slds-page-header__col-title">
+										<div class="slds-media">
+											<div class="slds-media__figure">
+												<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+											</div>
+											<div class="slds-media__body" style="line-height: 13px;">
+												<span class="slds-page-header__title slds-truncate" title="Totals">Totals</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="slds-p-vertical_x-small" style="padding-left: 15px">
+							<c-sbr_3_0_po-mobile-custom-wrapper data-id="salesCmp" title="" is-div="true" has-filter="false"
+								is-purchase-order-filter="false" is-vendor-filter="false" no-header-section="true"
+								record-list={salesRecordList} oncheckboxchange={handleSalesCheckboxChange}
+								onremove={handleSalesItemRemove} onedit={handleEditScreen}>
+							</c-sbr_3_0_po-mobile-custom-wrapper>
+						</div>
+					</div>
+				
+				</lightning-card>
+				<lightning-card>
+					<div class="slds-border_bottom">
+						<div style="padding-top:20px;">
+							<div class="slds-page-header slds-page-header_record-home">
+								<div class="slds-page-header__row">
+									<div class="slds-page-header__col-title">
+										<div class="slds-media">
+											<div class="slds-media__figure">
+												<lightning-icon icon-name="standard:orders" size="medium"></lightning-icon>
+											</div>
+											<div class="slds-media__body" style="line-height: 13px;">
+												<span class="slds-page-header__title slds-truncate"
+													title="Purchase Order Comments">Purchase Order Comments</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="slds-card slds-card_header" style="border: 1px solid #d8dde6; border-radius: 0.25rem; ">
+							<lightning-card>
+								<span title="Purchase Order Comments" style="font-size: smaller; margin: 0 15px;">Purchase Order
+									Comments</span>
+								<div class="slds-card "
+									style="border: 1px solid #d8dde6; border-radius: 0.25rem; background-color: lightgrey; margin: 0 15px; ">
+									<lightning-record-view-form record-id={recordId} object-api-name="Purchase_Order__c">
+										<div class="slds-col slds-size_12-of-12" style=" margin-left: 5px; margin-top: -15px;">
+											</br>
+											<lightning-output-field field-name="PO_Comments__c" variant="label-hidden">
+											</lightning-output-field>
+										</div>
+									</lightning-record-view-form>
+								</div>
+							</lightning-card>
+						</div>
+					</div>
+				</lightning-card>
+			</div>
+			<div class="slds-modal__footer">
+				<div class="slds-grid slds-wrap mobileCSS">
+					<div class="slds-col slds-size_6-of-12">
+						<div>TOTALS</div>
+					</div>
+					<div class="slds-col slds-size_3-of-12">
+						<div>QTY</div>
+						<div>{totalSalesQty}</div>
+					</div>
+					<div class="slds-col slds-size_3-of-12">
+						<div>TOTAL</div>
+						<div>{totalSalesCost}</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</template>
+</template>

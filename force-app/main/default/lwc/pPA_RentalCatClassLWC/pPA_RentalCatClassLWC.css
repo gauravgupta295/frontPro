@@ -1,0 +1,15 @@
+.column-header{
+    position: sticky;
+    top: 0;
+    z-index: 1;
+
+}
+.record-container {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/*
+.hide-row-number-column .slds-cell-fixed:first-child{
+    display: none;
+}*/

@@ -1,0 +1,109 @@
+.Tile {
+    display: static;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-radius: 4px;
+    border: 1px solid var(--foundation-gray-neutral-80, #C9C9C9);
+    background: var(--foundation-gray-neutral-100, #FFF);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.10);
+}
+
+.TileTitle{
+    display: flex;
+    padding: 10px;
+    flex-direction: column;
+    justify-content: top;
+    align-self: stretch;
+    color: var(--text-weak, #444);
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 21px;
+}
+.TileDetail{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    color: #000;
+    text-align: center;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 22px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+}
+@media (orientation: landscape) {
+
+}
+
+@media (orientation: portrait) {
+
+}
+
+.TileHeader{
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    text-align: left;
+    flex-shrink: 0;
+    border-radius: 0px;
+    border: 1px solid var(--foundation-gray-neutral-80, #C9C9C9);
+    background: var(--foundation-gray-neutral-100, #FFF);
+    box-shadow: 0px 2px 2px 0px rgba(0, 0, 0, 0.10);
+}
+.TileBodyHeading{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-self: stretch;
+    text-align: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 18px;
+}
+.TileHeaderText{
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex-direction: column;
+    justify-content: left;
+    align-self: stretch;
+    text-align: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+.TileBodyText{
+    display: flex;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    flex-direction: column;
+    justify-content: left;
+    align-self: stretch;
+    text-align: left;
+    color: var(--text-default, #181818);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+}

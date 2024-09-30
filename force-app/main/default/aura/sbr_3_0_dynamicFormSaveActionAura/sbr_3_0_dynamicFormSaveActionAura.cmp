@@ -1,0 +1,38 @@
+<aura:component
+  implements="force:lightningQuickActionWithoutHeader,force:hasRecordId,lightning:actionOverride,force:hasSObjectName">
+
+  <aura:attribute name="isShowdynamicRecordFormCollector" type="Boolean" default="true" />
+  <aura:handler name="init" value="{!this}" action="{!c.doInit}" />
+
+  <!--added for FRONT-23924 START-->
+  <aura:html tag="style">
+    .slds-modal__content{
+    backkground-color: white !important;
+    height:fit-content !important;
+    }
+    @media only screen and (min-width: 768px){
+    .slds-p-around--medium{
+    padding:0px !important;
+    }
+    .cuf-content{
+    padding : 0px !important;
+    }
+    }
+  </aura:html>
+
+  <lightning:messageChannel type="sbr_3_0_quickActionModalEvents__c" scope="APPLICATION"
+    onMessage="{!c.handleModalClose}" />
+
+    <aura:if isTrue="{!v.isShowdynamicRecordFormCollector}">
+      <c:sbr_3_0_dynamicRecordFormCollector recordId="{!v.recordId}" objectApiName="{!v.sObjectName}"
+        actionName="save" isHeadless="true" oncloseauraaction="{!c.handleCloseAction}"/>
+      <aura:set attribute="else">
+        <c:sbr_3_0_makeAdeposit recordId="{!v.recordId}" sObjectName="{!v.sObjectName}" actionName="save"
+          isHeadless="true" isCreateReservation="true" oncloseauraaction="{!c.handleCloseAction}">
+        </c:sbr_3_0_makeAdeposit>
+      </aura:set>
+    </aura:if>
+
+
+  <!--added for FRONT-23924 END-->
+</aura:component>

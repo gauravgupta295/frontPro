@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>59.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__FlowScreen</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+            <property name="radioGroupLabel"    label="Radio Group Label" type="String"  description="Group Label"/>
+            <property name="radioGroupValue"    label="Radio Group Value" type="String"  description="Default Value"/>
+            <property name="optionsLabelString" label="Label String"      type="String"  description="Comma Separated Label String"/>
+            <property name="optionsValueString" label="Value String"      type="String"  description="Comma Separated Value String"/>
+            <property name="isDisabled"         label="Disabled"          type="Boolean" description="Determine if the radio group is disabled"/>
+            <property name="isRequired"         label="Required"          type="Boolean" description="Determine if the radio group is required"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

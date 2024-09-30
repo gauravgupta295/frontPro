@@ -1,0 +1,43 @@
+.label-padding {
+    padding-top: 0px;
+}
+.search-add-txt {
+    color: #444444;
+    font-weight: 400;
+    font-size: 16px;
+ }
+ .spinner-height {
+    min-height: 30px;
+}
+
+@media (min-width: 321px) and (max-width: 768px) {
+    /* SF-6111 */
+    .slds-input-has-icon .slds-input__icon {
+        position: absolute;
+        top: 1.2em;
+    }
+}
+
+@media (min-width: 768px) {
+    /* SF-6111 */
+    .slds-input-has-icon .slds-input__icon {
+        position: absolute;
+        top: 1.3em;
+    }
+  }
+  
+@media (min-width: 992px) {
+    /* SF-6111 */
+    .slds-input-has-icon .slds-input__icon {
+        position: absolute;
+        top: 1.3em;
+    }
+  }
+  
+@media (min-width: 1200px) {
+    /* SF-6111 */
+    .slds-input-has-icon .slds-input__icon {
+        position: absolute;
+        top: 1.3em;
+    }
+  }

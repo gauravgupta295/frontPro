@@ -1,0 +1,14 @@
+<template>
+	<div class="defaultLocationContainer slds-m-vertical_x-small slds-m-horizontal_medium">
+		<div class="slds-m-bottom_large">
+			<p class="slds-text-title">{label.CURRENTSOURCINGBRANCHLABEL}</p>
+			<h2 class="slds-m-vertical_small">{sourcingBranchValue}</h2>
+		</div>
+		<div class="customTable">
+			<lightning-datatable key-field="id" data={tableData} columns={tableColumns} resize-column-disabled
+				wrap-text-max-lines="2" max-row-selection="1" class="wrapped-header-datatable"
+				onrowselection={getSelectedName} onrowaction={handleRowAction}>
+			</lightning-datatable>
+		</div>
+	</div>
+</template>

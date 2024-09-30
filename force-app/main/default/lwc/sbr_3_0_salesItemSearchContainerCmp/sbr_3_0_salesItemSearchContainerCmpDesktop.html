@@ -1,0 +1,178 @@
+<template>
+  <template if:false={isMobile}>
+    <div class="slds-page-header">
+      <div class="slds-page-header__row">
+        <div class="slds-page-header__col-title">
+          <div class="slds-page-header__name slds-is-relative">
+            <div class="slds-page-header__name-title">
+              <h1>
+                <!-- start FRONT-10297 -->
+                <span>{itemSearch}</span>
+                <!-- end FRONT-10297 -->
+                <span
+                  class="slds-page-header__title slds-truncate marginTop"
+                  title="All Items"
+                >
+                  <!-- start FRONT-10297 -->
+                  {allItems}
+                  <!-- end FRONT-10297 -->
+                </span>
+              </h1>
+            </div>
+          </div>
+        </div>
+        <div class="slds-page-header__col-actions">
+          <div class="slds-page-header__controls">
+            <div class="slds-button-group" role="group">
+              <!-- start FRONT-10297 -->
+              <lightning-combobox
+                variant="label-hidden"
+                options={options}
+                style="width: 100px"
+                value={SelectedValue}
+                onchange={handleChangeOptions}
+                class="btnGroup"
+              >
+              </lightning-combobox>
+              <!-- end FRONT-10297 -->
+              <lightning-input
+                class="slds-input-has-icon_right item-search-input btnGroup"
+                type="search"
+                data-source="searchItemsInputField"
+                variant="label-hidden"
+                placeholder={itemSearchPlaceholder}
+                onkeydown={searchItems}
+                onchange={searchItemsOnChange}
+                style="width: 260px"
+                is-loading={isItemSearchLoading}
+              >
+              </lightning-input>
+            </div>
+            <template lwc:if={isSelectedValueNotMisc}>
+              <!-- FRONT-14355 starts-->
+              <div class="slds-page-header__control">
+                <!-- start FRONT-10297 -->
+                <lightning-combobox
+                  variant="label-hidden"
+                  placeholder={locationCriteria}
+                  value={selectedLoctionFilter}
+                  options={locationOptions}
+                  onchange={handleLocationCriteriaChange}
+                  style="width: 200px"
+                >
+                </lightning-combobox>
+                <!-- end FRONT-10297 -->
+              </div>
+            </template>
+            <!-- FRONT-14355 ends-->
+            <template lwc:if={isSelectedValueNotMisc}>
+              <!-- FRONT-14355 starts-->
+              <div class="slds-page-header__control">
+                <template lwc:if={isFilterActive}>
+                  <lightning-button
+                    label={filterCount}
+                    title="filter"
+                    icon-name="utility:filterList"
+                    onclick={handleViewFilter}
+                    class="slds-m-left_x-small"
+                  ></lightning-button>
+                </template>
+                <!-- FRONT-14355 ends-->
+
+                <template lwc:else>
+                  <lightning-button-icon
+                    icon-name="utility:filterList"
+                    variant="border-filled"
+                    onclick={handleViewFilter}
+                    alternative-text="Open Filters"
+                    class="slds-m-left_xx-small"
+                    title="Open Filters"
+                  >
+                  </lightning-button-icon>
+                </template>
+              </div>
+            </template>
+            <template if:true={isNotRecordPage}>
+              <div class="slds-page-header__control cart-button-container">
+                <lightning-button-icon
+                  icon-name="utility:cart"
+                  variant="border-filled"
+                  alternative-text="View Cart"
+                  class="slds-m-left_xx-small"
+                  title="View Cart"
+                  onclick={handleCartClick}
+                >
+                </lightning-button-icon>
+                <template if:false={isCartEmpty}>
+                  <span class="cart-count">{cartItemsCount}</span>
+                </template>
+              </div>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <lightning-layout-item size="10">
+         <div class="heightClass" lwc:if={showFilterPhrase}>
+            {totalRecords} items 
+            <span class="slds-p-around_xx-small"><img src={bulletImage}></img></span> 
+            Sorted by {sortByName} 
+            <span class="slds-p-around_xx-small"><img src={bulletImage}></img></span>
+            filtered by {currentFilter} 
+         </div>
+         <div class="heightClass" lwc:else>
+            {totalRecords} items
+            <span class="slds-p-around_xx-small"><img src={bulletImage}></img></span>
+            Sorted by {sortByName}
+         </div>
+      </lightning-layout-item>
+      <template lwc:if={showPill}>
+        <div class="slds-page-header__row slds-p-top_x-small">
+          <div class="pillsContainer">
+            
+
+            <template if:true={selectedValueList}>
+              <template for:each={selectedValueList} for:item="filter">
+                <lightning-pill
+                  key={filter}
+                  label={filter}
+                  onremove={handlePillsRemove}
+                  class="filterPills slds-p-right_x-small"
+                ></lightning-pill>
+              </template>
+            </template>
+          </div>
+        </div>
+      </template>
+    </div>
+    <div class="scrollable-list-container">
+      <template if:false={showSpinner}>
+        <lightning-spinner
+          variant="brand"
+          size="medium"
+          alternative-text="loading..."
+        >
+        </lightning-spinner>
+      </template>
+
+      <c-sbr_3_0_custom-data-table-cmp
+        class="salesData"
+        key-field="Id"
+        columns={columns}
+        data={data}
+        default-sort-direction={defaultSortDirection}
+        sorted-direction={sortDirection}
+        sorted-by={sortedBy}
+        onsort={onHandleSort}
+        wrap-text-max-lines="2"
+        enable-infinite-loading
+        onloadmore={loadMoreItems}
+        max-row-selection={maxRowSelection}
+        onrowselection={updateSelectedRows}
+        data-comp-id="consumablesDataTable"
+        selected-rows={contractSelectedrows}
+      >
+      </c-sbr_3_0_custom-data-table-cmp>
+    </div>
+  </template>
+</template>

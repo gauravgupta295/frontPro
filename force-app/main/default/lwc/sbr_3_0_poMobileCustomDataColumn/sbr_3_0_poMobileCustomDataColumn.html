@@ -1,0 +1,38 @@
+<template>
+    <div class="slds-grid slds-wrap" data-id={columnObj.recordId}>
+        <template if:true={columnObj.isVisible}>
+            <template lwc:if={isText}>
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">{columnObj.label}</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{columnObj.value}</span>
+                </div>
+            </template>
+            <template lwc:elseif={isNumber}>
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">{columnObj.label}</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{columnObj.value}</span>
+                </div>
+            </template>
+            <template lwc:elseif={isCurrency}>
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">{columnObj.label}</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <span class="data">{columnObj.value}</span>
+                </div>
+            </template>
+            <template lwc:elseif={isURL}>
+                <div class="slds-col slds-size_3-of-5">
+                    <span class="title">{columnObj.label}</span>
+                </div>
+                <div class="slds-col slds-size_2-of-5">
+                    <a class="linkColor" href={columnObj.url.link} target={columnObj.url.target}>{columnObj.url.value}</a>
+                </div>
+            </template>
+        </template>
+    </div>
+</template>

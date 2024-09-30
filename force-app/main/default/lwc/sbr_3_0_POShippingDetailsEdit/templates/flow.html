@@ -1,0 +1,176 @@
+<template>
+    <!--Error Message-->
+    <template if:true={showErrorMessage}>
+        <div class="slds-theme_error slds-p-around_xxx-small">
+            <lightning-icon icon-name="utility:error" variant="inverse" size="xx-small"></lightning-icon>
+            <span class="slds-p-left_xx-small">{errorMessage}</span>
+        </div>
+    </template>
+    <!--First Row-->
+    <div class="slds-p-around_medium slds-m-bottom_medium">
+        <div class={alignClass}>
+            <div class={shipTypeWidth}>
+                <lightning-combobox label="Ship To Type" value={shipToType}
+                    options={shipTypes}
+                    onchange={handlePicklistChange}></lightning-combobox>
+            </div>
+ 
+            <template lwc:if={isShipTypeCustomer}>
+                <div class={shipToWidth}>
+                    <c-s-b-r_3_0_required-custom-lookup-cmp-frontline
+                        record-id={shipToCustomer} label="Customer Info"
+                        default-record={shipToCustomer}
+                        s-object-api-name="Account"
+                        onlookupupdate={handleAccountChange}
+                        fields-to-include="Phone"
+                        icon-name="standard:account"
+                        parentcmp={parentComp}
+                        has-required={hasRequired}
+                        is-account-lookup>
+                    </c-s-b-r_3_0_required-custom-lookup-cmp-frontline>
+                </div>
+            </template>
+            <template lwc:else>
+                <div class={shipToWidth}>
+                    <c-s-b-r_3_0_required-custom-lookup-cmp
+                        record-id={shipToLocation} label="Branch Search"
+                        placeholder="Search ..." default-record={shipToLocation}
+                        s-object-api-name="Location"
+                        icon-name="custom:custom78"
+                        fields-to-include="Branch_Location_Number__c, Phone__c"
+                        onlookupupdate={selectedBranchHandler}>
+                    </c-s-b-r_3_0_required-custom-lookup-cmp>
+                </div>
+            </template>
+        </div>
+        <!--2nd Row-->
+            <template if:true={isRerent}>
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                        <lightning-input label='Customer Account # / Contract #' value={customerNo}
+                            data-field="CustomerNumber" onchange={handleInputChange}
+                            type="text" pattern="^(0|[1-9][0-9]*)$" message-when-pattern-mismatch="Only numbers are allowed"
+                            field-level-help="If needed, you can also enter an applicable Reservation # here."></lightning-input>
+                    </div>
+                </div>
+            </template>
+        <!--3rd Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Address Line 1" value={addressLine1}
+                    data-field="AddressLine1"
+                    max-length={objectFields.addressLine1.length}
+                    onchange={handleInputChange} required></lightning-input>
+            </div>
+        </div>
+        <template if:true={showSpinner}>
+            <lightning-spinner size="medium"></lightning-spinner>
+        </template>
+        <!--4th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Address Line 2" value={addressLine2}
+                    data-field="AddressLine2"
+                    max-length={objectFields.addressLine2.length}
+                    onchange={handleInputChange}></lightning-input>
+            </div>
+        </div>
+        <!--5th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                <lightning-input label="City" value={shipToCity}
+                    data-field="ShipToCity"
+                    onchange={handleInputChange}
+                    maxlength={objectFields.shipToCity.length} required></lightning-input>
+            </div>
+            <div class="slds-size_1-of-2 slds-p-horizontal_medium">
+                <lightning-combobox label="State/Province" options={stateCodes}
+                    value={shipToState}
+                    data-field="ShipToState"
+                    onchange={handleInputChange} required></lightning-combobox>
+            </div>
+        </div>
+        <!--6th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Zip/Postal Code" value={shipToZip}
+                    data-field="ShipToZip"
+                    onchange={handleInputChange}
+                    maxlength={objectFields.shipToZip.length} required></lightning-input>
+            </div>
+        </div>
+        <!--7th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Phone Number" value={phoneNumber}
+                    disabled></lightning-input>
+            </div>
+        </div>
+        <!--8th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <c-sbr_3_0_-p-o-searchable-combobox
+                    label="Ordered From"
+                    maxlength={objectFields.orderedFrom.length}
+                    value={orderedFrom}
+                    options={vendorContacts}
+                    onchange={handleInputChange}
+                    data-field="OrderedFrom"
+                    required>
+                </c-sbr_3_0_-p-o-searchable-combobox>
+            </div>
+        </div>
+        <!--9th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Ordered For" value={orderedFor}
+                    data-field="OrderedFor"
+                    onchange={handleInputChange}
+                    maxlength={objectFields.orderedFor.length}></lightning-input>
+            </div>
+        </div>
+        <!--10th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Requested Date" value={requestedDate}
+                    type="Date" data-field="ReqDate" date-style="short"
+                    onchange={handleInputChange} required></lightning-input>
+            </div>
+        </div>
+        <!--11th Row-->
+        <div class="slds-grid slds-wrap">
+            <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                <lightning-input label="Ship Date" value={shipDate} type="Date"
+                    data-field="ShipDate" date-style="short"
+                    onchange={handleInputChange}></lightning-input>
+            </div>
+        </div>
+       <!--12th Row-->
+        <template if:true={displaycarrierfield}>
+            <div class="slds-grid slds-wrap">
+                <div class="slds-size_1-of-1 slds-p-horizontal_medium">
+                    <c-sbr_3_0_carriersearch get-carrier-name-from-parent={carrierName} oncarrierclear={handleCarrierClear}
+                        oncarrierselect={handleCarrierSelect}
+                        parentcmp={parentComp}
+                    >
+                    </c-sbr_3_0_carriersearch>
+                </div>
+            </div>
+        </template>
+                 
+        <br>
+        <!--Buttons-->
+        <div class="slds-border_top slds-p-top_small">
+            <div class="footerContainer slds-grid slds-grid_align-spread">
+                <div class="navigation-bar__spacer"></div>
+                <div class="navigation-bar__right-align">
+                    <lightning-button label="Previous" onclick={handlePrevious}
+                        class="slds-button neutral-button" variant="neutral"></lightning-button>
+                    <lightning-button label="Next" onclick={handleNext}
+                        class="slds-button brand-button"
+                        variant="brand"></lightning-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

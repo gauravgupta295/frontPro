@@ -1,0 +1,119 @@
+<template>
+    <template if:false={isMobile}>
+        <div class="max-width-ctr">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12">
+                    <div class="list-header-container">
+                        <c-sbr_3_0_invoice-list-header-cmp onfilterupdate={handleFilterUpdate}>
+                        </c-sbr_3_0_invoice-list-header-cmp>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <div class="scrollable-list-container asset-list-container">
+                        <div class="oal-inner-container">
+                            <lightning-datatable 
+                                    key-field="id" 
+                                    data={data} 
+                                    sorted-by={sortBy}
+                                    sorted-direction={sortDirection}
+                                    onrowaction={handleRowActions}
+                                    onsort={onHandleSort}
+                                    columns={columns} 
+                                    hide-checkbox-column>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+    </template>
+
+    <template if:true={isMobile}>
+        <div class="max-width-ctr">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12">
+                    <div class="list-header-container">
+                        <c-sbr_3_0_invoice-list-header-cmp onfilterupdate={handleFilterUpdate}>
+                        </c-sbr_3_0_invoice-list-header-cmp>
+                    </div>
+                </lightning-layout-item>
+                <template if:true={showAssetList}>
+                    <!-- <div class={assetListDisplayClass}> -->
+                            <template if:true={invoiceDataPresent}>
+                            <div class={listClass} onscroll={loadMoreDataMobile}>
+                                <lightning-datatable 
+                                    key-field="id" 
+                                    data={data} 
+                                    class="slds-max-medium-table_stacked slds-grid_align-start customDataTable" 
+                                    onrowaction={handleRowActions}
+                                    columns={columns} 
+                                    sorted-by={sortBy}
+                                    sorted-direction={sortDirection}
+                                    onsort={onHandleSort}
+                                    hide-checkbox-column>
+                                </lightning-datatable>
+                            </div>
+                            </template>
+                    <!-- </div> -->
+                </template>
+            </lightning-layout>
+        </div>
+
+<!--         
+        <template if:false={isMobileRequestView}>
+			<div>
+				<div class="list-header-container">
+                    <c-sbr_3_0_invoice-list-header-cmp onfilterupdate={handleFilterUpdate}
+                    ontogglefilters={updateShowAssetList}  >
+                    </c-sbr_3_0_invoice-list-header-cmp>
+                </div>
+			</div>
+		</template>
+        
+        <template if:true={showAssetList}>
+        <div class={assetListDisplayClass}>
+			<lightning-card>
+                <template if:true={invoiceDataPresent}>
+                <div class={listClass} onscroll={loadMoreDataMobile}>
+					<template for:each={data} for:item="invoiceItem">
+						<div class={lineItemClass} key={invoiceItem.Id}>
+							<lightning-layout>								
+								<lightning-layout-item flexibility="grow">
+									<lightning-layout class="order-asset" multiple-rows="true">
+										<lightning-layout-item class="asset-header" size="4">Sequence:
+										</lightning-layout-item>
+										<lightning-layout-item class="asset-info" size="8">{invoiceItem.Invoice_Sequence_Number__c}
+										</lightning-layout-item>
+										<lightning-layout-item class="asset-header" size="4">Date:
+										</lightning-layout-item>
+										<lightning-layout-item class="asset-info" size="8">
+                                            <lightning-formatted-date-time value= {invoiceItem.Invoice_Date__c}></lightning-formatted-date-time>
+										</lightning-layout-item>
+										<lightning-layout-item class="asset-header" size="4">Invoice Amount:
+										</lightning-layout-item>
+										<lightning-layout-item class="asset-info" size="8">
+                                            <lightning-formatted-number value={invoiceItem.Total_invoice_Amount__c} format-style="currency" currency-display-as="code" currency-code="USD" >
+                                            </lightning-formatted-number>
+                                        </lightning-layout-item>
+										<lightning-layout-item class="asset-header" size="4">Status:</lightning-layout-item>
+										<lightning-layout-item class="asset-info" size="8">{invoiceItem.Order_Status__c}
+										</lightning-layout-item>
+									</lightning-layout>
+								</lightning-layout-item>
+							</lightning-layout>
+						</div>
+					</template>
+				</div>
+            </template>
+
+            <template if:false={invoiceDataPresent}>
+                <c-sbr_3_0_empty-state-image message={noItemsMsg}></c-sbr_3_0_empty-state-image>
+            </template>
+
+
+			</lightning-card>			
+		</div>
+        </template> -->
+
+    </template>
+</template>

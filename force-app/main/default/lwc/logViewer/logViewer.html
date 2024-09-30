@@ -1,0 +1,74 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-4">
+            <lightning-card title="Stream Settings" icon-name="custom:custom27" class="slds-m-around_medium slds-p-around_medium">
+                <div class="slds-p-horizontal_small">
+                    <lightning-input
+                        data-id="loggedByFilter"
+                        label="Logged By"
+                        onchange={handleFilterChange}
+                        placeholder="Specify User Id"
+                        value={loggedByFilter}
+                    ></lightning-input>
+                    <lightning-input
+                        data-id="recordIdFilter"
+                        label="Record Id"
+                        onchange={handleFilterChange}
+                        placeholder="Specify Record Id"
+                        value={recordIdFilter}
+                    ></lightning-input>
+                </div>
+            </lightning-card>
+        </div>
+        <div class="slds-col slds-size_3-of-4">
+            <lightning-card title={title} class="slds-p-around_medium" data-id="event-stream-console">
+                <div slot="actions">
+                    <lightning-button-group>
+                        <lightning-button-stateful
+                            data-id="toggle-stream"
+                            icon-name-when-hover="utility:close"
+                            icon-name-when-off="utility:pause_alt"
+                            icon-name-when-on="utility:play"
+                            label-when-hover="  Pause  "
+                            label-when-off="Paused"
+                            label-when-on="Streaming"
+                            onclick={onToggleStream}
+                            selected={isStreamEnabled}
+                            variant={streamButtonVariant}
+                        >
+                        </lightning-button-stateful>
+                        <lightning-button
+                            data-id="clear"
+                            label="Clear"
+                            icon-name="utility:delete"
+                            name="clear"
+                            onclick={onClear}
+                            variant="destructive"
+                        ></lightning-button>
+                        <!-- <lightning-button-stateful
+                            data-id="expand-toggle"
+                            icon-name-when-off="utility:expand"
+                            icon-name-when-on="utility:contract"
+                            label-when-off="Expand"
+                            label-when-on="Contract"
+                            onclick={onToggleExpand}
+                            selected={isExpanded}
+                            variant="brand"
+                        >
+                        </lightning-button-stateful> -->
+                    </lightning-button-group>
+                </div>
+                <div class="slds-m-top_medium slds-p-horizontal_medium event-stream">
+                    <template for:each={logEntryEvents} for:item="logEntryEvent">
+                        <div key={logEntryEvent.key} class="event-stream-entry">
+                            <span class="timestamp">{logEntryEvent.CreatedDate}</span>
+                            <span class="origin">Record ID: {logEntryEvent.RecordID__c} </span>
+                            <span class="logged-by">User ID: {logEntryEvent.User__c}</span>
+                            <span class="origin">Stack Trace: {logEntryEvent.payload} </span>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </div>
+    </div>
+</template>

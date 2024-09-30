@@ -1,0 +1,24 @@
+:host {
+  --lwc-colorBackgroundRowSelected: #f0f8f2;
+}
+.oal-inner-container {
+  border: 1px solid #c9c9c9;
+  height: 250px;
+  width: 100%;
+}
+.asset-list-container {
+  width: 100%;
+}
+.list-header-container {
+  border: 1px solid #c9c9c9;
+  border-radius: 4px 4px 0px 0px;
+}
+.successLink {
+  color: green !important;
+}
+/*Added as part of FRONT-10327*/
+.item-search-inner-container {
+  border: 1px solid #c9c9c9;
+  height: 265px;
+  width: 100%;
+}

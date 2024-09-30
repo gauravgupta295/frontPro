@@ -1,0 +1,90 @@
+<template>
+   
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="9" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                <lightning-tile label={label.SBR_3_0_Account_Management_CR_Title} title={label.SBR_3_0_Account_Management_CR_Title} type="media" href="#" class="list_view_container">
+                    <lightning-icon slot="media" icon-name="standard:queue" size="medium" class="icon_custom_class"></lightning-icon>
+                    <div class="slds-form-element">
+                        <div class="slds-form-element__control">
+                            <div class="slds-combobox_container slds-size_large">
+                                <div class={dropdownTriggerClass} aria-expanded="false" aria-haspopup="listbox" role="combobox">
+                                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" onclick={handleClickExtend}>
+                                        <span class="current_filter">{currentFilter}
+                                            <lightning-icon
+                                                            class="slds-button__icon slds-icon-utility-down slds-icon_container forceIcon"
+                                                            data-data-rendering-service-uid="232" 
+                                                            data-aura-rendered-by="371:0"
+                                                            data-aura-class="forceIcon" 
+                                                            icon-name="utility:down" size="x-small">
+                                            </lightning-icon>
+                                        </span>
+                                    </div>
+                                    <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid" role="listbox">
+                                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                            <template for:each={filterOptions} for:item="option">
+                                                <li role="presentation" class="slds-listbox__item" key={option.value}>
+                                                    <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" data-filter={option.value} onclick={handleFilterChangeButton}>
+                                                        <span class="slds-media__figure slds-listbox__option-icon" data-filter={option.value}></span>
+                                                        <span class="slds-media__body" data-filter={option.value}>
+                                                            <span class="" title="Option A" data-filter={option.value}>{option.label}</span>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <br/>
+                        </div>
+                    </div>
+                </lightning-tile>
+            </lightning-layout-item>
+            <lightning-layout-item size="3" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                <template if:true={ShowRecall}>
+                    <lightning-button id={label.Account_Management_CR_Button_Recall} value ={label.Account_Management_CR_Button_Recall} disabled = {isDisabled} label={label.Account_Management_CR_Button_Recall} title={label.Account_Management_CR_Button_Recall} onclick={handleActionSelection} class="slds-var-m-*_xxx-small"></lightning-button>
+                </template>
+                <template if:true={ShowApprove}>
+                    <lightning-button id={label.Account_Management_CR_Button_Approve} value ={label.Account_Management_CR_Button_Approve} disabled = {isDisabled} label={label.Account_Management_CR_Button_Approve} title={label.Account_Management_CR_Button_Approve} onclick={handleActionSelection} class="slds-var-m-*_xxx-small"></lightning-button>
+                </template>
+                <template if:true={ShowReject}>
+                    <lightning-button id={label.Account_Management_CR_Button_Reject} value ={label.Account_Management_CR_Button_Reject} disabled = {isDisabled} label={label.Account_Management_CR_Button_Reject} title={label.Account_Management_CR_Button_Reject} onclick={handleActionSelection} class="slds-var-m-*_xxx-small"></lightning-button>
+                </template>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout multiple-rows>
+            <lightning-layout-item size="10" flexibility="auto" padding="horizontal-small" class="slds-text-align_left">
+                {ARRecordsSize} items . Sorted by {sortByName} . Filtered by {currentFilter}
+            </lightning-layout-item>
+            <lightning-layout-item size="2" flexibility="auto" padding="horizontal-small" class="slds-text-align_right">
+                <div>
+                    <lightning-input
+                        name="enter-search"
+                        placeholder="Search this list..."
+                        type="search"
+                        onkeyup={FilterRecords}
+                        oncommit={ClearFilters}
+                    ></lightning-input>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <br/>
+    <div class="slds-m-top_xxx-small">
+        <template if:false={isLoaded}>
+            <div class="spinner_class_div">
+                <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand"></lightning-spinner>
+            </div>
+        </template>
+        <lightning-datatable 
+                            key-field="Id" 
+                            data={ARRecords} 
+                            columns={ARColumns} 
+                            show-row-number-column="true"
+                            sorted-by={sortBy}
+                            default-sort-direction={defaultSortDirection}
+                            sorted-direction={sortDirection}
+                            onsort={handleSortdata}
+                            onrowselection={handleRowSelection}>
+        </lightning-datatable>
+    </div>
+</template>

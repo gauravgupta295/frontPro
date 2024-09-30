@@ -1,0 +1,85 @@
+<template>
+  <template if:true={showFrontlineComponents}>
+    <!--Added for 20803 , Modified for FRONT-20757 & FRONT-20761-->
+    <lightning-layout horizontal-align="space">
+      <lightning-layout-item size={lookupWrapperSize}>
+        <c-s-b-r_3_0_required-custom-lookup-cmp-frontline
+          record-id={accountId}
+          label={fieldLabel}
+          default-record={accountId}
+          s-object-api-name="Account"
+          placeholder="Acct Name. Phone, Email"
+          icon-name="standard:account"
+          fields-to-include={frontlineDefaultFilteringFields}
+          onlookupupdate={updateCustomer}
+          where-clause={whereClause}
+          value={accountId}
+          parentcmp={parentComp}
+          is-account-lookup
+          has-required={isRequired}
+          record-type-name={recordTypeName}
+          warning-screen={showWarningMessage}
+        ></c-s-b-r_3_0_required-custom-lookup-cmp-frontline>
+      </lightning-layout-item>
+      <lightning-layout-item
+        size="2"
+        class="slds-p-top_medium slds-p-left_small editBtnCls"
+        lwc:if={showEditButtons}
+      >
+        <!-- Added for FRONT-20761 -->
+        <template lwc:if={isMobile}>
+          <lightning-icon
+            icon-name="action:edit_groups"
+            alternative-text="edit_groups"
+            size="small"
+            title="edit_groups"
+            class={btnIconClass}
+            onclick={handleEditBtnClick}
+          ></lightning-icon>
+        </template>
+        <template lwc:else>
+          <lightning-button
+            stretch="true"
+            variant="brand"
+            label="Edit Info"
+            class="brand-button"
+            disabled={disableBtn}
+            onclick={handleEditBtnClick}
+          ></lightning-button>
+        </template>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+  <template if:false={showFrontlineComponents}>
+    <c-s-b-r_3_0_required-custom-lookup-cmp
+      record-id={accountId}
+      label="Account"
+      default-record={accountId}
+      s-object-api-name="Account"
+      placeholder="Search Accounts..."
+      icon-name="standard:account"
+      fields-to-include="RM_Account_Number__c, Status__c, ShippingPostalCode, ShippingCity, ShippingState, Phone"
+      onlookupupdate={updateCustomer}
+      where-clause={whereClause}
+      value={accountId}
+      is-account-lookup
+    ></c-s-b-r_3_0_required-custom-lookup-cmp>
+  </template>
+
+  <template if:true={showWarningMessage}>
+    <c-sbr_3_0_customer-info-change-warning
+      onhandlewarningclose={closeWarningMessage}
+      object-label={objectLabel}
+    ></c-sbr_3_0_customer-info-change-warning>
+  </template>
+
+  <template lwc:if={showEditBtnScreen}>
+    <c-sbr_3_0_edit-account-cmp
+      record-id={accountId}
+      onclosemodal={closeModal}
+      onselectaccount={selectAccount}
+      parentcmp="drfAccountLookupWrapper"
+      props={props}
+    ></c-sbr_3_0_edit-account-cmp>
+  </template>
+</template>

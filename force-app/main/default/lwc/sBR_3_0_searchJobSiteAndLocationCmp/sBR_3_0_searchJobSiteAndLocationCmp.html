@@ -1,0 +1,110 @@
+<template>
+  <div class={mobileMainDiv}>
+  <template if:true={showJobSiteCheckbox}>
+    <lightning-input
+      type="checkbox"
+      name="nojobsite"
+      label="No Job Site"
+      onchange={handleCheckboxChange}
+    >
+    </lightning-input>
+  </template>
+  <template if:false={noJobSiteChecked}>
+    <lightning-radio-group
+      name="jobLocationRadio"
+      label="Find Shared Job Location"
+      options={options}
+      value={createNewJobLocation}
+      type="radio"
+      onchange={handleChange}
+      required
+    ></lightning-radio-group>
+    <template if:false={createNewJobLocation}>
+      <div style="padding-top: 10px">
+      <c-s-b-r_3_0_required-custom-lookup-cmp
+        icon-name="custom:custom78"
+        label="Find Shared Job Location"
+        record-id={jobLocationId}
+        s-object-api-name="Location"
+        where-clause={jobLocationWhere}
+        placeholder="Search Shared Job Locations..."
+        fields-to-include="State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+        value={jobLocationId}
+        onlookupupdate={handleJobLocationChange}
+        display-location-details
+      ></c-s-b-r_3_0_required-custom-lookup-cmp>
+      </div>
+    </template>
+    <template if:false={createNewJobLocation}>
+      <template if:true={isJobLocationSelected}>
+         <div style="padding-top: 8px">
+        <!--Front-4843 start-->
+        <template if:true={isFrontline}>
+          <lightning-radio-group
+            name="jobSiteRadio"
+            label="Find Job Site"
+            options={optionsfrontline}
+            value={createNewJobSite}
+            type="radio"
+            onchange={handleChange}
+            required
+          ></lightning-radio-group>
+        </template>
+        <!--Front-4843 end-->
+        <template if:false={isFrontline}>
+          <lightning-radio-group
+            name="jobSiteRadio"
+            label="Find Job Site"
+            options={JobSiteOptions}
+            value={createNewJobSite}
+            type="radio"
+            onchange={handleChange}
+            required
+          ></lightning-radio-group>
+        </template>
+        <template if:false={createNewJobSite}>
+          <div style="padding-top: 10px">
+          <c-s-b-r_3_0_required-custom-lookup-cmp
+            fields-to-include="JobsiteName__c, Job_Number__c, Location_Name__c, Parent_Account_Name__c, State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+            has-custom-name-field
+            icon-name="custom:custom95"
+            label="Find Job Site"
+            custom-name-field="JobsiteName__c"
+              has-custom-field-name="true"
+            placeholder="Search Job Sites..."
+            record-id={jobSiteId}
+            s-object-api-name="AssociatedLocation"
+            where-clause={jobSiteWhere}
+            value={jobSiteId}
+            onlookupupdate={handleJobSiteChange}
+            display-location-details
+          ></c-s-b-r_3_0_required-custom-lookup-cmp>
+          </div>
+        </template>
+         </div>
+      </template>
+    </template>
+    <template if:true={createNewJobLocation}>
+      <div style="padding-top: 10px">
+      You will be directed to create a new Job Site record if creating a new
+      Shared Job Location record.
+      </div>
+    </template>
+    <!-- <template if:true={createNewJobSite}>
+            <c-s-b-r_3_0_required-custom-lookup-cmp fields-to-include="MobilePhone, Phone" icon-name="standard:contact" label="Job Site Contact" placeholder="Search Contacts..."
+                record-id={contactId} s-object-api-name="Contact" where-clause={contactWhere} value={contactId} onlookupupdate={handleContactChange}></c-s-b-r_3_0_required-custom-lookup-cmp>
+        </template> -->
+  </template>
+  <lightning-layout-item
+    size="12"
+    medium-device-size="6"
+    large-device-size="6"
+    class=""
+  >
+    <div
+      class="slds-form-element slds-form-element_stacked"
+      style="padding: 4rem"
+    ></div>
+  </lightning-layout-item>
+  </div>
+</template>

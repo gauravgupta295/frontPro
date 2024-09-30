@@ -1,0 +1,172 @@
+<template>
+    
+  <!-- modal start -->      
+ 
+  <template if:true={isShowModal}> 
+   <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class={modalSize}> <!--Changed class for FRONT_17752-->
+      <div class="slds-modal__container">
+       <!-- modal header start -->
+         <header class="slds-modal__header">
+            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+               <lightning-icon icon-name="utility:close"
+                  alternative-text="close"
+                  variant="inverse"
+                  size="small" ></lightning-icon>
+               <span class="slds-assistive-text">Close</span>
+            </button>
+            <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Create Inventory Transfer</h2>
+         </header>
+     
+         <!-- modal body start -->
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+           <lightning-record-edit-form
+           object-api-name="Internal_Order__c"
+           >
+            <lightning-layout multiple-rows="true">
+
+              <!--div >
+                    <c-s-b-r_3_0_required-custom-lookup-cmp icon-name="custom:custom78" label="Order by:"
+                    s-object-api-name="Location" 
+                    placeholder="Search Branches..."
+                    fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                    onlookupupdate={handlePickupBranch} default-record={branch} record-id={branch}
+                    display-location-details>
+                  </c-s-b-r_3_0_required-custom-lookup-cmp>
+                </div-->
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+                  class="slds-p-left_medium slds-p-right_medium"> <!--Added device size for FRONT_17752-->
+                  <div class="slds-p-vertical_xx-small slds-form-element__label"> Transfer from Branch:</div>        <!--Added label class by pankaj for FRONT-23827-->
+                  <div class="slds-p-vertical_xx-small"> <h2> {userLocationNumber}</h2></div>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="12" small-device-size="12" medium-device-size="6" large-device-size="6"
+                  class="slds-p-left_medium slds-p-right_medium">  <!--Added device size for FRONT_17752-->
+                  <c-sbr_3_0_-inventory-transfer-order-by-lookup label="Ordered by"
+                    s-object-api-name="User_Location__c" placeholder="Search User..." fields-to-include="User__c,Sales_Rep_Name__c "
+                    onlookupupdate={handleOrderByselection} has-custom-name-field={hasCustomNameField}
+                    custom-name-field="Sales_Rep_Name__c" where-clause={orderByWhereClause}>
+                  </c-sbr_3_0_-inventory-transfer-order-by-lookup>
+                </lightning-layout-item>
+            </lightning-layout>
+            <b class="slds-p-left_medium slds-p-right_medium">Transfer Date & Time</b>
+            <lightning-layout multiple-rows="true">
+                <!--lightning-layout-item size="6" class="slds-p-left_medium slds-p-right_medium">
+                    <lightning-input type="datetime" name="input1" timezone={userTimeZone} label="Transfer Date and Time" onchange={handleDateTime} required></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="6"></lightning-layout-item-->
+
+              <lightning-layout-item size="12" 
+              small-device-size="12" 
+              medium-device-size="6" 
+              large-device-size="6"
+              class="slds-p-left_medium slds-p-right_medium">  <!--Added device size for FRONT_17752-->
+                  <lightning-input type="date" name="inputdate"   timezone={userTimeZone} label="Date"  onchange={handleDateChange} value={startDate} required message-when-value-missing="Complete this field."></lightning-input>
+              </lightning-layout-item>              
+              <lightning-layout-item size="12" 
+                  small-device-size="12" 
+                  medium-device-size="6" 
+                  large-device-size="6"
+                  class="slds-p-left_medium slds-p-right_medium">
+                <lightning-input type="time" name="inputtime"  timezone={userTimeZone} label="Time"  onchange={handleTimeChange} value={startTime} required message-when-value-missing="Complete this field."></lightning-input>
+              </lightning-layout-item>
+            <!--/lightning-layout-->
+            
+            <!--lightning-layout-->
+              <!--div class="slds-grid slds-gutters">
+                  <div class="slds-col">
+                    <c-s-b-r_3_0_required-custom-lookup-cmp icon-name="custom:custom78" label="Transfer to:"
+                    s-object-api-name="Location" where-clause={branchWhere}
+                    placeholder="Search Branches..."
+                    fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                    onlookupupdate={handlePickupBranch} default-record={branch} record-id={branch}
+                    display-location-details>
+                  </c-s-b-r_3_0_required-custom-lookup-cmp>
+                  </div>
+                </div-->
+                <lightning-layout-item
+                  size="12"
+                  class="slds-p-top_x-small slds-p-left_medium slds-p-right_medium"
+                >
+                    <c-sbr_3_0_-inventory-transferto-lookup icon-name="standard:location" label="Transfer to:"
+                    s-object-api-name="Location" 
+                    placeholder="Search for Receiving Branch"
+                    fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                    onlookupupdate={handlePickupBranch} 
+                    >
+                  </c-sbr_3_0_-inventory-transferto-lookup>
+                        
+                </lightning-layout-item>
+                
+            <!--/lightning-layout-->
+            
+            <!--lightning-layout-->
+              <!--div class="slds-grid slds-gutters">
+                  <div class="slds-col">
+                    <c-s-b-r_3_0_required-custom-lookup-cmp icon-name="custom:custom78" label="Transfer to:"
+                    s-object-api-name="Location" where-clause={branchWhere}
+                    placeholder="Search Branches..."
+                    fields-to-include="Branch_Location_Number__c,State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c"
+                    onlookupupdate={handlePickupBranch} default-record={branch} record-id={branch}
+                    display-location-details>
+                  </c-s-b-r_3_0_required-custom-lookup-cmp>
+                  </div>
+                </div-->
+                <lightning-layout-item size="12" 
+                  small-device-size="12" 
+                  medium-device-size="6" 
+                  large-device-size="6"
+                  class="transferStatusCombo slds-p-top_x-small slds-p-left_medium slds-p-right_medium">  <!--Added device size for FRONT_17752-->
+                  <lightning-combobox
+                    name="Status"
+                    lwc:ref="TransferStatus" 
+                    label="Transfer Status"
+                    value={value}
+                    placeholder="Select One"
+                    options={options}
+                    onchange={handleChange} 
+                    required 
+                    message-when-value-missing="Complete this field.">
+                  </lightning-combobox>
+                </lightning-layout-item>
+            </lightning-layout>
+          </lightning-record-edit-form>
+        </div>
+         
+         <!-- modal footer start-->
+         <footer class="slds-modal__footer">
+              
+                  <template lwc:if={isMobileDevice}> 
+                    <lightning-button label="Cancel" class="slds-float_left slds-m-right_small mobileButtonTextColor" onclick={hideModalBox}></lightning-button> <!--Added classes for FRONT_17752-->
+                  </template>
+                  <template lwc:else> 
+                    <lightning-button label="Cancel" class="slds-m-right_small" onclick={hideModalBox}></lightning-button>
+                  </template>
+                  <lightning-button label="Next" class="mobileButtonBackgroundColor" onclick={handleSave} variant="brand" disabled={isDisabled}></lightning-button>
+           
+            <!-- <template if:true={isMobileDevice}>
+                  <lightning-layout>
+                      <lightning-layout-item size="6">
+                        <lightning-button
+                        label="Cancel"                          
+                        onclick={hideModalBox}
+                      ></lightning-button>
+                      </lightning-layout-item>
+                  </lightning-layout>
+                <lightning-layout-item size="6">
+                  <lightning-button
+                    label="Next"
+                    onclick={handleSave}
+                    variant="brand"
+                    disabled={isDisabled}
+                    ></lightning-button>
+                </lightning-layout-item>
+            </template> -->
+         </footer>
+      
+      </div>
+   </section>
+   <div class="slds-backdrop slds-backdrop_open"></div>
+
+<!-- modal end -->
+</template>
+</template>

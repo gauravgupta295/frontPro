@@ -1,0 +1,118 @@
+<template lwc:render-mode="light">
+  <template lwc:if={showInputField}>
+    <template lwc:if={field.isReadOnly}>
+      <!--FRONT-10499 starts-->
+      <div class="input-container">
+        <template lwc:if={showCustomLabel}>
+          <label class="slds-form-element__label">
+            <template lwc:if={field.required}
+              ><abbr class="slds-required">*</abbr></template
+            >
+            {field.label}
+          </label>
+          <template lwc:if={isHelpText}>
+            <lightning-helptext
+              class="helpTextClass"
+              icon-name="utility:info"
+              content={field.helpText}
+            ></lightning-helptext>
+          </template>
+        </template>
+        <!--FRONT-10499 ends-->
+        <lightning-input-field
+          field-name={field.apiName}
+          required={field.required}
+          data-required={field.required}
+          variant={variantType}
+          class={computedInputFieldClasses}
+          data-field-id={field.externalId}
+          data-field-name={field.apiName}
+          data-section-label={field.sectionLabel}
+          data-field-label={field.label}
+          onchange={handleFieldChange}
+          disabled
+        >
+        </lightning-input-field>
+        <!--Added for Front-13084-->
+        <template lwc:if={isMobile}>
+          <div class={inputPlaceHolderClasses}>{field.placeholder}</div>
+        </template>
+      </div>
+    </template>
+    <template if:false={field.isReadOnly}>
+      <!--FRONT-10499 starts-->
+      <!--Front-13084 starts-->
+      <div class="input-container">
+        <template lwc:if={showCustomLabel}>
+          <label class="slds-form-element__label">
+            <template lwc:if={field.required}
+              ><abbr class="slds-required">*</abbr></template
+            >
+            {field.label}
+          </label>
+          <template lwc:if={isHelpText}>
+            <lightning-helptext
+              class="helpTextClass"
+              icon-name="utility:info"
+              content={field.helpText}
+            ></lightning-helptext>
+          </template>
+        </template>
+        <lightning-input-field
+          field-name={field.apiName}
+          required={field.required}
+          data-required={field.required}
+          variant={variantType}
+          class={computedInputFieldClasses}
+          data-field-id={field.externalId}
+          data-field-name={field.apiName}
+          data-section-label={field.sectionLabel}
+          data-field-label={field.label}
+          onchange={handleFieldChange}
+        >
+        </lightning-input-field>
+        <!--Added for Front-13084-->
+        <template lwc:if={isMobile}>
+          <div class={inputPlaceHolderClasses}>{field.placeholder}</div>
+        </template>
+      </div>
+    </template>
+  </template>
+  <template lwc:elseif={isOutputField}>
+    <div class={computedOuputFieldContainerClasses}>
+      <template lwc:if={showCustomLabel}>
+        <label class="slds-form-element__label">
+          <template lwc:if={field.required}
+            ><abbr class="slds-required">*</abbr></template
+          >
+          {field.label}
+        </label>
+        <template lwc:if={isHelpText}>
+          <lightning-helptext
+            class="helpTextClass"
+            icon-name="utility:info"
+            content={field.helpText}
+          ></lightning-helptext>
+        </template>
+      </template>
+      <lightning-output-field
+        field-name={field.apiName}
+        variant={variantType}
+        class={computedOutPutFieldClasses}
+        data-field-id={field.externalId}
+      >
+      </lightning-output-field>
+    </div>
+  </template>
+  <template lwc:if={isCustomComp}>
+    <div class={computedCustomCompClasses}>
+      <lwc:component
+        lwc:is={componentConstructor}
+        field={field}
+        record-id={recordId}
+        object-api-name={objectApiName}
+      >
+      </lwc:component>
+    </div>
+  </template>
+</template>

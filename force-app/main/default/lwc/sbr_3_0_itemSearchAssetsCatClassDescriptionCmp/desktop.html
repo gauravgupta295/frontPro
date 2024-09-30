@@ -1,0 +1,114 @@
+<template>
+  <template if:false={showSpinner}>
+    <lightning-spinner
+      variant="brand"
+      size="medium"
+      alternative-text="loading..."
+    >
+    </lightning-spinner>
+  </template>
+  <c-sbr_3_0_item-search-assets-header
+    onfiltercriteriachange={handleSearchCriteriaChange}
+    active-tab="Cat Class Description"
+    onswitchtodescription={handleSwitchToDescription}
+    cat-class-val={catClassVal}
+    inventory={inventorySize}
+  ></c-sbr_3_0_item-search-assets-header>
+
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div data-id="tableDiv" class="bordercl tablebg wrapped-header-datatable">
+        <!--Modified for FRONT-15699-->
+        <lightning-datatable
+          key-field="id"
+          class="dividerPart"
+          data={result}
+          columns={columns}
+          hide-checkbox-column="true"
+          wrap-text-max-lines="2"
+          column-widths-mode="auto"
+          enable-infinite-loading
+          onloadmore={loadMoreDataHandler}
+          onrowaction={callRowAction}
+        >
+          <!--front-15702-->
+        </lightning-datatable>
+        <!--Modified for FRONT-17146-->
+        <div
+          class="slds-illustration slds-illustration_small backCl"
+          aria-hidden="true"
+          if:false={isDataAvailable}
+        >
+          <div
+            class="slds-illustration slds-illustration_small backCl"
+            aria-hidden="true"
+          >
+            <img
+              class="slds-illustration__svg"
+              alt=""
+              src={noContentimageUrl}
+            />
+            <h2
+              class="slds-text-heading_medium noContImg"
+              if:false={isCatClassDataAvailable}
+            >
+              {noContentLabel}
+            </h2>
+            <h2
+              class="slds-text-heading_medium noContImg"
+              if:true={isCatClassDataAvailable}
+            >
+              {noCatClassContentLabel}
+            </h2>
+          </div>
+        </div>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+
+  <c-sbr_3_0_modal-cmp
+    lwc:ref="selectedAssetContainerModal"
+    header={modalHeader}
+    is-dynamic-footer="true"
+  >
+    <span slot="modalContent">
+      <c-sbr_3_0_item-search-select-asset-container-cmp
+        lwc:ref="orderItemObject"
+        selected-asset={selectedAssetRow}
+        current-active-tab={activeTab}
+        order-data={orderData}
+        onratematrixclicked={handleTabClicked}
+      ></c-sbr_3_0_item-search-select-asset-container-cmp>
+    </span>
+    <!--Added as part of FRONT-10855-->
+    <span slot="footer">
+      <template lwc:if={hideEditorFooter}>
+        <lightning-button
+          label="Back"
+          onclick={handleBack}
+          class="neutral-button"
+        >
+        </lightning-button>
+      </template>
+      <template lwc:else>
+        <div>
+          <lightning-button
+            label="Cancel"
+            onclick={handleCancel}
+            class="neutral-button"
+          >
+          </lightning-button>
+
+          <lightning-button
+            label="Confirm"
+            variant="brand"
+            class="brand-button slds-p-left_x-small"
+            onclick={handleConfirm}
+            disabled={isDisable}
+          ></lightning-button>
+        </div>
+      </template>
+    </span>
+    <!--FRONT-10855 Ends-->
+  </c-sbr_3_0_modal-cmp>
+</template>

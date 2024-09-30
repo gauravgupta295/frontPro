@@ -1,0 +1,39 @@
+.customPills {
+	padding-top: 0.125rem;
+	padding-bottom: 0.125rem;
+	padding-right: 0.255rem;
+	padding-left: 0.255rem;
+	border-width: 0.09rem;
+	border-style: solid;
+	border-radius: 0.25rem;
+	color: #25683e !important;
+}
+
+.filterPills {
+	cursor: pointer !important;
+	color: #25683e !important;
+}
+
+.cart-button-container {
+    position: relative;
+}
+
+.cart-count {
+    background-color: #008400;
+    border-radius: 11px;
+    color: #ffffff;
+    font-size: 8px;
+    padding: 1px 4.5px;
+    position: absolute;
+    top: -6px;
+    right: -5px;
+}
+
+.heightClass{
+	margin-top: 8px;
+	margin-bottom: 5px;
+}
+
+.marginTop{
+	margin-top: 4px;
+}

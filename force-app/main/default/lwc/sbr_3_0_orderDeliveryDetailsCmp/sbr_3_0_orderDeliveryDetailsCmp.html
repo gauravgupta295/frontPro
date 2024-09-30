@@ -1,0 +1,193 @@
+<!--
+  @description       : 
+  @author            : Kunal Patel
+  @group             : 
+  @last modified on  : 02-15-2024
+  @last modified by  : Kunal Patel
+-->
+<template>
+	<lightning-accordion>
+		<lightning-accordion-section name="Delivery & Pickup" label="Delivery & Pickup">
+			<template if:true={showEditBtn}>
+			<div class=" slds-p-around_small">
+				<template if:true={showEdit}>
+					<div class="slds-clearfix slds-float_right">
+						<lightning-button variant="brand" label="Edit Delivery Details" title="Edit" onclick={handleEdit} class="slds-m-left_x-small"></lightning-button>
+					</div>
+				</template>
+				<template if:false={showEdit}>
+					<template if:true={isEdit}>
+						<div class="slds-clearfix slds-float_right">
+							<lightning-button variant="base" label="Cancel" title="Cancel" onclick={handleCancel} class="slds-m-left_x-small"></lightning-button>
+							<lightning-button variant="brand" label="Save" title="Save" onclick={handleSave} class="slds-m-left_x-small"></lightning-button>
+						</div>
+					</template>
+				</template>
+			</div>
+			</template>
+
+
+			<lightning-layout multiple-rows class={deliverySectionClass}>
+				<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+					<div class="slds-border_bottom slds-p-around_x-small">
+						<p class="field-title" title="Delivery Method">Delivery Method</p>
+						<p>
+							<template if:true={isEdit}>
+								<lightning-combobox name="Delivery" data-field="DeliveryMethod" label="Delivery Method" value={recordDetails.deliveryMethod} placeholder="Select a value" options={deliveryMethodPicklistValues}></lightning-combobox>
+							</template>
+							<template if:false={isEdit}>
+								<lightning-formatted-text value={recordDetails.deliveryMethodDisplay}></lightning-formatted-text>
+							</template>
+						</p>
+					</div>
+				</lightning-layout-item>
+
+				<template if:true={showSourcingBranch}>
+					<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+						<div class="slds-border_bottom slds-p-around_x-small">
+							<p class="field-title" title="Sourcing Branch">Sourcing Branch</p>
+							<p>
+								<template if:true={isEdit}>
+									<c-s-b-r_3_0_custom-lookup-cmp record-id={recordDetails.sourcingBranch} label="" default-record={recordDetails.sourcingBranch} s-object-api-name="Location" placeholder="Search Branches..." icon-name="custom:custom78" where-clause={locationWhereBranch} onlookupupdate={handleBranchChange} value={recordDetails.sourcingBranch} fields-to-include="State__c, City__c, Street_Address__c, Street_Address_2__c, Zip_Code__c">
+									</c-s-b-r_3_0_custom-lookup-cmp>
+								</template>
+								<template if:false={isEdit}>
+									{recordDetails.sourcingBranchName}
+								</template>
+							</p>
+						</div>
+					</lightning-layout-item>
+				</template>
+
+				<template if:true={showOnDelivery}>
+					<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+						<div class="slds-border_bottom slds-p-around_x-small">
+							<p class="field-title" title="3rd Party">Distance to Job Site</p>
+							<p>
+								<lightning-formatted-number  value={recordDetails.distanceToJobSite}></lightning-formatted-number>
+
+							</p>
+						</div>
+					</lightning-layout-item>
+
+					<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+						<div class="slds-border_bottom slds-p-around_x-small">
+							<p class="field-title" title="3rd Party">Using 3rd Party?</p>
+							<p>
+								<lightning-input type="checkbox" disabled={readOnly} data-field="3rdParty" checked={recordDetails.using3rdParty}></lightning-input>
+
+							</p>
+						</div>
+					</lightning-layout-item>
+
+					<template if:true={showFields}>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Total Weight">Total Weight</p>
+								<p>
+									<lightning-formatted-number value={recordDetails.totalWeight}></lightning-formatted-number>
+								</p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Number of Trucks">Number of Trucks</p>
+								<p>
+									<lightning-formatted-number value={recordDetails.numberOfTrucks}></lightning-formatted-number>
+								</p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Suggested Delivery (per Truck)">Suggested Delivery (per Truck)
+
+
+								</p>
+								<p><lightning-formatted-number value={recordDetails.suggestedDeliveryCharge} format-style="currency" currency-display-as="code" currency-code="USD"></lightning-formatted-number></p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Suggested Pickup (per Truck)">Suggested Pickup (per Truck)</p>
+								<p> <lightning-formatted-number value={recordDetails.suggestedPickupCharge} format-style="currency" currency-display-as="code" currency-code="USD"></lightning-formatted-number></p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Total Suggested Delivery">Total Suggested Delivery</p>
+								<p> <lightning-formatted-number value={recordDetails.totalSuggestedDeliveryCharge} format-style="currency" currency-display-as="code" currency-code="USD"></lightning-formatted-number></p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Total Suggested Pickup">Total Suggested Pickup</p>
+								<p> <lightning-formatted-number value={recordDetails.totalSuggestedPickupCharge} format-style="currency" currency-display-as="code" currency-code="USD"></lightning-formatted-number> </p>
+							</div>
+						</lightning-layout-item>
+					</template>
+
+					<template if:true={showOnSalesforceOrigin}>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="12">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<span class="field-title" title="Delivery Override">Delivery Override   <lightning-helptext icon-name="utility:info" content="This will automatically be set if either Delivery or Pickup Charge fields are populated" style="vertical-align: middle;"></lightning-helptext></span>
+								<p>
+									<lightning-input type="checkbox" disabled={readOnly} data-field="DeliveryOverride" checked={recordDetails.deliveryOverride} onchange={overrideCharge}></lightning-input>
+								</p>
+							</div>
+						</lightning-layout-item>
+						
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Delivery Charge">Delivery Charge</p>
+								<p>
+									<template if:true={isEdit}>
+										<template if:true={editOverrideCharge}>
+											<lightning-input type="number" data-field="DeliveryCharges" value={recordDetails.deliveryCharges} formatter="currency"> </lightning-input>
+										</template>
+										<template if:false={editOverrideCharge}>
+											<lightning-formatted-number value={recordDetails.deliveryCharges} format-style="currency" currency-display-as="code" currency-code="USD"> </lightning-formatted-number>
+										</template>
+									</template>
+
+									<template if:false={isEdit}>
+										<lightning-formatted-number value={recordDetails.deliveryCharges} format-style="currency" currency-display-as="code" currency-code="USD"> </lightning-formatted-number>
+									 </template>
+								</p>
+							</div>
+						</lightning-layout-item>
+
+						<lightning-layout-item size="12" medium-device-size=12 small-device-size="12" large-device-size="6">
+							<div class="slds-border_bottom slds-p-around_x-small">
+								<p class="field-title" title="Pickup Charge">Pickup Charge</p>
+								<p>
+
+									<template if:true={isEdit}>
+										<template if:true={editOverrideCharge}>
+											<lightning-input type="number" data-field="PickupCharges" value={recordDetails.pickupCharges} formatter="currency"> </lightning-input>
+										</template>
+										<template if:false={editOverrideCharge}>
+											<lightning-formatted-number value={recordDetails.pickupCharges} format-style="currency" currency-display-as="code" currency-code="USD"> </lightning-formatted-number>
+										</template>
+									</template>
+
+									<template if:false={isEdit}>
+										<lightning-formatted-number value={recordDetails.pickupCharges} format-style="currency" currency-display-as="code" currency-code="USD"> </lightning-formatted-number>
+									</template>
+
+								</p>
+							</div>
+						</lightning-layout-item>
+					
+					</template>
+				</template>
+			</lightning-layout>
+		</lightning-accordion-section>
+	</lightning-accordion>
+</template>

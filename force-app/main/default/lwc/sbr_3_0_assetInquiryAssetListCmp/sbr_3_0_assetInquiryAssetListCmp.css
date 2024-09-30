@@ -1,0 +1,13 @@
+.totalrecordsbox {
+    padding-top: 4px;
+    padding-right: 1rem;
+    padding-bottom: 4px;
+    padding-left: 1rem;
+    /* width: 100%; */
+    /* min-height: calc(var(--lwc-heightInput,1.875rem) + (var(--lwc-borderWidthThin,1px) * 2)); */
+    line-height: 1.875rem;
+    border: 1px solid rgb(201, 201, 201);
+    border-radius: 0.25rem;
+    background-color: rgb(255, 255, 255);
+    /* display: inline-block; */
+}

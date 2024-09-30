@@ -1,0 +1,242 @@
+<template>
+    <template if:false={isLoaded}>
+        <div class="spinner_class_div">
+            <lightning-spinner class="spinner_class" alternative-text="Loading" variant="brand"></lightning-spinner>
+        </div>
+    </template>
+    <template if:true={isServerDown}>
+        <template if:true={isServerUpWithError}>
+            <c-s-b-r_3_0_-customer-maturity-model-error-screen is-server-down={isServerUpWithError} error-message={errorMessage} error-message-rec={errorMessageRec} is-recommendation-tab={isRecommendationTab}></c-s-b-r_3_0_-customer-maturity-model-error-screen>
+        </template>
+        <template if:false={isServerUpWithError}>
+            <c-s-b-r_3_0_-customer-maturity-model-error-screen is-server-down={isServerUpWithError} error-message={errorMessage} error-message-rec={errorMessageRec} is-recommendation-tab={isRecommendationTab} onrefresh={handleRefresh}></c-s-b-r_3_0_-customer-maturity-model-error-screen>
+        </template>
+    </template>
+    <template if:false={isServerDown}>
+        <template if:false={isUpsellNULL}>
+            <table class="TopBox slds-table slds-table_bordered slds-border_left slds-border_right">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <td class="" scope="col">
+                            <lightning-layout multiple-rows="true">
+                                <lightning-layout-item  size="9" class="slds-text-align_left custom-top-margin">
+                                    {titleselectthumbsupthumbsdown}
+                                </lightning-layout-item>
+                                <lightning-layout-item  size="3" class="slds-text-align_right">
+                                    <lightning-button  class="slds-m-left_xx-small" label={buttonsubmitfeedback} onclick={submitFeedback} variant="brand" disabled = {disableSubmitAction}></lightning-button>
+                                </lightning-layout-item>
+                            </lightning-layout>   
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+        </template>
+        <template if:false={isCrosssellNULL}>
+            <template if:false={isUpsellNULL}>
+                <lightning-layout multiple-rows="true">
+                    <lightning-layout-item  size="6">
+                        <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col">
+                                        <div class="Columns1" title={tabletitleupsell}>{tabletitleupsell}</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                        </table>
+                            <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="Columns1" title={tablecolumncatclass}>{tablecolumncatclass}</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="Columns2" title={tablecolumndescription}>{tablecolumndescription}</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="Columns3" title={tablecolumnfeedback}>{tablecolumnfeedback}</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={upSellResponse} for:item="UpSell">
+                                        <tr class="slds-line-height_reset" key = {UpSell.CatClass}>
+                                            <td data-label={UpSell.CatClass}>
+                                                <div class ="Column1Data">{UpSell.CatClass}</div>
+                                            </td>  
+                                            <td data-label={UpSell.Description}>
+                                                <div class ="Column2Data">{UpSell.Description}</div>
+                                            </td>  
+                                            <td class ="Column3Data" data-label={UpSell.CatClass}>
+                                                <lightning-button-icon-stateful
+                                                    data-name = {UpSell.CatClass}
+                                                    data-id = "Upsell"
+                                                    data-category={UpSell.productCategoryDesc}
+                                                    data-description={UpSell.Description}
+                                                    data-state = "like"
+                                                    icon-name="utility:like"
+                                                    data-version={UpSell.productModelVersion}
+                                                    selected={UpSell.likeStatus}
+                                                    alternative-text="Like"
+                                                    onclick={handleButtonClick}>
+                                                </lightning-button-icon-stateful>
+                                                <lightning-button-icon-stateful
+                                                    data-name = {UpSell.CatClass}
+                                                    data-id = "Upsell"
+                                                    data-category={UpSell.productCategoryDesc}
+                                                    data-description={UpSell.Description}
+                                                    data-state = "dislike"
+                                                    icon-name="utility:dislike"
+                                                    data-version={UpSell.productModelVersion}
+                                                    selected={UpSell.dislikeStatus}
+                                                    alternative-text="dislike"
+                                                    onclick={handleButtonClick}>
+                                                </lightning-button-icon-stateful>
+                                            </td>         
+                                        </tr>  
+                                    </template>
+                                </tbody>
+                            </table>
+                    </lightning-layout-item>
+                    <lightning-layout-item  size="6">
+                        <div class="table-container">
+                            <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col">
+                                            <div class="Columns1" title={tabletitlecrosssell}>{tabletitlecrosssell}</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                            </table>
+                            <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                                <thead>
+                                    <tr>
+                                        <th class="" scope="col">
+                                        <div class="Columns1" title={tablecolumncatclass}>{tablecolumncatclass}</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="Columns2" title={tablecolumndescription}>{tablecolumndescription}</div>
+                                        </th>
+                                        <th class="" scope="col">
+                                            <div class="Columns3" title={tablecolumnfeedback}>{tablecolumnfeedback}</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={crossSellResponse} for:item="crossSell">
+                                        <tr key = {crossSell.CatClass}>
+                                            <td scope="col" data-label={crossSell.CatClass}>
+                                                <div class="Column1Data">{crossSell.CatClass}</div>
+                                            </td>  
+                                            <td scope="col" data-label={crossSell.Description}>
+                                                <div class="Column2Data">{crossSell.Description}</div>
+                                            </td>  
+                                            <td scope="col" class ="Column3Data" data-label={crossSell.CatClass}>
+                                                <lightning-button-icon-stateful
+                                                    data-name = {crossSell.CatClass}
+                                                    data-id = "Crosssell"
+                                                    data-category={crossSell.productCategoryDesc}
+                                                    data-description={crossSell.Description}
+                                                    data-state = "like"
+                                                    icon-name="utility:like"
+                                                    data-version={crossSell.productModelVersion}
+                                                    selected={crossSell.likeStatus}
+                                                    alternative-text="Like"
+                                                    onclick={handleButtonClick}>
+                                                </lightning-button-icon-stateful>
+                                                <lightning-button-icon-stateful
+                                                    data-name = {crossSell.CatClass}
+                                                    data-id = "Crosssell"
+                                                    data-category={crossSell.productCategoryDesc}
+                                                    data-description={crossSell.Description}
+                                                    data-state = "dislike"
+                                                    icon-name="utility:dislike"
+                                                    data-version={crossSell.productModelVersion}
+                                                    selected={crossSell.dislikeStatus}
+                                                    alternative-text="dislike"
+                                                    onclick={handleButtonClick}>
+                                                </lightning-button-icon-stateful>
+                                            </td>         
+                                        </tr>  
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>    
+            </template>
+        </template>
+        <template if:true={isCrosssellNULL}>
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item  size="12" flexibility="auto">
+                    <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col">
+                                    <div class="Columns1" title={tabletitleupsell}>{tabletitleupsell}</div>
+                                </th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <table class="slds-table slds-table_bordered slds-border_left slds-border_right">
+                        <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                            <div class="Columns1" title={tablecolumncatclass}>{tablecolumncatclass}</div>
+                            </th>
+                            <th class="" scope="col">
+                            <div class="Columns2Full" title={tablecolumndescription}>{tablecolumndescription}</div>
+                            </th>
+                            <th class="" scope="col">
+                                <div class="Columns3" title={tablecolumnfeedback}>{tablecolumnfeedback}</div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={upSellResponse} for:item="UpSell">
+                                <tr class="slds-line-height_reset" key = {UpSell.CatClass}>
+                                    <td scope="col" data-label={UpSell.CatClass}>
+                                        <div class="Column1Data">{UpSell.CatClass}</div>
+                                    </td>  
+                                    <td scope="col" data-label={UpSell.Description}>
+                                        <div class="Column2DataFull">{UpSell.Description}</div>
+                                    </td>  
+                                    <td scope="col" class ="Column3Data" data-label={UpSell.CatClass}>
+                                        <lightning-button-icon-stateful
+                                            data-name = {UpSell.CatClass}
+                                            data-id = "Upsell"
+                                            data-category={UpSell.productCategoryDesc}
+                                            data-description={UpSell.Description}
+                                            data-state = "like"
+                                            icon-name="utility:like"
+                                            data-version={UpSell.productModelVersion}
+                                            selected={UpSell.likeStatus}
+                                            alternative-text="Like"
+                                            onclick={handleButtonClick}>
+                                        </lightning-button-icon-stateful>
+                                        <lightning-button-icon-stateful
+                                            data-name = {UpSell.CatClass}
+                                            data-id = "Upsell"
+                                            data-category={UpSell.productCategoryDesc}
+                                            data-description={UpSell.Description}
+                                            data-state = "dislike"
+                                            icon-name="utility:dislike"
+                                            data-version={UpSell.productModelVersion}
+                                            selected={UpSell.dislikeStatus}
+                                            alternative-text="dislike"
+                                            onclick={handleButtonClick}>
+                                        </lightning-button-icon-stateful>
+                                    </td>         
+                                </tr>  
+                            </template>
+                        </tbody>
+                    </table>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+    </template> 
+    <template if:true={isModalOpen}>
+        <c-s-b-r_3_0_-customer-maturity-model-popup onfeedbacksubmission={handleFeedbackSubmission} onclosemodal={handleCloseModal} pleaseprovideanycomments={pleaseprovideanycomments}></c-s-b-r_3_0_-customer-maturity-model-popup>
+    </template>
+</template>

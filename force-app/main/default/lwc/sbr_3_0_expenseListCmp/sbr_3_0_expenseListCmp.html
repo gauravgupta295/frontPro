@@ -1,0 +1,62 @@
+<template>
+    <lightning-card>
+        <template if:true={expense}>
+            <lightning-spinner alternative-text="Loading" size="medium" if:true={spinner}></lightning-spinner>
+            <div  if:false={spinner} class="slds-page-header page-header-padding">
+                <div class="slds-page-header__row">
+                    <div class="slds-page-header__col-title">
+                        <div class="slds-media media-wrapper">
+                            <div class="slds-media__figure">
+                                <lightning-icon icon-name="standard:webcart" alternative-text="Expenses" title="Expenses"></lightning-icon>
+                            </div>
+                            <div class="slds-media__body slds-m-top_xx-small">
+                                <div class="slds-page-header__name">
+                                    <div class="slds-page-header__name-title">
+                                        <h1>
+                                            <span class="slds-page-header__title slds-truncate"
+                                                title="Expenses">Expenses</span>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <c-sbr_3_0_datatable-type
+                key-field="Id"
+                data={expense} 
+                columns={columns} 
+                onvalueselect={handleSelection}
+                draft-values={draftValues} 
+                oncellchange={handleCellChange}
+                onsave={handleSave}
+                oncancel={handleCancel}
+                onrowaction={handleRowAction}
+                hide-checkbox-column>
+            </c-sbr_3_0_datatable-type>
+
+
+            <!-- <div class="totals">
+                <lightning-layout>
+                    <lightning-layout-item size="9" padding="around-small">
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" padding="around-small">
+                        <p>Total Price:</p>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="1" padding="around-small">
+                        <p>${totalPrice}</p>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div> -->
+        </template>
+    </lightning-card>
+
+    <template if:true={isDelete}>
+        <lightning-flow
+             flow-api-name='SBR_3_0_Delete_Expense_Record' flow-input-variables={flowInputVariables} onstatuschange={handleFlowStatusChange}>
+        </lightning-flow>
+    </template>
+    
+</template>

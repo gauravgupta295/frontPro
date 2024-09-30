@@ -1,0 +1,158 @@
+<template>
+  <lightning-layout
+    horizontal-align="spread"
+    class="asset-header slds-p-horizontal_x-small"
+  >
+    <lightning-layout-item>
+      <lightning-button-icon
+        icon-name="utility:back"
+        size="large"
+        variant="bare"
+        alternative-text="Back"
+        class="back-button-icon"
+        onclick={handleBackButton}
+      >
+      </lightning-button-icon>
+      <button
+        class="back-button slds-button slds-button_neutral"
+        value="Availability"
+        onclick={handleBackButton}
+      >
+        Back
+      </button>
+    </lightning-layout-item>
+    <lightning-layout-item class="slds-align_absolute-center header">
+      {header}
+    </lightning-layout-item>
+    <lightning-layout-item>
+      <lightning-button-icon
+        icon-name="utility:close"
+        size="large"
+        variant="bare"
+        title="Close"
+        onclick={navigateHome}
+        alternative-text="Close"
+        class="close-icon"
+      >
+      </lightning-button-icon>
+    </lightning-layout-item>
+  </lightning-layout>
+
+  <template if:true={tabs}>
+    <div
+      class="tab-button-container slds-scrollable_x slds-p-vertical_xx-small"
+    >
+      <div class="slds-text-longform tab-button-subcontainer">
+        <button
+          class={branchTabClass}
+          value="Branch"
+          title="Branch"
+          onclick={tabChangeHandler}
+        >
+          {branchName}</button
+        ><!--FRONT-8722 & 8721 Branch moved from modal to tabs-->
+        <button
+          class={districtTabClass}
+          value="District"
+          title="District"
+          onclick={tabChangeHandler}
+        >
+          District
+        </button>
+        <button
+          class={regionTabClass}
+          value="Region"
+          title="Region"
+          onclick={tabChangeHandler}
+        >
+          Region
+        </button>
+        <button
+          class={territoryTabClass}
+          value="Territory"
+          title="Territory"
+          onclick={tabChangeHandler}
+        >
+          Territory
+        </button>
+        <button
+          class={companyTabClass}
+          value="Company"
+          title="Company"
+          onclick={tabChangeHandler}
+        >
+          Company
+        </button>
+      </div>
+    </div>
+
+    <template if:true={districtShowTable}>
+      <div class="slds-p-around_small">
+        <c-sbr_3_0_availability-cmp
+          is-in-modal={isMobileAssets}
+          product-cat={productCat}
+          type="District"
+          location-info={locationInfo}
+          ongotobranch={openBranch}
+          title={title}
+          is-mobile-assets={isMobileAssets}
+        ></c-sbr_3_0_availability-cmp>
+      </div>
+    </template>
+
+    <template if:true={regionShowTable} class="slds-p-around_small">
+      <div class="slds-p-around_small">
+        <c-sbr_3_0_availability-cmp
+          is-in-modal={isMobileAssets}
+          product-cat={productCat}
+          type="Region"
+          location-info={locationInfo}
+          ongotobranch={openBranch}
+          title={title}
+          is-mobile-assets={isMobileAssets}
+        ></c-sbr_3_0_availability-cmp>
+      </div>
+    </template>
+
+    <template if:true={territoryShowTable} class="slds-p-around_small">
+      <div class="slds-p-around_small">
+        <c-sbr_3_0_availability-cmp
+          is-in-modal={isMobileAssets}
+          product-cat={productCat}
+          type="Territory"
+          location-info={locationInfo}
+          ongotobranch={openBranch}
+          title={title}
+          is-mobile-assets={isMobileAssets}
+        ></c-sbr_3_0_availability-cmp>
+      </div>
+    </template>
+
+    <template if:true={companyShowTable} class="slds-p-around_small">
+      <div class="slds-p-around_small">
+        <c-sbr_3_0_availability-cmp
+          is-in-modal={isMobileAssets}
+          product-cat={productCat}
+          type="Company"
+          location-info={locationInfo}
+          ongotobranch={openBranch}
+          title={title}
+          is-mobile-assets={isMobileAssets}
+        ></c-sbr_3_0_availability-cmp>
+      </div>
+    </template>
+  </template>
+
+  <!--FRONT-8722 & 8721 Branch moved from modal to tabs-->
+  <template if:true={isBranchOpen} class="slds-p-around_small">
+    <div class="slds-p-around_small">
+      <c-sbr_3_0_availability-modal-info-cmp
+        onreturnpage={closeBranch}
+        onnewheadertext={updateHeader}
+        product-cat={productCat}
+        branch-num={branchNumber}
+      ></c-sbr_3_0_availability-modal-info-cmp>
+    </div>
+  </template>
+  <!--<c-sbr_3_0_availability-modal-info-cmp if:true={isBranchOpen} onreturnpage={closeBranch} onnewheadertext={updateHeader} product-cat={productCat} branch-num={branchNumber}></c-sbr_3_0_availability-Modal-info-cmp>-->
+</template>

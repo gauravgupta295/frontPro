@@ -1,0 +1,99 @@
+<!--
+@description       : 
+@author            : ChangeMeIn@UserSettingsUnder.SFDoc
+@group             : 
+@last modified on  : 01-23-2024
+@last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-layout class="slds-m-top_x-small slds-border_bottom slds-border_right slds-border_left slds-border_top container">
+        <article class="slds-card lightning-card" style="width:100%">
+            <lightning-layout-item class="slds-m-top_x-small">
+                <div class="slds-page-header">
+                    <div class="slds-page-header__row">
+                        <div class="slds-page-header__col-title">
+                            <div class="slds-media slds-media_center slds-has-flexi-truncate">
+                                <div class="slds-media__figure ">
+                                    <span class="slds-icon_container slds-icon-standard-opportunity"
+                                        title="Engagements">
+                                        <lightning-icon icon-name={icon} size="small"></lightning-icon>
+                                        <span class="slds-assistive-text">{iconulternativeText}</span>
+                                    </span>
+                                </div>
+                                <div class="slds-media__body slds">
+                                    <div class="slds-page-header__name">
+                                        <div class="slds-card__header-title">
+                                            <h1>
+                                                <a class="slds-card__header-link" onclick={showAllList}>{Title}</a>
+                                            </h1>
+                                        </div>
+                                    </div>
+                                </div>
+                                    <div  if:true={showTable} class="slds-page-header__control slds-m-right_x-small" >
+                                        <button class="slds-button slds-button_icon slds-button_icon-border-filled" title="Refresh List">
+                                            <lightning-button-icon icon-name="utility:refresh"  alternative-text="Refresh" title="Refresh" onclick={handleRefresh}></lightning-button-icon>
+                                        </button>
+                                    </div>
+                                <div class="slds-no-flex">
+                                    <lightning-button label="New" onclick={handleCreateRecord}></lightning-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-page-header__row slds-m-top_x-small">
+                        <div class="slds-page-header__col-meta">
+                            <p class="slds-page-header__meta-text slds-text-body--small">{headerCountMsg}</p>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item>
+                <div if:true={showTable}>
+                    <div if:true={hasSpinnerLoaderStart}>
+                        <div class="exampleHolder">
+                            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                        </div>
+                    </div>
+                    <div if:false={hasSpinnerLoaderStart}>
+                        <div if:false={useInLwcParentChildCmp}>
+                            <lightning-datatable
+                                columns={DataTableResponseWrappper.lstDataTableColumns}
+                                class="slds-table_header-fixed_container slds-scrollable_x slds-border_top"
+                                data={processedData} 
+                                key-field="Id"
+                                hide-checkbox-column="true"
+                                show-row-number-column="true"
+                                onrowaction={handleRowActions}
+                                sorted-direction={sortDirection}
+                                sorted-by={sortedBy}
+                                onsort={handleSortdata}>
+                            </lightning-datatable>
+                        </div>
+                        <div if:true={useInLwcParentChildCmp}>
+                            <lightning-datatable
+                                columns={column}
+                                class="slds-table_header-fixed_container slds-scrollable_x slds-border_top"
+                                data={processedData} 
+                                key-field="Id"
+                                hide-checkbox-column="true"
+                                show-row-number-column="true"
+                                onrowaction={handleRowActions}
+                                sorted-direction={sortDirection}
+                                sorted-by={sortedBy}
+                                onsort={handleSortdata}>
+                            </lightning-datatable>
+                        </div>
+                    </div>
+                </div>
+            </lightning-layout-item>
+            <template if:false={viewAll}>
+            <lightning-layout-item>
+                <footer class="slds-card__footer footterClass" if:true={showTable}>
+                    <a onclick={showAllList}>View All</a>
+                </footer>
+            </lightning-layout-item>
+            </template>
+
+        </article>
+    </lightning-layout>
+</template>

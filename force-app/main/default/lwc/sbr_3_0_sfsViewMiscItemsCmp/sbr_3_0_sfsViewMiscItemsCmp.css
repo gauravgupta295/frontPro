@@ -1,0 +1,10 @@
+:host {
+    --slds-c-modal-header-color-background: #008545;
+    --slds-c-modal-header-text-color: white;
+
+}
+
+.error {
+    text-align: center;
+    color: Red;
+}

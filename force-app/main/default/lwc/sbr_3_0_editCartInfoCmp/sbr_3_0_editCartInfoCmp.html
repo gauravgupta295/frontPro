@@ -1,0 +1,202 @@
+<template>
+    <!-- Cart Information -->
+        <div class="slds-page-header__controls cart-info-header">
+            <button class={cancelBtnClass} onclick={cancelCartInfo} value="Cancel">Cancel</button>
+            <p class="cart-info-title">Cart Information</p>
+            <button class={saveBtnClass} onclick={saveCartInfo} value="Save">Save</button>
+        </div>
+        <div class="cart-info-main">
+            <!--CSP Banner Here  :Start -->
+            <div if:true={showDNEBanner}>
+                <div class={alertClass} role="alert">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Utility info" size="x-small"
+                        class="slds-p-right_small info"></lightning-icon>
+                    <h2>{dneBannerMessage}</h2>
+                </div>
+            </div>
+            <div if:true={showSetRatesBanner}>
+                <div class={alertClass} role="alert">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Utility info" size="x-small"
+                        class="slds-p-right_small info"></lightning-icon>
+                    <h2>{setRatesBannerMessage}</h2>
+                </div>
+            </div>
+            <div if:true={showPricingUpdatedBanner}>
+                <div class={alertClass} role="alert">
+                    <lightning-icon icon-name="utility:warning" alternative-text="Utility info" size="x-small"
+                        class="slds-p-right_small info"></lightning-icon>
+                    <h2>{pricingUpdatedBannerMessage}</h2>
+                </div>
+            </div>
+            <!--CSP Banner Here  :End -->
+
+            <template if:true={showAccountRemovedOrAdded}>
+                <div class="slds-notify slds-notify_alert slds-alert_info slds-m-top_x-small text-left-align"
+                    role="alert">
+                    <lightning-icon icon-name="utility:info" alternative-text="Utility info" size="x-small"
+                        class="slds-p-right_small info white" variant="inverse"></lightning-icon>
+                    <h2>{customerOrPricingBannerMessage}</h2>
+                    <template if:true={showCloseBannerIcon}>
+                        <div class="slds-notify__close">
+                            <lightning-button-icon icon-name="utility:close" alternative-text="Close"
+                                variant="bare-inverse" title="Close" onclick={hideCustomerPricingAlert}>
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                </div>
+            </template>
+           
+            <lightning-layout multiple-rows class="cart-info-body">
+                <lightning-layout-item size="12">
+                    <lightning-combobox name="rental-period" label="Rental Period" value={rentalPeriod}
+                        options={rpOptions} class="field-size" onchange={updateField} data-name="rental-period"
+                        required></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <template if:true={isInvalidStartDate}>
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-form-element date-time field-size">
+                                <label class="slds-form-element__label" for="text-start-date">
+                                    Start Date</label>
+                                <div
+                                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                    <lightning-icon size="x-small"
+                                        class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                        icon-name="utility:date_input"></lightning-icon>
+                                    <input type="date" data-name="start-date" name="start-date" value={startDate}
+                                        onchange={updateField} min={minStartDate} class="slds-input" />
+                                </div>
+                            </div>
+                            <div class="slds-form-element__help slds-p-left_small slds-p-top_x-small"
+                                id="form-error-01">Value must be {formattedStartMinDate} or later.</div>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <template if:false={isInvalidStartDate}>
+                        <div class="slds-form-element date-time field-size">
+                            <label class="slds-form-element__label" for="text-start-date">
+                                Start Date</label>
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                <lightning-icon size="x-small"
+                                    class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                    icon-name="utility:date_input"></lightning-icon>
+                                <input type="date" data-name="start-date" name="start-date" value={startDate}
+                                    onchange={updateField} min={minStartDate} class="slds-input" required />
+                            </div>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <div class="slds-form-element date-time field-size">
+                        <label class="slds-form-element__label" for="text-start-time">
+                            <abbr class="slds-required" title="required">* </abbr>Start Time</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                            <lightning-icon size="x-small"
+                                class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                icon-name="utility:clock"></lightning-icon>
+                            <input type="time" data-name="start-time" name="start-time" timezone={userTimeZone}
+                                value={startTime} onchange={updateField} class="slds-input" required />
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <template if:true={isInvalidEndDate}>
+                        <div class="slds-form-element slds-has-error">
+                            <div class="slds-form-element date-time field-size">
+                                <label class="slds-form-element__label" for="text-return-date">
+                                    <abbr class="slds-required" title="required">* </abbr>Return
+                                    Date</label></label>
+                                <div
+                                    class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                    <lightning-icon size="x-small"
+                                        class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                        icon-name="utility:date_input"></lightning-icon>
+                                    <input type="date" required data-name="return-date" name="return-date"
+                                        value={returnDate} onchange={updateField} min={minReturnDate}
+                                        disabled={disableDuration} class="slds-input" />
+                                </div>
+                            </div>
+                            <div class="slds-form-element__help slds-p-left_small slds-p-top_x-small"
+                                id="form-error-02">Value must be {formattedReturnMinDate} or later.</div>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <template if:false={isInvalidEndDate}>
+                        <div class="slds-form-element date-time field-size">
+                            <label class="slds-form-element__label" for="text-return-date">
+                                <abbr class="slds-required" title="required">* </abbr>Return Date</label></label>
+                            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                                <lightning-icon size="x-small"
+                                    class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                    icon-name="utility:date_input"></lightning-icon>
+                                <input type="date" required data-name="return-date" name="return-date"
+                                    value={returnDate} onchange={updateField} min={minReturnDate}
+                                    disabled={disableDuration} class="slds-input" />
+                            </div>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <div class="slds-form-element date-time field-size">
+                        <label class="slds-form-element__label" for="text-return-time">
+                            <abbr class="slds-required" title="required">* </abbr>Return Time</label>
+                        <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right">
+                            <lightning-icon size="x-small"
+                                class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                                icon-name="utility:clock"></lightning-icon>
+                            <input type="time" data-name="return-time" name="return-time" timezone={userTimeZone}
+                                value={returnTime} onchange={updateField} class="slds-input" required />
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" class="field-size">
+                    <template if:false={showFrontlineComponents}>
+                        <c-s-b-r_3_0_custom-lookup-cmp label="Customer Information" placeholder="Search Accounts"
+                            icon-name="standard:account" s-object-api-name="Account" where-clause={whereClause}
+                            fields-to-include={acctFields} onlookupupdate={updateCustomerPricing}
+                            is-disabled={hasRecordId} selected-record-object={_selectedCustomer}>
+                        </c-s-b-r_3_0_custom-lookup-cmp>
+                    </template>
+                    <template if:true={showFrontlineComponents}>
+                        <c-sbr_3_0_custom-lookup-cmp-frontline label="Customer Information"
+                            placeholder="Search Accounts" icon-name="standard:account" s-object-api-name="Account"
+                            where-clause={whereClause} fields-to-include={acctFields}
+                            onlookupupdate={updateCustomerPricing} is-disabled={hasRecordId}
+                            selected-record-object={_selectedCustomer}>
+                        </c-sbr_3_0_custom-lookup-cmp-frontline>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <lightning-combobox name="delivery-cpu" label="Delivery or CPU" value={deliveryCpu}
+                        options={dcOptions} class="field-size" onchange={updateField}
+                        data-name="delivery-cpu"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <template if:true={isJobsiteRequired}>
+                        <lightning-input type="text" data-name="jobsite-zip" name="jobsite-zip"
+                            label="Job Site Zip Code" class="field-size" onblur={updateField} required
+                            message-when-value-missing="Job Site Zip Code is required for Delivery">
+                        </lightning-input>
+                    </template>
+                    <template if:false={isJobsiteRequired}>
+                        <lightning-input type="text" data-name="jobsite-zip" name="jobsite-zip"
+                            label="Job Site Zip Code" class="field-size" onblur={updateField}></lightning-input>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12">
+                    <lightning-textarea name="notes" label="Notes" data-name="notes" value={notes}
+                        class="slds-p-bottom_small field-size" onchange={updateField}>
+                    </lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+        </div>
+     <!-- End of Cart Information -->
+     <template if:true={mobileIsLoading}>
+        <div class="spinner">
+            <lightning-spinner alternative-text="Loading" variant="brand" size="medium">
+            </lightning-spinner>
+        </div>
+    </template>
+</template>

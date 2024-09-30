@@ -1,0 +1,327 @@
+<template>
+  <div
+    class="slds-form-element"
+    onmouseleave={toggleResult}
+    data-source="lookupContainer"
+  >
+    <div class="slds-combobox_container slds-has-selection">
+      <label class="slds-form-element__label label-padding" for="combobox-id-1">
+        <!-- SF-6111 -->
+        <template if:true={isRequired}>
+          <span style="color: darkred">* </span>
+              </template>
+        {label}
+      </label>
+      <div
+        class="lookupInputContainer slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click"
+        aria-expanded="false"
+        aria-haspopup="listbox"
+        role="combobox"
+      >
+        <div
+          class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right"
+          role="none"
+        >
+          <div class="searchBoxWrapper slds-show">
+            <!--Lookup Input Field-->
+            <!--lightning-input 
+                          class="slds-input-has-icon_right"                  
+                          type="search"
+                          data-source="searchInputField"
+                          onclick={toggleResult}
+                          onchange={handleKeyChange}
+                          is-loading={isSearchLoading}
+                          value={searchKey}
+                          variant="label-hidden"
+                          placeholder={placeholder}
+                          disabled = {isDisabled}
+                      ></lightning-input-->
+
+            <!--1664 Start-->
+            <template if:false={isRequired}>
+              <div class="slds-form-element">
+                <div
+                  class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                >
+                  <lightning-icon
+                    size="x-small"
+                    class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                    icon-name="utility:search"
+                  ></lightning-icon>
+                  <lightning-input
+                    type="text"
+                    data-source="searchInputField"
+                    onclick={toggleResult}
+                    onchange={handleKeyChange}
+                    is-loading={isSearchLoading}
+                    value={searchKey}
+                    variant="label-hidden"
+                    placeholder={placeholder}
+                    tabindex="0"
+                    disabled={isDisabled}
+                    class="borderBox"
+                  ></lightning-input>
+                </div>
+              </div>
+            </template>
+
+            <!--1664 end-->
+            <!-- 1664 start
+                      <template if:true={showSalesRep}>
+                          <template if:false={isRequired}>
+                              <div class="slds-form-element">
+                                  <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                                      <lightning-icon size="x-small" class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" icon-name="utility:search"></lightning-icon>
+                                      <lightning-input 
+                                      type="text"
+                                      data-source="searchInputField"
+                                      onclick={toggleResult}
+                                      onchange={handleKeyChange}
+                                      is-loading={isSearchLoading}
+                                      value={searchKey}
+                                      variant="label-hidden"
+                                      placeholder={placeholder}
+                                      disabled ={isDisabled} 
+                                  ></lightning-input>
+                                  
+                                  </div>
+                              </div>
+                          </template>
+                      </template>
+                      -->
+            <template if:true={isRequired}>
+              <div class="slds-form-element">
+                <div
+                  class="slds-form-element__control slds-input-has-icon slds-input-has-icon_right"
+                >
+                  <lightning-icon
+                    size="x-small"
+                    class="slds-icon slds-input__icon slds-input__icon_right slds-icon-text-default"
+                    icon-name="utility:search"
+                  ></lightning-icon>
+                  <lightning-input
+                    type="text"
+                    required
+                    data-source="searchInputField"
+                    onclick={toggleResult}
+                    onchange={handleKeyChange}
+                    is-loading={isSearchLoading}
+                    value={searchKey}
+                    variant="label-hidden"
+                    placeholder={placeholder}
+                    disabled={isDisabled}
+                    tabindex="0"
+                  ></lightning-input>
+                </div>
+              </div>
+            </template>
+          </div>
+
+          <!--Lookup Selected record pill container start-->
+          <template if:false={multiSelect}>
+            <div class="pillDiv slds-hide">
+              <span
+                class="slds-icon_container slds-combobox__input-entity-icon"
+              >
+                <lightning-icon
+                  icon-name={iconName}
+                  size="x-small"
+                  alternative-text="icon"
+                ></lightning-icon>
+              </span>
+
+              <input
+                type="text"
+                id="combobox-id-1"
+                value={selectedRecordName}
+                class="slds-input slds-combobox__input slds-combobox__input-value"
+                readonly
+              />
+
+              <button
+                type="button"
+                class="slds-button slds-button_icon slds-input__icon slds-input__icon_right"
+                title="Clear Selection"
+              >
+                <lightning-icon
+                  icon-name="utility:close"
+                  size="x-small"
+                  alternative-text="close icon"
+                  onclick={handleRemove}
+                ></lightning-icon>
+              </button>
+            </div>
+          </template>
+
+          <template if:true={multiSelect}>
+            <template for:each={selectedRecords} for:item="rec">
+              <span key={rec.Id}>
+                <lightning-pill
+                  label={rec.Name}
+                  name={rec.Id}
+                  onremove={removeRecord}
+                >
+                  <lightning-icon
+                    icon-name={iconName}
+                    variant="circle"
+                    alternative-text={rec.Name}
+                  ></lightning-icon>
+                </lightning-pill>
+              </span>
+            </template>
+          </template>
+        </div>
+
+        <!-- lookup search result part start-->
+        <div
+          style="margin-top: 0px"
+          id="listbox-id-5"
+          class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+          role="listbox"
+        >
+          <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+            <template if:true={spinnerShow}>
+              <div class={spinnerCss}>
+                <lightning-spinner
+                  alternative-text="Loading"
+                  size="small"
+                ></lightning-spinner>
+              </div>
+            </template>
+            <template if:true={isAccount}>
+              <template for:each={lstResult} for:item="obj">
+                <li
+                  key={obj.Id}
+                  role="presentation"
+                  class="slds-listbox__item"
+                  title={obj.DisplayName}
+                  tabindex="0"
+                >
+                  <div
+                    data-recid={obj.Id}
+                    onclick={handleSelectedRecord}
+                    class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                    role="option"
+                    title={obj.DisplayName}
+                  >
+                    <span
+                      style="pointer-events: none"
+                      class="slds-media__figure slds-listbox__option-icon"
+                    >
+                      <span class="slds-icon_container">
+                        <lightning-icon
+                          icon-name={iconName}
+                          size="small"
+                          alternative-text="icon"
+                        ></lightning-icon>
+                      </span>
+                    </span>
+                    <span style="pointer-events: none" class="slds-media__body">
+                      <span
+                        class="slds-listbox__option-text slds-listbox__option-text_entity"
+                        >{obj.DisplayName}</span
+                      >
+                      <template if:true={obj.additionalInfo}>
+                        <span
+                          class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                          >{obj.additionalInfo}</span
+                        >
+                      </template>
+                      <template if:true={obj.additionalInfo2}>
+                        <span
+                          class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                          >{obj.additionalInfo2}</span
+                        >
+                      </template>
+                      <span
+                        class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                        >{obj.recordTypeName}</span
+                      >
+                    </span>
+                  </div>
+                </li>
+              </template>
+            </template>
+            <template if:false={isAccount}>
+              <template for:each={lstResult} for:item="obj">
+                <li
+                  key={obj.Id}
+                  role="presentation"
+                  class="slds-listbox__item"
+                  title={obj.DisplayName}
+                  tabindex="0"
+                >
+                  <div
+                    data-recid={obj.Id}
+                    onclick={handleSelectedRecord}
+                    class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta"
+                    role="option"
+                    title={obj.DisplayName}
+                  >
+                    <span
+                      style="pointer-events: none"
+                      class="slds-media__figure slds-listbox__option-icon"
+                    >
+                      <span class="slds-icon_container">
+                        <lightning-icon
+                          icon-name={iconName}
+                          size="small"
+                          alternative-text="icon"
+                        ></lightning-icon>
+                      </span>
+                    </span>
+                    <span style="pointer-events: none" class="slds-media__body">
+                      <template if:false={isUserLocation}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.DisplayName}</span
+                        >
+                        <template if:true={obj.additionalInfo}>
+                          <span
+                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                            >{obj.additionalInfo}</span
+                          >
+                        </template>
+                        <template if:true={obj.additionalInfo2}>
+                          <span
+                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                            >{obj.additionalInfo2}</span
+                          >
+                        </template>
+                        <!--<span
+                          class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                          >{sObjectApiName}</span
+                        > -->
+                      </template>
+                      <template if:true={isUserLocation}>
+                        <span
+                          class="slds-listbox__option-text slds-listbox__option-text_entity"
+                          >{obj.DisplayName}</span
+                        >
+                        <template if:true={obj.additionalInfo}>
+                          <span
+                            class="slds-listbox__option-meta slds-listbox__option-meta_entity"
+                            >{obj.additionalInfo}</span
+                          >
+                        </template>
+                      </template>
+                    </span>
+                  </div>
+                </li>
+              </template>
+            </template>
+            <!--ERROR msg, if there is no records..-->
+            <template if:false={hasRecords}>
+              <li
+                class="slds-listbox__item"
+                style="text-align: center; font-weight: bold"
+              >
+                No Records Found.
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

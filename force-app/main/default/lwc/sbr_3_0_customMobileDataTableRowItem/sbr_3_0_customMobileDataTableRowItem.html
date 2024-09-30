@@ -1,0 +1,89 @@
+<template>
+  <lightning-layout>
+    <template lwc:if={headerCell}>
+      <template if:false={hideCheckboxColumn}>
+        <lightning-layout-item class="asset-label" size="5">
+          <template lwc:if={singleSelection}>
+            <span class="slds-radio section">
+              <input
+                name="accountRadioButtons"
+                id={record.Id}
+                type="radio"
+                value={record.Id}
+                onchange={rowSelection}
+                checked={isSelected}
+                class="radio-btn-color"
+              />
+              <label class="slds-radio__label" for={record.Id}>
+                <span class="slds-radio_faux"></span>
+                <div>
+                  <span class="display-name">
+                    <span>{getCellValue}</span>
+                  </span>
+                </div>
+              </label>
+            </span>
+          </template>
+          <template lwc:else>
+            <input
+              name="accountRadioButtons"
+              id={record.Id}
+              type="checkbox"
+              value={record.Id}
+              onclick={rowSelection}
+            />
+          </template>
+        </lightning-layout-item>
+      </template>
+    </template>
+
+    <template lwc:else>
+      <!-- Buttons -->
+      <template lwc:if={isButton}>
+        <lightning-layout-item class="asset-label slds-m-left_x-large" size="5"
+          >{getCellLabel}
+        </lightning-layout-item>
+
+        <button
+          title={getButtonName}
+          onclick={buttonPress}
+          class="removeButtonStyling"
+        >
+          {getCellValue}
+        </button></template
+      >
+      <template lwc:else>
+        <template if:false={hasActions}>
+          <lightning-layout-item
+            class="asset-label slds-m-left_x-large"
+            size="5"
+            >{getCellLabel}
+          </lightning-layout-item>
+
+          <lightning-layout-item class={getCellClass} size="6"
+            >{getCellValue}
+          </lightning-layout-item>
+        </template>
+        <template if:true={hasActions}>
+          <div class="slds-col slds-size_1-of-5 slds-p-around_medium lgc-bg">
+            <lightning-button-menu
+              alternative-text="More actions"
+              icon-size="medium"
+              menu-alignment="auto"
+            >
+              <template for:each={getActions} for:item="action">
+                <div key={action.label}>
+                  <lightning-menu-item
+                    value={action.name}
+                    label={action.label}
+                    class="menuItem"
+                  ></lightning-menu-item>
+                </div>
+              </template>
+            </lightning-button-menu>
+          </div>
+        </template>
+      </template>
+    </template>
+  </lightning-layout>
+</template>

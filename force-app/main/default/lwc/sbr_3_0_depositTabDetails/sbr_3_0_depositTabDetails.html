@@ -1,0 +1,70 @@
+<template>
+    <lightning-card variant="narrow" icon-name="standard:timesheet">
+        <h1 slot="title">{label.Totals}</h1>
+        <!--Front 22271 -->
+        <div class="totals">
+            <div class="slds-grid slds-border_bottom">
+                <div class="slds-size_1-of-2">
+                    {label.TotalAmt}
+                </div>
+                <div class="slds-size_1-of-2 slds-text-align_right slds-p-right_large">
+                    <span>{totalAmountUI}</span>
+                </div>
+            </div>
+            <br>
+             <div class="slds-grid  slds-border_bottom">
+                <div class="slds-size_1-of-2">
+                    {label.DepositPaid}
+                </div>
+                <div class="slds-size_1-of-2 slds-text-align_right slds-p-right_large">
+                    <span>{depositAmountUI}</span>
+                </div>
+            </div>
+            <br>
+            <div class="slds-grid  slds-border_bottom">
+                <div class="slds-size_1-of-2">
+                    {label.AdditionalDepositDue}
+                </div>
+                <div class="slds-size_1-of-2 slds-text-align_right slds-p-right_large">
+                    <span>{dueDepositUI}</span>
+                </div>
+            </div>
+            <br>
+        </div>
+       <!--Front 22271 -->
+    </lightning-card>
+
+    <div class="slds-box slds-box_xx-small payment-banner">
+        <div class="slds-grid slds-wrap slds-p-vertical_xx-small">
+            <div class="slds-col slds-size_9-of-12 card-bgc">
+                <lightning-card variant="narrow" icon-name="standard:partner_fund_claim">
+                    <h2 slot="title">{label.Payments}</h2>
+                </lightning-card>
+            </div>
+
+            <div class="slds-col slds-size_1-of-15 custom-small-input payment-banner">
+                <lightning-input id="frmDate" class="fromDateClass" name="fromDate" placeholder="From" type="date" variant="label-hidden" value={fromDate} max={maxDate}
+                    onchange={handleDateChange}>
+                </lightning-input>
+            </div>
+
+            <div class="slds-col slds-size_1-of-15 custom-medium-input payment-banner">
+                <lightning-input id="untDate" name="untilDate" placeholder="Until" type="date" variant="label-hidden" value={untilDate} min={minUntilDate} max={maxFromDate}
+                    onchange={handleDateChange}>
+                </lightning-input>
+            </div>
+        </div>
+
+        <template if:false={errorMessage}>
+            <lightning-datatable key-field="Id" data={paymentData} show-row-number-column="true" columns={columns}
+                hide-checkbox-column="true" sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}>
+            </lightning-datatable>
+        </template>
+    </div>
+
+    <template if:true={errorMessage}>
+        <b>
+            <div class="slds-text-align_center">{label.NoRecordsAvailable}</div>
+        </b>
+    </template>
+</template>

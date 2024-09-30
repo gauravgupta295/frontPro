@@ -1,0 +1,73 @@
+<template>
+  <div class="slds-section slds-is-close slds-m-bottom_none" data-id="Price">
+    <div if:false={isMobile}>
+      <template if:false={productType}>
+      <h3 class="slds-section__title slds-theme_shade" data-buttonid="Price">
+        <button
+          type="button"
+          class="slds-button slds-section__title-action"
+          data-buttonid="Price"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span class="slds-truncate slds-p-horizontal_small" title="Price"
+            >Price </span
+          >
+        </button>
+      </h3>
+    </template>
+    </div>
+    <div if:true={isMobile}>
+      <template if:false={productType}><!--filter Added for15746-->
+      <h3 class="slds-section__title" data-buttonid="Price">
+        <button
+          type="button"
+          class="slds-button action-title-mobile"
+          data-buttonid="Price"
+          onclick={toggleSection}
+        >
+          <lightning-icon
+            icon-name="utility:switch"
+            alternative-text="button icon"
+            size="x-small"
+            class="slds-section__title-action-icon slds-button__icon_left"
+          ></lightning-icon>
+          <span
+            class="slds-truncate slds-p-horizontal_small custom-button"
+            title="Price"
+            >Price</span
+          >
+        </button>
+      </h3>
+      </template>
+    </div>
+    <template if:false={productType}>
+    <div class="slds-grid slds-wrap pricingDetails slds-hide">
+      <div class={priceTextClass}>Sales Price</div>
+      <div class={priceValueClass}>${salesPrice}</div>
+
+      <div class={priceTextClass}>Current Purchase Price</div>
+      <div class={priceValueClass}>${costPrice}</div>
+    
+    </div>
+  </template>
+
+  <!--FRONT-14358,14356,14357 Starts-->
+  <template if:true={productType}>
+    <div class=" slds-grid slds-wrap pricingDetails ">
+     
+   <div class={priceTextClass}>Sales Price</div>
+      <div class={priceValueClass}>${salesPrice}</div>
+
+    
+    </div>
+
+  </template>
+  <!--FRONT-14358,14356,14357 Ends-->
+  </div>
+</template>

@@ -1,0 +1,103 @@
+<template>
+    <template if:true={isSpinner}>
+        <div class="exampleHolder">
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </div>
+    </template>
+    <template if:false={isSpinner}>
+        <br />
+        <div class="slds-align_absolute-center">
+            <!-- <lightning-button variant="base" label="Cancel" class="slds-m-right_xx-small slds-button" onclick={close}>
+            </lightning-button> -->
+            <h1 class="slds-hyphenate">&emsp; &emsp; &emsp; &ensp; Assign Lead &emsp; &emsp; &emsp; &ensp;</h1>
+            <!-- <lightning-button variant="base" class="slds-m-right_xx-small" label="Save" onclick={handleSave}>
+            </lightning-button> -->
+        </div>
+        <br />
+
+        <div class="slds-card" style="width:100%">
+            <div class="slds-card__header slds-grid">
+                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                    <div class="slds-media__body">
+                        <h3 class="slds-card__header-title">
+                            <span>Select Sales Reps</span>
+                        </h3>
+                    </div>
+                </header>
+            </div>
+        </div>
+        <div>
+            <template for:each={repDetailsArray} for:item="usrs">
+                <lightning-card key={usrs.Id} class="my-card">
+                    <div class="slds-grid slds-wrap">
+                        <input class="sbr-radio-button" id={usrs.Id} data-id={usrs.Id} name={usrs.Id} type="radio"
+                            onchange={handleRepSelect}> <b>{usrs.Sales_Rep_Name__c}</b>
+<!-- {usrs.User__r.Name} -->
+                    </div>
+                    <div class="slds-grid slds-wrap sbr-details">
+                        <div class="slds-col slds-size_2-of-4">
+                            <p class="slds-p-horizontal_small margin-2_card"><b>Rep Type: </b></p>
+                        </div>
+						<div class="slds-col slds-size_2-of-4">
+                            <p class="slds-p-horizontal_small margin-2_card"> {usrs.RepType}</p>
+                        </div>
+                        <div class="slds-col slds-size_2-of-4">
+                            <p class="slds-p-horizontal_small margin-2_card"><b>Rep ID: </b></p>
+                            <p class="slds-p-horizontal_small margin-2_card"><b>Line of Business: </b></p>
+                        </div>
+						<div class="slds-col slds-size_2-of-4">
+                            <p class="slds-p-horizontal_small margin-2_card">{usrs.RepId}</p>
+                            <p class="slds-p-horizontal_small margin-2_card">{usrs.AnalysisRegionName}</p>
+                        </div>
+                    </div>
+                </lightning-card>
+            </template>
+        </div>
+        <!-- <table class="slds-table slds-table_cell-buffer slds-table_bordered"
+            aria-labelledby="element-with-table-label other-element-with-table-label">
+            <tbody>
+                <template for:each={availableUsers} for:item="usrs">
+                    <tr key={usrs.Id} class="slds-hint-parent">
+                        <td>
+                            <lightning-input id={usrs.Id} data-id={usrs.Id} name={usrs.Id} type="radio"
+                                onchange={handleRepSelect}></lightning-input>
+                        </td>
+                        <td data-label="Rep Name">
+                            <div><strong>{usrs.User__r.Name}</strong></div>
+                            <template if:true={usrs.isRepType}>
+                                <div>Rep Type: &ensp; &emsp; &emsp; &emsp; {usrs.Rep_Type__c}</div>
+                                <div>Rep Id: &emsp; &emsp; &emsp; &ensp; &emsp; {usrs.RepId__c}</div>
+                                <div>Line of Business: &emsp; {usrs.Analysis_Region2__r.Name}</div>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table> -->
+        <br />
+        <template if:true={errorAssignToRequired}>
+            <div class="slds-text-color_error">Sales rep not selected.</div>
+        </template>
+        <br /><br />
+        <!-- <footer class="slds-card__footer">
+            <div class="slds-clearfix slds-align_absolute-center">
+                <lightning-button variant="base" label="Cancel" class="slds-m-right_xx-small slds-button"
+                    onclick={close}>
+                </lightning-button>
+                <lightning-button variant="base" class="slds-m-right_xx-small" label="Save" onclick={handleSave}>
+                </lightning-button>
+            </div>
+        </footer> -->
+        <div class="slds-docked-form-footer stickyFooter bottomfooter slds-p-left_xx-small slds-p-right_medium">
+            <div class="slds-col slds-size_3-of-4">
+              	<span>&nbsp;</span>
+								<lightning-button label="Cancel" class="neutral-button" onclick={close}></lightning-button>
+						</div>
+						<div class="slds-col slds-size_1-of-4">
+              	<span>&nbsp;</span>
+            	<button class="reverse-neutral-button" onclick={handleSave}>Save</button> 
+						</div>
+        </div>
+    </template>
+
+</template>

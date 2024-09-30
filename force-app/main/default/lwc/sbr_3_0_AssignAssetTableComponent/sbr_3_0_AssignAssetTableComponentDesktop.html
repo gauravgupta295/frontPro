@@ -1,0 +1,72 @@
+<!-- FRONT-2186, FRONT-6226, FRONT-6227, FRONT-6228 -->
+<template>
+  <lightning-layout multiple-rows="true">
+    <lightning-layout-item size="12">
+      <div class="list-header-container">
+        <c-sbr_3_0_-Assign-Asset-Header-Component
+          inventory={inventoryCount}
+          onassetsearchupdate={handleSearch}
+          current-tab-name={currentTabName}
+        >
+        </c-sbr_3_0_-Assign-Asset-Header-Component>
+      </div>
+    </lightning-layout-item>
+    <lightning-layout-item size="12">
+      <div class="scrollable-list-container asset-list-container">
+        <div class={innerContainerClass}>
+          <template if:false={isDataLoaded}>
+            <lightning-spinner
+              variant="brand"
+              size="medium"
+              alternative-text="loading..."
+            >
+            </lightning-spinner>
+          </template>
+          <template if:false={inventoryCount}>
+            <!-- FRONT-8711 : Illustration components to show no data states-->
+            <template lwc:if={isOtherLocationTab}>
+              <c-sbr_3_0_-no-other-location-found-illustration-component
+                no-records-found-message={noOtherLocationsFoundErrorMessage}
+              ></c-sbr_3_0_-no-other-location-found-illustration-component>
+            </template>
+
+            <template lwc:if={isDefaultLocationTab}>
+              <c-sbr_3_0_-no-default-location-found-illustration-component
+                no-records-found-message={noDefaultLocationsFoundErrorMessage}
+              ></c-sbr_3_0_-no-default-location-found-illustration-component>
+            </template>
+            <!-- END : FRONT-8711 -->
+          </template>
+          <!--Added hideCheckBox and enableInfiniteLoading as part of FRONT-10327 -->
+          <template if:true={inventoryCount}>
+            <lightning-datatable
+              key-field="id"
+              class="wrapped-header-datatable defaultTabsDropdown"
+              data={wiredAsset}
+              columns={columns}
+              hide-checkbox-column={hideCheckBox}
+              resize-column-disabled
+              wrap-text-max-lines="2"
+              onloadmore={handleLoadMore}
+              enable-infinite-loading={enableInfiniteLoading}
+              onrowaction={handleRowAction}
+              onrowselection={getSelectedName}
+              selected-rows={preSelectedRows}
+            >
+            </lightning-datatable>
+          </template>
+        </div>
+      </div>
+    </lightning-layout-item>
+  </lightning-layout>
+
+  <!-- <div if:true={openViewAssetModal}>
+    <span slot="modalContent" class="slds-is-relative">
+      <c-sbr_3_0_-view-asset-component
+        asset-id={selectedAssetId}
+        onreturnpage={hideViewAssetScreen}
+        >
+      </c-sbr_3_0_-view-asset-component>
+    </span>
+  </div> -->
+</template>

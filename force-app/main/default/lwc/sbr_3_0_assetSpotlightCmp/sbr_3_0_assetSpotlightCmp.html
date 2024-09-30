@@ -1,0 +1,244 @@
+<template>
+  <template if:true={showSpinner}>
+    <lightning-spinner
+      alternative-text="Loading"
+      size="medium"
+    ></lightning-spinner>
+  </template>
+
+  <template if:true={isMobile}>
+    <c-sbr_3_0_mobile-screen props={mobileProps}>
+      <div slot="title" class="back-item-ctr">
+        <lightning-button-icon
+          icon-name="utility:back"
+          size="large"
+          variant="bare"
+          alternative-text="Back"
+          class="back-button-icon"
+          onclick={backToItemSearch}
+          title="Back"
+        >
+        </lightning-button-icon>
+        <button
+          class={itemSearchBackBtnClass}
+          value="Back to Item Search"
+          onclick={backToItemSearch}
+        >
+          Back to Item Search
+        </button>
+      </div>
+      <div>
+        <h2
+          class="slds-panel__header-title slds-align_absolute-center slds-text-heading_small slds-truncate backgroundGroupColor slds-text-title_bold"
+          title={panelTitle}
+        >
+          {panelTitle}
+        </h2>
+
+        <div
+          class="backgroundGroupColor slds-align_absolute-center slds-button-group"
+        >
+          <button class={detailsBtn} value="details" onclick={toggleBtn}>
+            Details
+          </button>
+          <button class={ratesBtn} value="rates" onclick={toggleBtn}>
+            Rates
+          </button>
+        </div>
+        <template lwc:if={showMobileDetails}>
+          <div class="slds-p-horizontal_small">
+            <lightning-layout class="slds-p-bottom_x-small slds-p-top_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Cat Class:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{data.prodname}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <p><b>Status:&nbsp;</b></p>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <lightning-layout-item>
+                  <p>{data.Status}</p>
+                </lightning-layout-item>
+              </lightning-layout-item>
+            </lightning-layout>
+            <c-sbr_3_0_asset-spotlight-details-cmp asset-data={data}>
+            </c-sbr_3_0_asset-spotlight-details-cmp>
+          </div>
+        </template>
+        <template lwc:else>
+          <div class="slds-p-horizontal_small">
+            <lightning-layout class="slds-p-bottom_x-small slds-p-top_x-small">
+              <lightning-layout-item>
+                <b>
+                  <p>Cat Class:&nbsp;</p>
+                </b>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <p>{data.prodname}</p>
+              </lightning-layout-item>
+            </lightning-layout>
+            <lightning-layout class="slds-p-bottom_x-small">
+              <lightning-layout-item>
+                <p><b>Status:&nbsp;</b></p>
+              </lightning-layout-item>
+              <lightning-layout-item>
+                <lightning-layout-item>
+                  <p>{data.Status}</p>
+                </lightning-layout-item>
+              </lightning-layout-item>
+            </lightning-layout>
+            <c-sbr_3_0_rates-cmp
+              rates={rates}
+              item-qty={parentItemQty}
+            ></c-sbr_3_0_rates-cmp>
+          </div>
+        </template>
+      </div>
+      <lightning-modal-footer
+        slot="footer"
+        style="position: sticky; bottom: 0px"
+      >
+        <div class="slds-align_absolute">
+          <c-sbr_3_0_add-to-cart-cmp
+            originrecordid={originrecordid}
+            record-id={recordId}
+            object-api-name={objectApiName}
+            selected-item-panel={_selectedProducts}
+            company-code={companyCode}
+            is-parent-add-to-cart={isParentAddToCart}
+            is-disable-counter="true"
+          ></c-sbr_3_0_add-to-cart-cmp>
+        </div>
+      </lightning-modal-footer>
+    </c-sbr_3_0_mobile-screen>
+  </template>
+  <template if:false={isMobile}>
+    <div
+      class="slds-panel slds-size_full slds-panel_docked slds-panel_docked-right slds-is-open"
+      aria-hidden="false"
+    >
+      <div class="slds-panel__header">
+        <h2
+          class="slds-panel__header-title slds-text-heading_small slds-truncate"
+          title={panelTitle}
+        >
+          {panelTitle}
+        </h2>
+        <div class="slds-panel__header-actions">
+          <template if:true={isBulkAddPanel}>
+            <a href="" onclick={removeSpotlighData}>Remove All</a>&nbsp;
+          </template>
+        </div>
+      </div>
+      <template lwc:if={isDetailsPanel}>
+        <template lwc:if={data}>
+          <div class="slds-panel__body">
+            <lightning-tabset>
+              <lightning-tab label="Details" title="Details">
+                <lightning-layout
+                  class="slds-p-bottom_x-small slds-p-top_x-small"
+                >
+                  <lightning-layout-item>
+                    <b>
+                      <p>Cat Class:&nbsp;</p>
+                    </b>
+                  </lightning-layout-item>
+                  <lightning-layout-item>
+                    <p>{data.prodname}</p>
+                  </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout class="slds-p-bottom_x-small">
+                  <lightning-layout-item>
+                    <p><b>Status:&nbsp;</b></p>
+                  </lightning-layout-item>
+                  <lightning-layout-item>
+                    <lightning-layout-item>
+                      <p>{data.Status}</p>
+                    </lightning-layout-item>
+                  </lightning-layout-item>
+                </lightning-layout>
+                <c-sbr_3_0_asset-spotlight-details-cmp asset-data={data}>
+                </c-sbr_3_0_asset-spotlight-details-cmp>
+              </lightning-tab>
+              <lightning-tab
+                label="Rates"
+                value="Rates"
+                title="Rates"
+                onactive={handleActive}
+              >
+                <lightning-layout
+                  class="slds-p-bottom_x-small slds-p-top_x-small"
+                >
+                  <lightning-layout-item>
+                    <b>
+                      <p>Cat Class:&nbsp;</p>
+                    </b>
+                  </lightning-layout-item>
+                  <lightning-layout-item>
+                    <p>{data.prodname}</p>
+                  </lightning-layout-item>
+                </lightning-layout>
+                <lightning-layout class="slds-p-bottom_x-small">
+                  <lightning-layout-item>
+                    <p><b>Status:&nbsp;</b></p>
+                  </lightning-layout-item>
+                  <lightning-layout-item>
+                    <lightning-layout-item>
+                      <p>{data.Status}</p>
+                    </lightning-layout-item>
+                  </lightning-layout-item>
+                </lightning-layout>
+                <c-sbr_3_0_rates-cmp
+                  rates={rates}
+                  item-qty={parentItemQty}
+                ></c-sbr_3_0_rates-cmp>
+              </lightning-tab>
+            </lightning-tabset>
+          </div>
+          <lightning-modal-footer style="position: sticky; bottom: 0px">
+            <c-sbr_3_0_add-to-cart-cmp
+              record-id={recordId}
+              object-api-name={objectApiName}
+              selected-item-panel={_selectedProducts}
+              company-code={companyCode}
+              is-parent-add-to-cart={isParentAddToCart}
+              is-disable-counter="true"
+            >
+            </c-sbr_3_0_add-to-cart-cmp>
+          </lightning-modal-footer>
+        </template>
+        <template lwc:else>
+          <div class="slds-col slds-illustration slds-illustration_small">
+            <!-- FRONT-10863 Start -->
+            <c-sbr_3_0_illustration-cmp variant="noevent">
+            </c-sbr_3_0_illustration-cmp>
+            <!-- FRONT-10863 End -->
+          </div>
+        </template>
+      </template>
+      <template if:true={isBulkAddPanel}>
+        <div class="bulkHeight">
+          <c-sbr_3_0_bulk-add-cmp
+            variant={variant}
+            product-id={productId}
+            asset-bulk-product-ids={bulkProductIds}
+            onitemselected={handleSelectedItem}
+            record-id={recordId}
+            object-api-name={objectApiName}
+            location-info={locationInfo}
+            tabname="itemSearchAsset"
+            company-code={companyCode}
+            onadditemsuccess={handleItemSuccess}
+          >
+          </c-sbr_3_0_bulk-add-cmp>
+        </div>
+      </template>
+    </div>
+  </template>
+</template>

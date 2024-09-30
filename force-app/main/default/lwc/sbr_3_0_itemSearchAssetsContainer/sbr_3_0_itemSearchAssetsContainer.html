@@ -1,0 +1,33 @@
+<template>
+  <template lwc:if={isSerialTab}>
+    <c-sbr_3_0_item-search-assets-serial-cmp
+      record-id={recordId}
+      brach-location={brachLocation}
+    ></c-sbr_3_0_item-search-assets-serial-cmp>
+  </template>
+
+  <template lwc:elseif={isAssetTab}>
+    <c-sbr_3_0_item-search-assets-asset-cmp
+      record-id={recordId}
+      order-data={orderData}
+      object-api-name={objectApiName}
+      brach-location={brachLocation}
+    ></c-sbr_3_0_item-search-assets-asset-cmp>
+  </template>
+
+  <template lwc:elseif={isCatClassTab}>
+    <c-sbr_3_0_item-search-assets-cat-class-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      order-data={orderData}
+      brach-location={brachLocation}
+    ></c-sbr_3_0_item-search-assets-cat-class-cmp>
+  </template>
+  <template lwc:elseif={isCatClassDescriptionTab}>
+    <c-sbr_3_0_item-search-assets-cat-class-description-cmp
+      record-id={recordId}
+      object-api-name={objectApiName}
+      order-data={orderData}
+    ></c-sbr_3_0_item-search-assets-cat-class-description-cmp>
+  </template>
+</template>

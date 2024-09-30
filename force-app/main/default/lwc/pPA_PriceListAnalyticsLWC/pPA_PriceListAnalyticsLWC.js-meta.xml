@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>analytics__Dashboard</target>
+        <target>lightning__RecordAction</target>
+        <target>lightning__AppPage</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="analytics__Dashboard">
+            <hasStep>false</hasStep>
+            <property name="Status" type="String" default="" />
+            <property name="Health" type="String" default="" />
+            <property name="RepName" type="String" default="" />
+            <property name="Enddate" type="String" default="" />
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>
